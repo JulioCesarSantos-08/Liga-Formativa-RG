@@ -1,155 +1,429 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Liga Deportiva Río Grande</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="icon" href="imagenes/favicon.png">
-    <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/login.css">
+    <meta
+        name="theme-color"
+        content="#0d6f68"
+    >
+
+    <title>
+        Liga Municipal de Fútbol Río Grande
+    </title>
+
+    <link
+        rel="icon"
+        href="imagenes/logo.png"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/global.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/login.css"
+    >
+
 </head>
+
 
 <body>
 
+
+    <div class="fondo-decorativo">
+
+        <div class="fondo-sol"></div>
+
+        <div class="fondo-agua fondo-agua-1"></div>
+
+        <div class="fondo-agua fondo-agua-2"></div>
+
+        <div class="fondo-glifo fondo-glifo-1"></div>
+
+        <div class="fondo-glifo fondo-glifo-2"></div>
+
+    </div>
+
+
+
     <main class="login-container">
 
-        <div class="logo-box">
-            <img
-                src="imagenes/logo.png"
-                alt="Liga Deportiva Río Grande"
-                class="logo"
-            >
 
-            <h1>Liga Deportiva Río Grande</h1>
-            <p>Sistema Oficial de Gestión Deportiva</p>
-        </div>
+        <section class="identidad-liga">
 
-        <div class="card">
+
+            <div class="logo-marco">
+
+                <div class="logo-marco-interior">
+
+                    <img
+                        src="imagenes/logo.png"
+                        alt="Liga Municipal de Fútbol Río Grande"
+                        class="logo"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="identidad-texto">
+
+                <span class="liga-etiqueta">
+                    VILLA DE TUTUTEPEC · OAXACA
+                </span>
+
+                <h1>
+                    Liga Municipal de Fútbol
+                </h1>
+
+                <strong>
+                    Río Grande
+                </strong>
+
+                <p>
+                    Infantil, juvenil y formativa
+                </p>
+
+            </div>
+
+
+            <div class="ornamento-linea">
+
+                <span></span>
+
+                <div class="ornamento-rombo"></div>
+
+                <span></span>
+
+            </div>
+
+
+        </section>
+
+
+
+        <section class="card">
+
+
+            <div class="card-ornamento-superior">
+
+                <span class="greca greca-izquierda"></span>
+
+                <div class="card-emblema">
+                    ⚽
+                </div>
+
+                <span class="greca greca-derecha"></span>
+
+            </div>
+
+
+
+            <div class="card-encabezado">
+
+                <span>
+                    ACCESO A LA PLATAFORMA
+                </span>
+
+                <h2>
+                    Bienvenido
+                </h2>
+
+                <p>
+                    Ingresa a tu cuenta o crea un nuevo registro.
+                </p>
+
+            </div>
+
+
 
             <div class="tabs">
+
 
                 <button
                     type="button"
                     id="btnLogin"
                     class="tab active"
                 >
-                    Iniciar Sesión
+
+                    <span class="tab-icono">
+                        ◉
+                    </span>
+
+                    <span>
+                        Iniciar Sesión
+                    </span>
+
                 </button>
+
+
 
                 <button
                     type="button"
                     id="btnRegistro"
                     class="tab"
                 >
-                    Registrarse
+
+                    <span class="tab-icono">
+                        ✦
+                    </span>
+
+                    <span>
+                        Registrarse
+                    </span>
+
                 </button>
+
 
             </div>
 
-            <form id="formLogin" class="form">
+
+
+            <form
+                id="formLogin"
+                class="form"
+            >
+
 
                 <div class="campo">
+
                     <label for="loginEmail">
+
+                        <span class="campo-icono">
+                            @
+                        </span>
+
                         Correo electrónico
+
                     </label>
 
-                    <input
-                        type="email"
-                        id="loginEmail"
-                        placeholder="correo@ejemplo.com"
-                        autocomplete="email"
-                        required
-                    >
+
+                    <div class="input-contenedor">
+
+                        <input
+                            type="email"
+                            id="loginEmail"
+                            placeholder="correo@ejemplo.com"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
                 </div>
+
+
 
                 <div class="campo">
+
                     <label for="loginPassword">
+
+                        <span class="campo-icono">
+                            ◆
+                        </span>
+
                         Contraseña
+
                     </label>
 
-                    <input
-                        type="password"
-                        id="loginPassword"
-                        placeholder="Tu contraseña"
-                        autocomplete="current-password"
-                        required
-                    >
+
+                    <div class="input-contenedor">
+
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            placeholder="Tu contraseña"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                    </div>
+
                 </div>
+
+
 
                 <button
                     type="submit"
                     class="btn-primary"
                 >
-                    Ingresar
+
+                    <span>
+                        Ingresar
+                    </span>
+
+                    <span class="btn-flecha">
+                        →
+                    </span>
+
                 </button>
 
+
             </form>
+
+
 
             <form
                 id="formRegistro"
                 class="form hidden"
             >
 
+
+                <div class="registro-aviso">
+
+                    <div class="registro-aviso-icono">
+                        ✦
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Crea tu cuenta
+                        </strong>
+
+                        <span>
+                            Forma parte de la comunidad de la liga.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
                 <div class="campo">
+
                     <label for="registroEmail">
+
+                        <span class="campo-icono">
+                            @
+                        </span>
+
                         Correo electrónico
+
                     </label>
 
-                    <input
-                        type="email"
-                        id="registroEmail"
-                        placeholder="correo@ejemplo.com"
-                        autocomplete="email"
-                        required
-                    >
+
+                    <div class="input-contenedor">
+
+                        <input
+                            type="email"
+                            id="registroEmail"
+                            placeholder="correo@ejemplo.com"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
                 </div>
 
+
+
                 <div class="campo">
+
                     <label for="registroPassword">
+
+                        <span class="campo-icono">
+                            ◆
+                        </span>
+
                         Contraseña
+
                     </label>
 
-                    <input
-                        type="password"
-                        id="registroPassword"
-                        placeholder="Mínimo 6 caracteres"
-                        autocomplete="new-password"
-                        minlength="6"
-                        required
-                    >
+
+                    <div class="input-contenedor">
+
+                        <input
+                            type="password"
+                            id="registroPassword"
+                            placeholder="Mínimo 6 caracteres"
+                            autocomplete="new-password"
+                            minlength="6"
+                            required
+                        >
+
+                    </div>
+
                 </div>
+
+
 
                 <div class="campo">
+
                     <label for="registroPasswordConfirmar">
+
+                        <span class="campo-icono">
+                            ◆
+                        </span>
+
                         Confirmar contraseña
+
                     </label>
 
-                    <input
-                        type="password"
-                        id="registroPasswordConfirmar"
-                        placeholder="Repite tu contraseña"
-                        autocomplete="new-password"
-                        minlength="6"
-                        required
-                    >
+
+                    <div class="input-contenedor">
+
+                        <input
+                            type="password"
+                            id="registroPasswordConfirmar"
+                            placeholder="Repite tu contraseña"
+                            autocomplete="new-password"
+                            minlength="6"
+                            required
+                        >
+
+                    </div>
+
                 </div>
+
+
 
                 <button
                     type="submit"
                     class="btn-primary"
                 >
-                    Crear cuenta
+
+                    <span>
+                        Crear cuenta
+                    </span>
+
+                    <span class="btn-flecha">
+                        →
+                    </span>
+
                 </button>
+
 
             </form>
 
+
+
             <div class="separador">
+
                 <span></span>
-                <p>o continúa con</p>
+
+                <p>
+                    o continúa con
+                </p>
+
                 <span></span>
+
             </div>
+
+
 
             <button
                 type="button"
@@ -157,11 +431,13 @@
                 class="btn-google"
             >
 
+
                 <svg
                     class="google-icon"
                     viewBox="0 0 24 24"
                     aria-hidden="true"
                 >
+
                     <path
                         fill="#4285F4"
                         d="M21.35 12.27c0-.79-.07-1.55-.2-2.27H12v4.3h5.23a4.47 4.47 0 0 1-1.94 2.93v2.79h3.14c1.84-1.69 2.92-4.18 2.92-7.75z"
@@ -181,11 +457,18 @@
                         fill="#EA4335"
                         d="M12 6.12c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.83 3.21 14.63 2.25 12 2.25a9.75 9.75 0 0 0-8.7 5.4l3.24 2.5C7.31 7.84 9.46 6.12 12 6.12z"
                     />
+
                 </svg>
 
-                <span>Continuar con Google</span>
+
+                <span>
+                    Continuar con Google
+                </span>
+
 
             </button>
+
+
 
             <p
                 id="mensaje"
@@ -193,13 +476,50 @@
                 role="alert"
             ></p>
 
-        </div>
 
-        <p class="footer-login">
-            Liga Deportiva Río Grande
-        </p>
+
+            <div class="card-pie">
+
+                <span></span>
+
+                <small>
+                    SISTEMA OFICIAL DE GESTIÓN DEPORTIVA
+                </small>
+
+                <span></span>
+
+            </div>
+
+
+        </section>
+
+
+
+        <footer class="footer-login">
+
+            <img
+                src="imagenes/logo.png"
+                alt=""
+            >
+
+            <div>
+
+                <strong>
+                    Liga Municipal de Fútbol
+                </strong>
+
+                <span>
+                    Río Grande · Villa de Tututepec, Oaxaca
+                </span>
+
+            </div>
+
+        </footer>
+
 
     </main>
+
+
 
 
     <div
@@ -207,57 +527,159 @@
         class="modal-nombre hidden"
     >
 
-        <div class="modal-nombre-card">
 
-            <div class="modal-icono">
-                👤
+        <div
+            class="modal-nombre-fondo"
+        ></div>
+
+
+
+        <section class="modal-nombre-card">
+
+
+            <div class="modal-ornamento">
+
+                <span></span>
+
+                <div>
+                    ✦
+                </div>
+
+                <span></span>
+
             </div>
 
-            <h2>Completa tu registro</h2>
 
-            <p>
+
+            <div class="modal-logo">
+
+                <img
+                    src="imagenes/logo.png"
+                    alt="Liga Municipal de Fútbol Río Grande"
+                >
+
+            </div>
+
+
+
+            <div class="modal-icono">
+
+                <span>
+                    👤
+                </span>
+
+            </div>
+
+
+
+            <span class="modal-etiqueta">
+                REGISTRO DE USUARIO
+            </span>
+
+
+            <h2>
+                Completa tu registro
+            </h2>
+
+
+            <p class="modal-descripcion">
+
                 Para mantener identificados a los usuarios de la plataforma,
                 necesitamos conocer tu nombre completo.
+
             </p>
 
+
+
             <form id="formNombre">
+
 
                 <div class="campo">
 
                     <label for="nombreCompleto">
+
+                        <span class="campo-icono">
+                            ✦
+                        </span>
+
                         Nombre completo
+
                     </label>
 
-                    <input
-                        type="text"
-                        id="nombreCompleto"
-                        placeholder="Nombre y apellidos"
-                        autocomplete="name"
-                        minlength="3"
-                        maxlength="100"
-                        required
-                    >
+
+                    <div class="input-contenedor">
+
+                        <input
+                            type="text"
+                            id="nombreCompleto"
+                            placeholder="Nombre y apellidos"
+                            autocomplete="name"
+                            minlength="3"
+                            maxlength="100"
+                            required
+                        >
+
+                    </div>
+
+
+                    <small class="campo-ayuda">
+
+                        Escribe tu nombre tal como deseas que aparezca
+                        dentro de la plataforma.
+
+                    </small>
 
                 </div>
+
+
 
                 <button
                     type="submit"
                     id="btnGuardarNombre"
                     class="btn-primary"
                 >
-                    Guardar y continuar
+
+                    <span>
+                        Guardar y continuar
+                    </span>
+
+                    <span class="btn-flecha">
+                        →
+                    </span>
+
                 </button>
 
+
             </form>
+
+
 
             <p
                 id="mensajeNombre"
                 class="mensaje"
             ></p>
 
-        </div>
+
+
+            <div class="modal-pie">
+
+                <span class="modal-pie-icono">
+                    ⚽
+                </span>
+
+                <p>
+                    Liga Municipal de Fútbol Río Grande
+                </p>
+
+            </div>
+
+
+        </section>
+
 
     </div>
+
+
 
 
     <script
@@ -265,5 +687,7 @@
         src="js/auth.js"
     ></script>
 
+
 </body>
+
 </html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#0f766e">
+
+    <title>Tabla General | Liga Deportiva Río Grande</title>
+
+    <link rel="icon" href="imagenes/logo.png">
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/tablaGeneral.css">
+</head>
+
+<body>
+
+    <div class="tabla-page">
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <a
+                    href="publico.html"
+                    class="btn-volver"
+                    aria-label="Volver"
+                >
+                    ←
+                </a>
+
+                <img
+                    src="imagenes/logo.png"
+                    alt="Liga Deportiva Río Grande"
+                    class="topbar-logo"
+                >
+
+                <div class="topbar-titulo">
+
+                    <span>
+                        Liga Deportiva
+                    </span>
+
+                    <strong>
+                        Tabla General
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="partidos.html"
+                class="btn-partidos"
+            >
+                ⚽
+                <span>
+                    Partidos
+                </span>
+            </a>
+
+        </header>
+
+
+        <main class="contenido">
+
+            <section class="encabezado-pagina">
+
+                <div>
+
+                    <span class="encabezado-mini">
+                        COMPETENCIA
+                    </span>
+
+                    <h1>
+                        Tabla general
+                    </h1>
+
+                    <p>
+                        Consulta las posiciones oficiales de cada categoría
+                        de acuerdo con los resultados registrados.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <section class="selector-categoria">
+
+                <label for="categoriaTabla">
+                    Categoría
+                </label>
+
+                <select id="categoriaTabla">
+
+                    <option value="">
+                        Selecciona una categoría
+                    </option>
+
+                </select>
+
+            </section>
+
+
+            <section
+                id="estadoCarga"
+                class="estado-carga"
+            >
+
+                <div class="spinner"></div>
+
+                <span>
+                    Calculando posiciones...
+                </span>
+
+            </section>
+
+
+            <section
+                id="estadoVacio"
+                class="estado-vacio oculto"
+            >
+
+                <div class="estado-vacio-icono">
+                    🏆
+                </div>
+
+                <strong>
+                    No hay información disponible
+                </strong>
+
+                <p>
+                    Esta categoría todavía no tiene equipos o resultados oficiales.
+                </p>
+
+            </section>
+
+
+            <section
+                id="contenidoTabla"
+                class="contenido-tabla oculto"
+            >
+
+                <div class="tabla-resumen">
+
+                    <article>
+
+                        <span>
+                            Equipos
+                        </span>
+
+                        <strong id="totalEquipos">
+                            0
+                        </strong>
+
+                    </article>
+
+
+                    <article>
+
+                        <span>
+                            Partidos jugados
+                        </span>
+
+                        <strong id="totalJugados">
+                            0
+                        </strong>
+
+                    </article>
+
+
+                    <article>
+
+                        <span>
+                            Goles
+                        </span>
+
+                        <strong id="totalGoles">
+                            0
+                        </strong>
+
+                    </article>
+
+                </div>
+
+
+                <section class="tabla-panel">
+
+                    <div class="tabla-header">
+
+                        <div>
+
+                            <span>
+                                POSICIONES
+                            </span>
+
+                            <h2 id="nombreCategoria">
+                                Categoría
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="tabla-scroll">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th class="col-pos">
+                                        #
+                                    </th>
+
+                                    <th class="col-equipo">
+                                        Equipo
+                                    </th>
+
+                                    <th>
+                                        PJ
+                                    </th>
+
+                                    <th>
+                                        PG
+                                    </th>
+
+                                    <th>
+                                        PE
+                                    </th>
+
+                                    <th>
+                                        PP
+                                    </th>
+
+                                    <th>
+                                        GF
+                                    </th>
+
+                                    <th>
+                                        GC
+                                    </th>
+
+                                    <th>
+                                        DG
+                                    </th>
+
+                                    <th class="col-puntos">
+                                        PTS
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="tablaEquipos">
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+
+                <section class="leyenda">
+
+                    <div>
+
+                        <span>
+                            PJ
+                        </span>
+
+                        <p>
+                            Partidos jugados
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            PG
+                        </span>
+
+                        <p>
+                            Partidos ganados
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            PE
+                        </span>
+
+                        <p>
+                            Empates
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            PP
+                        </span>
+
+                        <p>
+                            Partidos perdidos
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            DG
+                        </span>
+
+                        <p>
+                            Diferencia de goles
+                        </p>
+
+                    </div>
+
+                </section>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <script
+        type="module"
+        src="js/publico/tablaGeneral.js"
+    ></script>
+
+</body>
+</html>

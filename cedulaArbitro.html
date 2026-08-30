@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#0f766e">
+
+    <title>Cédula Arbitral | Liga Deportiva Río Grande</title>
+
+    <link rel="icon" href="imagenes/logo.png">
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/cedulaArbitro.css">
+</head>
+
+<body>
+
+    <div class="cedula-page">
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <a
+                    id="btnVolverPartido"
+                    href="arbitro.html"
+                    class="btn-volver"
+                    aria-label="Volver al partido"
+                >
+                    ←
+                </a>
+
+                <img
+                    src="imagenes/logo.png"
+                    alt="Liga Deportiva Río Grande"
+                    class="topbar-logo"
+                >
+
+                <div class="topbar-titulo">
+
+                    <span>
+                        Panel arbitral
+                    </span>
+
+                    <strong>
+                        Cédula oficial
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="estadoCedulaTop"
+                class="estado-top pendiente"
+            >
+                Pendiente
+            </div>
+
+        </header>
+
+
+        <main class="contenido">
+
+            <section
+                id="estadoCarga"
+                class="estado-carga"
+            >
+
+                <div class="spinner"></div>
+
+                <span>
+                    Cargando cédula...
+                </span>
+
+            </section>
+
+
+            <section
+                id="estadoError"
+                class="estado-error oculto"
+            >
+
+                <div class="estado-error-icono">
+                    ⚠️
+                </div>
+
+                <h1>
+                    No pudimos abrir la cédula
+                </h1>
+
+                <p id="estadoErrorTexto">
+                    No tienes permiso o el partido no está disponible.
+                </p>
+
+                <a
+                    href="arbitro.html"
+                    class="btn-regresar"
+                >
+                    Volver a mis partidos
+                </a>
+
+            </section>
+
+
+            <div
+                id="contenidoCedula"
+                class="contenido-cedula oculto"
+            >
+
+                <section class="partido-hero">
+
+                    <div class="hero-meta">
+
+                        <span id="heroCategoria">
+                            Categoría
+                        </span>
+
+                        <span id="heroJornada">
+                            Jornada
+                        </span>
+
+                    </div>
+
+
+                    <div class="hero-enfrentamiento">
+
+                        <div class="hero-equipo">
+
+                            <div
+                                id="logoLocal"
+                                class="hero-logo"
+                            >
+                                L
+                            </div>
+
+                            <strong id="nombreLocal">
+                                Equipo local
+                            </strong>
+
+                            <span>
+                                LOCAL
+                            </span>
+
+                        </div>
+
+
+                        <div class="hero-vs">
+
+                            <small id="heroFecha">
+                                -
+                            </small>
+
+                            <strong>
+                                VS
+                            </strong>
+
+                            <small id="heroHora">
+                                -
+                            </small>
+
+                        </div>
+
+
+                        <div class="hero-equipo">
+
+                            <div
+                                id="logoVisitante"
+                                class="hero-logo"
+                            >
+                                V
+                            </div>
+
+                            <strong id="nombreVisitante">
+                                Equipo visitante
+                            </strong>
+
+                            <span>
+                                VISITANTE
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="hero-campo">
+
+                        <span>
+                            📍
+                        </span>
+
+                        <strong id="heroCampo">
+                            Campo
+                        </strong>
+
+                    </div>
+
+                </section>
+
+
+                <section class="cedula-bloque">
+
+                    <div class="seccion-header">
+
+                        <div>
+
+                            <span>
+                                RESULTADO
+                            </span>
+
+                            <h2>
+                                Marcador final
+                            </h2>
+
+                            <p>
+                                Registra el resultado oficial del encuentro.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="marcador-editor">
+
+                        <div class="marcador-equipo">
+
+                            <span id="marcadorNombreLocal">
+                                Local
+                            </span>
+
+                            <input
+                                type="number"
+                                id="golesLocal"
+                                min="0"
+                                max="99"
+                                inputmode="numeric"
+                                value="0"
+                            >
+
+                        </div>
+
+
+                        <div class="marcador-separador">
+                            -
+                        </div>
+
+
+                        <div class="marcador-equipo">
+
+                            <span id="marcadorNombreVisitante">
+                                Visitante
+                            </span>
+
+                            <input
+                                type="number"
+                                id="golesVisitante"
+                                min="0"
+                                max="99"
+                                inputmode="numeric"
+                                value="0"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <section class="cedula-bloque">
+
+                    <div class="seccion-header">
+
+                        <div>
+
+                            <span>
+                                GOLES
+                            </span>
+
+                            <h2>
+                                Anotadores
+                            </h2>
+
+                            <p>
+                                Agrega quién anotó cada gol y para qué equipo.
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            id="btnAgregarGol"
+                            class="btn-agregar"
+                        >
+                            + Gol
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="listaGoles"
+                        class="lista-eventos"
+                    ></div>
+
+
+                    <div
+                        id="sinGoles"
+                        class="estado-vacio-evento"
+                    >
+                        ⚽ No hay goles registrados.
+                    </div>
+
+                </section>
+
+
+                <section class="cedula-bloque">
+
+                    <div class="seccion-header">
+
+                        <div>
+
+                            <span>
+                                DISCIPLINA
+                            </span>
+
+                            <h2>
+                                Tarjetas amarillas
+                            </h2>
+
+                            <p>
+                                Registra todas las amonestaciones del partido.
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            id="btnAgregarAmarilla"
+                            class="btn-agregar amarilla"
+                        >
+                            + Amarilla
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="listaAmarillas"
+                        class="lista-eventos"
+                    ></div>
+
+
+                    <div
+                        id="sinAmarillas"
+                        class="estado-vacio-evento"
+                    >
+                        🟨 No hay tarjetas amarillas.
+                    </div>
+
+                </section>
+
+
+                <section class="cedula-bloque">
+
+                    <div class="seccion-header">
+
+                        <div>
+
+                            <span>
+                                DISCIPLINA
+                            </span>
+
+                            <h2>
+                                Tarjetas rojas
+                            </h2>
+
+                            <p>
+                                Registra expulsiones directas o por doble amarilla.
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            id="btnAgregarRoja"
+                            class="btn-agregar roja"
+                        >
+                            + Roja
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="listaRojas"
+                        class="lista-eventos"
+                    ></div>
+
+
+                    <div
+                        id="sinRojas"
+                        class="estado-vacio-evento"
+                    >
+                        🟥 No hay tarjetas rojas.
+                    </div>
+
+                </section>
+
+
+                <section class="cedula-bloque">
+
+                    <div class="seccion-header">
+
+                        <div>
+
+                            <span>
+                                OBSERVACIONES
+                            </span>
+
+                            <h2>
+                                Incidencias del partido
+                            </h2>
+
+                            <p>
+                                Describe cualquier situación relevante.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <textarea
+                        id="incidencias"
+                        class="textarea-incidencias"
+                        rows="6"
+                        maxlength="1500"
+                        placeholder="Ej. retrasos, lesiones, conducta antideportiva, invasión de campo..."
+                    ></textarea>
+
+
+                    <div class="contador-texto">
+                        <span id="contadorIncidencias">
+                            0
+                        </span>
+                        /1500
+                    </div>
+
+                </section>
+
+
+                <section class="resumen-cedula">
+
+                    <div class="seccion-header">
+
+                        <div>
+
+                            <span>
+                                RESUMEN
+                            </span>
+
+                            <h2>
+                                Cédula del encuentro
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="resumen-grid">
+
+                        <article>
+
+                            <span>
+                                Resultado
+                            </span>
+
+                            <strong id="resumenResultado">
+                                0 - 0
+                            </strong>
+
+                        </article>
+
+
+                        <article>
+
+                            <span>
+                                Goles registrados
+                            </span>
+
+                            <strong id="resumenGoles">
+                                0
+                            </strong>
+
+                        </article>
+
+
+                        <article>
+
+                            <span>
+                                Amarillas
+                            </span>
+
+                            <strong id="resumenAmarillas">
+                                0
+                            </strong>
+
+                        </article>
+
+
+                        <article>
+
+                            <span>
+                                Rojas
+                            </span>
+
+                            <strong id="resumenRojas">
+                                0
+                            </strong>
+
+                        </article>
+
+
+                        <article>
+
+                            <span>
+                                Jugadores presentes
+                            </span>
+
+                            <strong id="resumenJugadores">
+                                0
+                            </strong>
+
+                        </article>
+
+
+                        <article>
+
+                            <span>
+                                Árbitro
+                            </span>
+
+                            <strong id="resumenArbitro">
+                                -
+                            </strong>
+
+                        </article>
+
+                    </div>
+
+                </section>
+
+
+                <section class="aviso-envio">
+
+                    <div class="aviso-envio-icono">
+                        ⚠️
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Verifica la información antes de enviar
+                        </strong>
+
+                        <p>
+                            Esta cédula actualizará estadísticas, resultados
+                            y sanciones. Cualquier corrección posterior deberá
+                            quedar registrada en el historial del sistema.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <section class="acciones-finales">
+
+                    <button
+                        type="button"
+                        id="btnGuardarBorrador"
+                        class="btn-secundario"
+                    >
+                        Guardar borrador
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="btnEnviarCedula"
+                        class="btn-principal"
+                    >
+                        Enviar cédula oficial
+                    </button>
+
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <div
+        id="modalEvento"
+        class="modal-overlay oculto"
+    >
+
+        <div
+            class="modal-evento"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modalEventoTitulo"
+        >
+
+            <div class="modal-header">
+
+                <div>
+
+                    <span id="modalEventoMini">
+                        EVENTO
+                    </span>
+
+                    <h2 id="modalEventoTitulo">
+                        Agregar evento
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="btnCerrarEvento"
+                    class="btn-cerrar-modal"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="form-grupo">
+
+                <label for="eventoEquipo">
+                    Equipo
+                </label>
+
+                <select id="eventoEquipo">
+
+                    <option value="local">
+                        Equipo local
+                    </option>
+
+                    <option value="visitante">
+                        Equipo visitante
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-grupo">
+
+                <label for="eventoJugador">
+                    Jugador
+                </label>
+
+                <select id="eventoJugador">
+                    <option value="">
+                        Selecciona un jugador
+                    </option>
+                </select>
+
+            </div>
+
+
+            <div
+                id="grupoMinuto"
+                class="form-grupo"
+            >
+
+                <label for="eventoMinuto">
+                    Minuto
+                </label>
+
+                <input
+                    type="number"
+                    id="eventoMinuto"
+                    min="0"
+                    max="180"
+                    inputmode="numeric"
+                    placeholder="Ej. 35"
+                >
+
+            </div>
+
+
+            <div
+                id="grupoTipoRoja"
+                class="form-grupo oculto"
+            >
+
+                <label for="eventoTipoRoja">
+                    Tipo de expulsión
+                </label>
+
+                <select id="eventoTipoRoja">
+
+                    <option value="directa">
+                        Roja directa
+                    </option>
+
+                    <option value="dobleAmarilla">
+                        Doble amarilla
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div
+                id="grupoMotivo"
+                class="form-grupo"
+            >
+
+                <label for="eventoMotivo">
+                    Motivo u observación
+                </label>
+
+                <textarea
+                    id="eventoMotivo"
+                    rows="3"
+                    maxlength="250"
+                    placeholder="Opcional..."
+                ></textarea>
+
+            </div>
+
+
+            <div class="modal-acciones">
+
+                <button
+                    type="button"
+                    id="btnCancelarEvento"
+                    class="btn-secundario"
+                >
+                    Cancelar
+                </button>
+
+
+                <button
+                    type="button"
+                    id="btnGuardarEvento"
+                    class="btn-principal"
+                >
+                    Agregar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="modalConfirmarEnvio"
+        class="modal-overlay oculto"
+    >
+
+        <div
+            class="modal-confirmacion"
+            role="dialog"
+            aria-modal="true"
+        >
+
+            <div class="modal-confirmacion-icono">
+                📋
+            </div>
+
+            <h2>
+                ¿Enviar cédula oficial?
+            </h2>
+
+            <p>
+                Una vez enviada, esta información será utilizada para
+                actualizar el resultado, estadísticas y sanciones.
+            </p>
+
+
+            <div class="confirmacion-resultado">
+
+                <strong id="confirmarResultado">
+                    0 - 0
+                </strong>
+
+                <span>
+                    Marcador final
+                </span>
+
+            </div>
+
+
+            <div class="modal-acciones">
+
+                <button
+                    type="button"
+                    id="btnCancelarEnvio"
+                    class="btn-secundario"
+                >
+                    Seguir revisando
+                </button>
+
+
+                <button
+                    type="button"
+                    id="btnConfirmarEnvio"
+                    class="btn-principal"
+                >
+                    Confirmar envío
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="toast"
+        class="toast oculto"
+    >
+
+        <span id="toastIcono">
+            ✓
+        </span>
+
+        <div>
+
+            <strong id="toastTitulo">
+                Listo
+            </strong>
+
+            <p id="toastTexto">
+                Información guardada correctamente.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <script
+        type="module"
+        src="js/arbitro/cedulaArbitro.js"
+    ></script>
+
+</body>
+</html>

@@ -1,0 +1,1365 @@
+body{
+    background:#eef2f5;
+    color:#14213d;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+button,
+input,
+select{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.admin-page{
+    width:100%;
+    min-height:100vh;
+}
+
+.topbar-admin{
+    position:sticky;
+    top:0;
+    z-index:60;
+
+    min-height:72px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+
+    padding:10px 22px;
+
+    border-bottom:1px solid #dfe5e8;
+
+    background:rgba(255,255,255,.96);
+
+    backdrop-filter:blur(10px);
+}
+
+.topbar-left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    min-width:0;
+}
+
+.btn-volver{
+    width:42px;
+    height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:11px;
+
+    background:#eef2f4;
+    color:#344054;
+
+    font-size:1.15rem;
+    font-weight:800;
+}
+
+.topbar-logo{
+    width:45px;
+    height:45px;
+
+    object-fit:contain;
+    flex-shrink:0;
+}
+
+.topbar-titulo{
+    display:flex;
+    flex-direction:column;
+
+    min-width:0;
+}
+
+.topbar-titulo span{
+    color:#667085;
+    font-size:.63rem;
+}
+
+.topbar-titulo strong{
+    color:#182230;
+
+    font-size:.9rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.topbar-right{
+    display:flex;
+    align-items:center;
+    gap:9px;
+
+    flex-shrink:0;
+}
+
+.btn-ver-sitio{
+    min-height:40px;
+
+    display:flex;
+    align-items:center;
+    gap:7px;
+
+    padding:7px 11px;
+
+    border-radius:11px;
+
+    background:#eef7f5;
+    color:#0f766e;
+
+    font-size:.7rem;
+    font-weight:800;
+}
+
+.admin-avatar{
+    width:42px;
+    height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:#0f766e;
+    color:#ffffff;
+
+    font-size:.78rem;
+    font-weight:900;
+}
+
+.contenido-admin{
+    width:100%;
+    max-width:1450px;
+
+    margin:0 auto;
+
+    padding:24px;
+}
+
+.encabezado-pagina{
+    margin-bottom:20px;
+}
+
+.encabezado-mini{
+    display:block;
+
+    margin-bottom:4px;
+
+    color:#0f766e;
+
+    font-size:.62rem;
+    font-weight:900;
+
+    letter-spacing:.08em;
+}
+
+.encabezado-pagina h1{
+    margin-bottom:6px;
+
+    color:#182230;
+
+    font-size:1.6rem;
+}
+
+.encabezado-pagina p{
+    max-width:720px;
+
+    color:#667085;
+
+    font-size:.78rem;
+    line-height:1.45;
+}
+
+.resumen-cedulas{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+
+    gap:11px;
+
+    margin-bottom:18px;
+}
+
+.resumen-card{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    min-width:0;
+
+    padding:14px;
+
+    border:1px solid #dfe5e8;
+    border-radius:16px;
+
+    background:#ffffff;
+}
+
+.resumen-card.pendiente{
+    border-color:#ead8a4;
+
+    background:#fffdf6;
+}
+
+.resumen-card.completada{
+    border-color:#cce5d4;
+
+    background:#fbfffc;
+}
+
+.resumen-card.revision{
+    border-color:#f0c7c3;
+
+    background:#fffdfd;
+}
+
+.resumen-icono{
+    width:42px;
+    height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:12px;
+
+    background:#eef6f4;
+
+    font-size:1rem;
+}
+
+.resumen-card > div:last-child{
+    display:flex;
+    flex-direction:column;
+
+    min-width:0;
+}
+
+.resumen-card span{
+    color:#667085;
+
+    font-size:.61rem;
+}
+
+.resumen-card strong{
+    margin-top:1px;
+
+    color:#182230;
+
+    font-size:1.05rem;
+}
+
+.panel-cedulas{
+    overflow:hidden;
+
+    border:1px solid #dfe5e8;
+    border-radius:18px;
+
+    background:#ffffff;
+}
+
+.herramientas{
+    display:grid;
+    grid-template-columns:minmax(260px,1fr) 210px 210px 190px;
+
+    gap:10px;
+
+    padding:14px;
+
+    border-bottom:1px solid #e6ebee;
+
+    background:#fbfcfd;
+}
+
+.buscador{
+    position:relative;
+}
+
+.buscador-icono{
+    position:absolute;
+    left:13px;
+    top:50%;
+
+    transform:translateY(-50%);
+
+    pointer-events:none;
+}
+
+.buscador input,
+.select-filtro{
+    width:100%;
+    min-height:44px;
+
+    border:1px solid #d0d5dd;
+    border-radius:11px;
+
+    background:#ffffff;
+    color:#101828;
+
+    font-size:.76rem;
+
+    outline:none;
+}
+
+.buscador input{
+    padding:0 13px 0 40px;
+}
+
+.select-filtro{
+    padding:0 11px;
+}
+
+.buscador input:focus,
+.select-filtro:focus{
+    border-color:#0f766e;
+
+    box-shadow:0 0 0 3px rgba(15,118,110,.1);
+}
+
+.estado-carga,
+.estado-vacio{
+    min-height:270px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+
+    padding:30px;
+
+    text-align:center;
+}
+
+.spinner{
+    width:34px;
+    height:34px;
+
+    border:4px solid #e3e9ec;
+    border-top-color:#0f766e;
+    border-radius:50%;
+
+    animation:girar .8s linear infinite;
+}
+
+@keyframes girar{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+.estado-carga span{
+    color:#667085;
+
+    font-size:.72rem;
+}
+
+.estado-vacio-icono{
+    width:54px;
+    height:54px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:16px;
+
+    background:#eef6f4;
+
+    font-size:1.35rem;
+}
+
+.estado-vacio strong{
+    color:#182230;
+
+    font-size:.86rem;
+}
+
+.estado-vacio p{
+    max-width:350px;
+
+    color:#667085;
+
+    font-size:.7rem;
+    line-height:1.45;
+}
+
+.oculto{
+    display:none !important;
+}
+
+.lista-cedulas{
+    display:flex;
+    flex-direction:column;
+
+    gap:10px;
+
+    padding:14px;
+}
+
+.cedula-card{
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr) auto auto;
+
+    align-items:center;
+    gap:14px;
+
+    padding:13px;
+
+    border:1px solid #e4e7ec;
+    border-radius:15px;
+
+    background:#ffffff;
+
+    box-shadow:0 4px 15px rgba(15,23,42,.03);
+}
+
+.cedula-card.pendiente{
+    border-left:4px solid #e0b64c;
+}
+
+.cedula-card.registrada{
+    border-left:4px solid #2f9467;
+}
+
+.cedula-card.revision{
+    border-left:4px solid #d92d20;
+}
+
+.cedula-fecha{
+    width:58px;
+    min-height:60px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:13px;
+
+    background:#edf6f4;
+
+    text-align:center;
+}
+
+.cedula-fecha strong{
+    color:#0f766e;
+
+    font-size:1rem;
+}
+
+.cedula-fecha span{
+    color:#5d7f7c;
+
+    font-size:.55rem;
+    font-weight:800;
+
+    text-transform:uppercase;
+}
+
+.cedula-info{
+    min-width:0;
+}
+
+.cedula-meta{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:6px;
+
+    margin-bottom:5px;
+}
+
+.cedula-categoria,
+.cedula-jornada{
+    display:inline-flex;
+    align-items:center;
+
+    min-height:24px;
+
+    padding:4px 7px;
+
+    border-radius:999px;
+
+    font-size:.56rem;
+    font-weight:800;
+}
+
+.cedula-categoria{
+    background:#eef7f5;
+    color:#0f766e;
+}
+
+.cedula-jornada{
+    background:#f2f4f7;
+    color:#475467;
+}
+
+.estado-cedula{
+    display:inline-flex;
+    align-items:center;
+
+    min-height:25px;
+
+    padding:4px 8px;
+
+    border-radius:999px;
+
+    font-size:.56rem;
+    font-weight:800;
+}
+
+.estado-cedula.pendiente{
+    background:#fff8e8;
+    color:#9a6a00;
+}
+
+.estado-cedula.registrada{
+    background:#eaf8ef;
+    color:#18794e;
+}
+
+.estado-cedula.revision{
+    background:#fff0ef;
+    color:#b42318;
+}
+
+.cedula-enfrentamiento{
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    min-width:0;
+
+    margin-bottom:5px;
+}
+
+.cedula-enfrentamiento strong{
+    min-width:0;
+
+    color:#182230;
+
+    font-size:.78rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.cedula-enfrentamiento span{
+    flex-shrink:0;
+
+    color:#98a2b3;
+
+    font-size:.58rem;
+    font-weight:900;
+}
+
+.cedula-detalles{
+    color:#667085;
+
+    font-size:.6rem;
+}
+
+.cedula-arbitro{
+    display:flex;
+    flex-direction:column;
+
+    min-width:140px;
+}
+
+.cedula-arbitro span{
+    color:#98a2b3;
+
+    font-size:.53rem;
+}
+
+.cedula-arbitro strong{
+    color:#344054;
+
+    font-size:.64rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.cedula-resultado{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    min-width:82px;
+}
+
+.cedula-resultado span{
+    color:#98a2b3;
+
+    font-size:.52rem;
+}
+
+.cedula-resultado strong{
+    margin-top:2px;
+
+    color:#182230;
+
+    font-size:.82rem;
+}
+
+.btn-ver-cedula{
+    min-height:36px;
+
+    padding:6px 10px;
+
+    border-radius:9px;
+
+    background:#eef7f5;
+    color:#0f766e;
+
+    font-size:.61rem;
+    font-weight:800;
+}
+
+.modal-overlay{
+    position:fixed;
+    inset:0;
+    z-index:150;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:18px;
+
+    background:rgba(15,23,42,.58);
+
+    backdrop-filter:blur(4px);
+}
+
+.modal-cedula{
+    width:100%;
+    max-width:720px;
+
+    max-height:92vh;
+    overflow-y:auto;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    background:#ffffff;
+
+    box-shadow:0 24px 70px rgba(0,0,0,.24);
+}
+
+.modal-header{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+
+    margin-bottom:18px;
+}
+
+.modal-mini{
+    display:block;
+
+    margin-bottom:3px;
+
+    color:#0f766e;
+
+    font-size:.58rem;
+    font-weight:900;
+
+    letter-spacing:.07em;
+}
+
+.modal-header h2{
+    color:#182230;
+
+    font-size:1.1rem;
+}
+
+.btn-cerrar-modal{
+    width:38px;
+    height:38px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:10px;
+
+    background:#f2f4f7;
+    color:#475467;
+
+    font-size:1.25rem;
+}
+
+.modal-partido-resumen{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+
+    align-items:center;
+    gap:14px;
+
+    margin-bottom:16px;
+
+    padding:16px;
+
+    border-radius:16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0b5f58,
+            #0f766e 52%,
+            #174c63
+        );
+
+    color:#ffffff;
+}
+
+.modal-equipo{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+
+    min-width:0;
+
+    text-align:center;
+}
+
+.modal-equipo-logo{
+    width:58px;
+    height:58px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    overflow:hidden;
+
+    border:1px solid rgba(255,255,255,.22);
+    border-radius:16px;
+
+    background:rgba(255,255,255,.13);
+
+    font-size:1rem;
+    font-weight:900;
+}
+
+.modal-equipo-logo img{
+    width:100%;
+    height:100%;
+
+    display:block;
+
+    object-fit:cover;
+}
+
+.modal-equipo strong{
+    width:100%;
+
+    color:#ffffff;
+
+    font-size:.72rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.modal-marcador{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+
+    min-width:100px;
+
+    text-align:center;
+}
+
+.modal-marcador span,
+.modal-marcador small{
+    color:#cdebe7;
+
+    font-size:.58rem;
+}
+
+.modal-marcador strong{
+    color:#ffffff;
+
+    font-size:1.35rem;
+}
+
+.modal-info-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+
+    gap:8px;
+
+    margin-bottom:16px;
+}
+
+.modal-info-grid > div{
+    min-width:0;
+
+    padding:10px;
+
+    border-radius:11px;
+
+    background:#f8fafb;
+}
+
+.modal-info-grid span{
+    display:block;
+
+    margin-bottom:3px;
+
+    color:#98a2b3;
+
+    font-size:.54rem;
+}
+
+.modal-info-grid strong{
+    display:block;
+
+    color:#344054;
+
+    font-size:.63rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.cedula-pendiente{
+    display:flex;
+    align-items:flex-start;
+    gap:11px;
+
+    margin-bottom:16px;
+    padding:14px;
+
+    border:1px solid #ead8a4;
+    border-radius:14px;
+
+    background:#fffaf0;
+}
+
+.cedula-pendiente-icono{
+    width:38px;
+    height:38px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:11px;
+
+    background:#fff1c9;
+}
+
+.cedula-pendiente strong{
+    display:block;
+
+    margin-bottom:4px;
+
+    color:#6f5411;
+
+    font-size:.72rem;
+}
+
+.cedula-pendiente p{
+    color:#7c6941;
+
+    font-size:.62rem;
+    line-height:1.4;
+}
+
+.contenido-cedula{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+
+    margin-bottom:16px;
+}
+
+.seccion-modal{
+    padding:13px;
+
+    border:1px solid #e4e7ec;
+    border-radius:14px;
+
+    background:#ffffff;
+}
+
+.seccion-modal-header{
+    margin-bottom:10px;
+}
+
+.seccion-modal-header span{
+    display:block;
+
+    margin-bottom:2px;
+
+    color:#0f766e;
+
+    font-size:.54rem;
+    font-weight:900;
+
+    letter-spacing:.07em;
+}
+
+.seccion-modal-header h3{
+    color:#182230;
+
+    font-size:.78rem;
+}
+
+.marcador-oficial{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+
+    align-items:center;
+    gap:14px;
+
+    padding:14px;
+
+    border-radius:13px;
+
+    background:#f8fafb;
+}
+
+.marcador-oficial > div{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.marcador-oficial span{
+    color:#667085;
+
+    font-size:.6rem;
+}
+
+.marcador-oficial strong{
+    margin-top:3px;
+
+    color:#182230;
+
+    font-size:1.35rem;
+}
+
+.marcador-separador{
+    color:#98a2b3 !important;
+
+    font-size:1rem !important;
+    font-weight:900;
+}
+
+.eventos-resumen{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+
+    gap:8px;
+}
+
+.eventos-resumen > div{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    min-height:62px;
+
+    padding:8px;
+
+    border-radius:10px;
+
+    background:#f8fafb;
+}
+
+.eventos-resumen span{
+    margin-bottom:3px;
+
+    color:#667085;
+
+    font-size:.55rem;
+}
+
+.eventos-resumen strong{
+    color:#182230;
+
+    font-size:.82rem;
+}
+
+.incidencias-texto{
+    min-height:70px;
+
+    padding:11px;
+
+    border-radius:10px;
+
+    background:#f8fafb;
+
+    color:#52606d;
+
+    font-size:.64rem;
+    line-height:1.45;
+}
+
+.auditoria-info{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+
+    gap:8px;
+}
+
+.auditoria-info > div{
+    padding:10px;
+
+    border-radius:10px;
+
+    background:#f8fafb;
+}
+
+.auditoria-info span{
+    display:block;
+
+    margin-bottom:3px;
+
+    color:#98a2b3;
+
+    font-size:.54rem;
+}
+
+.auditoria-info strong{
+    color:#344054;
+
+    font-size:.63rem;
+}
+
+.modal-acciones{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+
+    gap:8px;
+}
+
+.btn-cancelar,
+.btn-guardar{
+    min-height:44px;
+
+    border-radius:11px;
+
+    font-size:.68rem;
+    font-weight:800;
+}
+
+.btn-cancelar{
+    background:#f2f4f7;
+    color:#475467;
+}
+
+.btn-guardar{
+    background:#0f766e;
+    color:#ffffff;
+}
+
+.toast{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    z-index:200;
+
+    width:min(360px,calc(100vw - 32px));
+
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+
+    padding:13px;
+
+    border:1px solid #cbe7d5;
+    border-radius:14px;
+
+    background:#f0faf3;
+
+    box-shadow:0 15px 40px rgba(15,23,42,.13);
+}
+
+.toast > span{
+    width:32px;
+    height:32px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:50%;
+
+    background:#d9f2e1;
+    color:#18794e;
+
+    font-weight:900;
+}
+
+.toast strong{
+    display:block;
+
+    margin-bottom:2px;
+
+    color:#182230;
+
+    font-size:.7rem;
+}
+
+.toast p{
+    color:#667085;
+
+    font-size:.6rem;
+    line-height:1.35;
+}
+
+@media (hover:hover) and (pointer:fine){
+
+    .cedula-card,
+    .btn-ver-cedula,
+    .btn-cancelar,
+    .btn-guardar{
+        transition:.18s ease;
+    }
+
+    .cedula-card:hover{
+        transform:translateY(-1px);
+
+        border-color:#ccd5da;
+
+        box-shadow:0 8px 22px rgba(15,23,42,.045);
+    }
+
+    .btn-ver-cedula:hover{
+        background:#e4f1ef;
+    }
+
+    .btn-cancelar:hover{
+        background:#e8ebef;
+    }
+
+    .btn-guardar:hover{
+        background:#0b665f;
+    }
+
+}
+
+@media (max-width:1200px){
+
+    .herramientas{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .buscador{
+        grid-column:1 / -1;
+    }
+
+}
+
+@media (max-width:950px){
+
+    .cedula-card{
+        grid-template-columns:auto minmax(0,1fr) auto;
+    }
+
+    .cedula-arbitro{
+        grid-column:2;
+    }
+
+    .cedula-resultado{
+        grid-column:3;
+        grid-row:1 / span 2;
+    }
+
+}
+
+@media (max-width:900px){
+
+    .resumen-cedulas{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+}
+
+@media (max-width:700px){
+
+    .contenido-admin{
+        padding:18px 14px 26px;
+    }
+
+    .herramientas{
+        grid-template-columns:1fr;
+    }
+
+    .buscador{
+        grid-column:auto;
+    }
+
+}
+
+@media (max-width:600px){
+
+    .topbar-admin{
+        min-height:64px;
+
+        padding:8px 12px;
+    }
+
+    .btn-ver-sitio span{
+        display:none;
+    }
+
+    .btn-ver-sitio{
+        width:40px;
+        height:40px;
+
+        justify-content:center;
+
+        padding:0;
+    }
+
+    .encabezado-pagina h1{
+        font-size:1.35rem;
+    }
+
+    .resumen-cedulas{
+        gap:8px;
+    }
+
+    .resumen-card{
+        padding:11px;
+    }
+
+    .resumen-icono{
+        width:36px;
+        height:36px;
+    }
+
+    .lista-cedulas{
+        padding:10px;
+    }
+
+    .cedula-card{
+        grid-template-columns:auto minmax(0,1fr);
+
+        gap:10px;
+    }
+
+    .cedula-arbitro{
+        grid-column:2;
+    }
+
+    .cedula-resultado{
+        grid-column:1 / -1;
+        grid-row:auto;
+
+        flex-direction:row;
+        justify-content:space-between;
+
+        padding:8px;
+
+        border-radius:10px;
+
+        background:#f8fafb;
+    }
+
+    .modal-overlay{
+        align-items:flex-end;
+
+        padding:10px;
+    }
+
+    .modal-cedula{
+        max-width:none;
+
+        border-radius:20px 20px 14px 14px;
+
+        padding:18px;
+    }
+
+    .modal-info-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .eventos-resumen{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .auditoria-info{
+        grid-template-columns:1fr;
+    }
+
+    .toast{
+        left:16px;
+        right:16px;
+        bottom:16px;
+
+        width:auto;
+    }
+
+}
+
+@media (max-width:430px){
+
+    .modal-partido-resumen{
+        gap:8px;
+
+        padding:12px;
+    }
+
+    .modal-equipo-logo{
+        width:50px;
+        height:50px;
+    }
+
+    .modal-marcador{
+        min-width:76px;
+    }
+
+    .modal-marcador strong{
+        font-size:1.1rem;
+    }
+
+    .modal-info-grid{
+        grid-template-columns:1fr;
+    }
+
+}

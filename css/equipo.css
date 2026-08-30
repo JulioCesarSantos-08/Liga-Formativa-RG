@@ -1,0 +1,847 @@
+body{
+    background:#f4f6f8;
+    color:#14213d;
+    padding-bottom:82px;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+button{
+    font:inherit;
+}
+
+.app-equipo{
+    width:100%;
+    min-height:100vh;
+}
+
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:50;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    width:100%;
+    padding:10px 14px;
+
+    background:rgba(255,255,255,.96);
+    border-bottom:1px solid #e5e7eb;
+
+    backdrop-filter:blur(10px);
+}
+
+.topbar-identidad{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    min-width:0;
+}
+
+.btn-volver{
+    width:42px;
+    height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:12px;
+
+    background:#f2f4f7;
+    color:#344054;
+
+    font-size:1.25rem;
+    font-weight:700;
+}
+
+.topbar-logo{
+    width:44px;
+    height:44px;
+
+    object-fit:contain;
+    flex-shrink:0;
+}
+
+.topbar-texto{
+    display:flex;
+    flex-direction:column;
+
+    min-width:0;
+}
+
+.topbar-texto span{
+    color:#667085;
+    font-size:.72rem;
+}
+
+.topbar-texto strong{
+    color:#132238;
+    font-size:1rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.btn-perfil{
+    width:44px;
+    height:44px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:50%;
+
+    background:#0f766e;
+    color:#ffffff;
+
+    font-weight:800;
+}
+
+.contenido-equipo{
+    width:100%;
+    max-width:1180px;
+
+    margin:0 auto;
+    padding:18px 14px 28px;
+}
+
+.hero-equipo{
+    display:flex;
+    align-items:center;
+    gap:16px;
+
+    margin-bottom:16px;
+    padding:20px;
+
+    border-radius:22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0b5f58,
+            #0f766e 55%,
+            #124f63
+        );
+
+    color:#ffffff;
+
+    overflow:hidden;
+    position:relative;
+}
+
+.hero-equipo::after{
+    content:"⚽";
+
+    position:absolute;
+    right:-12px;
+    bottom:-32px;
+
+    font-size:7rem;
+
+    opacity:.07;
+
+    transform:rotate(-16deg);
+}
+
+.hero-escudo{
+    width:82px;
+    height:82px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:22px;
+
+    background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.24);
+
+    color:#ffffff;
+
+    font-size:1.6rem;
+    font-weight:900;
+
+    backdrop-filter:blur(4px);
+}
+
+.hero-info{
+    position:relative;
+    z-index:2;
+
+    min-width:0;
+}
+
+.hero-categoria{
+    display:block;
+
+    margin-bottom:4px;
+
+    color:#d8f3ef;
+
+    font-size:.74rem;
+    font-weight:700;
+
+    text-transform:uppercase;
+    letter-spacing:.05em;
+}
+
+.hero-info h1{
+    margin-bottom:7px;
+
+    font-size:1.65rem;
+    line-height:1.1;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.hero-estado{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.estado-activo{
+    display:inline-flex;
+    align-items:center;
+
+    padding:5px 9px;
+
+    border-radius:999px;
+
+    background:rgba(255,255,255,.14);
+    color:#dcfae6;
+
+    font-size:.72rem;
+    font-weight:700;
+}
+
+.estadisticas-principales{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+
+    gap:8px;
+
+    margin-bottom:24px;
+}
+
+.stat-card{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    min-width:0;
+    min-height:78px;
+
+    padding:10px 5px;
+
+    border:1px solid #e4e7ec;
+    border-radius:15px;
+
+    background:#ffffff;
+}
+
+.stat-card span{
+    margin-bottom:4px;
+
+    color:#667085;
+
+    font-size:.62rem;
+    font-weight:700;
+}
+
+.stat-card strong{
+    color:#182230;
+
+    font-size:1.1rem;
+}
+
+.positivo{
+    color:#18794e !important;
+}
+
+.negativo{
+    color:#b42318 !important;
+}
+
+.resumen-estadisticas,
+.proximo-partido,
+.ultimos-resultados,
+.plantilla{
+    margin-bottom:28px;
+}
+
+.seccion-cabecera{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:12px;
+
+    margin-bottom:12px;
+}
+
+.seccion-mini{
+    display:block;
+
+    margin-bottom:2px;
+
+    color:#0f766e;
+
+    font-size:.7rem;
+    font-weight:800;
+
+    text-transform:uppercase;
+    letter-spacing:.07em;
+}
+
+.seccion-cabecera h2{
+    color:#132238;
+
+    font-size:1.15rem;
+}
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+
+    gap:8px;
+}
+
+.stats-grid > div{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    min-width:0;
+    min-height:84px;
+
+    padding:10px 5px;
+
+    border:1px solid #e4e7ec;
+    border-radius:14px;
+
+    background:#ffffff;
+}
+
+.stats-grid span{
+    margin-bottom:2px;
+
+    color:#0f766e;
+
+    font-size:.65rem;
+    font-weight:800;
+}
+
+.stats-grid strong{
+    margin-bottom:2px;
+
+    color:#182230;
+
+    font-size:1.05rem;
+}
+
+.stats-grid small{
+    color:#667085;
+
+    font-size:.62rem;
+}
+
+.partido-card{
+    padding:15px;
+
+    border:1px solid #e4e7ec;
+    border-radius:18px;
+
+    background:#ffffff;
+
+    box-shadow:0 6px 20px rgba(15,23,42,.04);
+}
+
+.partido-superior{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+
+    margin-bottom:16px;
+
+    color:#667085;
+
+    font-size:.72rem;
+}
+
+.estado-partido{
+    display:inline-flex;
+    align-items:center;
+
+    min-height:27px;
+    padding:5px 9px;
+
+    border-radius:999px;
+
+    background:#e9f7ef;
+    color:#18794e;
+
+    font-size:.68rem;
+    font-weight:700;
+}
+
+.partido-principal{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+
+    align-items:center;
+    gap:10px;
+
+    margin-bottom:14px;
+}
+
+.equipo-partido{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+
+    min-width:0;
+
+    text-align:center;
+}
+
+.escudo-partido{
+    width:56px;
+    height:56px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:16px;
+
+    border:1px solid #dfe4e8;
+
+    background:
+        linear-gradient(
+            145deg,
+            #f4f6f8,
+            #e8ecef
+        );
+
+    color:#0f766e;
+
+    font-size:1.05rem;
+    font-weight:900;
+}
+
+.equipo-partido strong{
+    width:100%;
+
+    color:#1d2939;
+
+    font-size:.86rem;
+
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.partido-centro{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+
+    min-width:92px;
+
+    text-align:center;
+}
+
+.partido-centro .hora{
+    color:#0f766e;
+
+    font-size:.76rem;
+    font-weight:800;
+}
+
+.partido-centro strong{
+    color:#101828;
+
+    font-size:1rem;
+}
+
+.partido-centro span:last-child{
+    max-width:110px;
+
+    color:#667085;
+
+    font-size:.67rem;
+    line-height:1.25;
+}
+
+.partido-campo{
+    padding-top:12px;
+
+    border-top:1px solid #eef0f2;
+
+    color:#667085;
+
+    font-size:.72rem;
+
+    text-align:center;
+}
+
+.resultados-lista{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.resultado-card{
+    padding:13px 14px;
+
+    border:1px solid #e4e7ec;
+    border-radius:15px;
+
+    background:#ffffff;
+}
+
+.resultado-card > div:first-child{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    margin-bottom:10px;
+}
+
+.resultado-card > div:first-child span{
+    color:#475467;
+
+    font-size:.72rem;
+    font-weight:700;
+}
+
+.resultado-card > div:first-child small{
+    color:#667085;
+
+    font-size:.66rem;
+}
+
+.resultado-partido{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+
+    align-items:center;
+    gap:8px;
+
+    text-align:center;
+}
+
+.resultado-partido span{
+    min-width:0;
+
+    color:#344054;
+
+    font-size:.82rem;
+
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.resultado-partido strong{
+    padding:5px 8px;
+
+    border-radius:9px;
+
+    font-size:.88rem;
+}
+
+.resultado-victoria{
+    background:#e9f7ef;
+    color:#18794e;
+}
+
+.resultado-empate{
+    background:#f2f4f7;
+    color:#475467;
+}
+
+.contador-plantilla{
+    display:inline-flex;
+    align-items:center;
+
+    min-height:30px;
+    padding:6px 10px;
+
+    border-radius:999px;
+
+    background:#edf4f3;
+    color:#0f766e;
+
+    font-size:.72rem;
+    font-weight:800;
+
+    white-space:nowrap;
+}
+
+.grid-jugadores{
+    display:grid;
+    grid-template-columns:1fr;
+
+    gap:10px;
+}
+
+.jugador-card{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    min-width:0;
+
+    padding:12px;
+
+    border:1px solid #e4e7ec;
+    border-radius:16px;
+
+    background:#ffffff;
+
+    transition:.18s ease;
+}
+
+.foto-jugador{
+    width:52px;
+    height:52px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #edf4f3,
+            #e2ecea
+        );
+
+    color:#0f766e;
+
+    font-size:.78rem;
+    font-weight:900;
+}
+
+.jugador-info{
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+
+    min-width:0;
+}
+
+.jugador-info strong{
+    color:#182230;
+
+    font-size:.86rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.jugador-info span{
+    color:#667085;
+
+    font-size:.7rem;
+}
+
+.jugador-info small{
+    color:#475467;
+
+    font-size:.68rem;
+}
+
+.jugador-suspendido{
+    border-color:#f2cbc7;
+    background:#fffdfd;
+}
+
+.jugador-suspendido .foto-jugador{
+    filter:grayscale(.4);
+    opacity:.75;
+}
+
+.texto-suspendido{
+    color:#b42318 !important;
+    font-weight:700;
+}
+
+.bottom-nav{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:60;
+
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+
+    min-height:68px;
+
+    border-top:1px solid #e4e7ec;
+
+    background:rgba(255,255,255,.98);
+
+    backdrop-filter:blur(10px);
+}
+
+.bottom-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:3px;
+
+    min-width:0;
+
+    color:#667085;
+}
+
+.bottom-item span{
+    font-size:1.2rem;
+}
+
+.bottom-item small{
+    font-size:.67rem;
+    font-weight:600;
+}
+
+.bottom-item.active{
+    color:#0f766e;
+}
+
+@media (hover:hover) and (pointer:fine){
+
+    .jugador-card:hover{
+        transform:translateY(-2px);
+
+        border-color:#cfd8df;
+
+        box-shadow:0 8px 22px rgba(15,23,42,.05);
+    }
+
+}
+
+@media (min-width:620px){
+
+    .grid-jugadores{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+}
+
+@media (min-width:700px){
+
+    body{
+        padding-bottom:0;
+    }
+
+    .topbar{
+        padding:12px 24px;
+    }
+
+    .contenido-equipo{
+        padding:28px 24px 40px;
+    }
+
+    .hero-equipo{
+        padding:26px;
+    }
+
+    .hero-escudo{
+        width:100px;
+        height:100px;
+
+        font-size:2rem;
+    }
+
+    .hero-info h1{
+        font-size:2rem;
+    }
+
+    .estadisticas-principales{
+        gap:12px;
+    }
+
+    .stat-card{
+        min-height:92px;
+    }
+
+    .stats-grid{
+        grid-template-columns:repeat(6,1fr);
+    }
+
+    .bottom-nav{
+        position:static;
+
+        width:100%;
+        max-width:1180px;
+
+        margin:0 auto 30px;
+
+        overflow:hidden;
+
+        border:1px solid #e4e7ec;
+        border-radius:18px;
+    }
+
+}
+
+@media (min-width:980px){
+
+    .contenido-equipo{
+        display:grid;
+        grid-template-columns:minmax(0,1.6fr) minmax(310px,.8fr);
+        gap:24px;
+        align-items:start;
+    }
+
+    .hero-equipo,
+    .estadisticas-principales,
+    .resumen-estadisticas,
+    .plantilla{
+        grid-column:1;
+    }
+
+    .proximo-partido{
+        grid-column:2;
+        grid-row:1 / span 2;
+    }
+
+    .ultimos-resultados{
+        grid-column:2;
+        grid-row:3 / span 2;
+    }
+
+    .grid-jugadores{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+}

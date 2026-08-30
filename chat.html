@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Comunidad | Liga Deportiva Río Grande</title>
+
+    <link rel="icon" href="imagenes/logo.png">
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/chat.css">
+</head>
+
+<body>
+
+    <div class="app-chat">
+
+        <header class="topbar">
+
+            <div class="topbar-identidad">
+
+                <a
+                    href="publico.html"
+                    class="btn-volver"
+                    aria-label="Volver al inicio"
+                >
+                    ←
+                </a>
+
+                <img
+                    src="imagenes/logo.png"
+                    alt="Liga Deportiva Río Grande"
+                    class="topbar-logo"
+                >
+
+                <div class="topbar-texto">
+
+                    <span>
+                        Liga Municipal
+                    </span>
+
+                    <strong>
+                        Comunidad
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <button
+                type="button"
+                id="btnPerfil"
+                class="btn-perfil"
+                aria-label="Abrir perfil"
+            >
+                <span id="perfilInicial">
+                    U
+                </span>
+            </button>
+
+        </header>
+
+
+        <main class="contenido-chat">
+
+            <section class="encabezado-chat">
+
+                <div>
+
+                    <span class="encabezado-mini">
+                        Comunidad oficial
+                    </span>
+
+                    <h1>
+                        Chat general
+                    </h1>
+
+                    <p>
+                        Conversa con otros aficionados y mantente
+                        al tanto de lo que sucede en la liga.
+                    </p>
+
+                </div>
+
+                <div class="estado-chat">
+
+                    <span class="punto-online"></span>
+
+                    <span>
+                        Comunidad activa
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <section class="comunicado-chat">
+
+                <div class="comunicado-icono">
+                    🛡️
+                </div>
+
+                <div class="comunicado-contenido">
+
+                    <div class="comunicado-meta">
+
+                        <span>
+                            PUBLICACIÓN OFICIAL
+                        </span>
+
+                        <small>
+                            Administración
+                        </small>
+
+                    </div>
+
+                    <strong>
+                        Cambio de horario en Jornada 5
+                    </strong>
+
+                    <p>
+                        El partido Juárez vs Santos FC se jugará
+                        este sábado a las 4:00 PM.
+                    </p>
+
+                    <a href="noticias.html">
+                        Ver comunicado
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <section class="chat-card">
+
+                <div class="chat-header">
+
+                    <div>
+
+                        <strong>
+                            Chat de la liga
+                        </strong>
+
+                        <span>
+                            Todos los usuarios registrados pueden participar
+                        </span>
+
+                    </div>
+
+                    <span class="contador-online">
+                        24 conectados
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="listaMensajes"
+                    class="mensajes"
+                >
+
+                    <div class="separador-fecha">
+                        <span>
+                            Hoy
+                        </span>
+                    </div>
+
+
+                    <article class="mensaje mensaje-otro">
+
+                        <div class="avatar">
+                            C
+                        </div>
+
+                        <div class="mensaje-contenido">
+
+                            <div class="mensaje-meta">
+
+                                <strong>
+                                    Carlos Hernández
+                                </strong>
+
+                                <span>
+                                    7:42 AM
+                                </span>
+
+                            </div>
+
+                            <div class="burbuja">
+                                ¿A qué hora empieza el partido de Juárez
+                                este sábado?
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="mensaje mensaje-otro">
+
+                        <div class="avatar">
+                            M
+                        </div>
+
+                        <div class="mensaje-contenido">
+
+                            <div class="mensaje-meta">
+
+                                <strong>
+                                    María López
+                                </strong>
+
+                                <span>
+                                    7:44 AM
+                                </span>
+
+                            </div>
+
+                            <div class="burbuja">
+                                Según el calendario empieza a las 4 de la tarde.
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="mensaje mensaje-propio">
+
+                        <div class="mensaje-contenido">
+
+                            <div class="mensaje-meta">
+
+                                <strong>
+                                    Tú
+                                </strong>
+
+                                <span>
+                                    7:46 AM
+                                </span>
+
+                            </div>
+
+                            <div class="burbuja">
+                                Sí, ya actualizaron el horario en noticias 👍
+                            </div>
+
+                        </div>
+
+                        <div class="avatar propio">
+                            P
+                        </div>
+
+                    </article>
+
+
+                    <article class="mensaje mensaje-otro">
+
+                        <div class="avatar">
+                            J
+                        </div>
+
+                        <div class="mensaje-contenido">
+
+                            <div class="mensaje-meta">
+
+                                <strong>
+                                    José Ramírez
+                                </strong>
+
+                                <span>
+                                    7:49 AM
+                                </span>
+
+                            </div>
+
+                            <div class="burbuja">
+                                Va a estar bueno ese partido 🔥⚽
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="mensaje-sistema">
+
+                        <div class="mensaje-sistema-icono">
+                            🛡️
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Administración
+                            </strong>
+
+                            <p>
+                                Recuerda mantener una conversación respetuosa.
+                                Los mensajes ofensivos pueden ser eliminados.
+                            </p>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+
+                <div class="escribir-chat">
+
+                    <form id="formMensaje">
+
+                        <div class="campo-mensaje">
+
+                            <textarea
+                                id="mensajeTexto"
+                                maxlength="400"
+                                rows="1"
+                                placeholder="Escribe un mensaje..."
+                                aria-label="Escribe un mensaje"
+                                required
+                            ></textarea>
+
+                            <span
+                                id="contadorCaracteres"
+                                class="contador-caracteres"
+                            >
+                                0/400
+                            </span>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            id="btnEnviar"
+                            class="btn-enviar"
+                            aria-label="Enviar mensaje"
+                        >
+                            ➤
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+
+            <section class="reglas-chat">
+
+                <div class="reglas-icono">
+                    💬
+                </div>
+
+                <div>
+
+                    <strong>
+                        Comunidad de la liga
+                    </strong>
+
+                    <p>
+                        Los usuarios públicos pueden enviar únicamente
+                        mensajes de texto. Las imágenes, videos y publicaciones
+                        oficiales estarán reservadas para la administración.
+                    </p>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <nav class="bottom-nav">
+
+            <a
+                href="publico.html"
+                class="bottom-item"
+            >
+                <span>🏠</span>
+                <small>Inicio</small>
+            </a>
+
+            <a
+                href="jornadas.html"
+                class="bottom-item"
+            >
+                <span>📅</span>
+                <small>Jornadas</small>
+            </a>
+
+            <a
+                href="tablas.html"
+                class="bottom-item"
+            >
+                <span>🏆</span>
+                <small>Tabla</small>
+            </a>
+
+            <a
+                href="chat.html"
+                class="bottom-item active"
+            >
+                <span>💬</span>
+                <small>Chat</small>
+            </a>
+
+            <a
+                href="publico.html"
+                class="bottom-item"
+            >
+                <span>☰</span>
+                <small>Más</small>
+            </a>
+
+        </nav>
+
+    </div>
+
+
+    <script
+        type="module"
+        src="js/publico/chat.js"
+    ></script>
+
+</body>
+</html>

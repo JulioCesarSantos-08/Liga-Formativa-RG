@@ -1,0 +1,1332 @@
+body{
+    background:#eef3f4;
+    color:#14213d;
+    padding-bottom:82px;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+button,
+select{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.arbitro-page{
+    width:100%;
+    min-height:100vh;
+}
+
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:60;
+
+    min-height:68px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+
+    padding:9px 13px;
+
+    border-bottom:1px solid #dde5e7;
+
+    background:rgba(255,255,255,.97);
+
+    backdrop-filter:blur(10px);
+}
+
+.topbar-marca{
+    display:flex;
+    align-items:center;
+    gap:9px;
+
+    min-width:0;
+}
+
+.topbar-logo{
+    width:44px;
+    height:44px;
+
+    flex-shrink:0;
+
+    object-fit:contain;
+}
+
+.topbar-texto{
+    display:flex;
+    flex-direction:column;
+
+    min-width:0;
+}
+
+.topbar-texto span{
+    color:#667085;
+
+    font-size:.66rem;
+}
+
+.topbar-texto strong{
+    color:#182230;
+
+    font-size:.88rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.topbar-acciones{
+    display:flex;
+    align-items:center;
+    gap:7px;
+
+    flex-shrink:0;
+}
+
+.btn-publico{
+    min-height:40px;
+
+    display:flex;
+    align-items:center;
+    gap:6px;
+
+    padding:7px 10px;
+
+    border-radius:11px;
+
+    background:#eef7f5;
+    color:#0f766e;
+
+    font-size:.66rem;
+    font-weight:800;
+}
+
+.btn-sesion{
+    width:40px;
+    height:40px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:11px;
+
+    background:#f2f4f7;
+    color:#475467;
+
+    font-size:1rem;
+}
+
+.contenido{
+    width:100%;
+    max-width:1050px;
+
+    margin:0 auto;
+
+    padding:16px 13px 28px;
+}
+
+.bienvenida{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+
+    margin-bottom:16px;
+
+    padding:18px;
+
+    border-radius:20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0b5f58,
+            #0f766e 55%,
+            #174c63
+        );
+
+    color:#ffffff;
+
+    box-shadow:0 14px 35px rgba(15,76,85,.16);
+}
+
+.bienvenida-mini{
+    display:block;
+
+    margin-bottom:5px;
+
+    color:#d2ebe8;
+
+    font-size:.6rem;
+    font-weight:900;
+
+    letter-spacing:.08em;
+}
+
+.bienvenida h1{
+    margin-bottom:6px;
+
+    font-size:1.45rem;
+}
+
+.bienvenida p{
+    max-width:620px;
+
+    color:#d9efec;
+
+    font-size:.75rem;
+    line-height:1.45;
+}
+
+.perfil-arbitro{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    padding:11px;
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,.1);
+}
+
+.perfil-avatar{
+    width:42px;
+    height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.16);
+
+    color:#ffffff;
+
+    font-size:.78rem;
+    font-weight:900;
+}
+
+.perfil-arbitro > div:last-child{
+    display:flex;
+    flex-direction:column;
+
+    min-width:0;
+}
+
+.perfil-arbitro span{
+    color:#cdebe7;
+
+    font-size:.58rem;
+}
+
+.perfil-arbitro strong{
+    color:#ffffff;
+
+    font-size:.67rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.resumen{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+
+    gap:9px;
+
+    margin-bottom:16px;
+}
+
+.resumen-card{
+    display:flex;
+    align-items:center;
+    gap:9px;
+
+    min-width:0;
+
+    padding:12px;
+
+    border:1px solid #dde5e7;
+    border-radius:15px;
+
+    background:#ffffff;
+}
+
+.resumen-icono{
+    width:38px;
+    height:38px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:11px;
+
+    background:#edf6f4;
+}
+
+.resumen-icono.proximo{
+    background:#eef4ff;
+}
+
+.resumen-icono.pendiente{
+    background:#fff8e8;
+}
+
+.resumen-icono.terminado{
+    background:#eaf8ef;
+}
+
+.resumen-card > div:last-child{
+    display:flex;
+    flex-direction:column;
+
+    min-width:0;
+}
+
+.resumen-card span{
+    color:#667085;
+
+    font-size:.58rem;
+}
+
+.resumen-card strong{
+    margin-top:1px;
+
+    color:#182230;
+
+    font-size:.95rem;
+}
+
+.panel-partidos{
+    overflow:hidden;
+
+    border:1px solid #dde5e7;
+    border-radius:18px;
+
+    background:#ffffff;
+}
+
+.panel-header{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:12px;
+
+    padding:13px;
+
+    border-bottom:1px solid #e7ecee;
+
+    background:#fbfcfd;
+}
+
+.panel-mini{
+    display:block;
+
+    margin-bottom:2px;
+
+    color:#0f766e;
+
+    font-size:.57rem;
+    font-weight:900;
+
+    letter-spacing:.08em;
+}
+
+.panel-header h2{
+    color:#182230;
+
+    font-size:.96rem;
+}
+
+.filtro-partidos{
+    min-height:38px;
+
+    padding:0 9px;
+
+    border:1px solid #d0d5dd;
+    border-radius:10px;
+
+    background:#ffffff;
+    color:#344054;
+
+    font-size:.64rem;
+
+    outline:none;
+}
+
+.filtro-partidos:focus{
+    border-color:#0f766e;
+
+    box-shadow:0 0 0 3px rgba(15,118,110,.1);
+}
+
+.estado-carga,
+.estado-vacio{
+    min-height:260px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+
+    padding:28px;
+
+    text-align:center;
+}
+
+.spinner{
+    width:34px;
+    height:34px;
+
+    border:4px solid #e3e9ec;
+    border-top-color:#0f766e;
+    border-radius:50%;
+
+    animation:girar .8s linear infinite;
+}
+
+@keyframes girar{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+.estado-carga span{
+    color:#667085;
+
+    font-size:.68rem;
+}
+
+.estado-vacio-icono{
+    width:54px;
+    height:54px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:16px;
+
+    background:#eef6f4;
+
+    font-size:1.3rem;
+}
+
+.estado-vacio strong{
+    color:#182230;
+
+    font-size:.82rem;
+}
+
+.estado-vacio p{
+    max-width:350px;
+
+    color:#667085;
+
+    font-size:.68rem;
+    line-height:1.45;
+}
+
+.oculto{
+    display:none !important;
+}
+
+.lista-partidos{
+    display:flex;
+    flex-direction:column;
+
+    gap:9px;
+
+    padding:11px;
+}
+
+.partido-card{
+    display:flex;
+    flex-direction:column;
+
+    gap:11px;
+
+    padding:12px;
+
+    border:1px solid #e4e7ec;
+    border-radius:15px;
+
+    background:#ffffff;
+
+    box-shadow:0 4px 14px rgba(15,23,42,.03);
+}
+
+.partido-card-top{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.partido-card-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:5px;
+
+    min-width:0;
+}
+
+.partido-badge{
+    display:inline-flex;
+    align-items:center;
+
+    min-height:24px;
+
+    padding:4px 7px;
+
+    border-radius:999px;
+
+    font-size:.54rem;
+    font-weight:800;
+}
+
+.partido-badge.categoria{
+    background:#eef7f5;
+    color:#0f766e;
+}
+
+.partido-badge.jornada{
+    background:#f2f4f7;
+    color:#475467;
+}
+
+.estado-partido{
+    display:inline-flex;
+    align-items:center;
+
+    min-height:25px;
+
+    padding:4px 8px;
+
+    border-radius:999px;
+
+    flex-shrink:0;
+
+    font-size:.55rem;
+    font-weight:800;
+}
+
+.estado-partido.proximo{
+    background:#eef4ff;
+    color:#3538cd;
+}
+
+.estado-partido.enJuego{
+    background:#eaf8ef;
+    color:#18794e;
+}
+
+.estado-partido.finalizado{
+    background:#f2f4f7;
+    color:#475467;
+}
+
+.estado-partido.cancelado{
+    background:#fff0ef;
+    color:#b42318;
+}
+
+.partido-enfrentamiento{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+
+    align-items:center;
+    gap:8px;
+}
+
+.equipo-card{
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    min-width:0;
+}
+
+.equipo-card.visitante{
+    flex-direction:row-reverse;
+
+    text-align:right;
+}
+
+.equipo-logo-card{
+    width:42px;
+    height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    overflow:hidden;
+
+    border:1px solid #dfe6e8;
+    border-radius:12px;
+
+    background:#edf6f4;
+
+    color:#0f766e;
+
+    font-size:.72rem;
+    font-weight:900;
+}
+
+.equipo-logo-card img{
+    width:100%;
+    height:100%;
+
+    display:block;
+
+    object-fit:cover;
+}
+
+.equipo-card strong{
+    min-width:0;
+
+    color:#182230;
+
+    font-size:.7rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.vs-card{
+    color:#98a2b3;
+
+    font-size:.6rem;
+    font-weight:900;
+}
+
+.partido-datos{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+
+    gap:6px;
+}
+
+.partido-datos > div{
+    min-width:0;
+
+    padding:8px;
+
+    border-radius:10px;
+
+    background:#f8fafb;
+}
+
+.partido-datos span{
+    display:block;
+
+    margin-bottom:2px;
+
+    color:#98a2b3;
+
+    font-size:.51rem;
+}
+
+.partido-datos strong{
+    display:block;
+
+    color:#344054;
+
+    font-size:.59rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.partido-cedula{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+
+    padding:9px;
+
+    border-radius:11px;
+
+    background:#f8fafb;
+}
+
+.partido-cedula > div{
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+}
+
+.partido-cedula span{
+    color:#98a2b3;
+
+    font-size:.51rem;
+}
+
+.partido-cedula strong{
+    color:#344054;
+
+    font-size:.61rem;
+}
+
+.cedula-badge{
+    display:inline-flex;
+    align-items:center;
+
+    min-height:26px;
+
+    padding:4px 8px;
+
+    border-radius:999px;
+
+    flex-shrink:0;
+
+    font-size:.55rem;
+    font-weight:800;
+}
+
+.cedula-badge.pendiente{
+    background:#fff8e8;
+    color:#9a6a00;
+}
+
+.cedula-badge.registrada{
+    background:#eaf8ef;
+    color:#18794e;
+}
+
+.btn-ver-partido{
+    width:100%;
+    min-height:40px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:10px;
+
+    background:#0f766e;
+    color:#ffffff;
+
+    font-size:.65rem;
+    font-weight:800;
+}
+
+.navegacion-movil{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:70;
+
+    min-height:68px;
+
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+
+    border-top:1px solid #dde5e7;
+
+    background:rgba(255,255,255,.98);
+
+    backdrop-filter:blur(10px);
+}
+
+.nav-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:3px;
+
+    color:#667085;
+
+    background:transparent;
+}
+
+.nav-item span{
+    font-size:1.05rem;
+}
+
+.nav-item small{
+    font-size:.59rem;
+    font-weight:700;
+}
+
+.nav-item.activo{
+    color:#0f766e;
+}
+
+.modal-overlay{
+    position:fixed;
+    inset:0;
+    z-index:150;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:14px;
+
+    background:rgba(15,23,42,.58);
+
+    backdrop-filter:blur(4px);
+}
+
+.modal-partido{
+    width:100%;
+    max-width:560px;
+
+    max-height:92vh;
+    overflow-y:auto;
+
+    padding:18px;
+
+    border-radius:20px;
+
+    background:#ffffff;
+
+    box-shadow:0 24px 70px rgba(0,0,0,.24);
+}
+
+.modal-header{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+
+    margin-bottom:16px;
+}
+
+.modal-header span{
+    display:block;
+
+    margin-bottom:3px;
+
+    color:#0f766e;
+
+    font-size:.55rem;
+    font-weight:900;
+
+    letter-spacing:.07em;
+}
+
+.modal-header h2{
+    color:#182230;
+
+    font-size:1.05rem;
+}
+
+.btn-cerrar-modal{
+    width:38px;
+    height:38px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:10px;
+
+    background:#f2f4f7;
+    color:#475467;
+
+    font-size:1.25rem;
+}
+
+.enfrentamiento-modal{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+
+    align-items:center;
+    gap:10px;
+
+    margin-bottom:14px;
+
+    padding:15px;
+
+    border-radius:16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0b5f58,
+            #0f766e 52%,
+            #174c63
+        );
+
+    color:#ffffff;
+}
+
+.equipo-modal{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:7px;
+
+    min-width:0;
+
+    text-align:center;
+}
+
+.equipo-logo{
+    width:56px;
+    height:56px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    overflow:hidden;
+
+    border:1px solid rgba(255,255,255,.22);
+    border-radius:15px;
+
+    background:rgba(255,255,255,.13);
+
+    font-size:.9rem;
+    font-weight:900;
+}
+
+.equipo-logo img{
+    width:100%;
+    height:100%;
+
+    display:block;
+
+    object-fit:cover;
+}
+
+.equipo-modal strong{
+    width:100%;
+
+    color:#ffffff;
+
+    font-size:.69rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.vs-modal{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:3px;
+
+    min-width:85px;
+
+    text-align:center;
+}
+
+.vs-modal span,
+.vs-modal small{
+    color:#cdebe7;
+
+    font-size:.54rem;
+}
+
+.vs-modal strong{
+    color:#ffffff;
+
+    font-size:1rem;
+}
+
+.datos-partido{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+
+    gap:8px;
+
+    margin-bottom:14px;
+}
+
+.datos-partido > div{
+    min-width:0;
+
+    padding:9px;
+
+    border-radius:10px;
+
+    background:#f8fafb;
+}
+
+.datos-partido span{
+    display:block;
+
+    margin-bottom:3px;
+
+    color:#98a2b3;
+
+    font-size:.52rem;
+}
+
+.datos-partido strong{
+    display:block;
+
+    color:#344054;
+
+    font-size:.62rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.aviso-cedula{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+
+    margin-bottom:14px;
+    padding:12px;
+
+    border:1px solid #ead8a4;
+    border-radius:13px;
+
+    background:#fffaf0;
+}
+
+.aviso-cedula.registrada{
+    border-color:#cce5d4;
+
+    background:#f1faf4;
+}
+
+.aviso-icono{
+    width:36px;
+    height:36px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:10px;
+
+    background:#fff1c9;
+}
+
+.aviso-cedula.registrada .aviso-icono{
+    background:#dff4e6;
+}
+
+.aviso-cedula strong{
+    display:block;
+
+    margin-bottom:3px;
+
+    color:#6f5411;
+
+    font-size:.68rem;
+}
+
+.aviso-cedula.registrada strong{
+    color:#18794e;
+}
+
+.aviso-cedula p{
+    color:#7c6941;
+
+    font-size:.59rem;
+    line-height:1.4;
+}
+
+.aviso-cedula.registrada p{
+    color:#526b5a;
+}
+
+.modal-acciones{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+
+    gap:8px;
+}
+
+.btn-secundario,
+.btn-principal{
+    min-height:43px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:11px;
+
+    font-size:.66rem;
+    font-weight:800;
+}
+
+.btn-secundario{
+    background:#f2f4f7;
+    color:#475467;
+}
+
+.btn-principal{
+    background:#0f766e;
+    color:#ffffff;
+}
+
+.toast{
+    position:fixed;
+    right:16px;
+    bottom:82px;
+    z-index:200;
+
+    width:min(350px,calc(100vw - 32px));
+
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+
+    padding:12px;
+
+    border:1px solid #cbe7d5;
+    border-radius:14px;
+
+    background:#f0faf3;
+
+    box-shadow:0 15px 40px rgba(15,23,42,.13);
+}
+
+.toast > span{
+    width:31px;
+    height:31px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:50%;
+
+    background:#d9f2e1;
+    color:#18794e;
+
+    font-weight:900;
+}
+
+.toast strong{
+    display:block;
+
+    margin-bottom:2px;
+
+    color:#182230;
+
+    font-size:.67rem;
+}
+
+.toast p{
+    color:#667085;
+
+    font-size:.58rem;
+    line-height:1.35;
+}
+
+@media (hover:hover) and (pointer:fine){
+
+    .partido-card,
+    .btn-ver-partido,
+    .btn-publico,
+    .btn-sesion,
+    .btn-secundario,
+    .btn-principal{
+        transition:.18s ease;
+    }
+
+    .partido-card:hover{
+        transform:translateY(-1px);
+
+        border-color:#ccd5da;
+
+        box-shadow:0 8px 22px rgba(15,23,42,.045);
+    }
+
+    .btn-ver-partido:hover,
+    .btn-principal:hover{
+        background:#0b665f;
+    }
+
+    .btn-publico:hover{
+        background:#e4f1ef;
+    }
+
+    .btn-sesion:hover,
+    .btn-secundario:hover{
+        background:#e7ebef;
+    }
+
+}
+
+@media (min-width:620px){
+
+    .resumen{
+        grid-template-columns:repeat(4,minmax(0,1fr));
+    }
+
+    .partido-card{
+        padding:14px;
+    }
+
+}
+
+@media (min-width:700px){
+
+    body{
+        padding-bottom:0;
+    }
+
+    .topbar{
+        padding:10px 22px;
+    }
+
+    .contenido{
+        padding:24px 22px 36px;
+    }
+
+    .bienvenida{
+        flex-direction:row;
+        align-items:center;
+        justify-content:space-between;
+
+        padding:22px;
+    }
+
+    .perfil-arbitro{
+        min-width:250px;
+    }
+
+    .lista-partidos{
+        padding:14px;
+    }
+
+    .navegacion-movil{
+        position:static;
+
+        width:100%;
+        max-width:1050px;
+
+        margin:0 auto 28px;
+
+        overflow:hidden;
+
+        border:1px solid #dde5e7;
+        border-radius:17px;
+    }
+
+    .toast{
+        bottom:20px;
+    }
+
+}
+
+@media (min-width:900px){
+
+    .partido-card{
+        display:grid;
+        grid-template-columns:minmax(0,1.4fr) minmax(280px,.8fr) 150px;
+
+        align-items:center;
+        gap:14px;
+    }
+
+    .partido-card-top{
+        grid-column:1 / -1;
+    }
+
+    .partido-enfrentamiento{
+        grid-column:1;
+    }
+
+    .partido-datos{
+        grid-column:2;
+
+        margin:0;
+    }
+
+    .partido-cedula{
+        grid-column:3;
+
+        flex-direction:column;
+        align-items:stretch;
+
+        text-align:center;
+    }
+
+    .btn-ver-partido{
+        grid-column:3;
+    }
+
+}
+
+@media (max-width:430px){
+
+    .btn-publico-texto{
+        display:none;
+    }
+
+    .btn-publico{
+        width:40px;
+        height:40px;
+
+        justify-content:center;
+
+        padding:0;
+    }
+
+    .panel-header{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+    .filtro-partidos{
+        width:100%;
+    }
+
+    .partido-datos{
+        grid-template-columns:1fr;
+    }
+
+    .modal-overlay{
+        align-items:flex-end;
+
+        padding:9px;
+    }
+
+    .modal-partido{
+        max-width:none;
+
+        border-radius:20px 20px 13px 13px;
+    }
+
+    .datos-partido{
+        grid-template-columns:1fr;
+    }
+
+}

@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Equipos | Liga Deportiva Río Grande</title>
+
+    <link rel="icon" href="imagenes/logo.png">
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/adminEquipos.css">
+</head>
+
+<body>
+
+    <div class="admin-page">
+
+        <header class="topbar-admin">
+
+            <div class="topbar-left">
+
+                <a
+                    href="admin.html"
+                    class="btn-volver"
+                    aria-label="Volver al panel"
+                >
+                    ←
+                </a>
+
+                <img
+                    src="imagenes/logo.png"
+                    alt="Liga Deportiva Río Grande"
+                    class="topbar-logo"
+                >
+
+                <div class="topbar-titulo">
+                    <span>Administración</span>
+                    <strong>Equipos</strong>
+                </div>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <a
+                    href="publico.html"
+                    class="btn-ver-sitio"
+                >
+                    👁️
+                    <span>Ver sitio</span>
+                </a>
+
+                <div
+                    id="adminInicial"
+                    class="admin-avatar"
+                >
+                    A
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <main class="contenido-admin">
+
+            <section class="encabezado-pagina">
+
+                <div>
+
+                    <span class="encabezado-mini">
+                        COMPETENCIA
+                    </span>
+
+                    <h1>
+                        Equipos
+                    </h1>
+
+                    <p>
+                        Registra y administra los clubes participantes,
+                        su categoría, estado y responsable.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="btnNuevoEquipo"
+                    class="btn-principal"
+                >
+                    + Nuevo equipo
+                </button>
+
+            </section>
+
+
+            <section class="resumen-equipos">
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        🛡️
+                    </div>
+
+                    <div>
+                        <span>Total equipos</span>
+                        <strong id="totalEquipos">0</strong>
+                    </div>
+
+                </article>
+
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        ✅
+                    </div>
+
+                    <div>
+                        <span>Activos</span>
+                        <strong id="totalActivos">0</strong>
+                    </div>
+
+                </article>
+
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        ⛔
+                    </div>
+
+                    <div>
+                        <span>Descalificados</span>
+                        <strong id="totalDescalificados">0</strong>
+                    </div>
+
+                </article>
+
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        👑
+                    </div>
+
+                    <div>
+                        <span>Con responsable</span>
+                        <strong id="totalConResponsable">0</strong>
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <section class="panel-equipos">
+
+                <div class="herramientas">
+
+                    <div class="buscador">
+
+                        <span class="buscador-icono">
+                            🔎
+                        </span>
+
+                        <input
+                            type="search"
+                            id="buscarEquipo"
+                            placeholder="Buscar equipo..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <select
+                        id="filtroCategoria"
+                        class="select-filtro"
+                    >
+                        <option value="todas">
+                            Todas las categorías
+                        </option>
+                    </select>
+
+
+                    <select
+                        id="filtroEstado"
+                        class="select-filtro"
+                    >
+                        <option value="todos">
+                            Todos los estados
+                        </option>
+
+                        <option value="activo">
+                            Activos
+                        </option>
+
+                        <option value="descalificado">
+                            Descalificados
+                        </option>
+
+                        <option value="inactivo">
+                            Inactivos
+                        </option>
+                    </select>
+
+                </div>
+
+
+                <div
+                    id="estadoCarga"
+                    class="estado-carga"
+                >
+
+                    <div class="spinner"></div>
+
+                    <span>
+                        Cargando equipos...
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="estadoVacio"
+                    class="estado-vacio oculto"
+                >
+
+                    <div class="estado-vacio-icono">
+                        🛡️
+                    </div>
+
+                    <strong>
+                        No hay equipos registrados
+                    </strong>
+
+                    <p>
+                        Crea el primer equipo para comenzar
+                        a organizar la competencia.
+                    </p>
+
+                </div>
+
+
+                <div
+                    id="gridEquipos"
+                    class="grid-equipos oculto"
+                ></div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <div
+        id="modalEquipo"
+        class="modal-overlay oculto"
+    >
+
+        <div
+            class="modal-equipo"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modalTitulo"
+        >
+
+            <div class="modal-header">
+
+                <div>
+
+                    <span class="modal-mini">
+                        EQUIPO
+                    </span>
+
+                    <h2 id="modalTitulo">
+                        Nuevo equipo
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="btnCerrarModal"
+                    class="btn-cerrar-modal"
+                    aria-label="Cerrar"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="formEquipo">
+
+                <div class="form-grupo">
+
+                    <label for="nombreEquipo">
+                        Nombre del equipo
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nombreEquipo"
+                        maxlength="100"
+                        placeholder="Ej. Deportivo Juárez"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-grupo">
+
+                    <label for="categoriaEquipo">
+                        Categoría
+                    </label>
+
+                    <select
+                        id="categoriaEquipo"
+                        required
+                    >
+                        <option value="">
+                            Selecciona una categoría
+                        </option>
+                    </select>
+
+                </div>
+
+
+                <div class="form-grupo">
+
+                    <label>
+                        Logo del equipo
+                    </label>
+
+                    <div class="logo-equipo-box">
+
+                        <div
+                            id="previewLogo"
+                            class="logo-preview"
+                        >
+                            <span id="previewInicial">
+                                E
+                            </span>
+
+                            <img
+                                id="previewLogoImagen"
+                                alt="Vista previa del logo"
+                                class="oculto"
+                            >
+                        </div>
+
+
+                        <div class="logo-controles">
+
+                            <label
+                                for="logoEquipo"
+                                class="btn-seleccionar-logo"
+                            >
+                                Seleccionar imagen
+                            </label>
+
+                            <input
+                                type="file"
+                                id="logoEquipo"
+                                accept="image/png,image/jpeg,image/webp"
+                                hidden
+                            >
+
+                            <small>
+                                JPG, PNG o WEBP. Más adelante esta imagen
+                                se subirá a Cloudinary.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grupo">
+
+                    <label for="responsableEquipo">
+                        Jefe o responsable
+                    </label>
+
+                    <select id="responsableEquipo">
+
+                        <option value="">
+                            Sin responsable asignado
+                        </option>
+
+                    </select>
+
+                    <small>
+                        Solo aparecerán usuarios con rol de jefe de equipo.
+                    </small>
+
+                </div>
+
+
+                <div class="form-grupo">
+
+                    <label for="descripcionEquipo">
+                        Descripción
+                    </label>
+
+                    <textarea
+                        id="descripcionEquipo"
+                        rows="3"
+                        maxlength="250"
+                        placeholder="Información opcional del equipo..."
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-grupo">
+
+                    <label>
+                        Estado del equipo
+                    </label>
+
+
+                    <div class="estado-selector estado-selector-equipo">
+
+                        <button
+                            type="button"
+                            id="btnEstadoActivo"
+                            class="estado-opcion activo"
+                            data-estado="activo"
+                        >
+                            <span class="estado-punto verde"></span>
+                            Activo
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="btnEstadoInactivo"
+                            class="estado-opcion"
+                            data-estado="inactivo"
+                        >
+                            <span class="estado-punto gris"></span>
+                            Inactivo
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="btnEstadoDescalificado"
+                            class="estado-opcion"
+                            data-estado="descalificado"
+                        >
+                            <span class="estado-punto rojo"></span>
+                            Descalificado
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="grupoMotivoDescalificacion"
+                    class="form-grupo oculto"
+                >
+
+                    <label for="motivoDescalificacion">
+                        Motivo de descalificación
+                    </label>
+
+                    <textarea
+                        id="motivoDescalificacion"
+                        rows="3"
+                        maxlength="300"
+                        placeholder="Describe el motivo de la sanción..."
+                    ></textarea>
+
+                    <small>
+                        Este motivo podrá mostrarse en el historial
+                        público del equipo.
+                    </small>
+
+                </div>
+
+
+                <div class="aviso-equipo">
+
+                    <span>
+                        ℹ️
+                    </span>
+
+                    <p>
+                        Un equipo descalificado conservará jugadores,
+                        resultados e historial, pero no podrá participar
+                        en nuevos partidos mientras mantenga ese estado.
+                    </p>
+
+                </div>
+
+
+                <div class="modal-acciones">
+
+                    <button
+                        type="button"
+                        id="btnCancelarModal"
+                        class="btn-cancelar"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        id="btnGuardarEquipo"
+                        class="btn-guardar"
+                    >
+                        Guardar equipo
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="toast"
+        class="toast oculto"
+    >
+
+        <span id="toastIcono">
+            ✓
+        </span>
+
+        <div>
+
+            <strong id="toastTitulo">
+                Equipo guardado
+            </strong>
+
+            <p id="toastTexto">
+                Los cambios fueron guardados correctamente.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <script
+        type="module"
+        src="js/admin/adminEquipos.js"
+    ></script>
+
+</body>
+</html>

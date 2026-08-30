@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#0f766e">
+
+    <title>Partido | Liga Deportiva Río Grande</title>
+
+    <link rel="icon" href="imagenes/logo.png">
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/partidoArbitro.css">
+</head>
+
+<body>
+
+    <div class="partido-page">
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <a
+                    href="arbitro.html"
+                    class="btn-volver"
+                    aria-label="Volver al panel"
+                >
+                    ←
+                </a>
+
+                <img
+                    src="imagenes/logo.png"
+                    alt="Liga Deportiva Río Grande"
+                    class="topbar-logo"
+                >
+
+                <div class="topbar-titulo">
+
+                    <span>
+                        Panel arbitral
+                    </span>
+
+                    <strong>
+                        Partido
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="estadoPartidoTop"
+                class="estado-top"
+            >
+                Próximo
+            </div>
+
+        </header>
+
+
+        <main class="contenido">
+
+            <section
+                id="estadoCarga"
+                class="estado-carga"
+            >
+
+                <div class="spinner"></div>
+
+                <span>
+                    Cargando información del partido...
+                </span>
+
+            </section>
+
+
+            <section
+                id="estadoError"
+                class="estado-error oculto"
+            >
+
+                <div class="estado-error-icono">
+                    ⚠️
+                </div>
+
+                <h1>
+                    No pudimos abrir este partido
+                </h1>
+
+                <p id="estadoErrorTexto">
+                    El encuentro no existe o no tienes permiso para consultarlo.
+                </p>
+
+                <a
+                    href="arbitro.html"
+                    class="btn-regresar"
+                >
+                    Volver a mis partidos
+                </a>
+
+            </section>
+
+
+            <div
+                id="contenidoPartido"
+                class="contenido-partido oculto"
+            >
+
+                <section class="partido-hero">
+
+                    <div class="hero-meta">
+
+                        <span id="heroCategoria">
+                            Categoría
+                        </span>
+
+                        <span id="heroJornada">
+                            Jornada
+                        </span>
+
+                    </div>
+
+
+                    <div class="hero-enfrentamiento">
+
+                        <div class="hero-equipo">
+
+                            <div
+                                id="logoLocal"
+                                class="hero-logo"
+                            >
+                                L
+                            </div>
+
+                            <strong id="nombreLocal">
+                                Equipo local
+                            </strong>
+
+                            <span>
+                                LOCAL
+                            </span>
+
+                        </div>
+
+
+                        <div class="hero-vs">
+
+                            <small id="heroFecha">
+                                -
+                            </small>
+
+                            <strong>
+                                VS
+                            </strong>
+
+                            <small id="heroHora">
+                                -
+                            </small>
+
+                        </div>
+
+
+                        <div class="hero-equipo">
+
+                            <div
+                                id="logoVisitante"
+                                class="hero-logo"
+                            >
+                                V
+                            </div>
+
+                            <strong id="nombreVisitante">
+                                Equipo visitante
+                            </strong>
+
+                            <span>
+                                VISITANTE
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="hero-campo">
+
+                        <span>
+                            📍
+                        </span>
+
+                        <strong id="heroCampo">
+                            Campo por definir
+                        </strong>
+
+                    </div>
+
+                </section>
+
+
+                <section class="estado-cedula-card">
+
+                    <div class="estado-cedula-info">
+
+                        <div
+                            id="estadoCedulaIcono"
+                            class="estado-cedula-icono"
+                        >
+                            📋
+                        </div>
+
+                        <div>
+
+                            <span>
+                                ESTADO DE LA CÉDULA
+                            </span>
+
+                            <strong id="estadoCedulaTitulo">
+                                Pendiente
+                            </strong>
+
+                            <p id="estadoCedulaTexto">
+                                Primero registra la asistencia de los jugadores.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="estadoCedulaBadge"
+                        class="estado-cedula-badge pendiente"
+                    >
+                        Pendiente
+                    </div>
+
+                </section>
+
+
+                <section class="informacion-partido">
+
+                    <div class="seccion-header">
+
+                        <div>
+
+                            <span>
+                                INFORMACIÓN
+                            </span>
+
+                            <h2>
+                                Datos del encuentro
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="datos-grid">
+
+                        <article>
+
+                            <span>
+                                📅 Fecha
+                            </span>
+
+                            <strong id="datoFecha">
+                                -
+                            </strong>
+
+                        </article>
+
+
+                        <article>
+
+                            <span>
+                                🕐 Hora
+                            </span>
+
+                            <strong id="datoHora">
+                                -
+                            </strong>
+
+                        </article>
+
+
+                        <article>
+
+                            <span>
+                                📍 Campo
+                            </span>
+
+                            <strong id="datoCampo">
+                                -
+                            </strong>
+
+                        </article>
+
+
+                        <article>
+
+                            <span>
+                                🏆 Categoría
+                            </span>
+
+                            <strong id="datoCategoria">
+                                -
+                            </strong>
+
+                        </article>
+
+
+                        <article>
+
+                            <span>
+                                ⚽ Jornada
+                            </span>
+
+                            <strong id="datoJornada">
+                                -
+                            </strong>
+
+                        </article>
+
+
+                        <article>
+
+                            <span>
+                                🧑‍⚖️ Árbitro
+                            </span>
+
+                            <strong id="datoArbitro">
+                                -
+                            </strong>
+
+                        </article>
+
+                    </div>
+
+                </section>
+
+
+                <section
+                    id="seccionAsistencia"
+                    class="asistencia"
+                >
+
+                    <div class="seccion-header asistencia-header">
+
+                        <div>
+
+                            <span>
+                                PREVIO AL PARTIDO
+                            </span>
+
+                            <h2>
+                                Pase de lista
+                            </h2>
+
+                            <p>
+                                Marca únicamente a los jugadores que se
+                                encuentren presentes para disputar el encuentro.
+                            </p>
+
+                        </div>
+
+
+                        <div
+                            id="estadoAsistencia"
+                            class="estado-asistencia pendiente"
+                        >
+                            Sin guardar
+                        </div>
+
+                    </div>
+
+
+                    <div class="asistencia-aviso">
+
+                        <span>
+                            ℹ️
+                        </span>
+
+                        <p>
+                            Verifica la identidad de los jugadores antes de
+                            marcarlos como presentes. Esta información formará
+                            parte del registro oficial del partido.
+                        </p>
+
+                    </div>
+
+
+                    <div class="equipos-asistencia">
+
+                        <article class="equipo-asistencia">
+
+                            <div class="equipo-asistencia-header">
+
+                                <div class="equipo-identidad">
+
+                                    <div
+                                        id="asistenciaLogoLocal"
+                                        class="equipo-mini-logo"
+                                    >
+                                        L
+                                    </div>
+
+                                    <div>
+
+                                        <span>
+                                            EQUIPO LOCAL
+                                        </span>
+
+                                        <strong id="asistenciaNombreLocal">
+                                            Equipo local
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="contador-presentes">
+
+                                    <strong id="contadorLocal">
+                                        0
+                                    </strong>
+
+                                    <span>
+                                        presentes
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="acciones-lista">
+
+                                <button
+                                    type="button"
+                                    id="btnTodosLocal"
+                                    class="btn-lista"
+                                >
+                                    Marcar todos
+                                </button>
+
+                                <button
+                                    type="button"
+                                    id="btnNingunoLocal"
+                                    class="btn-lista secundario"
+                                >
+                                    Limpiar
+                                </button>
+
+                            </div>
+
+
+                            <div
+                                id="listaJugadoresLocal"
+                                class="lista-jugadores"
+                            >
+
+                                <div class="jugadores-carga">
+                                    Cargando jugadores...
+                                </div>
+
+                            </div>
+
+                        </article>
+
+
+                        <article class="equipo-asistencia">
+
+                            <div class="equipo-asistencia-header">
+
+                                <div class="equipo-identidad">
+
+                                    <div
+                                        id="asistenciaLogoVisitante"
+                                        class="equipo-mini-logo"
+                                    >
+                                        V
+                                    </div>
+
+                                    <div>
+
+                                        <span>
+                                            EQUIPO VISITANTE
+                                        </span>
+
+                                        <strong id="asistenciaNombreVisitante">
+                                            Equipo visitante
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="contador-presentes">
+
+                                    <strong id="contadorVisitante">
+                                        0
+                                    </strong>
+
+                                    <span>
+                                        presentes
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="acciones-lista">
+
+                                <button
+                                    type="button"
+                                    id="btnTodosVisitante"
+                                    class="btn-lista"
+                                >
+                                    Marcar todos
+                                </button>
+
+                                <button
+                                    type="button"
+                                    id="btnNingunoVisitante"
+                                    class="btn-lista secundario"
+                                >
+                                    Limpiar
+                                </button>
+
+                            </div>
+
+
+                            <div
+                                id="listaJugadoresVisitante"
+                                class="lista-jugadores"
+                            >
+
+                                <div class="jugadores-carga">
+                                    Cargando jugadores...
+                                </div>
+
+                            </div>
+
+                        </article>
+
+                    </div>
+
+
+                    <div class="asistencia-resumen">
+
+                        <div>
+
+                            <span>
+                                Local
+                            </span>
+
+                            <strong id="resumenPresentesLocal">
+                                0 jugadores
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Visitante
+                            </span>
+
+                            <strong id="resumenPresentesVisitante">
+                                0 jugadores
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Total presentes
+                            </span>
+
+                            <strong id="resumenPresentesTotal">
+                                0 jugadores
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="btnGuardarAsistencia"
+                        class="btn-guardar-asistencia"
+                    >
+                        <span>
+                            ✓
+                        </span>
+
+                        Guardar pase de lista
+                    </button>
+
+                </section>
+
+
+                <section
+                    id="seccionAsistenciaGuardada"
+                    class="asistencia-guardada oculto"
+                >
+
+                    <div class="asistencia-guardada-icono">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <span>
+                            PASE DE LISTA
+                        </span>
+
+                        <strong>
+                            Asistencia registrada
+                        </strong>
+
+                        <p id="textoAsistenciaGuardada">
+                            El registro de jugadores presentes fue guardado correctamente.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="btnEditarAsistencia"
+                        class="btn-editar-asistencia"
+                    >
+                        Revisar
+                    </button>
+
+                </section>
+
+
+                <section
+                    id="seccionAcciones"
+                    class="acciones-partido"
+                >
+
+                    <div>
+
+                        <span>
+                            CÉDULA OFICIAL
+                        </span>
+
+                        <h2>
+                            Registro del partido
+                        </h2>
+
+                        <p id="textoAccionCedula">
+                            Guarda primero el pase de lista para continuar.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="btnIrCedula"
+                        class="btn-ir-cedula"
+                        disabled
+                    >
+                        <span>
+                            📋
+                        </span>
+
+                        <div>
+
+                            <small>
+                                SIGUIENTE PASO
+                            </small>
+
+                            <strong>
+                                Llenar cédula
+                            </strong>
+
+                        </div>
+
+                        <span class="flecha">
+                            →
+                        </span>
+
+                    </button>
+
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <div
+        id="modalConfirmarAsistencia"
+        class="modal-overlay oculto"
+    >
+
+        <div
+            class="modal-confirmacion"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="tituloConfirmacion"
+        >
+
+            <div class="modal-confirmacion-icono">
+                ✓
+            </div>
+
+            <h2 id="tituloConfirmacion">
+                ¿Guardar pase de lista?
+            </h2>
+
+            <p>
+                Verifica que hayas marcado correctamente a todos los
+                jugadores presentes de ambos equipos.
+            </p>
+
+
+            <div class="confirmacion-resumen">
+
+                <div>
+
+                    <span>
+                        Local
+                    </span>
+
+                    <strong id="confirmarLocal">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Visitante
+                    </span>
+
+                    <strong id="confirmarVisitante">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong id="confirmarTotal">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-acciones">
+
+                <button
+                    type="button"
+                    id="btnCancelarAsistencia"
+                    class="btn-secundario"
+                >
+                    Seguir revisando
+                </button>
+
+                <button
+                    type="button"
+                    id="btnConfirmarAsistencia"
+                    class="btn-principal"
+                >
+                    Confirmar y guardar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="toast"
+        class="toast oculto"
+    >
+
+        <span id="toastIcono">
+            ✓
+        </span>
+
+        <div>
+
+            <strong id="toastTitulo">
+                Listo
+            </strong>
+
+            <p id="toastTexto">
+                Información guardada correctamente.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <script
+        type="module"
+        src="js/arbitro/partidoArbitro.js"
+    ></script>
+
+</body>
+</html>

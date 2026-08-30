@@ -1,0 +1,1162 @@
+body{
+    background:#eef2f5;
+    color:#14213d;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+button{
+    font:inherit;
+}
+
+.admin-app{
+    min-height:100vh;
+    display:flex;
+}
+
+.sidebar{
+    position:fixed;
+    top:0;
+    left:0;
+    bottom:0;
+
+    z-index:100;
+
+    width:270px;
+
+    display:flex;
+    flex-direction:column;
+
+    background:#0d2f34;
+    color:#ffffff;
+
+    box-shadow:12px 0 30px rgba(0,0,0,.08);
+
+    transition:transform .25s ease;
+}
+
+.sidebar-header{
+    display:flex;
+    align-items:center;
+    gap:11px;
+
+    min-height:74px;
+
+    padding:12px 15px;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.sidebar-logo{
+    width:48px;
+    height:48px;
+
+    flex-shrink:0;
+
+    object-fit:contain;
+}
+
+.sidebar-identidad{
+    display:flex;
+    flex-direction:column;
+
+    min-width:0;
+}
+
+.sidebar-identidad span{
+    color:#a8c8c5;
+
+    font-size:.68rem;
+}
+
+.sidebar-identidad strong{
+    color:#ffffff;
+
+    font-size:.92rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.btn-cerrar-sidebar{
+    display:none;
+
+    width:38px;
+    height:38px;
+
+    align-items:center;
+    justify-content:center;
+
+    margin-left:auto;
+
+    border-radius:10px;
+
+    background:rgba(255,255,255,.08);
+    color:#ffffff;
+
+    font-size:1.35rem;
+}
+
+.sidebar-nav{
+    flex:1;
+
+    overflow-y:auto;
+
+    padding:12px 10px 20px;
+
+    scrollbar-width:thin;
+}
+
+.sidebar-seccion{
+    display:block;
+
+    padding:15px 10px 7px;
+
+    color:#729794;
+
+    font-size:.59rem;
+    font-weight:900;
+
+    text-transform:uppercase;
+    letter-spacing:.1em;
+}
+
+.nav-item{
+    position:relative;
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    min-height:44px;
+
+    padding:8px 10px;
+
+    margin-bottom:3px;
+
+    border-radius:11px;
+
+    color:#c7dcda;
+
+    font-size:.78rem;
+    font-weight:600;
+
+    transition:.18s ease;
+}
+
+.nav-icono{
+    width:28px;
+
+    flex-shrink:0;
+
+    text-align:center;
+
+    font-size:1rem;
+}
+
+.nav-item.active{
+    background:#147f75;
+    color:#ffffff;
+}
+
+.nav-badge{
+    margin-left:auto;
+
+    min-width:23px;
+    height:23px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:0 6px;
+
+    border-radius:999px;
+
+    background:#d92d20;
+    color:#ffffff;
+
+    font-size:.61rem;
+    font-weight:900;
+}
+
+.sidebar-footer{
+    padding:13px;
+
+    border-top:1px solid rgba(255,255,255,.08);
+}
+
+.admin-mini{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    min-width:0;
+
+    margin-bottom:10px;
+}
+
+.admin-mini-avatar{
+    width:38px;
+    height:38px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:50%;
+
+    background:#147f75;
+    color:#ffffff;
+
+    font-size:.74rem;
+    font-weight:900;
+}
+
+.admin-mini > div:last-child{
+    display:flex;
+    flex-direction:column;
+
+    min-width:0;
+}
+
+.admin-mini strong{
+    color:#ffffff;
+
+    font-size:.72rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.admin-mini span{
+    color:#8eb1ae;
+
+    font-size:.62rem;
+}
+
+.btn-salir-sidebar{
+    width:100%;
+    min-height:40px;
+
+    border-radius:10px;
+
+    background:rgba(255,255,255,.07);
+    color:#d7e5e3;
+
+    font-size:.7rem;
+    font-weight:700;
+}
+
+.admin-main{
+    width:calc(100% - 270px);
+
+    margin-left:270px;
+}
+
+.admin-topbar{
+    position:sticky;
+    top:0;
+    z-index:60;
+
+    min-height:72px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+
+    padding:10px 22px;
+
+    border-bottom:1px solid #dfe5e8;
+
+    background:rgba(255,255,255,.96);
+
+    backdrop-filter:blur(10px);
+}
+
+.admin-topbar-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    min-width:0;
+}
+
+.btn-menu{
+    display:none;
+
+    width:42px;
+    height:42px;
+
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:11px;
+
+    background:#eef2f4;
+    color:#344054;
+
+    font-size:1.1rem;
+}
+
+.admin-topbar-left > div{
+    display:flex;
+    flex-direction:column;
+
+    min-width:0;
+}
+
+.topbar-mini{
+    color:#667085;
+
+    font-size:.64rem;
+}
+
+.admin-topbar-left strong{
+    color:#182230;
+
+    font-size:.9rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.admin-topbar-right{
+    display:flex;
+    align-items:center;
+    gap:9px;
+
+    flex-shrink:0;
+}
+
+.btn-ver-sitio{
+    min-height:40px;
+
+    display:flex;
+    align-items:center;
+    gap:7px;
+
+    padding:7px 11px;
+
+    border-radius:11px;
+
+    background:#eef7f5;
+    color:#0f766e;
+
+    font-size:.7rem;
+    font-weight:800;
+}
+
+.perfil-admin{
+    width:42px;
+    height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:#0f766e;
+    color:#ffffff;
+
+    font-weight:900;
+}
+
+.admin-contenido{
+    width:100%;
+    max-width:1500px;
+
+    margin:0 auto;
+
+    padding:24px;
+}
+
+.admin-bienvenida{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
+
+    margin-bottom:20px;
+
+    padding:22px;
+
+    border-radius:20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0b5f58,
+            #0f766e 55%,
+            #174c63
+        );
+
+    color:#ffffff;
+}
+
+.bienvenida-mini{
+    display:block;
+
+    margin-bottom:4px;
+
+    color:#d7f0ed;
+
+    font-size:.63rem;
+    font-weight:900;
+
+    text-transform:uppercase;
+    letter-spacing:.08em;
+}
+
+.admin-bienvenida h1{
+    margin-bottom:5px;
+
+    font-size:1.55rem;
+}
+
+.admin-bienvenida p{
+    max-width:630px;
+
+    color:#d9efec;
+
+    font-size:.76rem;
+    line-height:1.45;
+}
+
+.temporada-actual{
+    min-width:150px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    padding:13px;
+
+    border-radius:15px;
+
+    background:rgba(255,255,255,.1);
+
+    text-align:center;
+}
+
+.temporada-actual span{
+    color:#d2ebe8;
+
+    font-size:.62rem;
+}
+
+.temporada-actual strong{
+    margin:2px 0;
+
+    font-size:1.45rem;
+}
+
+.temporada-actual small{
+    color:#bde7d4;
+
+    font-size:.6rem;
+    font-weight:800;
+}
+
+.stats-admin{
+    display:grid;
+    grid-template-columns:repeat(6,minmax(0,1fr));
+
+    gap:11px;
+
+    margin-bottom:20px;
+}
+
+.stat-admin-card{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    min-width:0;
+
+    padding:14px;
+
+    border:1px solid #dfe5e8;
+    border-radius:16px;
+
+    background:#ffffff;
+}
+
+.stat-admin-card.alerta{
+    border-color:#f0dda8;
+    background:#fffdf5;
+}
+
+.stat-admin-card.alerta-roja{
+    border-color:#f3cbc7;
+    background:#fffafa;
+}
+
+.stat-admin-icono{
+    width:42px;
+    height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:12px;
+
+    background:#eef6f4;
+
+    font-size:1.05rem;
+}
+
+.stat-admin-card > div:last-child{
+    display:flex;
+    flex-direction:column;
+
+    min-width:0;
+}
+
+.stat-admin-card span{
+    color:#667085;
+
+    font-size:.61rem;
+}
+
+.stat-admin-card strong{
+    margin:1px 0;
+
+    color:#182230;
+
+    font-size:1rem;
+}
+
+.stat-admin-card small{
+    color:#98a2b3;
+
+    font-size:.56rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.admin-grid{
+    display:grid;
+    grid-template-columns:minmax(0,1.7fr) minmax(300px,.75fr);
+
+    gap:18px;
+
+    align-items:start;
+}
+
+.admin-columna-principal,
+.admin-columna-secundaria{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.panel-admin{
+    padding:17px;
+
+    border:1px solid #dfe5e8;
+    border-radius:18px;
+
+    background:#ffffff;
+}
+
+.panel-header{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:12px;
+
+    margin-bottom:13px;
+}
+
+.panel-mini{
+    display:block;
+
+    margin-bottom:2px;
+
+    color:#0f766e;
+
+    font-size:.58rem;
+    font-weight:900;
+
+    text-transform:uppercase;
+    letter-spacing:.08em;
+}
+
+.panel-header h2{
+    color:#182230;
+
+    font-size:1rem;
+}
+
+.btn-panel{
+    min-height:34px;
+
+    padding:6px 9px;
+
+    border-radius:9px;
+
+    background:#eef7f5;
+    color:#0f766e;
+
+    font-size:.63rem;
+    font-weight:800;
+}
+
+.acciones-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+
+    gap:9px;
+}
+
+.accion-card{
+    min-width:0;
+    min-height:120px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    justify-content:center;
+    gap:4px;
+
+    padding:13px;
+
+    border:1px solid #e2e7ea;
+    border-radius:14px;
+
+    background:#fafcfc;
+
+    text-align:left;
+}
+
+.accion-icono{
+    width:37px;
+    height:37px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    margin-bottom:4px;
+
+    border-radius:11px;
+
+    background:#e9f3f1;
+
+    font-size:.95rem;
+}
+
+.accion-card strong{
+    color:#182230;
+
+    font-size:.73rem;
+}
+
+.accion-card small{
+    color:#667085;
+
+    font-size:.59rem;
+    line-height:1.35;
+}
+
+.partidos-admin-lista{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.partido-admin-card{
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr) auto auto;
+
+    align-items:center;
+    gap:12px;
+
+    padding:11px;
+
+    border:1px solid #e5e9ec;
+    border-radius:13px;
+
+    background:#fbfcfd;
+}
+
+.partido-admin-fecha{
+    width:48px;
+    height:50px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:11px;
+
+    background:#eaf4f2;
+}
+
+.partido-admin-fecha strong{
+    color:#0f766e;
+
+    font-size:.9rem;
+}
+
+.partido-admin-fecha span{
+    color:#5c7f7c;
+
+    font-size:.53rem;
+    font-weight:800;
+}
+
+.partido-admin-info{
+    display:flex;
+    flex-direction:column;
+
+    min-width:0;
+}
+
+.partido-admin-info span{
+    color:#0f766e;
+
+    font-size:.56rem;
+    font-weight:700;
+}
+
+.partido-admin-info strong{
+    margin:2px 0;
+
+    color:#182230;
+
+    font-size:.7rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.partido-admin-info small{
+    color:#667085;
+
+    font-size:.56rem;
+}
+
+.partido-admin-arbitro{
+    display:flex;
+    flex-direction:column;
+
+    min-width:110px;
+}
+
+.partido-admin-arbitro span{
+    color:#98a2b3;
+
+    font-size:.54rem;
+}
+
+.partido-admin-arbitro strong{
+    color:#344054;
+
+    font-size:.65rem;
+}
+
+.btn-editar-partido{
+    min-height:35px;
+
+    padding:6px 10px;
+
+    border-radius:9px;
+
+    background:#eef2f4;
+    color:#344054;
+
+    font-size:.62rem;
+    font-weight:700;
+}
+
+.pendientes-lista{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+}
+
+.pendiente-item{
+    width:100%;
+
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr) auto;
+
+    align-items:center;
+    gap:9px;
+
+    min-height:58px;
+
+    padding:9px;
+
+    border:1px solid #e5e9ec;
+    border-radius:12px;
+
+    background:#fbfcfd;
+
+    text-align:left;
+}
+
+.pendiente-icono{
+    width:35px;
+    height:35px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:10px;
+
+    background:#eef6f4;
+
+    font-size:.88rem;
+}
+
+.pendiente-item > div{
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+}
+
+.pendiente-item strong{
+    color:#182230;
+
+    font-size:.66rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.pendiente-item small{
+    color:#667085;
+
+    font-size:.56rem;
+}
+
+.flecha{
+    color:#98a2b3;
+
+    font-size:1rem;
+}
+
+.actividad-admin{
+    display:flex;
+    flex-direction:column;
+}
+
+.actividad-item{
+    position:relative;
+
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr);
+
+    gap:9px;
+
+    padding:7px 0 14px;
+}
+
+.actividad-item:not(:last-child)::after{
+    content:"";
+
+    position:absolute;
+
+    left:5px;
+    top:20px;
+    bottom:-2px;
+
+    width:1px;
+
+    background:#dfe5e8;
+}
+
+.actividad-punto{
+    width:11px;
+    height:11px;
+
+    margin-top:4px;
+
+    border:3px solid #dcefeb;
+    border-radius:50%;
+
+    background:#0f766e;
+
+    z-index:2;
+}
+
+.actividad-item strong{
+    display:block;
+
+    margin-bottom:2px;
+
+    color:#182230;
+
+    font-size:.65rem;
+}
+
+.actividad-item p{
+    margin-bottom:2px;
+
+    color:#667085;
+
+    font-size:.57rem;
+    line-height:1.35;
+}
+
+.actividad-item span{
+    color:#98a2b3;
+
+    font-size:.52rem;
+}
+
+.btn-auditoria{
+    width:100%;
+    min-height:38px;
+
+    margin-top:4px;
+
+    border-radius:10px;
+
+    background:#eef7f5;
+    color:#0f766e;
+
+    font-size:.63rem;
+    font-weight:800;
+}
+
+.sidebar-overlay{
+    position:fixed;
+    inset:0;
+    z-index:90;
+
+    background:rgba(15,23,42,.52);
+
+    backdrop-filter:blur(3px);
+}
+
+.sidebar-overlay.hidden{
+    display:none;
+}
+
+@media (hover:hover) and (pointer:fine){
+
+    .nav-item:hover{
+        background:rgba(255,255,255,.07);
+        color:#ffffff;
+    }
+
+    .nav-item.active:hover{
+        background:#147f75;
+    }
+
+    .accion-card,
+    .partido-admin-card,
+    .pendiente-item{
+        transition:.18s ease;
+    }
+
+    .accion-card:hover,
+    .partido-admin-card:hover,
+    .pendiente-item:hover{
+        transform:translateY(-1px);
+
+        border-color:#cbd5da;
+
+        box-shadow:0 7px 20px rgba(15,23,42,.04);
+    }
+
+    .btn-salir-sidebar:hover{
+        background:rgba(255,255,255,.12);
+    }
+
+}
+
+@media (max-width:1250px){
+
+    .stats-admin{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+    }
+
+}
+
+@media (max-width:1050px){
+
+    .admin-grid{
+        grid-template-columns:1fr;
+    }
+
+    .admin-columna-secundaria{
+        display:grid;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+}
+
+@media (max-width:850px){
+
+    .sidebar{
+        transform:translateX(-100%);
+    }
+
+    .sidebar.abierto{
+        transform:translateX(0);
+    }
+
+    .btn-cerrar-sidebar{
+        display:flex;
+    }
+
+    .admin-main{
+        width:100%;
+        margin-left:0;
+    }
+
+    .btn-menu{
+        display:flex;
+    }
+
+    .admin-contenido{
+        padding:18px 14px 26px;
+    }
+
+}
+
+@media (max-width:700px){
+
+    .admin-topbar{
+        min-height:64px;
+
+        padding:8px 12px;
+    }
+
+    .btn-ver-sitio span{
+        display:none;
+    }
+
+    .btn-ver-sitio{
+        width:40px;
+        height:40px;
+
+        justify-content:center;
+
+        padding:0;
+    }
+
+    .admin-bienvenida{
+        flex-direction:column;
+        align-items:flex-start;
+
+        padding:18px;
+    }
+
+    .temporada-actual{
+        width:100%;
+
+        flex-direction:row;
+        justify-content:space-between;
+
+        min-width:0;
+    }
+
+    .temporada-actual strong{
+        font-size:1rem;
+    }
+
+    .stats-admin{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    .acciones-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    .partido-admin-card{
+        grid-template-columns:auto minmax(0,1fr) auto;
+    }
+
+    .partido-admin-arbitro{
+        grid-column:2;
+
+        min-width:0;
+    }
+
+    .btn-editar-partido{
+        grid-column:3;
+        grid-row:1 / span 2;
+    }
+
+    .admin-columna-secundaria{
+        display:flex;
+    }
+
+}
+
+@media (max-width:460px){
+
+    .sidebar{
+        width:min(88vw,310px);
+    }
+
+    .stats-admin{
+        grid-template-columns:1fr 1fr;
+
+        gap:8px;
+    }
+
+    .stat-admin-card{
+        padding:10px;
+    }
+
+    .stat-admin-icono{
+        width:36px;
+        height:36px;
+    }
+
+    .acciones-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .accion-card{
+        min-height:110px;
+
+        padding:11px;
+    }
+
+    .partido-admin-card{
+        grid-template-columns:auto minmax(0,1fr);
+    }
+
+    .partido-admin-arbitro{
+        grid-column:2;
+    }
+
+    .btn-editar-partido{
+        grid-column:1 / -1;
+        grid-row:auto;
+
+        width:100%;
+    }
+
+}

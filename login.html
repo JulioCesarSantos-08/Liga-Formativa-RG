@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Liga Deportiva Río Grande</title>
+
+    <link rel="icon" href="imagenes/favicon.png">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+
+<body>
+
+    <main class="login-container">
+
+        <div class="logo-box">
+            <img
+                src="imagenes/logo.png"
+                alt="Liga Deportiva Río Grande"
+                class="logo"
+            >
+
+            <h1>Liga Deportiva Río Grande</h1>
+            <p>Sistema Oficial de Gestión Deportiva</p>
+        </div>
+
+        <div class="card">
+
+            <div class="tabs">
+
+                <button
+                    type="button"
+                    id="btnLogin"
+                    class="tab active"
+                >
+                    Iniciar Sesión
+                </button>
+
+                <button
+                    type="button"
+                    id="btnRegistro"
+                    class="tab"
+                >
+                    Registrarse
+                </button>
+
+            </div>
+
+            <form id="formLogin" class="form">
+
+                <div class="campo">
+                    <label for="loginEmail">
+                        Correo electrónico
+                    </label>
+
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        placeholder="correo@ejemplo.com"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+                <div class="campo">
+                    <label for="loginPassword">
+                        Contraseña
+                    </label>
+
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        placeholder="Tu contraseña"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn-primary"
+                >
+                    Ingresar
+                </button>
+
+            </form>
+
+            <form
+                id="formRegistro"
+                class="form hidden"
+            >
+
+                <div class="campo">
+                    <label for="registroEmail">
+                        Correo electrónico
+                    </label>
+
+                    <input
+                        type="email"
+                        id="registroEmail"
+                        placeholder="correo@ejemplo.com"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+                <div class="campo">
+                    <label for="registroPassword">
+                        Contraseña
+                    </label>
+
+                    <input
+                        type="password"
+                        id="registroPassword"
+                        placeholder="Mínimo 6 caracteres"
+                        autocomplete="new-password"
+                        minlength="6"
+                        required
+                    >
+                </div>
+
+                <div class="campo">
+                    <label for="registroPasswordConfirmar">
+                        Confirmar contraseña
+                    </label>
+
+                    <input
+                        type="password"
+                        id="registroPasswordConfirmar"
+                        placeholder="Repite tu contraseña"
+                        autocomplete="new-password"
+                        minlength="6"
+                        required
+                    >
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn-primary"
+                >
+                    Crear cuenta
+                </button>
+
+            </form>
+
+            <div class="separador">
+                <span></span>
+                <p>o continúa con</p>
+                <span></span>
+            </div>
+
+            <button
+                type="button"
+                id="btnGoogle"
+                class="btn-google"
+            >
+
+                <svg
+                    class="google-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path
+                        fill="#4285F4"
+                        d="M21.35 12.27c0-.79-.07-1.55-.2-2.27H12v4.3h5.23a4.47 4.47 0 0 1-1.94 2.93v2.79h3.14c1.84-1.69 2.92-4.18 2.92-7.75z"
+                    />
+
+                    <path
+                        fill="#34A853"
+                        d="M12 21.75c2.63 0 4.84-.87 6.45-2.36l-3.14-2.43c-.87.58-1.98.92-3.31.92-2.54 0-4.69-1.72-5.46-4.03H3.3v2.5A9.75 9.75 0 0 0 12 21.75z"
+                    />
+
+                    <path
+                        fill="#FBBC05"
+                        d="M6.54 13.85A5.86 5.86 0 0 1 6.23 12c0-.64.11-1.26.31-1.85v-2.5H3.3A9.75 9.75 0 0 0 2.25 12c0 1.57.38 3.06 1.05 4.35l3.24-2.5z"
+                    />
+
+                    <path
+                        fill="#EA4335"
+                        d="M12 6.12c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.83 3.21 14.63 2.25 12 2.25a9.75 9.75 0 0 0-8.7 5.4l3.24 2.5C7.31 7.84 9.46 6.12 12 6.12z"
+                    />
+                </svg>
+
+                <span>Continuar con Google</span>
+
+            </button>
+
+            <p
+                id="mensaje"
+                class="mensaje"
+                role="alert"
+            ></p>
+
+        </div>
+
+        <p class="footer-login">
+            Liga Deportiva Río Grande
+        </p>
+
+    </main>
+
+
+    <div
+        id="modalNombre"
+        class="modal-nombre hidden"
+    >
+
+        <div class="modal-nombre-card">
+
+            <div class="modal-icono">
+                👤
+            </div>
+
+            <h2>Completa tu registro</h2>
+
+            <p>
+                Para mantener identificados a los usuarios de la plataforma,
+                necesitamos conocer tu nombre completo.
+            </p>
+
+            <form id="formNombre">
+
+                <div class="campo">
+
+                    <label for="nombreCompleto">
+                        Nombre completo
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nombreCompleto"
+                        placeholder="Nombre y apellidos"
+                        autocomplete="name"
+                        minlength="3"
+                        maxlength="100"
+                        required
+                    >
+
+                </div>
+
+                <button
+                    type="submit"
+                    id="btnGuardarNombre"
+                    class="btn-primary"
+                >
+                    Guardar y continuar
+                </button>
+
+            </form>
+
+            <p
+                id="mensajeNombre"
+                class="mensaje"
+            ></p>
+
+        </div>
+
+    </div>
+
+
+    <script
+        type="module"
+        src="js/auth.js"
+    ></script>
+
+</body>
+</html>

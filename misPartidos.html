@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#0f766e">
+
+    <title>Mis Partidos | Liga Deportiva Río Grande</title>
+
+    <link rel="icon" href="imagenes/logo.png">
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/misPartidos.css">
+</head>
+
+<body>
+
+    <div class="partidos-page">
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <a
+                    id="btnVolver"
+                    href="jefeEquipo.html"
+                    class="btn-volver"
+                    aria-label="Volver"
+                >
+                    ←
+                </a>
+
+                <img
+                    src="imagenes/logo.png"
+                    alt="Liga Deportiva Río Grande"
+                    class="topbar-logo"
+                >
+
+                <div class="topbar-titulo">
+
+                    <span>
+                        Jefe de equipo
+                    </span>
+
+                    <strong>
+                        Mis partidos
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="publico.html"
+                class="btn-liga"
+            >
+                🏆
+                <span>
+                    Ver liga
+                </span>
+            </a>
+
+        </header>
+
+
+        <main class="contenido">
+
+            <section
+                id="estadoCarga"
+                class="estado-carga"
+            >
+
+                <div class="spinner"></div>
+
+                <span>
+                    Cargando partidos...
+                </span>
+
+            </section>
+
+
+            <section
+                id="estadoError"
+                class="estado-error oculto"
+            >
+
+                <div class="estado-error-icono">
+                    ⚠️
+                </div>
+
+                <h1>
+                    No pudimos cargar los partidos
+                </h1>
+
+                <p id="estadoErrorTexto">
+                    Revisa la información del equipo.
+                </p>
+
+                <a
+                    href="jefeEquipo.html"
+                    class="btn-regresar"
+                >
+                    Volver a mi equipo
+                </a>
+
+            </section>
+
+
+            <div
+                id="contenidoPartidos"
+                class="contenido-partidos oculto"
+            >
+
+                <section class="equipo-hero">
+
+                    <div class="equipo-identidad">
+
+                        <div
+                            id="equipoLogo"
+                            class="equipo-logo"
+                        >
+                            E
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                MI EQUIPO
+                            </span>
+
+                            <h1 id="equipoNombre">
+                                Equipo
+                            </h1>
+
+                            <p id="equipoCategoria">
+                                Categoría
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="equipo-estadisticas">
+
+                        <div>
+
+                            <span>
+                                PJ
+                            </span>
+
+                            <strong id="equipoPJ">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                PG
+                            </span>
+
+                            <strong id="equipoPG">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                PE
+                            </span>
+
+                            <strong id="equipoPE">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                PP
+                            </span>
+
+                            <strong id="equipoPP">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                PTS
+                            </span>
+
+                            <strong id="equipoPTS">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <section class="resumen">
+
+                    <article class="resumen-card">
+
+                        <div class="resumen-icono">
+                            ⚽
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Total partidos
+                            </span>
+
+                            <strong id="totalPartidos">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="resumen-card">
+
+                        <div class="resumen-icono">
+                            📅
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Próximos
+                            </span>
+
+                            <strong id="totalProximos">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="resumen-card">
+
+                        <div class="resumen-icono">
+                            ✅
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Finalizados
+                            </span>
+
+                            <strong id="totalFinalizados">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="resumen-card">
+
+                        <div class="resumen-icono">
+                            🥅
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Diferencia
+                            </span>
+
+                            <strong id="equipoDG">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+                <section class="panel-partidos">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <span class="panel-mini">
+                                CALENDARIO
+                            </span>
+
+                            <h2>
+                                Encuentros del equipo
+                            </h2>
+
+                        </div>
+
+
+                        <select
+                            id="filtroPartidos"
+                            class="filtro-partidos"
+                        >
+
+                            <option value="todos">
+                                Todos
+                            </option>
+
+                            <option value="proximos">
+                                Próximos
+                            </option>
+
+                            <option value="finalizados">
+                                Finalizados
+                            </option>
+
+                            <option value="cancelados">
+                                Cancelados
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div
+                        id="sinPartidos"
+                        class="estado-vacio oculto"
+                    >
+
+                        <div class="estado-vacio-icono">
+                            ⚽
+                        </div>
+
+                        <strong>
+                            No hay partidos
+                        </strong>
+
+                        <p>
+                            No encontramos encuentros para este filtro.
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        id="listaPartidos"
+                        class="lista-partidos"
+                    ></div>
+
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <div
+        id="modalPartido"
+        class="modal-overlay oculto"
+    >
+
+        <div class="modal-partido">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <span>
+                        PARTIDO
+                    </span>
+
+                    <h2 id="modalTitulo">
+                        Detalle
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="btnCerrarModal"
+                    class="btn-cerrar-modal"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="modal-enfrentamiento">
+
+                <div class="modal-equipo">
+
+                    <div
+                        id="modalLogoLocal"
+                        class="modal-logo"
+                    >
+                        L
+                    </div>
+
+                    <strong id="modalLocal">
+                        Local
+                    </strong>
+
+                </div>
+
+
+                <div class="modal-marcador">
+
+                    <span id="modalJornada">
+                        Jornada
+                    </span>
+
+                    <strong id="modalResultado">
+                        VS
+                    </strong>
+
+                    <small id="modalEstado">
+                        Próximo
+                    </small>
+
+                </div>
+
+
+                <div class="modal-equipo">
+
+                    <div
+                        id="modalLogoVisitante"
+                        class="modal-logo"
+                    >
+                        V
+                    </div>
+
+                    <strong id="modalVisitante">
+                        Visitante
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-datos">
+
+                <div>
+
+                    <span>
+                        Fecha
+                    </span>
+
+                    <strong id="modalFecha">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Hora
+                    </span>
+
+                    <strong id="modalHora">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Campo
+                    </span>
+
+                    <strong id="modalCampo">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Árbitro
+                    </span>
+
+                    <strong id="modalArbitro">
+                        -
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="btnCerrarDetalle"
+                class="btn-principal"
+            >
+                Cerrar
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script
+        type="module"
+        src="js/jefeEquipo/misPartidos.js"
+    ></script>
+
+</body>
+</html>

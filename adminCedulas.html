@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cédulas | Liga Deportiva Río Grande</title>
+
+    <link rel="icon" href="imagenes/logo.png">
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/adminCedulas.css">
+</head>
+
+<body>
+
+    <div class="admin-page">
+
+        <header class="topbar-admin">
+
+            <div class="topbar-left">
+
+                <a
+                    href="admin.html"
+                    class="btn-volver"
+                    aria-label="Volver al panel"
+                >
+                    ←
+                </a>
+
+                <img
+                    src="imagenes/logo.png"
+                    alt="Liga Deportiva Río Grande"
+                    class="topbar-logo"
+                >
+
+                <div class="topbar-titulo">
+                    <span>Administración</span>
+                    <strong>Cédulas</strong>
+                </div>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <a
+                    href="publico.html"
+                    class="btn-ver-sitio"
+                >
+                    👁️
+                    <span>Ver sitio</span>
+                </a>
+
+                <div
+                    id="adminInicial"
+                    class="admin-avatar"
+                >
+                    A
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <main class="contenido-admin">
+
+            <section class="encabezado-pagina">
+
+                <div>
+
+                    <span class="encabezado-mini">
+                        CONTROL ARBITRAL
+                    </span>
+
+                    <h1>
+                        Cédulas de partidos
+                    </h1>
+
+                    <p>
+                        Revisa los registros enviados por los árbitros,
+                        resultados, sanciones e incidencias de cada encuentro.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <section class="resumen-cedulas">
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        📋
+                    </div>
+
+                    <div>
+                        <span>Total partidos</span>
+                        <strong id="totalPartidos">0</strong>
+                    </div>
+
+                </article>
+
+
+                <article class="resumen-card pendiente">
+
+                    <div class="resumen-icono">
+                        ⏳
+                    </div>
+
+                    <div>
+                        <span>Pendientes</span>
+                        <strong id="totalPendientes">0</strong>
+                    </div>
+
+                </article>
+
+
+                <article class="resumen-card completada">
+
+                    <div class="resumen-icono">
+                        ✅
+                    </div>
+
+                    <div>
+                        <span>Registradas</span>
+                        <strong id="totalRegistradas">0</strong>
+                    </div>
+
+                </article>
+
+
+                <article class="resumen-card revision">
+
+                    <div class="resumen-icono">
+                        ⚠️
+                    </div>
+
+                    <div>
+                        <span>En revisión</span>
+                        <strong id="totalRevision">0</strong>
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <section class="panel-cedulas">
+
+                <div class="herramientas">
+
+                    <div class="buscador">
+
+                        <span class="buscador-icono">
+                            🔎
+                        </span>
+
+                        <input
+                            type="search"
+                            id="buscarCedula"
+                            placeholder="Buscar equipo o árbitro..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <select
+                        id="filtroCategoria"
+                        class="select-filtro"
+                    >
+                        <option value="todas">
+                            Todas las categorías
+                        </option>
+                    </select>
+
+
+                    <select
+                        id="filtroJornada"
+                        class="select-filtro"
+                    >
+                        <option value="todas">
+                            Todas las jornadas
+                        </option>
+                    </select>
+
+
+                    <select
+                        id="filtroCedula"
+                        class="select-filtro"
+                    >
+                        <option value="todas">
+                            Todas las cédulas
+                        </option>
+
+                        <option value="pendiente">
+                            Pendientes
+                        </option>
+
+                        <option value="registrada">
+                            Registradas
+                        </option>
+
+                        <option value="revision">
+                            En revisión
+                        </option>
+                    </select>
+
+                </div>
+
+
+                <div
+                    id="estadoCarga"
+                    class="estado-carga"
+                >
+
+                    <div class="spinner"></div>
+
+                    <span>
+                        Cargando cédulas...
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="estadoVacio"
+                    class="estado-vacio oculto"
+                >
+
+                    <div class="estado-vacio-icono">
+                        📋
+                    </div>
+
+                    <strong>
+                        No hay registros
+                    </strong>
+
+                    <p>
+                        No encontramos partidos que coincidan
+                        con los filtros seleccionados.
+                    </p>
+
+                </div>
+
+
+                <div
+                    id="listaCedulas"
+                    class="lista-cedulas oculto"
+                ></div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <div
+        id="modalCedula"
+        class="modal-overlay oculto"
+    >
+
+        <div
+            class="modal-cedula"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modalCedulaTitulo"
+        >
+
+            <div class="modal-header">
+
+                <div>
+
+                    <span class="modal-mini">
+                        CÉDULA ARBITRAL
+                    </span>
+
+                    <h2 id="modalCedulaTitulo">
+                        Detalle del partido
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="btnCerrarModal"
+                    class="btn-cerrar-modal"
+                    aria-label="Cerrar"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <section class="modal-partido-resumen">
+
+                <div class="modal-equipo">
+
+                    <div
+                        id="modalLogoLocal"
+                        class="modal-equipo-logo"
+                    >
+                        L
+                    </div>
+
+                    <strong id="modalNombreLocal">
+                        Equipo local
+                    </strong>
+
+                </div>
+
+
+                <div class="modal-marcador">
+
+                    <span id="modalJornada">
+                        Jornada
+                    </span>
+
+                    <strong id="modalResultado">
+                        - vs -
+                    </strong>
+
+                    <small id="modalEstadoPartido">
+                        Partido
+                    </small>
+
+                </div>
+
+
+                <div class="modal-equipo">
+
+                    <div
+                        id="modalLogoVisitante"
+                        class="modal-equipo-logo"
+                    >
+                        V
+                    </div>
+
+                    <strong id="modalNombreVisitante">
+                        Equipo visitante
+                    </strong>
+
+                </div>
+
+            </section>
+
+
+            <section class="modal-info-grid">
+
+                <div>
+
+                    <span>
+                        Categoría
+                    </span>
+
+                    <strong id="modalCategoria">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Fecha
+                    </span>
+
+                    <strong id="modalFecha">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Hora
+                    </span>
+
+                    <strong id="modalHora">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Campo
+                    </span>
+
+                    <strong id="modalCampo">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Árbitro
+                    </span>
+
+                    <strong id="modalArbitro">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Estado cédula
+                    </span>
+
+                    <strong id="modalEstadoCedula">
+                        -
+                    </strong>
+
+                </div>
+
+            </section>
+
+
+            <section
+                id="bloqueCedulaPendiente"
+                class="cedula-pendiente"
+            >
+
+                <div class="cedula-pendiente-icono">
+                    ⏳
+                </div>
+
+                <div>
+
+                    <strong>
+                        Cédula pendiente
+                    </strong>
+
+                    <p>
+                        El árbitro todavía no ha registrado la
+                        información final del encuentro.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <section
+                id="contenidoCedula"
+                class="contenido-cedula oculto"
+            >
+
+                <div class="seccion-modal">
+
+                    <div class="seccion-modal-header">
+
+                        <div>
+
+                            <span>
+                                RESULTADO
+                            </span>
+
+                            <h3>
+                                Marcador oficial
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="marcador-oficial">
+
+                        <div>
+
+                            <span id="resultadoNombreLocal">
+                                Local
+                            </span>
+
+                            <strong id="resultadoGolesLocal">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <span class="marcador-separador">
+                            -
+                        </span>
+
+
+                        <div>
+
+                            <span id="resultadoNombreVisitante">
+                                Visitante
+                            </span>
+
+                            <strong id="resultadoGolesVisitante">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="seccion-modal">
+
+                    <div class="seccion-modal-header">
+
+                        <div>
+
+                            <span>
+                                EVENTOS
+                            </span>
+
+                            <h3>
+                                Resumen arbitral
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="eventos-resumen">
+
+                        <div>
+
+                            <span>
+                                ⚽ Goles
+                            </span>
+
+                            <strong id="modalTotalGoles">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                🟨 Amarillas
+                            </span>
+
+                            <strong id="modalTotalAmarillas">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                🟥 Rojas
+                            </span>
+
+                            <strong id="modalTotalRojas">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                👥 Jugadores
+                            </span>
+
+                            <strong id="modalTotalJugadores">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="seccion-modal">
+
+                    <div class="seccion-modal-header">
+
+                        <div>
+
+                            <span>
+                                INCIDENCIAS
+                            </span>
+
+                            <h3>
+                                Observaciones
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="modalIncidencias"
+                        class="incidencias-texto"
+                    >
+                        Sin incidencias registradas.
+                    </div>
+
+                </div>
+
+
+                <div class="seccion-modal">
+
+                    <div class="seccion-modal-header">
+
+                        <div>
+
+                            <span>
+                                REGISTRO
+                            </span>
+
+                            <h3>
+                                Información de auditoría
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="auditoria-info">
+
+                        <div>
+
+                            <span>
+                                Registrada por
+                            </span>
+
+                            <strong id="modalRegistradoPor">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Fecha de registro
+                            </span>
+
+                            <strong id="modalFechaRegistro">
+                                -
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <div class="modal-acciones">
+
+                <button
+                    type="button"
+                    id="btnCerrarDetalle"
+                    class="btn-cancelar"
+                >
+                    Cerrar
+                </button>
+
+
+                <button
+                    type="button"
+                    id="btnEditarCedula"
+                    class="btn-guardar oculto"
+                >
+                    Editar cédula
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="toast"
+        class="toast oculto"
+    >
+
+        <span id="toastIcono">
+            ✓
+        </span>
+
+        <div>
+
+            <strong id="toastTitulo">
+                Acción realizada
+            </strong>
+
+            <p id="toastTexto">
+                Los cambios fueron guardados correctamente.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <script
+        type="module"
+        src="js/admin/adminCedulas.js"
+    ></script>
+
+</body>
+</html>

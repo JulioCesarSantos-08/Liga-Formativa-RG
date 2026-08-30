@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Usuarios | Liga Deportiva Río Grande</title>
+
+    <link rel="icon" href="imagenes/logo.png">
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/adminUsuarios.css">
+</head>
+
+<body>
+
+    <div class="admin-page">
+
+        <header class="topbar-admin">
+
+            <div class="topbar-left">
+
+                <a
+                    href="admin.html"
+                    class="btn-volver"
+                    aria-label="Volver al panel"
+                >
+                    ←
+                </a>
+
+                <img
+                    src="imagenes/logo.png"
+                    alt="Liga Deportiva Río Grande"
+                    class="topbar-logo"
+                >
+
+                <div class="topbar-titulo">
+                    <span>Administración</span>
+                    <strong>Usuarios</strong>
+                </div>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <a
+                    href="publico.html"
+                    class="btn-ver-sitio"
+                >
+                    👁️
+                    <span>Ver sitio</span>
+                </a>
+
+                <div
+                    id="adminInicial"
+                    class="admin-avatar"
+                >
+                    A
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <main class="contenido-admin">
+
+            <section class="encabezado-pagina">
+
+                <div>
+
+                    <span class="encabezado-mini">
+                        PERSONAS
+                    </span>
+
+                    <h1>
+                        Usuarios registrados
+                    </h1>
+
+                    <p>
+                        Consulta las cuentas registradas, administra sus
+                        permisos y controla el acceso al sistema.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <section class="resumen-usuarios">
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        👥
+                    </div>
+
+                    <div>
+                        <span>Total usuarios</span>
+                        <strong id="totalUsuarios">0</strong>
+                    </div>
+
+                </article>
+
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        👤
+                    </div>
+
+                    <div>
+                        <span>Público</span>
+                        <strong id="totalPublico">0</strong>
+                    </div>
+
+                </article>
+
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        🧑‍⚖️
+                    </div>
+
+                    <div>
+                        <span>Árbitros</span>
+                        <strong id="totalArbitros">0</strong>
+                    </div>
+
+                </article>
+
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        👑
+                    </div>
+
+                    <div>
+                        <span>Jefes de equipo</span>
+                        <strong id="totalJefes">0</strong>
+                    </div>
+
+                </article>
+
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        🛡️
+                    </div>
+
+                    <div>
+                        <span>Administradores</span>
+                        <strong id="totalAdmins">0</strong>
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <section class="panel-usuarios">
+
+                <div class="herramientas">
+
+                    <div class="buscador">
+
+                        <span class="buscador-icono">
+                            🔎
+                        </span>
+
+                        <input
+                            type="search"
+                            id="buscarUsuario"
+                            placeholder="Buscar por nombre o correo..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <select
+                        id="filtroRol"
+                        class="select-filtro"
+                    >
+                        <option value="todos">
+                            Todos los roles
+                        </option>
+
+                        <option value="publico">
+                            Público
+                        </option>
+
+                        <option value="arbitro">
+                            Árbitros
+                        </option>
+
+                        <option value="jefeEquipo">
+                            Jefes de equipo
+                        </option>
+
+                        <option value="admin">
+                            Administradores
+                        </option>
+                    </select>
+
+
+                    <select
+                        id="filtroEstado"
+                        class="select-filtro"
+                    >
+                        <option value="todos">
+                            Todos
+                        </option>
+
+                        <option value="activo">
+                            Activos
+                        </option>
+
+                        <option value="inactivo">
+                            Desactivados
+                        </option>
+                    </select>
+
+                </div>
+
+
+                <div
+                    id="estadoCarga"
+                    class="estado-carga"
+                >
+                    <div class="spinner"></div>
+
+                    <span>
+                        Cargando usuarios...
+                    </span>
+                </div>
+
+
+                <div
+                    id="estadoVacio"
+                    class="estado-vacio oculto"
+                >
+                    <div class="estado-vacio-icono">
+                        👥
+                    </div>
+
+                    <strong>
+                        No encontramos usuarios
+                    </strong>
+
+                    <p>
+                        No hay usuarios que coincidan con los filtros
+                        seleccionados.
+                    </p>
+                </div>
+
+
+                <div
+                    id="contenedorTabla"
+                    class="tabla-contenedor oculto"
+                >
+
+                    <table class="tabla-usuarios">
+
+                        <thead>
+
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Correo</th>
+                                <th>Rol</th>
+                                <th>Estado</th>
+                                <th>Registro</th>
+                                <th></th>
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="tablaUsuarios"></tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div
+                    id="listaUsuariosMovil"
+                    class="usuarios-movil oculto"
+                ></div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <div
+        id="modalUsuario"
+        class="modal-overlay oculto"
+    >
+
+        <div
+            class="modal-usuario"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modalTitulo"
+        >
+
+            <div class="modal-header">
+
+                <div>
+
+                    <span class="modal-mini">
+                        ADMINISTRAR USUARIO
+                    </span>
+
+                    <h2 id="modalTitulo">
+                        Editar usuario
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="btnCerrarModal"
+                    class="btn-cerrar-modal"
+                    aria-label="Cerrar"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="usuario-modal-identidad">
+
+                <div
+                    id="modalInicial"
+                    class="modal-avatar"
+                >
+                    U
+                </div>
+
+                <div>
+
+                    <strong id="modalNombre">
+                        Usuario
+                    </strong>
+
+                    <span id="modalCorreo">
+                        correo@ejemplo.com
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-grupo">
+
+                <label for="modalRol">
+                    Rol del usuario
+                </label>
+
+                <select id="modalRol">
+
+                    <option value="publico">
+                        Público
+                    </option>
+
+                    <option value="arbitro">
+                        Árbitro
+                    </option>
+
+                    <option value="jefeEquipo">
+                        Jefe de equipo
+                    </option>
+
+                    <option value="admin">
+                        Administrador
+                    </option>
+
+                </select>
+
+                <small>
+                    Los permisos del sistema cambiarán según el rol asignado.
+                </small>
+
+            </div>
+
+
+            <div class="form-grupo">
+
+                <label>
+                    Estado de la cuenta
+                </label>
+
+
+                <div class="estado-selector">
+
+                    <button
+                        type="button"
+                        id="btnEstadoActivo"
+                        class="estado-opcion activo"
+                        data-estado="true"
+                    >
+                        <span class="estado-punto verde"></span>
+
+                        Activa
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="btnEstadoInactivo"
+                        class="estado-opcion"
+                        data-estado="false"
+                    >
+                        <span class="estado-punto rojo"></span>
+
+                        Desactivada
+                    </button>
+
+                </div>
+
+
+                <small>
+                    Una cuenta desactivada no podrá acceder a las funciones
+                    protegidas del sistema.
+                </small>
+
+            </div>
+
+
+            <div class="aviso-permisos">
+
+                <span>
+                    ⚠️
+                </span>
+
+                <p>
+                    Los cambios de rol pueden otorgar acceso a información
+                    administrativa. Verifica la identidad de la persona antes
+                    de asignar permisos elevados.
+                </p>
+
+            </div>
+
+
+            <div class="modal-acciones">
+
+                <button
+                    type="button"
+                    id="btnCancelarModal"
+                    class="btn-cancelar"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    type="button"
+                    id="btnGuardarUsuario"
+                    class="btn-guardar"
+                >
+                    Guardar cambios
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="toast"
+        class="toast oculto"
+    >
+        <span id="toastIcono">
+            ✓
+        </span>
+
+        <div>
+
+            <strong id="toastTitulo">
+                Cambios guardados
+            </strong>
+
+            <p id="toastTexto">
+                La información se actualizó correctamente.
+            </p>
+
+        </div>
+    </div>
+
+
+    <script
+        type="module"
+        src="js/admin/adminUsuarios.js"
+    ></script>
+
+</body>
+</html>

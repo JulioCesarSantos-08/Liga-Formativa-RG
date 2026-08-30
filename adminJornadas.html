@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Jornadas | Liga Deportiva Río Grande</title>
+
+    <link rel="icon" href="imagenes/logo.png">
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/adminJornadas.css">
+</head>
+
+<body>
+
+    <div class="admin-page">
+
+        <header class="topbar-admin">
+
+            <div class="topbar-left">
+
+                <a
+                    href="admin.html"
+                    class="btn-volver"
+                    aria-label="Volver al panel"
+                >
+                    ←
+                </a>
+
+                <img
+                    src="imagenes/logo.png"
+                    alt="Liga Deportiva Río Grande"
+                    class="topbar-logo"
+                >
+
+                <div class="topbar-titulo">
+                    <span>Administración</span>
+                    <strong>Jornadas</strong>
+                </div>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <a
+                    href="publico.html"
+                    class="btn-ver-sitio"
+                >
+                    👁️
+                    <span>Ver sitio</span>
+                </a>
+
+                <div
+                    id="adminInicial"
+                    class="admin-avatar"
+                >
+                    A
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <main class="contenido-admin">
+
+            <section class="encabezado-pagina">
+
+                <div>
+
+                    <span class="encabezado-mini">
+                        COMPETENCIA
+                    </span>
+
+                    <h1>
+                        Jornadas
+                    </h1>
+
+                    <p>
+                        Organiza las jornadas de cada categoría y
+                        prepara el calendario oficial de partidos.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="btnNuevaJornada"
+                    class="btn-principal"
+                >
+                    + Nueva jornada
+                </button>
+
+            </section>
+
+
+            <section class="resumen-jornadas">
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        📅
+                    </div>
+
+                    <div>
+                        <span>Total jornadas</span>
+                        <strong id="totalJornadas">0</strong>
+                    </div>
+
+                </article>
+
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        ⏳
+                    </div>
+
+                    <div>
+                        <span>Próximas</span>
+                        <strong id="totalProximas">0</strong>
+                    </div>
+
+                </article>
+
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        ⚽
+                    </div>
+
+                    <div>
+                        <span>En curso</span>
+                        <strong id="totalEnCurso">0</strong>
+                    </div>
+
+                </article>
+
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        ✅
+                    </div>
+
+                    <div>
+                        <span>Finalizadas</span>
+                        <strong id="totalFinalizadas">0</strong>
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <section class="panel-jornadas">
+
+                <div class="herramientas">
+
+                    <div class="buscador">
+
+                        <span class="buscador-icono">
+                            🔎
+                        </span>
+
+                        <input
+                            type="search"
+                            id="buscarJornada"
+                            placeholder="Buscar jornada..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <select
+                        id="filtroCategoria"
+                        class="select-filtro"
+                    >
+                        <option value="todas">
+                            Todas las categorías
+                        </option>
+                    </select>
+
+
+                    <select
+                        id="filtroEstado"
+                        class="select-filtro"
+                    >
+                        <option value="todos">
+                            Todos los estados
+                        </option>
+
+                        <option value="proxima">
+                            Próximas
+                        </option>
+
+                        <option value="enCurso">
+                            En curso
+                        </option>
+
+                        <option value="finalizada">
+                            Finalizadas
+                        </option>
+                    </select>
+
+                </div>
+
+
+                <div
+                    id="estadoCarga"
+                    class="estado-carga"
+                >
+                    <div class="spinner"></div>
+
+                    <span>
+                        Cargando jornadas...
+                    </span>
+                </div>
+
+
+                <div
+                    id="estadoVacio"
+                    class="estado-vacio oculto"
+                >
+
+                    <div class="estado-vacio-icono">
+                        📅
+                    </div>
+
+                    <strong>
+                        No hay jornadas registradas
+                    </strong>
+
+                    <p>
+                        Crea la primera jornada para comenzar
+                        a organizar el calendario.
+                    </p>
+
+                </div>
+
+
+                <div
+                    id="gridJornadas"
+                    class="grid-jornadas oculto"
+                ></div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <div
+        id="modalJornada"
+        class="modal-overlay oculto"
+    >
+
+        <div
+            class="modal-jornada"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modalTitulo"
+        >
+
+            <div class="modal-header">
+
+                <div>
+
+                    <span class="modal-mini">
+                        JORNADA
+                    </span>
+
+                    <h2 id="modalTitulo">
+                        Nueva jornada
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="btnCerrarModal"
+                    class="btn-cerrar-modal"
+                    aria-label="Cerrar"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="formJornada">
+
+                <div class="form-grupo">
+
+                    <label for="categoriaJornada">
+                        Categoría
+                    </label>
+
+                    <select
+                        id="categoriaJornada"
+                        required
+                    >
+                        <option value="">
+                            Selecciona una categoría
+                        </option>
+                    </select>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-grupo">
+
+                        <label for="numeroJornada">
+                            Número de jornada
+                        </label>
+
+                        <input
+                            type="number"
+                            id="numeroJornada"
+                            min="1"
+                            max="100"
+                            placeholder="Ej. 1"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-grupo">
+
+                        <label for="nombreJornada">
+                            Nombre
+                        </label>
+
+                        <input
+                            type="text"
+                            id="nombreJornada"
+                            maxlength="80"
+                            placeholder="Ej. Jornada 1"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-grupo">
+
+                        <label for="fechaInicio">
+                            Fecha de inicio
+                        </label>
+
+                        <input
+                            type="date"
+                            id="fechaInicio"
+                        >
+
+                    </div>
+
+
+                    <div class="form-grupo">
+
+                        <label for="fechaFin">
+                            Fecha de cierre
+                        </label>
+
+                        <input
+                            type="date"
+                            id="fechaFin"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grupo">
+
+                    <label for="descripcionJornada">
+                        Observaciones
+                    </label>
+
+                    <textarea
+                        id="descripcionJornada"
+                        rows="3"
+                        maxlength="250"
+                        placeholder="Información opcional..."
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-grupo">
+
+                    <label>
+                        Estado
+                    </label>
+
+
+                    <div class="estado-selector estado-selector-jornada">
+
+                        <button
+                            type="button"
+                            id="btnEstadoProxima"
+                            class="estado-opcion activo"
+                            data-estado="proxima"
+                        >
+                            <span class="estado-punto azul"></span>
+                            Próxima
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="btnEstadoEnCurso"
+                            class="estado-opcion"
+                            data-estado="enCurso"
+                        >
+                            <span class="estado-punto verde"></span>
+                            En curso
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="btnEstadoFinalizada"
+                            class="estado-opcion"
+                            data-estado="finalizada"
+                        >
+                            <span class="estado-punto gris"></span>
+                            Finalizada
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="aviso-jornada">
+
+                    <span>
+                        ℹ️
+                    </span>
+
+                    <p>
+                        Después de crear la jornada podrás agregarle
+                        partidos desde el módulo de Partidos y asignar
+                        equipos, horarios, campos y árbitros.
+                    </p>
+
+                </div>
+
+
+                <div class="modal-acciones">
+
+                    <button
+                        type="button"
+                        id="btnCancelarModal"
+                        class="btn-cancelar"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        id="btnGuardarJornada"
+                        class="btn-guardar"
+                    >
+                        Guardar jornada
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="toast"
+        class="toast oculto"
+    >
+
+        <span id="toastIcono">
+            ✓
+        </span>
+
+        <div>
+
+            <strong id="toastTitulo">
+                Jornada guardada
+            </strong>
+
+            <p id="toastTexto">
+                Los cambios fueron guardados correctamente.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <script
+        type="module"
+        src="js/admin/adminJornadas.js"
+    ></script>
+
+</body>
+</html>

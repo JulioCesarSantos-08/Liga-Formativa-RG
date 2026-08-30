@@ -1,0 +1,1311 @@
+body{
+    background:#eef3f4;
+    color:#14213d;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+button,
+select{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.credenciales-page{
+    width:100%;
+    min-height:100vh;
+}
+
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:60;
+
+    min-height:68px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+
+    padding:9px 13px;
+
+    border-bottom:1px solid #dde5e7;
+
+    background:rgba(255,255,255,.97);
+
+    backdrop-filter:blur(10px);
+}
+
+.topbar-left{
+    display:flex;
+    align-items:center;
+    gap:9px;
+
+    min-width:0;
+}
+
+.btn-volver{
+    width:40px;
+    height:40px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:11px;
+
+    background:#f2f4f7;
+    color:#475467;
+
+    font-size:1.1rem;
+    font-weight:900;
+}
+
+.topbar-logo{
+    width:42px;
+    height:42px;
+
+    flex-shrink:0;
+
+    object-fit:contain;
+}
+
+.topbar-titulo{
+    display:flex;
+    flex-direction:column;
+
+    min-width:0;
+}
+
+.topbar-titulo span{
+    color:#667085;
+    font-size:.61rem;
+}
+
+.topbar-titulo strong{
+    color:#182230;
+
+    font-size:.84rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.btn-imprimir-top{
+    min-height:40px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+
+    flex-shrink:0;
+
+    padding:7px 11px;
+
+    border-radius:11px;
+
+    background:#0f766e;
+    color:#ffffff;
+
+    font-size:.62rem;
+    font-weight:800;
+}
+
+.contenido{
+    width:100%;
+    max-width:1120px;
+
+    margin:0 auto;
+
+    padding:16px 13px 35px;
+}
+
+.estado-carga,
+.estado-error{
+    min-height:65vh;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+
+    padding:28px;
+
+    text-align:center;
+}
+
+.spinner{
+    width:36px;
+    height:36px;
+
+    border:4px solid #e2e8ea;
+    border-top-color:#0f766e;
+    border-radius:50%;
+
+    animation:girar .8s linear infinite;
+}
+
+@keyframes girar{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+.estado-carga span{
+    color:#667085;
+
+    font-size:.7rem;
+}
+
+.estado-error-icono{
+    width:58px;
+    height:58px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:17px;
+
+    background:#fff0ef;
+
+    font-size:1.4rem;
+}
+
+.estado-error h1{
+    color:#182230;
+
+    font-size:1.08rem;
+}
+
+.estado-error p{
+    max-width:400px;
+
+    color:#667085;
+
+    font-size:.68rem;
+    line-height:1.45;
+}
+
+.btn-regresar{
+    min-height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    margin-top:4px;
+    padding:7px 13px;
+
+    border-radius:11px;
+
+    background:#0f766e;
+    color:#ffffff;
+
+    font-size:.64rem;
+    font-weight:800;
+}
+
+.oculto{
+    display:none !important;
+}
+
+.contenido-credenciales{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+
+.encabezado-pagina{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+
+    padding:17px;
+
+    border-radius:20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0b5f58,
+            #0f766e 55%,
+            #174c63
+        );
+
+    color:#ffffff;
+
+    box-shadow:0 14px 35px rgba(15,76,85,.16);
+}
+
+.encabezado-mini{
+    display:block;
+
+    margin-bottom:3px;
+
+    color:#cdebe7;
+
+    font-size:.54rem;
+    font-weight:900;
+
+    letter-spacing:.08em;
+}
+
+.encabezado-pagina h1{
+    margin-bottom:5px;
+
+    color:#ffffff;
+
+    font-size:1.15rem;
+}
+
+.encabezado-pagina p{
+    max-width:520px;
+
+    color:#d8efec;
+
+    font-size:.63rem;
+    line-height:1.45;
+}
+
+.equipo-resumen{
+    display:flex;
+    align-items:center;
+    gap:9px;
+
+    padding:10px;
+
+    border-radius:13px;
+
+    background:rgba(255,255,255,.1);
+}
+
+.equipo-logo{
+    width:48px;
+    height:48px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    overflow:hidden;
+
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:13px;
+
+    background:rgba(255,255,255,.12);
+
+    font-size:.75rem;
+    font-weight:900;
+}
+
+.equipo-logo img{
+    width:100%;
+    height:100%;
+
+    display:block;
+
+    object-fit:cover;
+}
+
+.equipo-resumen > div:last-child{
+    min-width:0;
+}
+
+.equipo-resumen span{
+    display:block;
+
+    margin-bottom:2px;
+
+    color:#cdebe7;
+
+    font-size:.52rem;
+}
+
+.equipo-resumen strong{
+    display:block;
+
+    color:#ffffff;
+
+    font-size:.68rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.panel-configuracion{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+
+    padding:14px;
+
+    border:1px solid #dde5e7;
+    border-radius:17px;
+
+    background:#ffffff;
+}
+
+.configuracion-info{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.configuracion-icono{
+    width:45px;
+    height:45px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:12px;
+
+    background:#eef7f5;
+
+    font-size:1rem;
+}
+
+.configuracion-info > div:last-child{
+    min-width:0;
+}
+
+.configuracion-info span{
+    display:block;
+
+    margin-bottom:2px;
+
+    color:#0f766e;
+
+    font-size:.51rem;
+    font-weight:900;
+
+    letter-spacing:.06em;
+}
+
+.configuracion-info strong{
+    display:block;
+
+    margin-bottom:2px;
+
+    color:#182230;
+
+    font-size:.72rem;
+}
+
+.configuracion-info p{
+    color:#667085;
+
+    font-size:.55rem;
+    line-height:1.35;
+}
+
+.configuracion-acciones{
+    display:grid;
+    grid-template-columns:1fr;
+
+    gap:8px;
+}
+
+.select-filtro{
+    width:100%;
+    min-height:42px;
+
+    padding:0 10px;
+
+    border:1px solid #d0d5dd;
+    border-radius:11px;
+
+    background:#ffffff;
+    color:#344054;
+
+    font-size:.63rem;
+
+    outline:none;
+}
+
+.select-filtro:focus{
+    border-color:#0f766e;
+
+    box-shadow:0 0 0 3px rgba(15,118,110,.1);
+}
+
+.btn-principal{
+    min-height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+
+    padding:7px 11px;
+
+    border-radius:11px;
+
+    background:#0f766e;
+    color:#ffffff;
+
+    font-size:.62rem;
+    font-weight:800;
+}
+
+.aviso-impresion{
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+
+    padding:10px 12px;
+
+    border:1px solid #d9e7e5;
+    border-radius:12px;
+
+    background:#f4faf9;
+}
+
+.aviso-impresion > span{
+    flex-shrink:0;
+}
+
+.aviso-impresion p{
+    color:#52606d;
+
+    font-size:.56rem;
+    line-height:1.4;
+}
+
+.sin-jugadores{
+    min-height:230px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+
+    padding:25px;
+
+    border:1px solid #dde5e7;
+    border-radius:17px;
+
+    background:#ffffff;
+
+    text-align:center;
+}
+
+.sin-jugadores-icono{
+    width:54px;
+    height:54px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:15px;
+
+    background:#eef7f5;
+
+    font-size:1.25rem;
+}
+
+.sin-jugadores strong{
+    color:#182230;
+
+    font-size:.75rem;
+}
+
+.sin-jugadores p{
+    max-width:340px;
+
+    color:#667085;
+
+    font-size:.61rem;
+    line-height:1.4;
+}
+
+.hojas-credenciales{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+}
+
+.hoja-credenciales{
+    width:100%;
+    max-width:900px;
+
+    display:grid;
+    grid-template-columns:1fr;
+
+    gap:12px;
+
+    padding:12px;
+
+    border:1px solid #dde5e7;
+    border-radius:18px;
+
+    background:#ffffff;
+
+    box-shadow:0 8px 28px rgba(15,23,42,.05);
+}
+
+.credencial{
+    width:100%;
+
+    overflow:hidden;
+
+    border-radius:14px;
+
+    background:#ffffff;
+
+    box-shadow:0 4px 18px rgba(15,23,42,.09);
+}
+
+.credencial-frente{
+    position:relative;
+
+    width:100%;
+    aspect-ratio:85.6 / 54;
+
+    display:flex;
+    flex-direction:column;
+
+    overflow:hidden;
+
+    border:1px solid #cfd9dc;
+    border-radius:14px;
+
+    background:
+        radial-gradient(
+            circle at 90% 8%,
+            rgba(15,118,110,.12),
+            transparent 25%
+        ),
+        linear-gradient(
+            145deg,
+            #ffffff 0%,
+            #f8fbfb 62%,
+            #edf6f4 100%
+        );
+
+    color:#182230;
+}
+
+.credencial-frente::before{
+    content:"";
+
+    position:absolute;
+    right:-32px;
+    top:-45px;
+
+    width:120px;
+    height:120px;
+
+    border:16px solid rgba(15,118,110,.045);
+    border-radius:50%;
+
+    pointer-events:none;
+}
+
+.credencial-header{
+    position:relative;
+    z-index:2;
+
+    min-height:24%;
+
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr) auto;
+
+    align-items:center;
+    gap:6px;
+
+    padding:3.5% 4%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0b5f58,
+            #0f766e
+        );
+
+    color:#ffffff;
+}
+
+.credencial-logo-liga{
+    width:34px;
+    height:34px;
+
+    object-fit:contain;
+
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,.12));
+}
+
+.credencial-liga{
+    display:flex;
+    flex-direction:column;
+
+    min-width:0;
+}
+
+.credencial-liga span{
+    color:#cdebe7;
+
+    font-size:.39rem;
+    font-weight:800;
+
+    letter-spacing:.08em;
+}
+
+.credencial-liga strong{
+    color:#ffffff;
+
+    font-size:.65rem;
+    line-height:1.05;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.credencial-liga small{
+    margin-top:2px;
+
+    color:#d8efec;
+
+    font-size:.31rem;
+    font-weight:700;
+
+    letter-spacing:.05em;
+}
+
+.credencial-temporada{
+    align-self:start;
+
+    padding:3px 5px;
+
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:999px;
+
+    background:rgba(255,255,255,.1);
+
+    color:#ffffff;
+
+    font-size:.3rem;
+    font-weight:900;
+
+    letter-spacing:.05em;
+}
+
+.credencial-contenido{
+    position:relative;
+    z-index:2;
+
+    flex:1;
+
+    display:grid;
+    grid-template-columns:29% minmax(0,1fr);
+
+    gap:4%;
+
+    padding:4% 4% 2.5%;
+}
+
+.credencial-foto{
+    width:100%;
+    aspect-ratio:3 / 3.6;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    align-self:start;
+
+    overflow:hidden;
+
+    border:2px solid #ffffff;
+    border-radius:9px;
+
+    background:#e7f1ef;
+
+    box-shadow:
+        0 0 0 1px #d5e0e2,
+        0 4px 10px rgba(15,23,42,.08);
+
+    color:#0f766e;
+
+    font-size:1rem;
+    font-weight:900;
+}
+
+.credencial-foto img{
+    width:100%;
+    height:100%;
+
+    display:block;
+
+    object-fit:cover;
+}
+
+.credencial-datos{
+    min-width:0;
+}
+
+.credencial-etiqueta{
+    display:block;
+
+    margin-bottom:1px;
+
+    color:#0f766e;
+
+    font-size:.32rem;
+    font-weight:900;
+
+    letter-spacing:.08em;
+}
+
+.credencial-nombre{
+    margin-bottom:4%;
+
+    color:#182230;
+
+    font-size:.66rem;
+    line-height:1.05;
+
+    text-transform:uppercase;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.credencial-datos-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+
+    gap:5px 7px;
+}
+
+.credencial-datos-grid > div{
+    min-width:0;
+}
+
+.credencial-datos-grid span{
+    display:block;
+
+    margin-bottom:1px;
+
+    color:#98a2b3;
+
+    font-size:.27rem;
+    font-weight:800;
+
+    letter-spacing:.04em;
+}
+
+.credencial-datos-grid strong{
+    display:block;
+
+    color:#344054;
+
+    font-size:.38rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.credencial-curp{
+    position:relative;
+    z-index:2;
+
+    display:flex;
+    align-items:center;
+    gap:5px;
+
+    margin:0 4% 2.5%;
+    padding:2.2% 3%;
+
+    border-radius:6px;
+
+    background:#edf4f3;
+}
+
+.credencial-curp span{
+    color:#0f766e;
+
+    font-size:.29rem;
+    font-weight:900;
+
+    letter-spacing:.06em;
+}
+
+.credencial-curp strong{
+    color:#344054;
+
+    font-size:.38rem;
+
+    letter-spacing:.025em;
+}
+
+.credencial-footer{
+    position:relative;
+    z-index:2;
+
+    min-height:21%;
+
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr) auto;
+
+    align-items:center;
+    gap:5px;
+
+    padding:2% 4% 3%;
+
+    border-top:1px solid #dce6e7;
+}
+
+.credencial-equipo-logo{
+    width:28px;
+    height:28px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    overflow:hidden;
+
+    border-radius:7px;
+
+    background:#edf4f3;
+
+    color:#0f766e;
+
+    font-size:.5rem;
+    font-weight:900;
+}
+
+.credencial-equipo-logo img{
+    width:100%;
+    height:100%;
+
+    display:block;
+
+    object-fit:contain;
+}
+
+.credencial-firma{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-end;
+
+    min-width:0;
+
+    text-align:center;
+}
+
+.firma-contenedor{
+    width:74%;
+    height:20px;
+
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+
+    overflow:hidden;
+
+    border-bottom:1px solid #667085;
+}
+
+.firma-img{
+    width:auto;
+    max-width:90%;
+    height:19px;
+
+    object-fit:contain;
+}
+
+.firma-placeholder{
+    padding-bottom:2px;
+
+    color:#98a2b3;
+
+    font-size:.24rem;
+    font-weight:800;
+
+    letter-spacing:.04em;
+}
+
+.credencial-firma > span{
+    margin-top:2px;
+
+    color:#98a2b3;
+
+    font-size:.23rem;
+    font-weight:800;
+}
+
+.credencial-folio{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+
+    min-width:45px;
+}
+
+.credencial-folio span{
+    color:#98a2b3;
+
+    font-size:.25rem;
+    font-weight:800;
+}
+
+.credencial-folio strong{
+    max-width:65px;
+
+    color:#0f766e;
+
+    font-size:.31rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.toast{
+    position:fixed;
+    left:14px;
+    right:14px;
+    bottom:14px;
+    z-index:200;
+
+    display:flex;
+    align-items:flex-start;
+    gap:9px;
+
+    padding:11px;
+
+    border:1px solid #cbe7d5;
+    border-radius:13px;
+
+    background:#f0faf3;
+
+    box-shadow:0 15px 40px rgba(15,23,42,.13);
+}
+
+.toast > span{
+    width:30px;
+    height:30px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:50%;
+
+    background:#d9f2e1;
+    color:#18794e;
+
+    font-size:.65rem;
+    font-weight:900;
+}
+
+.toast strong{
+    display:block;
+
+    margin-bottom:2px;
+
+    color:#182230;
+
+    font-size:.64rem;
+}
+
+.toast p{
+    color:#667085;
+
+    font-size:.56rem;
+    line-height:1.35;
+}
+
+@media (min-width:620px){
+
+    .hoja-credenciales{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    .configuracion-acciones{
+        grid-template-columns:minmax(190px,1fr) auto;
+    }
+
+}
+
+@media (min-width:700px){
+
+    .contenido{
+        padding:22px 20px 40px;
+    }
+
+    .encabezado-pagina{
+        flex-direction:row;
+        align-items:center;
+        justify-content:space-between;
+
+        padding:21px;
+    }
+
+    .equipo-resumen{
+        width:250px;
+
+        flex-shrink:0;
+    }
+
+    .panel-configuracion{
+        flex-direction:row;
+        align-items:center;
+        justify-content:space-between;
+    }
+
+    .configuracion-acciones{
+        min-width:430px;
+    }
+
+    .toast{
+        left:auto;
+        right:20px;
+        bottom:20px;
+
+        width:350px;
+    }
+
+}
+
+@media (min-width:960px){
+
+    .hoja-credenciales{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+
+        padding:18px;
+        gap:18px;
+    }
+
+}
+
+@media (max-width:430px){
+
+    .btn-imprimir-top span{
+        display:none;
+    }
+
+    .btn-imprimir-top{
+        width:40px;
+        height:40px;
+
+        padding:0;
+    }
+
+}
+
+@page{
+    size:A4 portrait;
+    margin:8mm;
+}
+
+@media print{
+
+    html,
+    body{
+        width:100%;
+
+        margin:0 !important;
+        padding:0 !important;
+
+        background:#ffffff !important;
+
+        -webkit-print-color-adjust:exact !important;
+        print-color-adjust:exact !important;
+    }
+
+    .topbar,
+    .encabezado-pagina,
+    .panel-configuracion,
+    .aviso-impresion,
+    .sin-jugadores,
+    .estado-carga,
+    .estado-error,
+    .toast{
+        display:none !important;
+    }
+
+    .credenciales-page,
+    .contenido,
+    .contenido-credenciales{
+        width:100% !important;
+        max-width:none !important;
+
+        margin:0 !important;
+        padding:0 !important;
+
+        display:block !important;
+    }
+
+    .hojas-credenciales{
+        display:block !important;
+
+        width:100% !important;
+    }
+
+    .hoja-credenciales{
+        width:194mm !important;
+        max-width:none !important;
+        min-height:281mm !important;
+
+        display:grid !important;
+        grid-template-columns:85.6mm 85.6mm !important;
+        grid-auto-rows:54mm !important;
+
+        justify-content:center;
+        align-content:start;
+
+        gap:8mm 8mm !important;
+
+        margin:0 auto !important;
+        padding:7mm 0 !important;
+
+        border:0 !important;
+        border-radius:0 !important;
+
+        background:#ffffff !important;
+
+        box-shadow:none !important;
+
+        break-after:page;
+        page-break-after:always;
+    }
+
+    .hoja-credenciales:last-child{
+        break-after:auto;
+        page-break-after:auto;
+    }
+
+    .credencial{
+        width:85.6mm !important;
+        height:54mm !important;
+
+        margin:0 !important;
+
+        overflow:hidden !important;
+
+        border-radius:3mm !important;
+
+        background:#ffffff !important;
+
+        box-shadow:none !important;
+
+        break-inside:avoid !important;
+        page-break-inside:avoid !important;
+    }
+
+    .credencial-frente{
+        width:85.6mm !important;
+        height:54mm !important;
+
+        aspect-ratio:auto !important;
+
+        border:0.25mm solid #cfd9dc !important;
+        border-radius:3mm !important;
+    }
+
+    .credencial-logo-liga{
+        width:9mm !important;
+        height:9mm !important;
+    }
+
+    .credencial-liga span{
+        font-size:5.5pt !important;
+    }
+
+    .credencial-liga strong{
+        font-size:8.5pt !important;
+    }
+
+    .credencial-liga small{
+        font-size:4.4pt !important;
+    }
+
+    .credencial-temporada{
+        font-size:4.4pt !important;
+    }
+
+    .credencial-etiqueta{
+        font-size:4.4pt !important;
+    }
+
+    .credencial-nombre{
+        font-size:8.2pt !important;
+    }
+
+    .credencial-datos-grid span{
+        font-size:4pt !important;
+    }
+
+    .credencial-datos-grid strong{
+        font-size:5.2pt !important;
+    }
+
+    .credencial-curp span{
+        font-size:4.2pt !important;
+    }
+
+    .credencial-curp strong{
+        font-size:5.2pt !important;
+    }
+
+    .credencial-equipo-logo{
+        width:8mm !important;
+        height:8mm !important;
+    }
+
+    .firma-contenedor{
+        height:6mm !important;
+    }
+
+    .firma-img{
+        height:5.7mm !important;
+    }
+
+    .firma-placeholder{
+        font-size:3.5pt !important;
+    }
+
+    .credencial-firma > span{
+        font-size:3.2pt !important;
+    }
+
+    .credencial-folio span{
+        font-size:3.5pt !important;
+    }
+
+    .credencial-folio strong{
+        font-size:4.3pt !important;
+    }
+
+}

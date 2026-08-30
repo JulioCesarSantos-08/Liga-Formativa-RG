@@ -1,0 +1,705 @@
+body{
+    background:#f4f6f8;
+    color:#14213d;
+    padding-bottom:82px;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+button,
+select{
+    font:inherit;
+}
+
+.app-tablas{
+    width:100%;
+    min-height:100vh;
+}
+
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:50;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    width:100%;
+    padding:10px 14px;
+
+    background:rgba(255,255,255,.96);
+    border-bottom:1px solid #e5e7eb;
+
+    backdrop-filter:blur(10px);
+}
+
+.topbar-identidad{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    min-width:0;
+}
+
+.btn-volver{
+    width:42px;
+    height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:12px;
+
+    background:#f2f4f7;
+    color:#344054;
+
+    font-size:1.25rem;
+    font-weight:700;
+}
+
+.topbar-logo{
+    width:44px;
+    height:44px;
+
+    object-fit:contain;
+    flex-shrink:0;
+}
+
+.topbar-texto{
+    display:flex;
+    flex-direction:column;
+
+    min-width:0;
+}
+
+.topbar-texto span{
+    color:#667085;
+    font-size:.72rem;
+}
+
+.topbar-texto strong{
+    color:#132238;
+    font-size:1rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.btn-perfil{
+    width:44px;
+    height:44px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:50%;
+
+    background:#0f766e;
+    color:#ffffff;
+
+    font-weight:800;
+}
+
+.contenido-tablas{
+    width:100%;
+    max-width:1180px;
+
+    margin:0 auto;
+    padding:18px 14px 28px;
+}
+
+.encabezado-pagina{
+    margin-bottom:22px;
+}
+
+.encabezado-mini{
+    display:block;
+
+    margin-bottom:5px;
+
+    color:#0f766e;
+
+    font-size:.72rem;
+    font-weight:800;
+
+    text-transform:uppercase;
+    letter-spacing:.07em;
+}
+
+.encabezado-pagina h1{
+    margin-bottom:7px;
+
+    color:#132238;
+
+    font-size:1.55rem;
+    line-height:1.15;
+}
+
+.encabezado-pagina p{
+    max-width:580px;
+
+    color:#667085;
+
+    font-size:.88rem;
+    line-height:1.45;
+}
+
+.selector-categoria{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+
+    margin-bottom:18px;
+}
+
+.selector-categoria label{
+    color:#344054;
+
+    font-size:.82rem;
+    font-weight:700;
+}
+
+.selector-categoria select{
+    width:100%;
+    min-height:50px;
+
+    padding:0 14px;
+
+    border:1px solid #d0d5dd;
+    border-radius:13px;
+
+    background:#ffffff;
+    color:#101828;
+
+    font-size:16px;
+    outline:none;
+}
+
+.selector-categoria select:focus{
+    border-color:#0f766e;
+    box-shadow:0 0 0 3px rgba(15,118,110,.12);
+}
+
+.tabla-info{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:14px;
+
+    margin-bottom:14px;
+}
+
+.seccion-mini{
+    display:block;
+
+    margin-bottom:2px;
+
+    color:#0f766e;
+
+    font-size:.7rem;
+    font-weight:800;
+
+    text-transform:uppercase;
+    letter-spacing:.07em;
+}
+
+.tabla-info h2{
+    color:#132238;
+    font-size:1.2rem;
+}
+
+.tabla-leyenda{
+    display:none;
+    gap:12px;
+
+    color:#667085;
+
+    font-size:.7rem;
+}
+
+.tabla-desktop{
+    display:none;
+}
+
+.tabla-mobile{
+    display:flex;
+    flex-direction:column;
+    gap:11px;
+}
+
+.equipo-posicion-card{
+    padding:14px;
+
+    border:1px solid #e4e7ec;
+    border-radius:18px;
+
+    background:#ffffff;
+
+    box-shadow:0 6px 20px rgba(15,23,42,.04);
+}
+
+.equipo-posicion-superior{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+
+    margin-bottom:14px;
+}
+
+.equipo-identidad{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    min-width:0;
+}
+
+.posicion-mobile{
+    width:30px;
+    height:30px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:10px;
+
+    background:#f2f4f7;
+    color:#344054;
+
+    font-size:.78rem;
+    font-weight:800;
+}
+
+.posicion-mobile.top{
+    background:#e8f5f2;
+    color:#0f766e;
+}
+
+.escudo-mobile{
+    width:46px;
+    height:46px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:14px;
+
+    border:1px solid #dfe4e8;
+
+    background:
+        linear-gradient(
+            145deg,
+            #f4f6f8,
+            #e8ecef
+        );
+
+    color:#0f766e;
+
+    font-weight:900;
+}
+
+.equipo-identidad > div:last-child{
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+
+    min-width:0;
+}
+
+.equipo-identidad strong{
+    color:#182230;
+
+    font-size:.9rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.equipo-identidad span{
+    color:#667085;
+
+    font-size:.7rem;
+}
+
+.puntos-mobile{
+    min-width:48px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+
+    flex-shrink:0;
+}
+
+.puntos-mobile strong{
+    color:#0f766e;
+
+    font-size:1.3rem;
+    line-height:1;
+}
+
+.puntos-mobile span{
+    margin-top:4px;
+
+    color:#667085;
+
+    font-size:.62rem;
+    font-weight:700;
+}
+
+.estadisticas-mobile{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+
+    gap:6px;
+
+    margin-bottom:12px;
+}
+
+.estadisticas-mobile > div{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    min-width:0;
+
+    padding:8px 4px;
+
+    border-radius:10px;
+
+    background:#f8fafb;
+}
+
+.estadisticas-mobile span{
+    margin-bottom:3px;
+
+    color:#667085;
+
+    font-size:.61rem;
+    font-weight:700;
+}
+
+.estadisticas-mobile strong{
+    color:#344054;
+
+    font-size:.8rem;
+}
+
+.positivo{
+    color:#18794e !important;
+}
+
+.negativo{
+    color:#b42318 !important;
+}
+
+.btn-ver-equipo{
+    min-height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:11px;
+
+    background:#f1f7f6;
+    color:#0f766e;
+
+    font-size:.78rem;
+    font-weight:800;
+}
+
+.nota-tabla{
+    margin-top:20px;
+
+    padding:15px;
+
+    border-radius:16px;
+
+    background:#eef7f5;
+
+    border:1px solid #d5ebe7;
+}
+
+.nota-tabla strong{
+    display:block;
+
+    margin-bottom:5px;
+
+    color:#0f766e;
+
+    font-size:.84rem;
+}
+
+.nota-tabla p{
+    color:#52606d;
+
+    font-size:.76rem;
+    line-height:1.45;
+}
+
+.bottom-nav{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:60;
+
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+
+    min-height:68px;
+
+    border-top:1px solid #e4e7ec;
+
+    background:rgba(255,255,255,.98);
+
+    backdrop-filter:blur(10px);
+}
+
+.bottom-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:3px;
+
+    min-width:0;
+
+    color:#667085;
+}
+
+.bottom-item span{
+    font-size:1.2rem;
+}
+
+.bottom-item small{
+    font-size:.67rem;
+    font-weight:600;
+}
+
+.bottom-item.active{
+    color:#0f766e;
+}
+
+@media (hover:hover) and (pointer:fine){
+
+    .equipo-posicion-card{
+        transition:.18s ease;
+    }
+
+    .equipo-posicion-card:hover{
+        transform:translateY(-2px);
+
+        border-color:#cfd8df;
+
+        box-shadow:0 10px 28px rgba(15,23,42,.06);
+    }
+
+    .btn-ver-equipo:hover{
+        background:#e4f1ef;
+    }
+
+}
+
+@media (min-width:700px){
+
+    body{
+        padding-bottom:0;
+    }
+
+    .topbar{
+        padding:12px 24px;
+    }
+
+    .contenido-tablas{
+        padding:28px 24px 40px;
+    }
+
+    .selector-categoria{
+        max-width:360px;
+    }
+
+    .tabla-mobile{
+        display:none;
+    }
+
+    .tabla-desktop{
+        display:block;
+    }
+
+    .tabla-leyenda{
+        display:flex;
+    }
+
+    .tabla-wrapper{
+        width:100%;
+
+        overflow-x:auto;
+
+        border:1px solid #e4e7ec;
+        border-radius:18px;
+
+        background:#ffffff;
+
+        box-shadow:0 6px 20px rgba(15,23,42,.04);
+    }
+
+    table{
+        width:100%;
+        min-width:760px;
+
+        border-collapse:collapse;
+    }
+
+    thead{
+        background:#f8fafb;
+    }
+
+    th{
+        padding:13px 12px;
+
+        border-bottom:1px solid #e4e7ec;
+
+        color:#667085;
+
+        font-size:.7rem;
+        font-weight:800;
+
+        text-align:center;
+
+        text-transform:uppercase;
+        letter-spacing:.03em;
+    }
+
+    th.equipo-columna{
+        text-align:left;
+    }
+
+    td{
+        padding:13px 12px;
+
+        border-bottom:1px solid #eef0f2;
+
+        color:#344054;
+
+        font-size:.8rem;
+
+        text-align:center;
+    }
+
+    tbody tr:last-child td{
+        border-bottom:none;
+    }
+
+    .equipo-tabla{
+        display:flex;
+        align-items:center;
+        gap:10px;
+
+        min-width:190px;
+
+        text-align:left;
+    }
+
+    .equipo-tabla a{
+        color:#182230;
+
+        font-weight:700;
+    }
+
+    .escudo-mini{
+        width:38px;
+        height:38px;
+
+        display:flex;
+        align-items:center;
+        justify-content:center;
+
+        flex-shrink:0;
+
+        border-radius:11px;
+
+        border:1px solid #dfe4e8;
+
+        background:#f5f7f9;
+
+        color:#0f766e;
+
+        font-size:.74rem;
+        font-weight:900;
+    }
+
+    .posicion{
+        width:28px;
+        height:28px;
+
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+
+        border-radius:9px;
+
+        background:#f2f4f7;
+
+        color:#344054;
+
+        font-size:.72rem;
+        font-weight:800;
+    }
+
+    .posicion.top{
+        background:#e8f5f2;
+        color:#0f766e;
+    }
+
+    .puntos{
+        color:#0f766e;
+
+        font-weight:900;
+    }
+
+    .bottom-nav{
+        position:static;
+
+        width:100%;
+        max-width:1180px;
+
+        margin:0 auto 30px;
+
+        overflow:hidden;
+
+        border:1px solid #e4e7ec;
+        border-radius:18px;
+    }
+
+}
+
+@media (min-width:1000px){
+
+    th,
+    td{
+        padding:15px 14px;
+    }
+
+}

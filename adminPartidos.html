@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Partidos | Liga Deportiva Río Grande</title>
+
+    <link rel="icon" href="imagenes/logo.png">
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/adminPartidos.css">
+</head>
+
+<body>
+
+    <div class="admin-page">
+
+        <header class="topbar-admin">
+
+            <div class="topbar-left">
+
+                <a
+                    href="admin.html"
+                    class="btn-volver"
+                    aria-label="Volver al panel"
+                >
+                    ←
+                </a>
+
+                <img
+                    src="imagenes/logo.png"
+                    alt="Liga Deportiva Río Grande"
+                    class="topbar-logo"
+                >
+
+                <div class="topbar-titulo">
+                    <span>Administración</span>
+                    <strong>Partidos</strong>
+                </div>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <a
+                    href="publico.html"
+                    class="btn-ver-sitio"
+                >
+                    👁️
+                    <span>Ver sitio</span>
+                </a>
+
+                <div
+                    id="adminInicial"
+                    class="admin-avatar"
+                >
+                    A
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <main class="contenido-admin">
+
+            <section class="encabezado-pagina">
+
+                <div>
+
+                    <span class="encabezado-mini">
+                        COMPETENCIA
+                    </span>
+
+                    <h1>
+                        Partidos
+                    </h1>
+
+                    <p>
+                        Programa encuentros oficiales, asigna árbitros
+                        y administra fechas, campos y jornadas.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="btnNuevoPartido"
+                    class="btn-principal"
+                >
+                    + Nuevo partido
+                </button>
+
+            </section>
+
+
+            <section class="resumen-partidos">
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        ⚽
+                    </div>
+
+                    <div>
+                        <span>Total partidos</span>
+                        <strong id="totalPartidos">0</strong>
+                    </div>
+
+                </article>
+
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        ⏳
+                    </div>
+
+                    <div>
+                        <span>Próximos</span>
+                        <strong id="totalProximos">0</strong>
+                    </div>
+
+                </article>
+
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        🔴
+                    </div>
+
+                    <div>
+                        <span>En juego</span>
+                        <strong id="totalEnJuego">0</strong>
+                    </div>
+
+                </article>
+
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        ✅
+                    </div>
+
+                    <div>
+                        <span>Finalizados</span>
+                        <strong id="totalFinalizados">0</strong>
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <section class="panel-partidos">
+
+                <div class="herramientas">
+
+                    <div class="buscador">
+
+                        <span class="buscador-icono">
+                            🔎
+                        </span>
+
+                        <input
+                            type="search"
+                            id="buscarPartido"
+                            placeholder="Buscar equipo..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <select
+                        id="filtroCategoria"
+                        class="select-filtro"
+                    >
+                        <option value="todas">
+                            Todas las categorías
+                        </option>
+                    </select>
+
+
+                    <select
+                        id="filtroJornada"
+                        class="select-filtro"
+                    >
+                        <option value="todas">
+                            Todas las jornadas
+                        </option>
+                    </select>
+
+
+                    <select
+                        id="filtroEstado"
+                        class="select-filtro"
+                    >
+                        <option value="todos">
+                            Todos los estados
+                        </option>
+
+                        <option value="proximo">
+                            Próximos
+                        </option>
+
+                        <option value="enJuego">
+                            En juego
+                        </option>
+
+                        <option value="finalizado">
+                            Finalizados
+                        </option>
+
+                        <option value="cancelado">
+                            Cancelados
+                        </option>
+                    </select>
+
+                </div>
+
+
+                <div
+                    id="estadoCarga"
+                    class="estado-carga"
+                >
+                    <div class="spinner"></div>
+
+                    <span>
+                        Cargando partidos...
+                    </span>
+                </div>
+
+
+                <div
+                    id="estadoVacio"
+                    class="estado-vacio oculto"
+                >
+
+                    <div class="estado-vacio-icono">
+                        ⚽
+                    </div>
+
+                    <strong>
+                        No hay partidos registrados
+                    </strong>
+
+                    <p>
+                        Crea el primer partido para comenzar
+                        a construir el calendario oficial.
+                    </p>
+
+                </div>
+
+
+                <div
+                    id="listaPartidos"
+                    class="lista-partidos oculto"
+                ></div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <div
+        id="modalPartido"
+        class="modal-overlay oculto"
+    >
+
+        <div
+            class="modal-partido"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modalTitulo"
+        >
+
+            <div class="modal-header">
+
+                <div>
+
+                    <span class="modal-mini">
+                        PARTIDO
+                    </span>
+
+                    <h2 id="modalTitulo">
+                        Nuevo partido
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="btnCerrarModal"
+                    class="btn-cerrar-modal"
+                    aria-label="Cerrar"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="formPartido">
+
+                <div class="form-grid">
+
+                    <div class="form-grupo">
+
+                        <label for="categoriaPartido">
+                            Categoría
+                        </label>
+
+                        <select
+                            id="categoriaPartido"
+                            required
+                        >
+                            <option value="">
+                                Selecciona una categoría
+                            </option>
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-grupo">
+
+                        <label for="jornadaPartido">
+                            Jornada
+                        </label>
+
+                        <select
+                            id="jornadaPartido"
+                            required
+                        >
+                            <option value="">
+                                Selecciona una jornada
+                            </option>
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="enfrentamiento-editor">
+
+                    <div class="equipo-selector">
+
+                        <span class="equipo-etiqueta">
+                            LOCAL
+                        </span>
+
+                        <div
+                            id="previewLocal"
+                            class="equipo-preview"
+                        >
+                            L
+                        </div>
+
+                        <select
+                            id="equipoLocal"
+                            required
+                        >
+                            <option value="">
+                                Selecciona equipo local
+                            </option>
+                        </select>
+
+                    </div>
+
+
+                    <div class="vs-editor">
+                        VS
+                    </div>
+
+
+                    <div class="equipo-selector">
+
+                        <span class="equipo-etiqueta">
+                            VISITANTE
+                        </span>
+
+                        <div
+                            id="previewVisitante"
+                            class="equipo-preview"
+                        >
+                            V
+                        </div>
+
+                        <select
+                            id="equipoVisitante"
+                            required
+                        >
+                            <option value="">
+                                Selecciona equipo visitante
+                            </option>
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-grupo">
+
+                        <label for="fechaPartido">
+                            Fecha
+                        </label>
+
+                        <input
+                            type="date"
+                            id="fechaPartido"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-grupo">
+
+                        <label for="horaPartido">
+                            Hora
+                        </label>
+
+                        <input
+                            type="time"
+                            id="horaPartido"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grupo">
+
+                    <label for="campoPartido">
+                        Campo o sede
+                    </label>
+
+                    <input
+                        type="text"
+                        id="campoPartido"
+                        maxlength="120"
+                        placeholder="Ej. Campo Municipal"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-grupo">
+
+                    <label for="arbitroPartido">
+                        Árbitro asignado
+                    </label>
+
+                    <select
+                        id="arbitroPartido"
+                        required
+                    >
+                        <option value="">
+                            Selecciona un árbitro
+                        </option>
+                    </select>
+
+                    <small>
+                        Solo el árbitro asignado podrá registrar la
+                        asistencia y la cédula de este partido.
+                    </small>
+
+                </div>
+
+
+                <div class="form-grupo">
+
+                    <label for="observacionesPartido">
+                        Observaciones
+                    </label>
+
+                    <textarea
+                        id="observacionesPartido"
+                        rows="3"
+                        maxlength="300"
+                        placeholder="Información adicional del encuentro..."
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-grupo">
+
+                    <label>
+                        Estado
+                    </label>
+
+
+                    <div class="estado-selector estado-selector-partido">
+
+                        <button
+                            type="button"
+                            id="btnEstadoProximo"
+                            class="estado-opcion activo"
+                            data-estado="proximo"
+                        >
+                            <span class="estado-punto azul"></span>
+                            Próximo
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="btnEstadoEnJuego"
+                            class="estado-opcion"
+                            data-estado="enJuego"
+                        >
+                            <span class="estado-punto verde"></span>
+                            En juego
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="btnEstadoFinalizado"
+                            class="estado-opcion"
+                            data-estado="finalizado"
+                        >
+                            <span class="estado-punto gris"></span>
+                            Finalizado
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="btnEstadoCancelado"
+                            class="estado-opcion"
+                            data-estado="cancelado"
+                        >
+                            <span class="estado-punto rojo"></span>
+                            Cancelado
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="grupoMotivoCancelacion"
+                    class="form-grupo oculto"
+                >
+
+                    <label for="motivoCancelacion">
+                        Motivo de cancelación
+                    </label>
+
+                    <textarea
+                        id="motivoCancelacion"
+                        rows="3"
+                        maxlength="300"
+                        placeholder="Explica por qué fue cancelado..."
+                    ></textarea>
+
+                </div>
+
+
+                <div class="aviso-partido">
+
+                    <span>
+                        🧑‍⚖️
+                    </span>
+
+                    <p>
+                        El árbitro asignado quedará ligado a este encuentro.
+                        Posteriormente será quien registre asistencia,
+                        goles, tarjetas, incidencias y la cédula oficial.
+                    </p>
+
+                </div>
+
+
+                <div class="modal-acciones">
+
+                    <button
+                        type="button"
+                        id="btnCancelarModal"
+                        class="btn-cancelar"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        id="btnGuardarPartido"
+                        class="btn-guardar"
+                    >
+                        Guardar partido
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="toast"
+        class="toast oculto"
+    >
+
+        <span id="toastIcono">
+            ✓
+        </span>
+
+        <div>
+
+            <strong id="toastTitulo">
+                Partido guardado
+            </strong>
+
+            <p id="toastTexto">
+                Los cambios fueron guardados correctamente.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <script
+        type="module"
+        src="js/admin/adminPartidos.js"
+    ></script>
+
+</body>
+</html>

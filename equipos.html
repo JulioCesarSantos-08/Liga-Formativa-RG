@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Equipos | Liga Deportiva Río Grande</title>
+
+    <link rel="icon" href="imagenes/favicon.png">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/equipos.css">
+</head>
+
+<body>
+
+    <div class="app-equipos">
+
+        <header class="topbar">
+
+            <div class="topbar-identidad">
+
+                <a
+                    href="publico.html"
+                    class="btn-volver"
+                    aria-label="Volver al inicio"
+                >
+                    ←
+                </a>
+
+                <img
+                    src="imagenes/logo.png"
+                    alt="Liga Deportiva Río Grande"
+                    class="topbar-logo"
+                >
+
+                <div class="topbar-texto">
+                    <span>Liga Municipal</span>
+                    <strong>Equipos</strong>
+                </div>
+
+            </div>
+
+            <button
+                type="button"
+                id="btnPerfil"
+                class="btn-perfil"
+                aria-label="Abrir perfil"
+            >
+                <span id="perfilInicial">U</span>
+            </button>
+
+        </header>
+
+
+        <main class="contenido-equipos">
+
+            <section class="encabezado-pagina">
+
+                <span class="encabezado-mini">
+                    Clubes participantes
+                </span>
+
+                <h1>
+                    Equipos
+                </h1>
+
+                <p>
+                    Consulta los clubes registrados, su posición,
+                    estadísticas y plantilla oficial.
+                </p>
+
+            </section>
+
+
+            <section class="selector-categoria">
+
+                <label for="categoriaSelect">
+                    Categoría
+                </label>
+
+                <select id="categoriaSelect">
+
+                    <option value="libre">
+                        Categoría Libre
+                    </option>
+
+                    <option value="juvenil">
+                        Juvenil
+                    </option>
+
+                    <option value="infantil">
+                        Infantil
+                    </option>
+
+                </select>
+
+            </section>
+
+
+            <section class="resumen-categoria">
+
+                <div>
+                    <span class="seccion-mini">
+                        Categoría seleccionada
+                    </span>
+
+                    <h2 id="tituloCategoria">
+                        Categoría Libre
+                    </h2>
+                </div>
+
+                <span id="totalEquipos" class="total-equipos">
+                    6 equipos
+                </span>
+
+            </section>
+
+
+            <section
+                id="listaEquipos"
+                class="grid-equipos"
+            >
+
+                <article class="equipo-card">
+
+                    <div class="equipo-card-top">
+
+                        <div class="escudo-equipo">
+                            J
+                        </div>
+
+                        <span class="posicion-badge">
+                            #1
+                        </span>
+
+                    </div>
+
+                    <div class="equipo-card-info">
+
+                        <h3>
+                            Juárez
+                        </h3>
+
+                        <span>
+                            Categoría Libre
+                        </span>
+
+                    </div>
+
+                    <div class="equipo-estadisticas">
+
+                        <div>
+                            <span>PJ</span>
+                            <strong>4</strong>
+                        </div>
+
+                        <div>
+                            <span>PTS</span>
+                            <strong>10</strong>
+                        </div>
+
+                        <div>
+                            <span>DG</span>
+                            <strong class="positivo">
+                                +6
+                            </strong>
+                        </div>
+
+                    </div>
+
+                    <div class="equipo-meta">
+
+                        <span>
+                            👥 26 jugadores
+                        </span>
+
+                        <span class="estado-activo">
+                            ● Activo
+                        </span>
+
+                    </div>
+
+                    <a
+                        href="equipo.html"
+                        class="btn-ver-equipo"
+                    >
+                        Ver equipo
+                    </a>
+
+                </article>
+
+
+                <article class="equipo-card">
+
+                    <div class="equipo-card-top">
+
+                        <div class="escudo-equipo">
+                            S
+                        </div>
+
+                        <span class="posicion-badge">
+                            #2
+                        </span>
+
+                    </div>
+
+                    <div class="equipo-card-info">
+
+                        <h3>
+                            Santos FC
+                        </h3>
+
+                        <span>
+                            Categoría Libre
+                        </span>
+
+                    </div>
+
+                    <div class="equipo-estadisticas">
+
+                        <div>
+                            <span>PJ</span>
+                            <strong>4</strong>
+                        </div>
+
+                        <div>
+                            <span>PTS</span>
+                            <strong>9</strong>
+                        </div>
+
+                        <div>
+                            <span>DG</span>
+                            <strong class="positivo">
+                                +4
+                            </strong>
+                        </div>
+
+                    </div>
+
+                    <div class="equipo-meta">
+
+                        <span>
+                            👥 24 jugadores
+                        </span>
+
+                        <span class="estado-activo">
+                            ● Activo
+                        </span>
+
+                    </div>
+
+                    <a
+                        href="equipo.html"
+                        class="btn-ver-equipo"
+                    >
+                        Ver equipo
+                    </a>
+
+                </article>
+
+
+                <article class="equipo-card">
+
+                    <div class="equipo-card-top">
+
+                        <div class="escudo-equipo">
+                            C
+                        </div>
+
+                        <span class="posicion-badge">
+                            #3
+                        </span>
+
+                    </div>
+
+                    <div class="equipo-card-info">
+
+                        <h3>
+                            Chacales
+                        </h3>
+
+                        <span>
+                            Categoría Libre
+                        </span>
+
+                    </div>
+
+                    <div class="equipo-estadisticas">
+
+                        <div>
+                            <span>PJ</span>
+                            <strong>4</strong>
+                        </div>
+
+                        <div>
+                            <span>PTS</span>
+                            <strong>7</strong>
+                        </div>
+
+                        <div>
+                            <span>DG</span>
+                            <strong class="positivo">
+                                +2
+                            </strong>
+                        </div>
+
+                    </div>
+
+                    <div class="equipo-meta">
+
+                        <span>
+                            👥 26 jugadores
+                        </span>
+
+                        <span class="estado-activo">
+                            ● Activo
+                        </span>
+
+                    </div>
+
+                    <a
+                        href="equipo.html"
+                        class="btn-ver-equipo"
+                    >
+                        Ver equipo
+                    </a>
+
+                </article>
+
+
+                <article class="equipo-card">
+
+                    <div class="equipo-card-top">
+
+                        <div class="escudo-equipo">
+                            P
+                        </div>
+
+                        <span class="posicion-badge">
+                            #4
+                        </span>
+
+                    </div>
+
+                    <div class="equipo-card-info">
+
+                        <h3>
+                            Pumas
+                        </h3>
+
+                        <span>
+                            Categoría Libre
+                        </span>
+
+                    </div>
+
+                    <div class="equipo-estadisticas">
+
+                        <div>
+                            <span>PJ</span>
+                            <strong>4</strong>
+                        </div>
+
+                        <div>
+                            <span>PTS</span>
+                            <strong>5</strong>
+                        </div>
+
+                        <div>
+                            <span>DG</span>
+                            <strong>0</strong>
+                        </div>
+
+                    </div>
+
+                    <div class="equipo-meta">
+
+                        <span>
+                            👥 22 jugadores
+                        </span>
+
+                        <span class="estado-activo">
+                            ● Activo
+                        </span>
+
+                    </div>
+
+                    <a
+                        href="equipo.html"
+                        class="btn-ver-equipo"
+                    >
+                        Ver equipo
+                    </a>
+
+                </article>
+
+
+                <article class="equipo-card">
+
+                    <div class="equipo-card-top">
+
+                        <div class="escudo-equipo">
+                            R
+                        </div>
+
+                        <span class="posicion-badge">
+                            #5
+                        </span>
+
+                    </div>
+
+                    <div class="equipo-card-info">
+
+                        <h3>
+                            La Roma
+                        </h3>
+
+                        <span>
+                            Categoría Libre
+                        </span>
+
+                    </div>
+
+                    <div class="equipo-estadisticas">
+
+                        <div>
+                            <span>PJ</span>
+                            <strong>4</strong>
+                        </div>
+
+                        <div>
+                            <span>PTS</span>
+                            <strong>3</strong>
+                        </div>
+
+                        <div>
+                            <span>DG</span>
+                            <strong class="negativo">
+                                -4
+                            </strong>
+                        </div>
+
+                    </div>
+
+                    <div class="equipo-meta">
+
+                        <span>
+                            👥 26 jugadores
+                        </span>
+
+                        <span class="estado-activo">
+                            ● Activo
+                        </span>
+
+                    </div>
+
+                    <a
+                        href="equipo.html"
+                        class="btn-ver-equipo"
+                    >
+                        Ver equipo
+                    </a>
+
+                </article>
+
+
+                <article class="equipo-card equipo-descalificado">
+
+                    <div class="equipo-card-top">
+
+                        <div class="escudo-equipo">
+                            A
+                        </div>
+
+                        <span class="posicion-badge">
+                            #6
+                        </span>
+
+                    </div>
+
+                    <div class="equipo-card-info">
+
+                        <h3>
+                            Atlas
+                        </h3>
+
+                        <span>
+                            Categoría Libre
+                        </span>
+
+                    </div>
+
+                    <div class="equipo-estadisticas">
+
+                        <div>
+                            <span>PJ</span>
+                            <strong>4</strong>
+                        </div>
+
+                        <div>
+                            <span>PTS</span>
+                            <strong>0</strong>
+                        </div>
+
+                        <div>
+                            <span>DG</span>
+                            <strong class="negativo">
+                                -8
+                            </strong>
+                        </div>
+
+                    </div>
+
+                    <div class="equipo-meta">
+
+                        <span>
+                            👥 20 jugadores
+                        </span>
+
+                        <span class="estado-descalificado">
+                            ● Descalificado
+                        </span>
+
+                    </div>
+
+                    <p class="motivo-descalificacion">
+                        Sanción administrativa
+                    </p>
+
+                    <a
+                        href="equipo.html"
+                        class="btn-ver-equipo"
+                    >
+                        Ver historial
+                    </a>
+
+                </article>
+
+            </section>
+
+        </main>
+
+
+        <nav class="bottom-nav">
+
+            <a
+                href="publico.html"
+                class="bottom-item"
+            >
+                <span>🏠</span>
+                <small>Inicio</small>
+            </a>
+
+
+            <a
+                href="jornadas.html"
+                class="bottom-item"
+            >
+                <span>📅</span>
+                <small>Jornadas</small>
+            </a>
+
+
+            <a
+                href="tablas.html"
+                class="bottom-item"
+            >
+                <span>🏆</span>
+                <small>Tabla</small>
+            </a>
+
+
+            <a
+                href="chat.html"
+                class="bottom-item"
+            >
+                <span>💬</span>
+                <small>Chat</small>
+            </a>
+
+
+            <a
+                href="publico.html"
+                class="bottom-item"
+            >
+                <span>☰</span>
+                <small>Más</small>
+            </a>
+
+        </nav>
+
+    </div>
+
+
+    <script
+        type="module"
+        src="js/publico/equipos.js"
+    ></script>
+
+</body>
+</html>

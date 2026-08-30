@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#0f766e">
+
+    <title>Mi Equipo | Liga Deportiva Río Grande</title>
+
+    <link rel="icon" href="imagenes/logo.png">
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/jefeEquipo.css">
+</head>
+
+<body>
+
+    <div class="jefe-page">
+
+        <header class="topbar">
+
+            <div class="topbar-marca">
+
+                <img
+                    src="imagenes/logo.png"
+                    alt="Liga Deportiva Río Grande"
+                    class="topbar-logo"
+                >
+
+                <div class="topbar-texto">
+
+                    <span>
+                        Liga Deportiva
+                    </span>
+
+                    <strong>
+                        Río Grande
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="topbar-acciones">
+
+                <a
+                    href="publico.html"
+                    class="btn-publico"
+                >
+                    <span>
+                        👁️
+                    </span>
+
+                    <span class="btn-publico-texto">
+                        Ver liga
+                    </span>
+                </a>
+
+
+                <button
+                    type="button"
+                    id="btnCerrarSesion"
+                    class="btn-sesion"
+                    aria-label="Cerrar sesión"
+                >
+                    ↪
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <main class="contenido">
+
+            <section
+                id="estadoCarga"
+                class="estado-carga"
+            >
+
+                <div class="spinner"></div>
+
+                <span>
+                    Cargando tu equipo...
+                </span>
+
+            </section>
+
+
+            <section
+                id="sinEquipo"
+                class="sin-equipo oculto"
+            >
+
+                <div class="sin-equipo-icono">
+                    🛡️
+                </div>
+
+                <span class="sin-equipo-mini">
+                    JEFE DE EQUIPO
+                </span>
+
+                <h1>
+                    Aún no tienes un equipo asignado
+                </h1>
+
+                <p>
+                    Tu cuenta ya tiene permisos como jefe de equipo,
+                    pero todavía no está vinculada a ningún club.
+                </p>
+
+                <p>
+                    Un administrador deberá asignarte un equipo
+                    antes de que puedas registrar jugadores.
+                </p>
+
+                <a
+                    href="publico.html"
+                    class="btn-ver-liga"
+                >
+                    Ver liga
+                </a>
+
+            </section>
+
+
+            <div
+                id="contenidoEquipo"
+                class="contenido-equipo oculto"
+            >
+
+                <section class="equipo-hero">
+
+                    <div class="equipo-hero-identidad">
+
+                        <div
+                            id="equipoLogo"
+                            class="equipo-logo"
+                        >
+                            E
+                        </div>
+
+
+                        <div class="equipo-hero-info">
+
+                            <span class="equipo-mini">
+                                MI EQUIPO
+                            </span>
+
+                            <h1 id="equipoNombre">
+                                Equipo
+                            </h1>
+
+                            <div class="equipo-meta">
+
+                                <span id="equipoCategoria">
+                                    Categoría
+                                </span>
+
+                                <span
+                                    id="equipoEstado"
+                                    class="estado-equipo activo"
+                                >
+                                    Activo
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="jefe-identidad">
+
+                        <div
+                            id="jefeInicial"
+                            class="jefe-avatar"
+                        >
+                            J
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Responsable
+                            </span>
+
+                            <strong id="jefeNombre">
+                                Jefe de equipo
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <section class="resumen">
+
+                    <article class="resumen-card">
+
+                        <div class="resumen-icono">
+                            👥
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Jugadores
+                            </span>
+
+                            <strong>
+                                <span id="totalJugadores">0</span>
+                                / 26
+                            </strong>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="resumen-card">
+
+                        <div class="resumen-icono">
+                            ✅
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Activos
+                            </span>
+
+                            <strong id="totalActivos">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="resumen-card">
+
+                        <div class="resumen-icono">
+                            🚫
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Suspendidos
+                            </span>
+
+                            <strong id="totalSuspendidos">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="resumen-card">
+
+                        <div class="resumen-icono">
+                            🪪
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Con credencial
+                            </span>
+
+                            <strong id="totalCredenciales">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+                <section class="acciones-equipo">
+
+                    <button
+                        type="button"
+                        id="btnNuevoJugador"
+                        class="accion-principal"
+                    >
+
+                        <span class="accion-icono">
+                            ＋
+                        </span>
+
+                        <div>
+
+                            <small>
+                                PLANTILLA
+                            </small>
+
+                            <strong>
+                                Registrar jugador
+                            </strong>
+
+                            <p>
+                                Agrega un nuevo integrante al equipo.
+                            </p>
+
+                        </div>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="btnGenerarCredenciales"
+                        class="accion-card"
+                    >
+
+                        <span class="accion-icono">
+                            🪪
+                        </span>
+
+                        <div>
+
+                            <small>
+                                DOCUMENTOS
+                            </small>
+
+                            <strong>
+                                Generar credenciales
+                            </strong>
+
+                            <p>
+                                Prepara las credenciales imprimibles.
+                            </p>
+
+                        </div>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="btnVerPartidos"
+                        class="accion-card"
+                    >
+
+                        <span class="accion-icono">
+                            ⚽
+                        </span>
+
+                        <div>
+
+                            <small>
+                                COMPETENCIA
+                            </small>
+
+                            <strong>
+                                Mis partidos
+                            </strong>
+
+                            <p>
+                                Consulta encuentros y resultados.
+                            </p>
+
+                        </div>
+
+                    </button>
+
+                </section>
+
+
+                <section class="panel-jugadores">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <span class="panel-mini">
+                                PLANTILLA
+                            </span>
+
+                            <h2>
+                                Mis jugadores
+                            </h2>
+
+                        </div>
+
+
+                        <div class="buscador">
+
+                            <span>
+                                🔎
+                            </span>
+
+                            <input
+                                type="search"
+                                id="buscarJugador"
+                                placeholder="Buscar jugador..."
+                                autocomplete="off"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="sinJugadores"
+                        class="estado-vacio oculto"
+                    >
+
+                        <div class="estado-vacio-icono">
+                            👥
+                        </div>
+
+                        <strong>
+                            Tu plantilla está vacía
+                        </strong>
+
+                        <p>
+                            Registra al primer jugador de tu equipo.
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        id="gridJugadores"
+                        class="grid-jugadores"
+                    ></div>
+
+                </section>
+
+            </div>
+
+        </main>
+
+
+        <nav
+            id="navegacionMovil"
+            class="navegacion-movil oculto"
+        >
+
+            <button
+                type="button"
+                class="nav-item activo"
+                data-accion="plantilla"
+            >
+                <span>
+                    👥
+                </span>
+
+                <small>
+                    Plantilla
+                </small>
+            </button>
+
+
+            <button
+                type="button"
+                class="nav-item"
+                data-accion="nuevo"
+            >
+                <span>
+                    ＋
+                </span>
+
+                <small>
+                    Registrar
+                </small>
+            </button>
+
+
+            <button
+                type="button"
+                class="nav-item"
+                data-accion="credenciales"
+            >
+                <span>
+                    🪪
+                </span>
+
+                <small>
+                    Credenciales
+                </small>
+            </button>
+
+
+            <a
+                href="publico.html"
+                class="nav-item"
+            >
+                <span>
+                    🏆
+                </span>
+
+                <small>
+                    Liga
+                </small>
+            </a>
+
+        </nav>
+
+    </div>
+
+
+    <div
+        id="modalJugador"
+        class="modal-overlay oculto"
+    >
+
+        <div
+            class="modal-jugador"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modalTitulo"
+        >
+
+            <div class="modal-header">
+
+                <div>
+
+                    <span class="modal-mini">
+                        JUGADOR
+                    </span>
+
+                    <h2 id="modalTitulo">
+                        Registrar jugador
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="btnCerrarModal"
+                    class="btn-cerrar-modal"
+                    aria-label="Cerrar"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="formJugador">
+
+                <div class="foto-jugador-box">
+
+                    <div
+                        id="previewFoto"
+                        class="foto-preview"
+                    >
+                        <span id="previewInicial">
+                            J
+                        </span>
+
+                        <img
+                            id="previewFotoImagen"
+                            class="oculto"
+                            alt="Fotografía del jugador"
+                        >
+                    </div>
+
+
+                    <div class="foto-controles">
+
+                        <label
+                            for="fotoJugador"
+                            class="btn-seleccionar-foto"
+                        >
+                            Seleccionar fotografía
+                        </label>
+
+                        <input
+                            type="file"
+                            id="fotoJugador"
+                            accept="image/png,image/jpeg,image/webp"
+                            hidden
+                        >
+
+                        <small>
+                            La fotografía es opcional. Si no agregas una,
+                            se utilizará la imagen predeterminada.
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grupo">
+
+                    <label for="nombreJugador">
+                        Nombre completo
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nombreJugador"
+                        maxlength="150"
+                        placeholder="Nombre completo del jugador"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-grupo">
+
+                        <label for="fechaNacimiento">
+                            Fecha de nacimiento
+                        </label>
+
+                        <input
+                            type="date"
+                            id="fechaNacimiento"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-grupo">
+
+                        <label for="numeroJugador">
+                            Número / dorsal
+                        </label>
+
+                        <input
+                            type="number"
+                            id="numeroJugador"
+                            min="0"
+                            max="99"
+                            inputmode="numeric"
+                            placeholder="Ej. 10"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grupo">
+
+                    <label for="curpJugador">
+                        CURP
+                    </label>
+
+                    <input
+                        type="text"
+                        id="curpJugador"
+                        maxlength="18"
+                        minlength="18"
+                        placeholder="18 caracteres"
+                        autocomplete="off"
+                        required
+                    >
+
+                    <small>
+                        La CURP deberá coincidir con el documento
+                        presentado por el jugador.
+                    </small>
+
+                </div>
+
+
+                <div class="form-grupo">
+
+                    <label>
+                        Documento CURP
+                    </label>
+
+                    <label
+                        for="archivoCurp"
+                        class="archivo-selector"
+                    >
+
+                        <span class="archivo-icono">
+                            📄
+                        </span>
+
+                        <div>
+
+                            <strong id="archivoCurpNombre">
+                                Seleccionar PDF
+                            </strong>
+
+                            <small>
+                                Documento oficial en formato PDF.
+                            </small>
+
+                        </div>
+
+                        <span class="archivo-flecha">
+                            ＋
+                        </span>
+
+                    </label>
+
+                    <input
+                        type="file"
+                        id="archivoCurp"
+                        accept="application/pdf"
+                        hidden
+                    >
+
+                </div>
+
+
+                <div class="form-grupo">
+
+                    <label for="observacionesJugador">
+                        Observaciones
+                    </label>
+
+                    <textarea
+                        id="observacionesJugador"
+                        rows="3"
+                        maxlength="300"
+                        placeholder="Información adicional opcional..."
+                    ></textarea>
+
+                </div>
+
+
+                <div class="aviso-jugador">
+
+                    <span>
+                        ℹ️
+                    </span>
+
+                    <p>
+                        Cada equipo puede registrar un máximo de 26 jugadores.
+                        Los jugadores registrados formarán parte de la plantilla
+                        oficial y podrán aparecer en las cédulas arbitrales.
+                    </p>
+
+                </div>
+
+
+                <div class="modal-acciones">
+
+                    <button
+                        type="button"
+                        id="btnCancelarModal"
+                        class="btn-secundario"
+                    >
+                        Cancelar
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        id="btnGuardarJugador"
+                        class="btn-principal"
+                    >
+                        Guardar jugador
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="modalLimite"
+        class="modal-overlay oculto"
+    >
+
+        <div class="modal-limite">
+
+            <div class="limite-icono">
+                26
+            </div>
+
+            <h2>
+                Plantilla completa
+            </h2>
+
+            <p>
+                Este equipo ya alcanzó el máximo permitido
+                de 26 jugadores registrados.
+            </p>
+
+            <button
+                type="button"
+                id="btnCerrarLimite"
+                class="btn-principal"
+            >
+                Entendido
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="toast"
+        class="toast oculto"
+    >
+
+        <span id="toastIcono">
+            ✓
+        </span>
+
+        <div>
+
+            <strong id="toastTitulo">
+                Listo
+            </strong>
+
+            <p id="toastTexto">
+                Información guardada correctamente.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <script
+        type="module"
+        src="js/jefeEquipo/jefeEquipo.js"
+    ></script>
+
+</body>
+</html>

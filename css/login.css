@@ -52,7 +52,7 @@ body{
     align-items:center;
     justify-content:center;
 
-    padding:34px 16px;
+    padding:34px 16px 58px;
 
     overflow-x:hidden;
 
@@ -124,7 +124,9 @@ button{
 }
 
 
-/* bordes laterales tipo códice */
+/* =========================================
+   NUEVOS DETALLES LATERALES
+========================================= */
 
 
 .fondo-decorativo::before,
@@ -136,39 +138,47 @@ button{
     top:0;
     bottom:0;
 
-    width:76px;
+    width:30px;
 
-    opacity:.95;
+    opacity:.30;
 
     background:
-        linear-gradient(
-            90deg,
-            transparent 0 8px,
-            var(--ink) 8px 11px,
-            var(--gold) 11px 17px,
-            var(--terracotta) 17px 30px,
-            var(--ink) 30px 33px,
-            var(--jade) 33px 49px,
-            var(--ink) 49px 52px,
-            var(--gold) 52px 60px,
-            transparent 60px
+        repeating-linear-gradient(
+            180deg,
+            transparent 0 18px,
+            rgba(18,37,34,.42) 18px 21px,
+            transparent 21px 34px,
+            rgba(8,118,110,.45) 34px 38px,
+            transparent 38px 54px,
+            rgba(181,75,36,.24) 54px 57px,
+            transparent 57px 75px
         );
+
+    border-left:
+        2px solid
+        rgba(18,37,34,.17);
+
+    border-right:
+        2px solid
+        rgba(18,37,34,.17);
 }
 
 
 .fondo-decorativo::before{
-    left:0;
+    left:7px;
 }
 
 
 .fondo-decorativo::after{
-    right:0;
+    right:7px;
 
     transform:scaleX(-1);
 }
 
 
-/* gran sol códice */
+/* =========================================
+   GRAN SOL CÓDICE
+========================================= */
 
 
 .fondo-sol{
@@ -185,7 +195,6 @@ button{
     border-radius:50%;
 
     background:
-
         repeating-conic-gradient(
             from 0deg,
             rgba(190,76,29,.33) 0deg 5deg,
@@ -203,7 +212,10 @@ button{
 
     inset:82px;
 
-    border:9px solid rgba(178,72,31,.25);
+    border:
+        9px solid
+        rgba(178,72,31,.25);
+
     border-radius:50%;
 
     background:
@@ -231,7 +243,9 @@ button{
 }
 
 
-/* ondas / río */
+/* =========================================
+   ONDAS / RÍO
+========================================= */
 
 
 .fondo-agua{
@@ -295,7 +309,9 @@ button{
 }
 
 
-/* glifos geométricos */
+/* =========================================
+   GLIFOS GEOMÉTRICOS
+========================================= */
 
 
 .fondo-glifo{
@@ -304,7 +320,9 @@ button{
     width:135px;
     height:135px;
 
-    border:5px solid rgba(45,42,28,.16);
+    border:
+        5px solid
+        rgba(45,42,28,.16);
 
     border-radius:20px;
 
@@ -323,7 +341,8 @@ button{
         );
 
     box-shadow:
-        inset 0 0 0 6px rgba(213,163,60,.13);
+        inset 0 0 0 6px
+        rgba(213,163,60,.13);
 
     transform:rotate(45deg);
 }
@@ -356,7 +375,10 @@ button{
 }
 
 
-/* banda códice inferior */
+/* =========================================
+   NUEVO DETALLE INFERIOR
+   ONDAS DEL RÍO
+========================================= */
 
 
 body::before{
@@ -368,34 +390,29 @@ body::before{
     right:0;
     bottom:0;
 
-    height:42px;
+    height:38px;
 
     z-index:-1;
 
+    opacity:.42;
+
     border-top:
-        4px solid
-        rgba(33,38,29,.55);
+        2px solid
+        rgba(18,37,34,.18);
 
     background:
-
-        repeating-linear-gradient(
-            90deg,
-
-            var(--terracotta) 0 26px,
-            var(--ink) 26px 30px,
-
-            var(--gold) 30px 55px,
-            var(--ink) 55px 59px,
-
-            var(--jade) 59px 86px,
-            var(--ink) 86px 90px,
-
-            var(--ocean) 90px 116px,
-            var(--ink) 116px 120px
+        repeating-radial-gradient(
+            ellipse at center bottom,
+            transparent 0 18px,
+            rgba(8,118,110,.40) 19px 21px,
+            transparent 22px 37px,
+            rgba(23,115,149,.27) 38px 40px,
+            transparent 41px 58px
         );
-
-    opacity:.86;
 }
+
+
+/* marco exterior suave */
 
 
 body::after{
@@ -409,9 +426,11 @@ body::after{
 
     border:
         2px solid
-        rgba(64,53,31,.20);
+        rgba(64,53,31,.14);
 
     pointer-events:none;
+
+    border-radius:3px;
 }
 
 
@@ -692,7 +711,6 @@ body::after{
     border-radius:13px;
 
     background:
-
         radial-gradient(
             circle at 20% 15%,
             rgba(132,88,33,.08) 0 1px,
@@ -726,34 +744,30 @@ body::after{
 }
 
 
+/* Se reemplaza la franja de cuadritos
+   por una línea de río más limpia */
+
+
 .card::after{
     content:"";
 
     position:absolute;
 
-    left:0;
-    right:0;
-    top:0;
+    left:20px;
+    right:20px;
+    top:10px;
 
-    height:12px;
+    height:8px;
 
-    background:
+    border-top:
+        3px solid
+        var(--jade);
 
-        repeating-linear-gradient(
-            90deg,
+    border-bottom:
+        1px solid
+        rgba(23,115,149,.45);
 
-            var(--terracotta) 0 18px,
-            var(--ink) 18px 21px,
-
-            var(--gold) 21px 39px,
-            var(--ink) 39px 42px,
-
-            var(--jade) 42px 60px,
-            var(--ink) 60px 63px,
-
-            var(--ocean) 63px 81px,
-            var(--ink) 81px 84px
-        );
+    border-radius:50%;
 }
 
 
@@ -1467,7 +1481,6 @@ body::after{
     border-radius:12px;
 
     background:
-
         radial-gradient(
             circle,
             rgba(126,90,39,.08) 0 1px,
@@ -1501,33 +1514,29 @@ body::after{
 }
 
 
+/* También quitamos la franja de cuadritos del modal */
+
+
 .modal-nombre-card::after{
     content:"";
 
     position:absolute;
 
-    top:0;
-    left:0;
-    right:0;
+    top:10px;
+    left:22px;
+    right:22px;
 
-    height:12px;
+    height:8px;
 
-    background:
-        repeating-linear-gradient(
-            90deg,
+    border-top:
+        3px solid
+        var(--jade);
 
-            var(--terracotta) 0 20px,
-            var(--ink) 20px 23px,
+    border-bottom:
+        1px solid
+        rgba(23,115,149,.45);
 
-            var(--gold) 23px 43px,
-            var(--ink) 43px 46px,
-
-            var(--jade) 46px 66px,
-            var(--ink) 66px 69px,
-
-            var(--ocean) 69px 89px,
-            var(--ink) 89px 92px
-        );
+    border-radius:50%;
 }
 
 
@@ -1738,32 +1747,37 @@ body::after{
 
     .fondo-decorativo::before,
     .fondo-decorativo::after{
-        width:28px;
+        width:15px;
 
-        opacity:.50;
+        opacity:.24;
 
         background:
             repeating-linear-gradient(
                 180deg,
-
-                var(--terracotta) 0 30px,
-                var(--gold) 30px 60px,
-                var(--jade) 60px 90px,
-                var(--ocean) 90px 120px
+                transparent 0 16px,
+                rgba(18,37,34,.38) 16px 18px,
+                transparent 18px 29px,
+                rgba(8,118,110,.40) 29px 32px,
+                transparent 32px 48px
             );
 
+        border-left:
+            1px solid
+            rgba(18,37,34,.16);
+
         border-right:
-            3px solid
-            rgba(31,36,28,.6);
+            1px solid
+            rgba(18,37,34,.16);
+    }
+
+
+    .fondo-decorativo::before{
+        left:3px;
     }
 
 
     .fondo-decorativo::after{
-        border-right:none;
-
-        border-left:
-            3px solid
-            rgba(31,36,28,.6);
+        right:3px;
     }
 
 
@@ -1792,6 +1806,13 @@ body::after{
     .fondo-glifo-2{
         right:-42px;
         bottom:8%;
+    }
+
+
+    body::before{
+        height:26px;
+
+        opacity:.30;
     }
 
 

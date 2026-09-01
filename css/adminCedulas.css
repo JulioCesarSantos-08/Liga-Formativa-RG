@@ -1,12 +1,169 @@
-body{
-    background:#eef2f5;
-    color:#14213d;
+:root{
+    --tinta:#102b28;
+    --tinta-2:#2a403b;
+
+    --jade:#0b756d;
+    --jade-2:#12877d;
+    --jade-oscuro:#07574f;
+    --jade-profundo:#063f3b;
+    --jade-claro:#d7ece6;
+
+    --agua:#197e98;
+    --agua-2:#2a96aa;
+    --agua-clara:#70c2ca;
+
+    --terracota:#b9542e;
+    --terracota-2:#d16d3a;
+    --terracota-oscura:#85391f;
+
+    --dorado:#d3a13b;
+    --dorado-2:#e0b657;
+    --dorado-suave:#f0d79a;
+
+    --arena:#e2c990;
+    --arena-clara:#f4e8c5;
+    --arena-suave:#ead9ad;
+
+    --papel:#f1e3bf;
+    --papel-claro:#fff8e8;
+    --papel-oscuro:#dcc596;
+
+    --verde:#2f714c;
+    --verde-claro:#dcebd8;
+
+    --rojo:#b84535;
+    --rojo-claro:#f3d6d0;
+
+    --texto:#213732;
+    --texto-suave:#68746e;
+    --texto-muy-suave:#93998f;
+
+    --borde:#baa676;
+    --borde-suave:#d0c09a;
+
+    --sombra:
+        0 10px 28px rgba(55,43,20,.10),
+        0 3px 8px rgba(55,43,20,.05);
 }
+
+
+*{
+    box-sizing:border-box;
+}
+
+
+html{
+    min-height:100%;
+}
+
+
+body{
+    position:relative;
+
+    min-height:100vh;
+
+    margin:0;
+
+    color:var(--texto);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at 12% 12%,
+            rgba(255,255,255,.24),
+            transparent 22%
+        ),
+
+        radial-gradient(
+            circle at 88% 15%,
+            rgba(33,126,151,.12),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 36% 74%,
+            rgba(181,83,45,.06),
+            transparent 30%
+        ),
+
+        linear-gradient(
+            180deg,
+            #dce8dd 0%,
+            #efe3bc 34%,
+            #e8d29f 72%,
+            #d7bd82 100%
+        );
+}
+
+
+body::before{
+    content:"";
+
+    position:fixed;
+
+    left:-10%;
+    right:-10%;
+    bottom:-95px;
+
+    height:250px;
+
+    z-index:-1;
+
+    opacity:.38;
+
+    border-radius:50%;
+
+    background:
+        repeating-radial-gradient(
+            ellipse at center bottom,
+
+            transparent 0 28px,
+
+            rgba(25,126,152,.18) 29px 32px,
+
+            transparent 33px 56px,
+
+            rgba(11,117,109,.16) 57px 60px,
+
+            transparent 61px 86px
+        );
+
+    pointer-events:none;
+}
+
+
+body::after{
+    content:"";
+
+    position:fixed;
+
+    width:310px;
+    height:310px;
+
+    right:-150px;
+    top:150px;
+
+    z-index:-1;
+
+    border:
+        15px double
+        rgba(11,117,109,.055);
+
+    border-radius:50%;
+
+    pointer-events:none;
+}
+
 
 a{
     color:inherit;
     text-decoration:none;
 }
+
 
 button,
 input,
@@ -14,18 +171,33 @@ select{
     font:inherit;
 }
 
+
 button{
     cursor:pointer;
 }
+
+
+/* =========================================
+   APP
+========================================= */
+
 
 .admin-page{
     width:100%;
     min-height:100vh;
 }
 
+
+/* =========================================
+   TOPBAR
+========================================= */
+
+
 .topbar-admin{
     position:sticky;
+
     top:0;
+
     z-index:60;
 
     min-height:72px;
@@ -33,24 +205,67 @@ button{
     display:flex;
     align-items:center;
     justify-content:space-between;
+
     gap:16px;
 
-    padding:10px 22px;
+    padding:
+        10px
+        22px;
 
-    border-bottom:1px solid #dfe5e8;
+    border-bottom:
+        1px solid
+        #ab9969;
 
-    background:rgba(255,255,255,.96);
+    background:
+        linear-gradient(
+            90deg,
+            rgba(244,230,193,.97),
+            rgba(255,247,224,.97)
+        );
 
-    backdrop-filter:blur(10px);
+    box-shadow:
+        0 5px 15px
+        rgba(60,46,22,.08);
+
+    backdrop-filter:
+        blur(10px);
 }
+
+
+.topbar-admin::after{
+    content:"";
+
+    position:absolute;
+
+    left:22px;
+    right:22px;
+    bottom:-1px;
+
+    height:5px;
+
+    border-top:
+        3px solid
+        rgba(11,117,109,.72);
+
+    border-bottom:
+        1px solid
+        rgba(25,126,152,.42);
+
+    border-radius:50%;
+
+    opacity:.68;
+}
+
 
 .topbar-left{
     display:flex;
     align-items:center;
+
     gap:10px;
 
     min-width:0;
 }
+
 
 .btn-volver{
     width:42px;
@@ -62,22 +277,51 @@ button{
 
     flex-shrink:0;
 
-    border-radius:11px;
+    border:
+        1px solid
+        #a99567;
 
-    background:#eef2f4;
-    color:#344054;
+    border-radius:10px;
 
-    font-size:1.15rem;
-    font-weight:800;
+    background:
+        #e8d4a1;
+
+    color:
+        var(--tinta);
+
+    font-size:1.12rem;
+    font-weight:900;
+
+    box-shadow:
+        inset 0 0 0 2px
+        rgba(255,255,255,.18);
 }
+
 
 .topbar-logo{
-    width:45px;
-    height:45px;
+    width:46px;
+    height:46px;
+
+    flex-shrink:0;
+
+    padding:2px;
 
     object-fit:contain;
-    flex-shrink:0;
+
+    border:
+        2px solid
+        var(--jade-oscuro);
+
+    border-radius:50%;
+
+    background:
+        #fff5d8;
+
+    box-shadow:
+        0 3px 10px
+        rgba(45,40,24,.12);
 }
+
 
 .topbar-titulo{
     display:flex;
@@ -86,46 +330,69 @@ button{
     min-width:0;
 }
 
+
 .topbar-titulo span{
-    color:#667085;
-    font-size:.63rem;
+    color:
+        var(--terracota-oscura);
+
+    font-size:.62rem;
+    font-weight:800;
 }
 
-.topbar-titulo strong{
-    color:#182230;
 
-    font-size:.9rem;
+.topbar-titulo strong{
+    color:
+        var(--tinta);
+
+    font-size:.88rem;
+    font-weight:900;
 
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
 }
 
+
 .topbar-right{
     display:flex;
     align-items:center;
+
     gap:9px;
 
     flex-shrink:0;
 }
+
 
 .btn-ver-sitio{
     min-height:40px;
 
     display:flex;
     align-items:center;
+
     gap:7px;
 
-    padding:7px 11px;
+    padding:
+        7px
+        11px;
 
-    border-radius:11px;
+    border:
+        1px solid
+        #bca56e;
 
-    background:#eef7f5;
-    color:#0f766e;
+    border-radius:9px;
 
-    font-size:.7rem;
-    font-weight:800;
+    background:
+        #eedca9;
+
+    color:
+        var(--jade-oscuro);
+
+    font-size:.68rem;
+    font-weight:900;
+
+    transition:.18s ease;
 }
+
 
 .admin-avatar{
     width:42px;
@@ -135,14 +402,34 @@ button{
     align-items:center;
     justify-content:center;
 
+    border:
+        2px solid
+        var(--tinta);
+
     border-radius:50%;
 
-    background:#0f766e;
+    background:
+        linear-gradient(
+            145deg,
+            var(--terracota-2),
+            var(--terracota)
+        );
+
     color:#ffffff;
 
-    font-size:.78rem;
+    font-size:.76rem;
     font-weight:900;
+
+    box-shadow:
+        inset 0 0 0 2px
+        rgba(255,224,145,.22);
 }
+
+
+/* =========================================
+   CONTENIDO
+========================================= */
+
 
 .contenido-admin{
     width:100%;
@@ -153,85 +440,304 @@ button{
     padding:24px;
 }
 
+
+/* =========================================
+   ENCABEZADO
+========================================= */
+
+
 .encabezado-pagina{
+    position:relative;
+
     margin-bottom:20px;
+
+    padding:
+        22px;
+
+    overflow:hidden;
+
+    border:
+        2px solid
+        var(--tinta);
+
+    border-radius:16px;
+
+    background:
+        radial-gradient(
+            circle at 88% 12%,
+            rgba(255,255,255,.08),
+            transparent 25%
+        ),
+
+        linear-gradient(
+            135deg,
+            #075e57,
+            #08796f 55%,
+            #17677c
+        );
+
+    color:#ffffff;
+
+    box-shadow:
+        0 12px 28px
+        rgba(23,69,63,.16);
 }
+
+
+.encabezado-pagina::before{
+    content:"";
+
+    position:absolute;
+
+    left:-6%;
+    right:-6%;
+    bottom:-58px;
+
+    height:120px;
+
+    border-radius:50%;
+
+    border-top:
+        8px double
+        rgba(112,194,202,.20);
+
+    transform:
+        rotate(-2deg);
+}
+
+
+.encabezado-pagina::after{
+    content:"📋";
+
+    position:absolute;
+
+    right:20px;
+    top:10px;
+
+    font-size:6.5rem;
+
+    opacity:.05;
+
+    transform:
+        rotate(-10deg);
+}
+
+
+.encabezado-pagina > *{
+    position:relative;
+    z-index:2;
+}
+
 
 .encabezado-mini{
     display:block;
 
     margin-bottom:4px;
 
-    color:#0f766e;
+    color:
+        #f3d677;
 
-    font-size:.62rem;
+    font-size:.60rem;
     font-weight:900;
 
     letter-spacing:.08em;
 }
 
+
 .encabezado-pagina h1{
-    margin-bottom:6px;
+    margin:
+        0 0
+        6px;
 
-    color:#182230;
+    color:#ffffff;
 
-    font-size:1.6rem;
+    font-size:1.58rem;
+    font-weight:900;
 }
+
 
 .encabezado-pagina p{
     max-width:720px;
 
-    color:#667085;
+    margin:0;
 
-    font-size:.78rem;
+    color:#e3f1ed;
+
+    font-size:.76rem;
     line-height:1.45;
 }
 
+
+/* =========================================
+   RESUMEN CÉDULAS
+========================================= */
+
+
 .resumen-cedulas{
     display:grid;
-    grid-template-columns:repeat(4,minmax(0,1fr));
+
+    grid-template-columns:
+        repeat(4,minmax(0,1fr));
 
     gap:11px;
 
     margin-bottom:18px;
 }
 
+
 .resumen-card{
+    position:relative;
+
     display:flex;
     align-items:center;
+
     gap:10px;
 
     min-width:0;
 
     padding:14px;
 
-    border:1px solid #dfe5e8;
-    border-radius:16px;
+    overflow:hidden;
 
-    background:#ffffff;
+    border:
+        1px solid
+        #b69f6c;
+
+    border-radius:13px;
+
+    background:
+        linear-gradient(
+            150deg,
+            #f1dfae,
+            #e6cd95
+        );
+
+    box-shadow:
+        0 4px 13px
+        rgba(70,54,24,.07);
 }
+
+
+.resumen-card:nth-child(2){
+    border-color:
+        #88aea4;
+
+    background:
+        linear-gradient(
+            150deg,
+            #d7e9e3,
+            #c5ddd5
+        );
+}
+
+
+.resumen-card:nth-child(3){
+    border-color:
+        #a98760;
+
+    background:
+        linear-gradient(
+            150deg,
+            #efd6b7,
+            #dfb98e
+        );
+}
+
+
+.resumen-card:nth-child(4){
+    border-color:
+        #8ba9b3;
+
+    background:
+        linear-gradient(
+            150deg,
+            #d5e6ea,
+            #bed9df
+        );
+}
+
 
 .resumen-card.pendiente{
-    border-color:#ead8a4;
+    border-color:
+        #c8a95d;
 
-    background:#fffdf6;
+    background:
+        linear-gradient(
+            150deg,
+            #f3dfaa,
+            #e9cb85
+        );
 }
+
 
 .resumen-card.completada{
-    border-color:#cce5d4;
+    border-color:
+        #86b39d;
 
-    background:#fbfffc;
+    background:
+        linear-gradient(
+            150deg,
+            #d4eadf,
+            #c3dece
+        );
 }
+
 
 .resumen-card.revision{
-    border-color:#f0c7c3;
+    border-color:
+        #ca8e83;
 
-    background:#fffdfd;
+    background:
+        linear-gradient(
+            150deg,
+            #efd3ca,
+            #e2b5a8
+        );
 }
 
+
+.resumen-card::before{
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    top:10px;
+    bottom:10px;
+
+    width:4px;
+
+    border-radius:999px;
+
+    background:
+        linear-gradient(
+            var(--jade),
+            var(--agua)
+        );
+}
+
+
+.resumen-card.pendiente::before{
+    background:
+        var(--dorado);
+}
+
+
+.resumen-card.completada::before{
+    background:
+        var(--verde);
+}
+
+
+.resumen-card.revision::before{
+    background:
+        var(--rojo);
+}
+
+
 .resumen-icono{
-    width:42px;
-    height:42px;
+    width:43px;
+    height:43px;
 
     display:flex;
     align-items:center;
@@ -239,12 +745,18 @@ button{
 
     flex-shrink:0;
 
-    border-radius:12px;
+    border:
+        1px solid
+        rgba(20,44,41,.75);
 
-    background:#eef6f4;
+    border-radius:10px;
+
+    background:
+        rgba(221,241,235,.78);
 
     font-size:1rem;
 }
+
 
 .resumen-card > div:last-child{
     display:flex;
@@ -253,86 +765,181 @@ button{
     min-width:0;
 }
 
-.resumen-card span{
-    color:#667085;
 
-    font-size:.61rem;
+.resumen-card span{
+    color:#6f6653;
+
+    font-size:.59rem;
 }
+
 
 .resumen-card strong{
     margin-top:1px;
 
-    color:#182230;
+    color:
+        var(--tinta);
 
-    font-size:1.05rem;
+    font-size:1.02rem;
 }
+
+
+/* =========================================
+   PANEL
+========================================= */
+
 
 .panel-cedulas{
+    position:relative;
+
     overflow:hidden;
 
-    border:1px solid #dfe5e8;
-    border-radius:18px;
+    border:
+        1px solid
+        #aa9664;
 
-    background:#ffffff;
+    border-radius:16px;
+
+    background:
+        linear-gradient(
+            160deg,
+            rgba(245,229,193,.97),
+            rgba(235,213,167,.97)
+        );
+
+    box-shadow:
+        var(--sombra);
 }
+
+
+.panel-cedulas::before{
+    content:"";
+
+    position:absolute;
+
+    left:18px;
+    right:18px;
+    top:0;
+
+    height:5px;
+
+    border-top:
+        3px solid
+        var(--jade);
+
+    border-bottom:
+        1px solid
+        var(--agua);
+
+    border-radius:50%;
+
+    z-index:3;
+}
+
+
+/* =========================================
+   HERRAMIENTAS
+========================================= */
+
 
 .herramientas{
     display:grid;
-    grid-template-columns:minmax(260px,1fr) 210px 210px 190px;
+
+    grid-template-columns:
+        minmax(260px,1fr)
+        210px
+        210px
+        190px;
 
     gap:10px;
 
-    padding:14px;
+    padding:15px;
 
-    border-bottom:1px solid #e6ebee;
+    border-bottom:
+        1px solid
+        rgba(112,90,45,.24);
 
-    background:#fbfcfd;
+    background:
+        linear-gradient(
+            90deg,
+            #dfca94,
+            #ecd9a7
+        );
 }
+
 
 .buscador{
     position:relative;
 }
 
+
 .buscador-icono{
     position:absolute;
+
     left:13px;
     top:50%;
 
-    transform:translateY(-50%);
+    transform:
+        translateY(-50%);
 
     pointer-events:none;
+
+    color:
+        var(--jade-oscuro);
 }
+
 
 .buscador input,
 .select-filtro{
     width:100%;
+
     min-height:44px;
 
-    border:1px solid #d0d5dd;
-    border-radius:11px;
+    border:
+        1px solid
+        #a89365;
 
-    background:#ffffff;
-    color:#101828;
+    border-radius:10px;
 
-    font-size:.76rem;
+    background:
+        rgba(255,247,223,.84);
+
+    color:
+        var(--tinta);
+
+    font-size:.74rem;
 
     outline:none;
 }
 
+
 .buscador input{
-    padding:0 13px 0 40px;
+    padding:
+        0 13px
+        0 40px;
 }
 
+
 .select-filtro{
-    padding:0 11px;
+    padding:
+        0 11px;
 }
+
 
 .buscador input:focus,
 .select-filtro:focus{
-    border-color:#0f766e;
+    border-color:
+        var(--jade);
 
-    box-shadow:0 0 0 3px rgba(15,118,110,.1);
+    box-shadow:
+        0 0 0 3px
+        rgba(11,117,109,.12);
 }
+
+
+/* =========================================
+   CARGA / VACÍO
+========================================= */
+
 
 .estado-carga,
 .estado-vacio{
@@ -342,6 +949,7 @@ button{
     flex-direction:column;
     align-items:center;
     justify-content:center;
+
     gap:10px;
 
     padding:30px;
@@ -349,62 +957,93 @@ button{
     text-align:center;
 }
 
+
 .spinner{
     width:34px;
     height:34px;
 
-    border:4px solid #e3e9ec;
-    border-top-color:#0f766e;
+    border:
+        4px solid
+        #d8c99f;
+
+    border-top-color:
+        var(--jade);
+
     border-radius:50%;
 
-    animation:girar .8s linear infinite;
+    animation:
+        girar .8s linear infinite;
 }
+
 
 @keyframes girar{
     to{
-        transform:rotate(360deg);
+        transform:
+            rotate(360deg);
     }
 }
 
-.estado-carga span{
-    color:#667085;
 
-    font-size:.72rem;
+.estado-carga span{
+    color:#6e6655;
+
+    font-size:.70rem;
 }
 
+
 .estado-vacio-icono{
-    width:54px;
-    height:54px;
+    width:56px;
+    height:56px;
 
     display:flex;
     align-items:center;
     justify-content:center;
 
-    border-radius:16px;
+    border:
+        1px solid
+        var(--tinta);
 
-    background:#eef6f4;
+    border-radius:13px;
 
-    font-size:1.35rem;
+    background:
+        linear-gradient(
+            145deg,
+            #cfe6df,
+            #ecdba8
+        );
+
+    font-size:1.3rem;
 }
+
 
 .estado-vacio strong{
-    color:#182230;
+    color:
+        var(--tinta);
 
-    font-size:.86rem;
+    font-size:.84rem;
 }
+
 
 .estado-vacio p{
     max-width:350px;
 
-    color:#667085;
+    color:
+        #716955;
 
-    font-size:.7rem;
+    font-size:.68rem;
     line-height:1.45;
 }
+
 
 .oculto{
     display:none !important;
 }
+
+
+/* =========================================
+   LISTA CÉDULAS
+========================================= */
+
 
 .lista-cedulas{
     display:flex;
@@ -415,36 +1054,112 @@ button{
     padding:14px;
 }
 
+
+/* =========================================
+   CÉDULA CARD
+========================================= */
+
+
 .cedula-card{
+    position:relative;
+
     display:grid;
-    grid-template-columns:auto minmax(0,1fr) auto auto;
+
+    grid-template-columns:
+        auto
+        minmax(0,1fr)
+        auto
+        auto;
 
     align-items:center;
+
     gap:14px;
 
     padding:13px;
 
-    border:1px solid #e4e7ec;
-    border-radius:15px;
+    overflow:hidden;
 
-    background:#ffffff;
+    border:
+        1px solid
+        #b39c68;
 
-    box-shadow:0 4px 15px rgba(15,23,42,.03);
+    border-radius:13px;
+
+    background:
+        linear-gradient(
+            150deg,
+            #f3e1ae,
+            #ead3a0
+        );
+
+    box-shadow:
+        0 5px 18px
+        rgba(65,48,21,.07);
 }
+
+
+.cedula-card:nth-child(even){
+    border-color:
+        #88aca2;
+
+    background:
+        linear-gradient(
+            150deg,
+            #d7e9e3,
+            #c6ded6
+        );
+}
+
+
+.cedula-card::after{
+    content:"";
+
+    position:absolute;
+
+    width:95px;
+    height:95px;
+
+    right:-48px;
+    bottom:-48px;
+
+    border:
+        12px double
+        rgba(10,74,68,.045);
+
+    border-radius:50%;
+}
+
 
 .cedula-card.pendiente{
-    border-left:4px solid #e0b64c;
+    border-left:
+        4px solid
+        var(--dorado);
 }
+
 
 .cedula-card.registrada{
-    border-left:4px solid #2f9467;
+    border-left:
+        4px solid
+        var(--verde);
 }
+
 
 .cedula-card.revision{
-    border-left:4px solid #d92d20;
+    border-left:
+        4px solid
+        var(--rojo);
 }
 
+
+/* =========================================
+   FECHA
+========================================= */
+
+
 .cedula-fecha{
+    position:relative;
+    z-index:2;
+
     width:58px;
     min-height:60px;
 
@@ -455,40 +1170,65 @@ button{
 
     flex-shrink:0;
 
-    border-radius:13px;
+    border:
+        1px solid
+        rgba(20,44,41,.75);
 
-    background:#edf6f4;
+    border-radius:11px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #cde5df,
+            #ead9a9
+        );
 
     text-align:center;
 }
 
+
 .cedula-fecha strong{
-    color:#0f766e;
+    color:
+        var(--jade-oscuro);
 
     font-size:1rem;
 }
 
-.cedula-fecha span{
-    color:#5d7f7c;
 
-    font-size:.55rem;
-    font-weight:800;
+.cedula-fecha span{
+    color:
+        #5d746d;
+
+    font-size:.54rem;
+    font-weight:900;
 
     text-transform:uppercase;
 }
 
+
+/* =========================================
+   INFO
+========================================= */
+
+
 .cedula-info{
+    position:relative;
+    z-index:2;
+
     min-width:0;
 }
+
 
 .cedula-meta{
     display:flex;
     flex-wrap:wrap;
     align-items:center;
+
     gap:6px;
 
     margin-bottom:5px;
 }
+
 
 .cedula-categoria,
 .cedula-jornada{
@@ -497,23 +1237,47 @@ button{
 
     min-height:24px;
 
-    padding:4px 7px;
+    padding:
+        4px
+        7px;
 
     border-radius:999px;
 
-    font-size:.56rem;
-    font-weight:800;
+    font-size:.55rem;
+    font-weight:900;
 }
+
 
 .cedula-categoria{
-    background:#eef7f5;
-    color:#0f766e;
+    border:
+        1px solid
+        #86b7a5;
+
+    background:
+        #d7ebe4;
+
+    color:
+        var(--jade-oscuro);
 }
 
+
 .cedula-jornada{
-    background:#f2f4f7;
-    color:#475467;
+    border:
+        1px solid
+        #b59f6f;
+
+    background:
+        #e7d3a1;
+
+    color:
+        #5b4c30;
 }
+
+
+/* =========================================
+   ESTADO
+========================================= */
+
 
 .estado-cedula{
     display:inline-flex;
@@ -521,32 +1285,65 @@ button{
 
     min-height:25px;
 
-    padding:4px 8px;
+    padding:
+        4px
+        8px;
 
     border-radius:999px;
 
-    font-size:.56rem;
-    font-weight:800;
+    font-size:.55rem;
+    font-weight:900;
 }
+
 
 .estado-cedula.pendiente{
-    background:#fff8e8;
-    color:#9a6a00;
+    border:
+        1px solid
+        #c9a34e;
+
+    background:
+        #f2dc9e;
+
+    color:
+        #825a00;
 }
+
 
 .estado-cedula.registrada{
-    background:#eaf8ef;
-    color:#18794e;
+    border:
+        1px solid
+        #81b699;
+
+    background:
+        #d8eadf;
+
+    color:
+        #176c4a;
 }
 
+
 .estado-cedula.revision{
-    background:#fff0ef;
-    color:#b42318;
+    border:
+        1px solid
+        #cc887d;
+
+    background:
+        #f0d3cd;
+
+    color:
+        #922f25;
 }
+
+
+/* =========================================
+   ENFRENTAMIENTO
+========================================= */
+
 
 .cedula-enfrentamiento{
     display:flex;
     align-items:center;
+
     gap:8px;
 
     min-width:0;
@@ -554,95 +1351,185 @@ button{
     margin-bottom:5px;
 }
 
+
 .cedula-enfrentamiento strong{
     min-width:0;
 
-    color:#182230;
+    color:
+        var(--tinta);
 
-    font-size:.78rem;
+    font-size:.77rem;
+    font-weight:900;
 
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
 }
+
 
 .cedula-enfrentamiento span{
     flex-shrink:0;
 
-    color:#98a2b3;
+    color:
+        var(--terracota-oscura);
 
-    font-size:.58rem;
+    font-size:.57rem;
     font-weight:900;
 }
 
-.cedula-detalles{
-    color:#667085;
 
-    font-size:.6rem;
+.cedula-detalles{
+    color:
+        #6b6452;
+
+    font-size:.59rem;
 }
 
+
+/* =========================================
+   ÁRBITRO
+========================================= */
+
+
 .cedula-arbitro{
+    position:relative;
+    z-index:2;
+
     display:flex;
     flex-direction:column;
 
     min-width:140px;
+
+    padding:
+        7px 9px;
+
+    border:
+        1px solid
+        rgba(104,84,45,.18);
+
+    border-radius:9px;
+
+    background:
+        rgba(255,247,223,.42);
 }
+
 
 .cedula-arbitro span{
-    color:#98a2b3;
+    color:
+        #867d68;
 
-    font-size:.53rem;
+    font-size:.52rem;
 }
 
-.cedula-arbitro strong{
-    color:#344054;
 
-    font-size:.64rem;
+.cedula-arbitro strong{
+    color:
+        var(--tinta-2);
+
+    font-size:.63rem;
 
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
 }
 
+
+/* =========================================
+   RESULTADO
+========================================= */
+
+
 .cedula-resultado{
+    position:relative;
+    z-index:2;
+
     display:flex;
     flex-direction:column;
     align-items:center;
 
     min-width:82px;
+
+    padding:
+        7px
+        9px;
+
+    border:
+        1px solid
+        rgba(20,44,41,.28);
+
+    border-radius:9px;
+
+    background:
+        rgba(221,237,231,.55);
 }
+
 
 .cedula-resultado span{
-    color:#98a2b3;
+    color:
+        #7a7768;
 
-    font-size:.52rem;
+    font-size:.51rem;
 }
+
 
 .cedula-resultado strong{
     margin-top:2px;
 
-    color:#182230;
+    color:
+        var(--tinta);
 
     font-size:.82rem;
+    font-weight:900;
 }
+
+
+/* =========================================
+   BOTÓN
+========================================= */
+
 
 .btn-ver-cedula{
+    position:relative;
+    z-index:2;
+
     min-height:36px;
 
-    padding:6px 10px;
+    padding:
+        6px
+        10px;
 
-    border-radius:9px;
+    border:
+        1px solid
+        #075d56;
 
-    background:#eef7f5;
-    color:#0f766e;
+    border-radius:8px;
 
-    font-size:.61rem;
-    font-weight:800;
+    background:
+        linear-gradient(
+            135deg,
+            var(--jade),
+            var(--agua)
+        );
+
+    color:#ffffff;
+
+    font-size:.60rem;
+    font-weight:900;
+
+    transition:.18s ease;
 }
+
+
+/* =========================================
+   MODAL OVERLAY
+========================================= */
+
 
 .modal-overlay{
     position:fixed;
+
     inset:0;
+
     z-index:150;
 
     display:flex;
@@ -651,54 +1538,108 @@ button{
 
     padding:18px;
 
-    background:rgba(15,23,42,.58);
+    background:
+        rgba(13,50,47,.74);
 
-    backdrop-filter:blur(4px);
+    backdrop-filter:
+        blur(6px);
 }
 
+
+/* =========================================
+   MODAL CÉDULA
+========================================= */
+
+
 .modal-cedula{
+    position:relative;
+
     width:100%;
     max-width:720px;
 
     max-height:92vh;
+
     overflow-y:auto;
 
-    padding:20px;
+    padding:21px;
 
-    border-radius:20px;
+    border:
+        1px solid
+        #9f8b58;
 
-    background:#ffffff;
+    border-radius:18px;
 
-    box-shadow:0 24px 70px rgba(0,0,0,.24);
+    background:
+        linear-gradient(
+            160deg,
+            #f4e2ad,
+            #e8cf98
+        );
+
+    box-shadow:
+        0 24px 70px
+        rgba(0,0,0,.28);
 }
+
+
+.modal-cedula::before{
+    content:"";
+
+    position:absolute;
+
+    left:20px;
+    right:20px;
+    top:0;
+
+    height:5px;
+
+    border-top:
+        3px solid
+        var(--jade);
+
+    border-bottom:
+        1px solid
+        var(--agua);
+
+    border-radius:50%;
+}
+
 
 .modal-header{
     display:flex;
     align-items:flex-start;
     justify-content:space-between;
+
     gap:12px;
 
     margin-bottom:18px;
 }
+
 
 .modal-mini{
     display:block;
 
     margin-bottom:3px;
 
-    color:#0f766e;
+    color:
+        var(--terracota-oscura);
 
-    font-size:.58rem;
+    font-size:.57rem;
     font-weight:900;
 
     letter-spacing:.07em;
 }
 
-.modal-header h2{
-    color:#182230;
 
-    font-size:1.1rem;
+.modal-header h2{
+    margin:0;
+
+    color:
+        var(--tinta);
+
+    font-size:1.08rem;
 }
+
 
 .btn-cerrar-modal{
     width:38px;
@@ -710,48 +1651,105 @@ button{
 
     flex-shrink:0;
 
-    border-radius:10px;
+    border:
+        1px solid
+        #a99567;
 
-    background:#f2f4f7;
-    color:#475467;
+    border-radius:9px;
 
-    font-size:1.25rem;
+    background:
+        #e5cf98;
+
+    color:
+        var(--tinta);
+
+    font-size:1.18rem;
 }
 
+
+/* =========================================
+   RESUMEN PARTIDO MODAL
+========================================= */
+
+
 .modal-partido-resumen{
+    position:relative;
+
     display:grid;
-    grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+
+    grid-template-columns:
+        minmax(0,1fr)
+        auto
+        minmax(0,1fr);
 
     align-items:center;
+
     gap:14px;
 
     margin-bottom:16px;
 
-    padding:16px;
+    padding:17px;
 
-    border-radius:16px;
+    overflow:hidden;
+
+    border:
+        2px solid
+        var(--tinta);
+
+    border-radius:14px;
 
     background:
+        radial-gradient(
+            circle at 88% 10%,
+            rgba(255,255,255,.08),
+            transparent 23%
+        ),
+
         linear-gradient(
             145deg,
-            #0b5f58,
-            #0f766e 52%,
-            #174c63
+            #075e57,
+            #08796f 52%,
+            #17677c
         );
 
     color:#ffffff;
 }
 
+
+.modal-partido-resumen::before{
+    content:"";
+
+    position:absolute;
+
+    left:-10%;
+    right:-10%;
+    bottom:-58px;
+
+    height:120px;
+
+    border-radius:50%;
+
+    border-top:
+        8px double
+        rgba(112,194,202,.18);
+}
+
+
 .modal-equipo{
+    position:relative;
+    z-index:2;
+
     display:flex;
     flex-direction:column;
     align-items:center;
+
     gap:8px;
 
     min-width:0;
 
     text-align:center;
 }
+
 
 .modal-equipo-logo{
     width:58px;
@@ -763,14 +1761,19 @@ button{
 
     overflow:hidden;
 
-    border:1px solid rgba(255,255,255,.22);
-    border-radius:16px;
+    border:
+        1px solid
+        rgba(255,255,255,.45);
 
-    background:rgba(255,255,255,.13);
+    border-radius:13px;
+
+    background:
+        rgba(255,247,218,.14);
 
     font-size:1rem;
     font-weight:900;
 }
+
 
 .modal-equipo-logo img{
     width:100%;
@@ -781,22 +1784,28 @@ button{
     object-fit:cover;
 }
 
+
 .modal-equipo strong{
     width:100%;
 
     color:#ffffff;
 
-    font-size:.72rem;
+    font-size:.71rem;
 
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
 }
 
+
 .modal-marcador{
+    position:relative;
+    z-index:2;
+
     display:flex;
     flex-direction:column;
     align-items:center;
+
     gap:4px;
 
     min-width:100px;
@@ -804,73 +1813,119 @@ button{
     text-align:center;
 }
 
+
 .modal-marcador span,
 .modal-marcador small{
-    color:#cdebe7;
+    color:
+        #d5ece8;
 
-    font-size:.58rem;
+    font-size:.57rem;
 }
+
 
 .modal-marcador strong{
-    color:#ffffff;
+    color:
+        #ffe09a;
 
     font-size:1.35rem;
+    font-weight:900;
 }
+
+
+/* =========================================
+   INFO GRID
+========================================= */
+
 
 .modal-info-grid{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+
+    grid-template-columns:
+        repeat(3,1fr);
 
     gap:8px;
 
     margin-bottom:16px;
 }
 
+
 .modal-info-grid > div{
     min-width:0;
 
     padding:10px;
 
-    border-radius:11px;
+    border:
+        1px solid
+        rgba(110,87,42,.18);
 
-    background:#f8fafb;
+    border-radius:9px;
+
+    background:
+        rgba(255,247,222,.52);
 }
+
+
+.modal-info-grid > div:nth-child(even){
+    background:
+        rgba(213,232,225,.55);
+}
+
 
 .modal-info-grid span{
     display:block;
 
     margin-bottom:3px;
 
-    color:#98a2b3;
+    color:
+        #847a63;
 
-    font-size:.54rem;
+    font-size:.53rem;
 }
+
 
 .modal-info-grid strong{
     display:block;
 
-    color:#344054;
+    color:
+        var(--tinta-2);
 
-    font-size:.63rem;
+    font-size:.62rem;
 
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
 }
 
+
+/* =========================================
+   CÉDULA PENDIENTE
+========================================= */
+
+
 .cedula-pendiente{
     display:flex;
     align-items:flex-start;
+
     gap:11px;
 
     margin-bottom:16px;
+
     padding:14px;
 
-    border:1px solid #ead8a4;
-    border-radius:14px;
+    border:
+        1px solid
+        #c6a35c;
 
-    background:#fffaf0;
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #f4dfaa,
+            #e9cc88
+        );
 }
+
 
 .cedula-pendiente-icono{
     width:38px;
@@ -882,81 +1937,145 @@ button{
 
     flex-shrink:0;
 
-    border-radius:11px;
+    border:
+        1px solid
+        #9a782f;
 
-    background:#fff1c9;
+    border-radius:9px;
+
+    background:
+        #f1d586;
 }
+
 
 .cedula-pendiente strong{
     display:block;
 
     margin-bottom:4px;
 
-    color:#6f5411;
+    color:
+        #644a0c;
 
-    font-size:.72rem;
+    font-size:.70rem;
 }
+
 
 .cedula-pendiente p{
-    color:#7c6941;
+    margin:0;
 
-    font-size:.62rem;
+    color:
+        #6e5c38;
+
+    font-size:.61rem;
     line-height:1.4;
 }
+
+
+/* =========================================
+   CONTENIDO CÉDULA
+========================================= */
+
 
 .contenido-cedula{
     display:flex;
     flex-direction:column;
+
     gap:14px;
 
     margin-bottom:16px;
 }
 
+
 .seccion-modal{
     padding:13px;
 
-    border:1px solid #e4e7ec;
-    border-radius:14px;
+    border:
+        1px solid
+        #a99567;
 
-    background:#ffffff;
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            150deg,
+            rgba(245,229,191,.86),
+            rgba(232,208,154,.86)
+        );
 }
+
+
+.seccion-modal:nth-child(even){
+    background:
+        linear-gradient(
+            150deg,
+            rgba(216,235,229,.86),
+            rgba(196,221,213,.86)
+        );
+
+    border-color:
+        #86aaa1;
+}
+
 
 .seccion-modal-header{
     margin-bottom:10px;
 }
+
 
 .seccion-modal-header span{
     display:block;
 
     margin-bottom:2px;
 
-    color:#0f766e;
+    color:
+        var(--terracota-oscura);
 
-    font-size:.54rem;
+    font-size:.53rem;
     font-weight:900;
 
     letter-spacing:.07em;
 }
 
-.seccion-modal-header h3{
-    color:#182230;
 
-    font-size:.78rem;
+.seccion-modal-header h3{
+    margin:0;
+
+    color:
+        var(--tinta);
+
+    font-size:.77rem;
 }
+
+
+/* =========================================
+   MARCADOR OFICIAL
+========================================= */
+
 
 .marcador-oficial{
     display:grid;
-    grid-template-columns:1fr auto 1fr;
+
+    grid-template-columns:
+        1fr
+        auto
+        1fr;
 
     align-items:center;
+
     gap:14px;
 
     padding:14px;
 
-    border-radius:13px;
+    border:
+        1px solid
+        rgba(20,44,41,.25);
 
-    background:#f8fafb;
+    border-radius:11px;
+
+    background:
+        rgba(255,248,226,.48);
 }
+
 
 .marcador-oficial > div{
     display:flex;
@@ -964,33 +2083,49 @@ button{
     align-items:center;
 }
 
-.marcador-oficial span{
-    color:#667085;
 
-    font-size:.6rem;
+.marcador-oficial span{
+    color:
+        #6e6857;
+
+    font-size:.59rem;
 }
+
 
 .marcador-oficial strong{
     margin-top:3px;
 
-    color:#182230;
+    color:
+        var(--tinta);
 
     font-size:1.35rem;
+    font-weight:900;
 }
 
+
 .marcador-separador{
-    color:#98a2b3 !important;
+    color:
+        var(--terracota-oscura) !important;
 
     font-size:1rem !important;
     font-weight:900;
 }
 
+
+/* =========================================
+   EVENTOS
+========================================= */
+
+
 .eventos-resumen{
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+
+    grid-template-columns:
+        repeat(4,1fr);
 
     gap:8px;
 }
+
 
 .eventos-resumen > div{
     display:flex;
@@ -1002,119 +2137,219 @@ button{
 
     padding:8px;
 
-    border-radius:10px;
+    border:
+        1px solid
+        rgba(107,85,42,.18);
 
-    background:#f8fafb;
+    border-radius:9px;
+
+    background:
+        rgba(255,248,225,.45);
 }
+
+
+.eventos-resumen > div:nth-child(even){
+    background:
+        rgba(211,232,224,.48);
+}
+
 
 .eventos-resumen span{
     margin-bottom:3px;
 
-    color:#667085;
+    color:
+        #716957;
 
-    font-size:.55rem;
+    font-size:.54rem;
 }
+
 
 .eventos-resumen strong{
-    color:#182230;
+    color:
+        var(--tinta);
 
-    font-size:.82rem;
+    font-size:.81rem;
 }
+
+
+/* =========================================
+   INCIDENCIAS
+========================================= */
+
 
 .incidencias-texto{
     min-height:70px;
 
     padding:11px;
 
-    border-radius:10px;
+    border:
+        1px solid
+        rgba(110,87,42,.18);
 
-    background:#f8fafb;
+    border-radius:9px;
 
-    color:#52606d;
+    background:
+        rgba(255,248,226,.48);
 
-    font-size:.64rem;
+    color:
+        #58645f;
+
+    font-size:.63rem;
     line-height:1.45;
 }
 
+
+/* =========================================
+   AUDITORÍA
+========================================= */
+
+
 .auditoria-info{
     display:grid;
-    grid-template-columns:repeat(2,1fr);
+
+    grid-template-columns:
+        repeat(2,1fr);
 
     gap:8px;
 }
 
+
 .auditoria-info > div{
     padding:10px;
 
-    border-radius:10px;
+    border:
+        1px solid
+        rgba(109,87,43,.18);
 
-    background:#f8fafb;
+    border-radius:9px;
+
+    background:
+        rgba(255,248,225,.45);
 }
+
+
+.auditoria-info > div:nth-child(even){
+    background:
+        rgba(213,232,225,.45);
+}
+
 
 .auditoria-info span{
     display:block;
 
     margin-bottom:3px;
 
-    color:#98a2b3;
+    color:
+        #847a63;
 
-    font-size:.54rem;
+    font-size:.53rem;
 }
+
 
 .auditoria-info strong{
-    color:#344054;
+    color:
+        var(--tinta-2);
 
-    font-size:.63rem;
+    font-size:.62rem;
 }
+
+
+/* =========================================
+   ACCIONES MODAL
+========================================= */
+
 
 .modal-acciones{
     display:grid;
-    grid-template-columns:1fr 1fr;
+
+    grid-template-columns:
+        1fr 1fr;
 
     gap:8px;
 }
+
 
 .btn-cancelar,
 .btn-guardar{
     min-height:44px;
 
-    border-radius:11px;
+    border-radius:9px;
 
-    font-size:.68rem;
-    font-weight:800;
+    font-size:.67rem;
+    font-weight:900;
 }
+
 
 .btn-cancelar{
-    background:#f2f4f7;
-    color:#475467;
+    border:
+        1px solid
+        #9f8d61;
+
+    background:
+        #e2cc97;
+
+    color:
+        var(--tinta);
 }
 
+
 .btn-guardar{
-    background:#0f766e;
+    border:
+        1px solid
+        #075d56;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--jade),
+            var(--agua)
+        );
+
     color:#ffffff;
 }
 
+
+/* =========================================
+   TOAST
+========================================= */
+
+
 .toast{
     position:fixed;
+
     right:20px;
     bottom:20px;
+
     z-index:200;
 
-    width:min(360px,calc(100vw - 32px));
+    width:
+        min(360px,calc(100vw - 32px));
 
     display:flex;
     align-items:flex-start;
+
     gap:10px;
 
     padding:13px;
 
-    border:1px solid #cbe7d5;
-    border-radius:14px;
+    border:
+        1px solid
+        #86b7a2;
 
-    background:#f0faf3;
+    border-radius:12px;
 
-    box-shadow:0 15px 40px rgba(15,23,42,.13);
+    background:
+        linear-gradient(
+            145deg,
+            #dceee3,
+            #c8e1d4
+        );
+
+    box-shadow:
+        0 15px 40px
+        rgba(29,56,48,.16);
 }
+
 
 .toast > span{
     width:32px;
@@ -1126,108 +2361,172 @@ button{
 
     flex-shrink:0;
 
+    border:
+        1px solid
+        #79aa94;
+
     border-radius:50%;
 
-    background:#d9f2e1;
-    color:#18794e;
+    background:
+        #c6e6d5;
+
+    color:
+        #176c4a;
 
     font-weight:900;
 }
+
 
 .toast strong{
     display:block;
 
     margin-bottom:2px;
 
-    color:#182230;
+    color:
+        var(--tinta);
 
-    font-size:.7rem;
+    font-size:.69rem;
 }
+
 
 .toast p{
-    color:#667085;
+    margin:0;
 
-    font-size:.6rem;
+    color:
+        #5d6d65;
+
+    font-size:.59rem;
     line-height:1.35;
 }
+
+
+/* =========================================
+   HOVER
+========================================= */
+
 
 @media (hover:hover) and (pointer:fine){
 
     .cedula-card,
     .btn-ver-cedula,
     .btn-cancelar,
-    .btn-guardar{
+    .btn-guardar,
+    .btn-ver-sitio{
         transition:.18s ease;
     }
 
+
     .cedula-card:hover{
-        transform:translateY(-1px);
+        transform:
+            translateY(-2px);
 
-        border-color:#ccd5da;
+        border-color:
+            #806d41;
 
-        box-shadow:0 8px 22px rgba(15,23,42,.045);
+        box-shadow:
+            0 10px 24px
+            rgba(65,48,21,.12);
     }
 
-    .btn-ver-cedula:hover{
-        background:#e4f1ef;
+
+    .btn-ver-cedula:hover,
+    .btn-guardar:hover{
+        filter:
+            brightness(1.06);
     }
+
 
     .btn-cancelar:hover{
-        background:#e8ebef;
+        background:
+            #d9bf82;
     }
 
-    .btn-guardar:hover{
-        background:#0b665f;
+
+    .btn-ver-sitio:hover{
+        background:
+            #e2c98b;
+    }
+
+
+    .btn-volver:hover,
+    .btn-cerrar-modal:hover{
+        background:
+            #dcc085;
     }
 
 }
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
 
 @media (max-width:1200px){
 
     .herramientas{
-        grid-template-columns:1fr 1fr;
+        grid-template-columns:
+            1fr 1fr;
     }
 
+
     .buscador{
-        grid-column:1 / -1;
+        grid-column:
+            1 / -1;
     }
 
 }
 
+
 @media (max-width:950px){
 
     .cedula-card{
-        grid-template-columns:auto minmax(0,1fr) auto;
+        grid-template-columns:
+            auto
+            minmax(0,1fr)
+            auto;
     }
+
 
     .cedula-arbitro{
         grid-column:2;
     }
 
+
     .cedula-resultado{
         grid-column:3;
-        grid-row:1 / span 2;
+
+        grid-row:
+            1 / span 2;
     }
 
 }
+
 
 @media (max-width:900px){
 
     .resumen-cedulas{
-        grid-template-columns:repeat(2,minmax(0,1fr));
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
     }
 
 }
 
+
 @media (max-width:700px){
 
     .contenido-admin{
-        padding:18px 14px 26px;
+        padding:
+            18px
+            14px
+            26px;
     }
+
 
     .herramientas{
         grid-template-columns:1fr;
     }
+
 
     .buscador{
         grid-column:auto;
@@ -1235,17 +2534,33 @@ button{
 
 }
 
+
 @media (max-width:600px){
+
+    body::after{
+        display:none;
+    }
+
 
     .topbar-admin{
         min-height:64px;
 
-        padding:8px 12px;
+        padding:
+            8px
+            12px;
     }
+
+
+    .topbar-admin::after{
+        left:12px;
+        right:12px;
+    }
+
 
     .btn-ver-sitio span{
         display:none;
     }
+
 
     .btn-ver-sitio{
         width:40px;
@@ -1256,39 +2571,86 @@ button{
         padding:0;
     }
 
-    .encabezado-pagina h1{
-        font-size:1.35rem;
+
+    .btn-volver{
+        width:39px;
+        height:39px;
     }
+
+
+    .topbar-logo{
+        width:42px;
+        height:42px;
+    }
+
+
+    .encabezado-pagina{
+        padding:
+            20px
+            17px;
+
+        border-radius:14px;
+    }
+
+
+    .encabezado-pagina h1{
+        font-size:1.32rem;
+    }
+
+
+    .encabezado-pagina p{
+        font-size:.70rem;
+    }
+
 
     .resumen-cedulas{
         gap:8px;
     }
 
+
     .resumen-card{
         padding:11px;
+
+        border-radius:11px;
     }
+
 
     .resumen-icono{
         width:36px;
         height:36px;
     }
 
+
+    .panel-cedulas{
+        border-radius:13px;
+    }
+
+
     .lista-cedulas{
         padding:10px;
     }
 
+
     .cedula-card{
-        grid-template-columns:auto minmax(0,1fr);
+        grid-template-columns:
+            auto
+            minmax(0,1fr);
 
         gap:10px;
+
+        border-radius:11px;
     }
+
 
     .cedula-arbitro{
         grid-column:2;
     }
 
+
     .cedula-resultado{
-        grid-column:1 / -1;
+        grid-column:
+            1 / -1;
+
         grid-row:auto;
 
         flex-direction:row;
@@ -1296,10 +2658,12 @@ button{
 
         padding:8px;
 
-        border-radius:10px;
+        border-radius:9px;
 
-        background:#f8fafb;
+        background:
+            rgba(215,232,225,.62);
     }
+
 
     .modal-overlay{
         align-items:flex-end;
@@ -1307,25 +2671,36 @@ button{
         padding:10px;
     }
 
+
     .modal-cedula{
         max-width:none;
 
-        border-radius:20px 20px 14px 14px;
-
         padding:18px;
+
+        border-radius:
+            20px
+            20px
+            14px
+            14px;
     }
+
 
     .modal-info-grid{
-        grid-template-columns:repeat(2,1fr);
+        grid-template-columns:
+            repeat(2,1fr);
     }
 
+
     .eventos-resumen{
-        grid-template-columns:repeat(2,1fr);
+        grid-template-columns:
+            repeat(2,1fr);
     }
+
 
     .auditoria-info{
         grid-template-columns:1fr;
     }
+
 
     .toast{
         left:16px;
@@ -1337,7 +2712,38 @@ button{
 
 }
 
+
 @media (max-width:430px){
+
+    .contenido-admin{
+        padding:
+            14px
+            10px
+            24px;
+    }
+
+
+    .topbar-titulo strong{
+        max-width:160px;
+
+        font-size:.80rem;
+    }
+
+
+    .topbar-titulo span{
+        font-size:.57rem;
+    }
+
+
+    .resumen-card strong{
+        font-size:.90rem;
+    }
+
+
+    .resumen-card span{
+        font-size:.53rem;
+    }
+
 
     .modal-partido-resumen{
         gap:8px;
@@ -1345,18 +2751,22 @@ button{
         padding:12px;
     }
 
+
     .modal-equipo-logo{
         width:50px;
         height:50px;
     }
 
+
     .modal-marcador{
         min-width:76px;
     }
 
+
     .modal-marcador strong{
         font-size:1.1rem;
     }
+
 
     .modal-info-grid{
         grid-template-columns:1fr;

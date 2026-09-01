@@ -1,27 +1,204 @@
-body{
-    background:#f4f6f8;
-    color:#14213d;
-    padding-bottom:82px;
+:root{
+    --tinta:#102b28;
+    --tinta-2:#2b413c;
+
+    --jade:#0b756d;
+    --jade-2:#12877d;
+    --jade-oscuro:#07574f;
+    --jade-profundo:#063f3b;
+    --jade-claro:#d7ece6;
+
+    --agua:#197e98;
+    --agua-2:#2a96aa;
+    --agua-clara:#70c2ca;
+
+    --terracota:#b9542e;
+    --terracota-2:#d16d3a;
+    --terracota-oscura:#85391f;
+
+    --dorado:#d3a13b;
+    --dorado-2:#e0b657;
+    --dorado-suave:#f0d79a;
+
+    --arena:#e1c991;
+    --arena-clara:#f5e9c7;
+    --arena-suave:#ead8ac;
+
+    --papel:#f1e3be;
+    --papel-claro:#fff8e8;
+    --papel-oscuro:#dcc596;
+
+    --verde:#2e714c;
+    --verde-claro:#dcebd8;
+
+    --rojo:#b84535;
+    --naranja:#b96725;
+
+    --texto:#213732;
+    --texto-suave:#68746e;
+
+    --borde:#baa676;
+    --borde-suave:#d0c09a;
+
+    --sombra:
+        0 10px 28px rgba(55,43,20,.10),
+        0 3px 8px rgba(55,43,20,.05);
 }
+
+
+*{
+    box-sizing:border-box;
+}
+
+
+html{
+    min-height:100%;
+}
+
+
+body{
+    position:relative;
+
+    min-height:100vh;
+
+    margin:0;
+
+    padding-bottom:82px;
+
+    color:var(--texto);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at 12% 12%,
+            rgba(255,255,255,.25),
+            transparent 22%
+        ),
+
+        radial-gradient(
+            circle at 88% 16%,
+            rgba(33,126,151,.12),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 38% 72%,
+            rgba(181,83,45,.06),
+            transparent 30%
+        ),
+
+        linear-gradient(
+            180deg,
+            #dbe8dc 0%,
+            #efe2bb 32%,
+            #e9d3a0 72%,
+            #d7bd82 100%
+        );
+}
+
+
+body::before{
+    content:"";
+
+    position:fixed;
+
+    left:-10%;
+    right:-10%;
+    bottom:-90px;
+
+    height:250px;
+
+    z-index:-1;
+
+    opacity:.40;
+
+    border-radius:50%;
+
+    background:
+        repeating-radial-gradient(
+            ellipse at center bottom,
+
+            transparent 0 28px,
+
+            rgba(25,126,152,.18) 29px 32px,
+
+            transparent 33px 56px,
+
+            rgba(11,117,109,.16) 57px 60px,
+
+            transparent 61px 86px
+        );
+
+    pointer-events:none;
+}
+
+
+body::after{
+    content:"";
+
+    position:fixed;
+
+    width:300px;
+    height:300px;
+
+    right:-140px;
+    top:160px;
+
+    z-index:-1;
+
+    border:
+        16px double
+        rgba(11,117,109,.055);
+
+    border-radius:50%;
+
+    pointer-events:none;
+}
+
 
 a{
     color:inherit;
     text-decoration:none;
 }
 
+
 button,
 select{
     font:inherit;
 }
+
+
+button{
+    border:none;
+    cursor:pointer;
+}
+
+
+/* =========================================
+   APP
+========================================= */
+
 
 .app-jornadas{
     width:100%;
     min-height:100vh;
 }
 
+
+/* =========================================
+   TOPBAR
+========================================= */
+
+
 .topbar{
     position:sticky;
+
     top:0;
+
     z-index:50;
 
     display:flex;
@@ -29,21 +206,65 @@ select{
     justify-content:space-between;
 
     width:100%;
-    padding:10px 14px;
 
-    background:rgba(255,255,255,.96);
-    border-bottom:1px solid #e5e7eb;
+    padding:
+        10px
+        14px;
 
-    backdrop-filter:blur(10px);
+    border-bottom:
+        1px solid
+        #ad9b6d;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(244,230,193,.97),
+            rgba(255,247,224,.97)
+        );
+
+    box-shadow:
+        0 5px 15px
+        rgba(60,46,22,.08);
+
+    backdrop-filter:
+        blur(10px);
 }
+
+
+.topbar::after{
+    content:"";
+
+    position:absolute;
+
+    left:14px;
+    right:14px;
+    bottom:-1px;
+
+    height:5px;
+
+    border-top:
+        3px solid
+        rgba(11,117,109,.75);
+
+    border-bottom:
+        1px solid
+        rgba(25,126,152,.45);
+
+    border-radius:50%;
+
+    opacity:.68;
+}
+
 
 .topbar-identidad{
     display:flex;
     align-items:center;
+
     gap:10px;
 
     min-width:0;
 }
+
 
 .btn-volver{
     width:42px;
@@ -55,22 +276,51 @@ select{
 
     flex-shrink:0;
 
-    border-radius:12px;
+    border:
+        1px solid
+        #a99567;
 
-    background:#f2f4f7;
-    color:#344054;
+    border-radius:10px;
 
-    font-size:1.25rem;
-    font-weight:700;
+    background:
+        #e9d5a3;
+
+    color:
+        var(--tinta);
+
+    font-size:1.2rem;
+    font-weight:800;
+
+    box-shadow:
+        inset 0 0 0 2px
+        rgba(255,255,255,.18);
 }
+
 
 .topbar-logo{
-    width:44px;
-    height:44px;
+    width:46px;
+    height:46px;
+
+    flex-shrink:0;
+
+    padding:2px;
 
     object-fit:contain;
-    flex-shrink:0;
+
+    border:
+        2px solid
+        var(--jade-oscuro);
+
+    border-radius:50%;
+
+    background:
+        #fff5d8;
+
+    box-shadow:
+        0 3px 10px
+        rgba(45,40,24,.12);
 }
+
 
 .topbar-texto{
     display:flex;
@@ -79,19 +329,28 @@ select{
     min-width:0;
 }
 
+
 .topbar-texto span{
-    color:#667085;
-    font-size:.72rem;
+    color:
+        var(--terracota-oscura);
+
+    font-size:.67rem;
+    font-weight:800;
 }
 
+
 .topbar-texto strong{
-    color:#132238;
-    font-size:1rem;
+    color:
+        var(--tinta);
+
+    font-size:.96rem;
+    font-weight:900;
 
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
 }
+
 
 .btn-perfil{
     width:44px;
@@ -103,210 +362,523 @@ select{
 
     flex-shrink:0;
 
+    border:
+        2px solid
+        var(--tinta);
+
     border-radius:50%;
 
-    background:#0f766e;
+    background:
+        linear-gradient(
+            145deg,
+            var(--terracota-2),
+            var(--terracota)
+        );
+
     color:#ffffff;
 
-    font-weight:800;
+    font-weight:900;
+
+    box-shadow:
+        inset 0 0 0 2px
+        rgba(255,224,145,.22);
 }
+
+
+/* =========================================
+   CONTENIDO
+========================================= */
+
 
 .contenido-jornadas{
     width:100%;
     max-width:1050px;
 
     margin:0 auto;
-    padding:18px 14px 28px;
+
+    padding:
+        20px
+        14px
+        30px;
 }
 
+
+/* =========================================
+   ENCABEZADO
+========================================= */
+
+
 .encabezado-pagina{
+    position:relative;
+
     margin-bottom:22px;
+
+    padding:
+        20px
+        18px;
+
+    overflow:hidden;
+
+    border:
+        2px solid
+        var(--tinta);
+
+    border-radius:16px;
+
+    background:
+        radial-gradient(
+            circle at 88% 15%,
+            rgba(255,255,255,.09),
+            transparent 25%
+        ),
+
+        linear-gradient(
+            135deg,
+            #075e57,
+            #08796f 55%,
+            #17677c
+        );
+
+    color:#ffffff;
+
+    box-shadow:
+        0 12px 28px
+        rgba(23,69,63,.16);
 }
+
+
+.encabezado-pagina::before{
+    content:"";
+
+    position:absolute;
+
+    left:-8%;
+    right:-8%;
+    bottom:-60px;
+
+    height:125px;
+
+    border-radius:50%;
+
+    border-top:
+        8px double
+        rgba(112,194,202,.22);
+
+    transform:
+        rotate(-2deg);
+}
+
+
+.encabezado-pagina::after{
+    content:"⚽";
+
+    position:absolute;
+
+    right:-10px;
+    top:-20px;
+
+    font-size:7rem;
+
+    opacity:.055;
+
+    transform:
+        rotate(-18deg);
+}
+
+
+.encabezado-pagina > *{
+    position:relative;
+    z-index:2;
+}
+
 
 .encabezado-mini{
     display:block;
 
     margin-bottom:5px;
 
-    color:#0f766e;
+    color:
+        #f3d677;
 
-    font-size:.72rem;
-    font-weight:800;
+    font-size:.68rem;
+    font-weight:900;
 
     text-transform:uppercase;
-    letter-spacing:.07em;
+    letter-spacing:.08em;
 }
 
-.encabezado-pagina h1{
-    margin-bottom:7px;
 
-    color:#132238;
+.encabezado-pagina h1{
+    margin:
+        0 0
+        7px;
+
+    color:#ffffff;
 
     font-size:1.55rem;
     line-height:1.15;
+
+    font-weight:900;
 }
+
 
 .encabezado-pagina p{
     max-width:560px;
 
-    color:#667085;
+    margin:0;
 
-    font-size:.88rem;
+    color:#e4f1ee;
+
+    font-size:.84rem;
     line-height:1.45;
 }
+
+
+/* =========================================
+   SELECTOR CATEGORÍA
+========================================= */
+
 
 .selector-categoria{
     display:flex;
     flex-direction:column;
+
     gap:7px;
 
-    margin-bottom:16px;
+    margin-bottom:17px;
 }
+
 
 .selector-categoria label{
-    color:#344054;
+    color:
+        var(--tinta);
 
-    font-size:.82rem;
-    font-weight:700;
+    font-size:.79rem;
+    font-weight:900;
 }
+
 
 .selector-categoria select{
     width:100%;
+
     min-height:50px;
 
-    padding:0 14px;
+    padding:
+        0 14px;
 
-    border:1px solid #d0d5dd;
-    border-radius:13px;
+    border:
+        1px solid
+        #a99567;
 
-    background:#ffffff;
-    color:#101828;
+    border-radius:11px;
+
+    outline:none;
+
+    background:
+        linear-gradient(
+            180deg,
+            #f6e6bc,
+            #ead5a1
+        );
+
+    color:
+        var(--tinta);
 
     font-size:16px;
-    outline:none;
+
+    box-shadow:
+        0 3px 10px
+        rgba(70,54,24,.05);
 }
 
+
 .selector-categoria select:focus{
-    border-color:#0f766e;
-    box-shadow:0 0 0 3px rgba(15,118,110,.12);
+    border-color:
+        var(--jade);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(11,117,109,.12);
 }
+
+
+/* =========================================
+   SELECTOR JORNADAS
+========================================= */
+
 
 .selector-jornadas{
     display:flex;
+
     gap:8px;
 
     overflow-x:auto;
 
-    margin-bottom:20px;
-    padding-bottom:4px;
+    margin-bottom:22px;
+
+    padding:
+        2px
+        0
+        6px;
 
     scrollbar-width:none;
 }
+
 
 .selector-jornadas::-webkit-scrollbar{
     display:none;
 }
 
+
 .jornada-tab{
     min-height:40px;
 
-    padding:8px 14px;
+    padding:
+        8px
+        14px;
 
     flex-shrink:0;
 
+    border:
+        1px solid
+        #b49f6d;
+
     border-radius:999px;
 
-    background:#e9edf1;
-    color:#475467;
+    background:
+        #ead8aa;
 
-    font-size:.78rem;
-    font-weight:700;
+    color:
+        #554a32;
+
+    font-size:.75rem;
+    font-weight:800;
 
     white-space:nowrap;
+
+    transition:.18s ease;
 }
 
+
 .jornada-tab.active{
-    background:#0f766e;
+    border-color:
+        #064f49;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--jade),
+            var(--agua)
+        );
+
     color:#ffffff;
+
+    box-shadow:
+        0 5px 12px
+        rgba(20,107,98,.15);
 }
+
+
+/* =========================================
+   RESUMEN JORNADA
+========================================= */
+
 
 .resumen-jornada{
     display:flex;
     align-items:center;
     justify-content:space-between;
+
     gap:12px;
 
-    margin-bottom:13px;
+    margin-bottom:14px;
 }
+
 
 .seccion-mini{
     display:block;
 
     margin-bottom:2px;
 
-    color:#0f766e;
+    color:
+        var(--terracota-oscura);
 
-    font-size:.7rem;
-    font-weight:800;
+    font-size:.64rem;
+    font-weight:900;
 
     text-transform:uppercase;
-    letter-spacing:.07em;
+    letter-spacing:.08em;
 }
 
+
 .resumen-jornada h2{
-    color:#132238;
-    font-size:1.2rem;
+    margin:0;
+
+    color:
+        var(--tinta);
+
+    font-size:1.15rem;
 }
+
 
 .badge-jornada{
     display:inline-flex;
     align-items:center;
 
     min-height:30px;
-    padding:6px 10px;
+
+    padding:
+        6px
+        10px;
+
+    border:
+        1px solid
+        #89bda8;
 
     border-radius:999px;
 
-    background:#eef7f4;
-    color:#18794e;
+    background:
+        #d8eee1;
 
-    font-size:.72rem;
-    font-weight:700;
+    color:
+        #176c4a;
+
+    font-size:.68rem;
+    font-weight:900;
 
     white-space:nowrap;
 }
 
+
+/* =========================================
+   LISTA PARTIDOS
+========================================= */
+
+
 .lista-partidos{
     display:flex;
     flex-direction:column;
+
     gap:12px;
 }
 
+
+/* =========================================
+   PARTIDO CARD
+========================================= */
+
+
 .partido-card{
+    position:relative;
+
     overflow:hidden;
 
-    padding:15px;
+    padding:16px;
 
-    border:1px solid #e4e7ec;
-    border-radius:19px;
+    border:
+        1px solid
+        #ae9967;
 
-    background:#ffffff;
+    border-radius:15px;
 
-    box-shadow:0 6px 20px rgba(15,23,42,.04);
+    background:
+        radial-gradient(
+            circle at 95% 8%,
+            rgba(25,126,152,.08),
+            transparent 28%
+        ),
+
+        linear-gradient(
+            155deg,
+            #f4e3b5,
+            #f9edcb
+        );
+
+    box-shadow:
+        0 8px 22px
+        rgba(69,53,24,.09);
 }
 
+
+.partido-card:nth-child(even){
+    border-color:
+        #89afa4;
+
+    background:
+        radial-gradient(
+            circle at 95% 8%,
+            rgba(213,161,59,.08),
+            transparent 28%
+        ),
+
+        linear-gradient(
+            155deg,
+            #d7e9e3,
+            #cce1da
+        );
+}
+
+
+.partido-card::before{
+    content:"";
+
+    position:absolute;
+
+    left:15px;
+    right:15px;
+    top:0;
+
+    height:5px;
+
+    border-top:
+        3px solid
+        var(--jade);
+
+    border-bottom:
+        1px solid
+        var(--agua);
+
+    border-radius:50%;
+}
+
+
+.partido-card::after{
+    content:"";
+
+    position:absolute;
+
+    width:110px;
+    height:110px;
+
+    right:-58px;
+    bottom:-60px;
+
+    border:
+        14px double
+        rgba(17,80,75,.04);
+
+    border-radius:50%;
+}
+
+
 .partido-superior{
+    position:relative;
+    z-index:2;
+
     display:flex;
     align-items:center;
     justify-content:space-between;
+
     gap:10px;
 
     margin-bottom:16px;
 
-    color:#667085;
+    color:
+        #716955;
 
-    font-size:.72rem;
+    font-size:.68rem;
 }
+
 
 .partido-superior > span:first-child{
     min-width:0;
@@ -316,55 +888,112 @@ select{
     white-space:nowrap;
 }
 
+
+/* =========================================
+   ESTADOS
+========================================= */
+
+
 .estado-partido{
     display:inline-flex;
     align-items:center;
 
     min-height:27px;
-    padding:5px 9px;
+
+    padding:
+        5px
+        9px;
 
     border-radius:999px;
 
-    font-size:.68rem;
-    font-weight:700;
+    font-size:.65rem;
+    font-weight:900;
 
     white-space:nowrap;
 }
 
+
 .estado-partido.proximo{
-    background:#e9f7ef;
-    color:#18794e;
+    border:
+        1px solid
+        #89bda8;
+
+    background:
+        #d9efe2;
+
+    color:
+        #176c4a;
 }
+
 
 .estado-partido.finalizado{
-    background:#eef2f6;
-    color:#475467;
+    border:
+        1px solid
+        #b8aa82;
+
+    background:
+        #eadfc1;
+
+    color:
+        #554b38;
 }
+
 
 .estado-partido.en-vivo{
-    background:#fff0ef;
-    color:#b42318;
+    border:
+        1px solid
+        #d8897c;
+
+    background:
+        #f8d8d1;
+
+    color:
+        #982f25;
 }
+
 
 .estado-partido.cancelado{
-    background:#fff4e5;
-    color:#b54708;
+    border:
+        1px solid
+        #d1a060;
+
+    background:
+        #f7dfb9;
+
+    color:
+        #91500e;
 }
 
+
+/* =========================================
+   PARTIDO PRINCIPAL
+========================================= */
+
+
 .partido-principal{
+    position:relative;
+    z-index:2;
+
     display:grid;
-    grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+
+    grid-template-columns:
+        minmax(0,1fr)
+        auto
+        minmax(0,1fr);
 
     align-items:center;
+
     gap:10px;
 
     margin-bottom:16px;
 }
 
+
 .equipo{
     display:flex;
     flex-direction:column;
     align-items:center;
+
     gap:8px;
 
     min-width:0;
@@ -372,30 +1001,39 @@ select{
     text-align:center;
 }
 
+
 .escudo{
-    width:56px;
-    height:56px;
+    width:58px;
+    height:58px;
 
     display:flex;
     align-items:center;
     justify-content:center;
 
-    border-radius:16px;
+    border:
+        1px solid
+        var(--tinta);
 
-    border:1px solid #dfe4e8;
+    border-radius:13px;
 
     background:
         linear-gradient(
             145deg,
-            #f4f6f8,
-            #e8ecef
+            #cce7df,
+            #f1dfab
         );
 
-    color:#0f766e;
+    color:
+        var(--jade);
 
     font-size:1.05rem;
     font-weight:900;
+
+    box-shadow:
+        inset 0 0 0 2px
+        rgba(255,255,255,.25);
 }
+
 
 .equipo strong{
     width:100%;
@@ -403,15 +1041,19 @@ select{
     overflow:hidden;
     text-overflow:ellipsis;
 
-    color:#1d2939;
+    color:
+        var(--tinta);
 
-    font-size:.86rem;
+    font-size:.84rem;
+    font-weight:900;
 }
+
 
 .partido-centro{
     display:flex;
     flex-direction:column;
     align-items:center;
+
     gap:4px;
 
     min-width:80px;
@@ -419,92 +1061,220 @@ select{
     text-align:center;
 }
 
-.partido-centro .hora{
-    color:#0f766e;
 
-    font-size:.76rem;
-    font-weight:800;
+.partido-centro .hora{
+    color:
+        var(--jade-oscuro);
+
+    font-size:.74rem;
+    font-weight:900;
 }
+
 
 .partido-centro strong{
-    color:#101828;
+    color:
+        var(--terracota-oscura);
 
-    font-size:1rem;
+    font-size:.96rem;
+    font-weight:900;
 }
+
 
 .partido-centro .resultado{
-    font-size:1.2rem;
+    min-width:56px;
+
+    padding:
+        5px
+        8px;
+
+    border:
+        1px solid
+        rgba(20,44,41,.35);
+
+    border-radius:8px;
+
+    background:
+        rgba(255,249,227,.52);
+
+    font-size:1.15rem;
 }
+
 
 .partido-centro span:last-child{
     max-width:100px;
 
-    color:#667085;
+    color:
+        #706854;
 
-    font-size:.68rem;
+    font-size:.66rem;
     line-height:1.25;
 }
 
+
+/* =========================================
+   BOTÓN DETALLE
+========================================= */
+
+
 .btn-detalle{
+    position:relative;
+    z-index:2;
+
     width:100%;
+
     min-height:44px;
 
     display:flex;
     align-items:center;
     justify-content:center;
 
-    border-radius:12px;
+    border:
+        1px solid
+        #075d56;
 
-    background:#f1f7f6;
-    color:#0f766e;
+    border-radius:10px;
 
-    font-size:.8rem;
-    font-weight:800;
+    background:
+        linear-gradient(
+            135deg,
+            var(--jade),
+            var(--agua)
+        );
+
+    color:#ffffff;
+
+    font-size:.76rem;
+    font-weight:900;
+
+    box-shadow:
+        0 5px 12px
+        rgba(20,107,98,.13);
+
+    transition:.18s ease;
 }
+
+
+/* =========================================
+   BOTTOM NAV
+========================================= */
+
 
 .bottom-nav{
     position:fixed;
+
     left:0;
     right:0;
     bottom:0;
+
     z-index:60;
 
     display:grid;
-    grid-template-columns:repeat(5,1fr);
+
+    grid-template-columns:
+        repeat(5,1fr);
 
     min-height:68px;
 
-    border-top:1px solid #e4e7ec;
+    border-top:
+        1px solid
+        #9d8b60;
 
-    background:rgba(255,255,255,.98);
+    background:
+        linear-gradient(
+            90deg,
+            rgba(229,207,154,.98),
+            rgba(245,231,194,.98)
+        );
 
-    backdrop-filter:blur(10px);
+    box-shadow:
+        0 -5px 18px
+        rgba(64,51,28,.08);
+
+    backdrop-filter:
+        blur(10px);
 }
 
+
+.bottom-nav::before{
+    content:"";
+
+    position:absolute;
+
+    left:14px;
+    right:14px;
+    top:-1px;
+
+    height:5px;
+
+    border-top:
+        3px solid
+        var(--jade);
+
+    border-bottom:
+        1px solid
+        var(--agua);
+
+    border-radius:50%;
+
+    opacity:.55;
+}
+
+
 .bottom-item{
+    position:relative;
+
     display:flex;
     flex-direction:column;
     align-items:center;
     justify-content:center;
+
     gap:3px;
 
     min-width:0;
 
-    color:#667085;
+    color:
+        #626d66;
 }
+
 
 .bottom-item span{
-    font-size:1.2rem;
+    font-size:1.12rem;
 }
+
 
 .bottom-item small{
-    font-size:.67rem;
-    font-weight:600;
+    font-size:.63rem;
+    font-weight:800;
 }
 
+
 .bottom-item.active{
-    color:#0f766e;
+    color:
+        var(--jade-oscuro);
 }
+
+
+.bottom-item.active::after{
+    content:"";
+
+    position:absolute;
+
+    bottom:5px;
+
+    width:6px;
+    height:6px;
+
+    border-radius:50%;
+
+    background:
+        var(--terracota);
+}
+
+
+/* =========================================
+   HOVER
+========================================= */
+
 
 @media (hover:hover) and (pointer:fine){
 
@@ -512,19 +1282,47 @@ select{
         transition:.18s ease;
     }
 
+
     .partido-card:hover{
-        transform:translateY(-2px);
+        transform:
+            translateY(-3px);
 
-        border-color:#cfd8df;
+        border-color:
+            #837043;
 
-        box-shadow:0 10px 28px rgba(15,23,42,.06);
+        box-shadow:
+            0 11px 28px
+            rgba(65,48,21,.12);
     }
 
+
     .btn-detalle:hover{
-        background:#e4f1ef;
+        filter:
+            brightness(1.06);
+
+        transform:
+            translateY(-1px);
+    }
+
+
+    .jornada-tab:hover{
+        border-color:
+            var(--jade);
+    }
+
+
+    .btn-volver:hover{
+        background:
+            #dfc58a;
     }
 
 }
+
+
+/* =========================================
+   TABLET
+========================================= */
+
 
 @media (min-width:700px){
 
@@ -532,43 +1330,316 @@ select{
         padding-bottom:0;
     }
 
+
     .topbar{
-        padding:12px 24px;
+        padding:
+            12px
+            24px;
     }
 
-    .contenido-jornadas{
-        padding:28px 24px 40px;
+
+    .topbar::after{
+        left:24px;
+        right:24px;
     }
+
+
+    .contenido-jornadas{
+        padding:
+            28px
+            24px
+            40px;
+    }
+
+
+    .encabezado-pagina{
+        padding:
+            26px
+            24px;
+    }
+
 
     .selector-categoria{
         max-width:360px;
     }
 
+
     .lista-partidos{
         display:grid;
-        grid-template-columns:repeat(2,minmax(0,1fr));
+
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
     }
+
 
     .bottom-nav{
         position:static;
 
-        width:100%;
-        max-width:1050px;
+        width:
+            calc(100% - 48px);
 
-        margin:0 auto 30px;
+        max-width:
+            1002px;
+
+        margin:
+            0 auto
+            30px;
 
         overflow:hidden;
 
-        border:1px solid #e4e7ec;
-        border-radius:18px;
+        border:
+            1px solid
+            #9d8b60;
+
+        border-radius:16px;
+
+        background:
+            linear-gradient(
+                90deg,
+                #e3cb91,
+                #f0ddb1
+            );
+    }
+
+
+    .bottom-nav::before{
+        left:20px;
+        right:20px;
     }
 
 }
 
+
+/* =========================================
+   DESKTOP
+========================================= */
+
+
 @media (min-width:1000px){
 
     .lista-partidos{
-        grid-template-columns:repeat(3,minmax(0,1fr));
+        grid-template-columns:
+            repeat(3,minmax(0,1fr));
+    }
+
+
+    .encabezado-pagina{
+        min-height:165px;
+
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+    }
+
+}
+
+
+/* =========================================
+   CELULAR PEQUEÑO
+========================================= */
+
+
+@media (max-width:430px){
+
+    body::after{
+        display:none;
+    }
+
+
+    .topbar{
+        padding:
+            8px
+            10px;
+    }
+
+
+    .topbar::after{
+        left:10px;
+        right:10px;
+    }
+
+
+    .btn-volver{
+        width:39px;
+        height:39px;
+
+        font-size:1.05rem;
+    }
+
+
+    .topbar-logo{
+        width:42px;
+        height:42px;
+    }
+
+
+    .topbar-texto span{
+        font-size:.60rem;
+    }
+
+
+    .topbar-texto strong{
+        max-width:175px;
+
+        font-size:.84rem;
+    }
+
+
+    .btn-perfil{
+        width:40px;
+        height:40px;
+
+        font-size:.82rem;
+    }
+
+
+    .contenido-jornadas{
+        padding:
+            14px
+            10px
+            25px;
+    }
+
+
+    .encabezado-pagina{
+        padding:
+            20px
+            16px;
+
+        border-radius:14px;
+    }
+
+
+    .encabezado-pagina h1{
+        font-size:1.28rem;
+    }
+
+
+    .encabezado-pagina p{
+        font-size:.76rem;
+    }
+
+
+    .encabezado-mini{
+        font-size:.61rem;
+    }
+
+
+    .selector-categoria label{
+        font-size:.74rem;
+    }
+
+
+    .selector-categoria select{
+        min-height:47px;
+
+        border-radius:10px;
+    }
+
+
+    .jornada-tab{
+        min-height:37px;
+
+        padding:
+            7px
+            12px;
+
+        font-size:.69rem;
+    }
+
+
+    .resumen-jornada h2{
+        font-size:1rem;
+    }
+
+
+    .seccion-mini{
+        font-size:.59rem;
+    }
+
+
+    .badge-jornada{
+        min-height:27px;
+
+        padding:
+            5px
+            8px;
+
+        font-size:.61rem;
+    }
+
+
+    .partido-card{
+        padding:14px;
+
+        border-radius:13px;
+    }
+
+
+    .partido-superior{
+        font-size:.63rem;
+    }
+
+
+    .partido-principal{
+        gap:6px;
+    }
+
+
+    .escudo{
+        width:52px;
+        height:52px;
+
+        border-radius:11px;
+    }
+
+
+    .equipo strong{
+        font-size:.74rem;
+    }
+
+
+    .partido-centro{
+        min-width:62px;
+    }
+
+
+    .partido-centro .hora{
+        font-size:.68rem;
+    }
+
+
+    .partido-centro strong{
+        font-size:.86rem;
+    }
+
+
+    .partido-centro .resultado{
+        min-width:50px;
+
+        font-size:1rem;
+    }
+
+
+    .btn-detalle{
+        min-height:42px;
+
+        font-size:.71rem;
+    }
+
+
+    .bottom-nav{
+        min-height:66px;
+    }
+
+
+    .bottom-item span{
+        font-size:1.05rem;
+    }
+
+
+    .bottom-item small{
+        font-size:.58rem;
     }
 
 }

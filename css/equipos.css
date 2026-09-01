@@ -1,27 +1,203 @@
-body{
-    background:#f4f6f8;
-    color:#14213d;
-    padding-bottom:82px;
+:root{
+    --tinta:#102b28;
+    --tinta-2:#2a403b;
+
+    --jade:#0b756d;
+    --jade-2:#12877d;
+    --jade-oscuro:#07574f;
+    --jade-profundo:#063f3b;
+    --jade-claro:#d7ece6;
+
+    --agua:#197e98;
+    --agua-2:#2a96aa;
+    --agua-clara:#70c2ca;
+
+    --terracota:#b9542e;
+    --terracota-2:#d16d3a;
+    --terracota-oscura:#85391f;
+
+    --dorado:#d3a13b;
+    --dorado-2:#e0b657;
+    --dorado-suave:#f0d79a;
+
+    --arena:#e2c990;
+    --arena-clara:#f4e8c5;
+    --arena-suave:#ead9ad;
+
+    --papel:#f1e3bf;
+    --papel-claro:#fff8e8;
+    --papel-oscuro:#dcc596;
+
+    --verde:#2f714c;
+    --verde-claro:#dcebd8;
+
+    --rojo:#b84535;
+    --rojo-claro:#f3d6d0;
+
+    --texto:#213732;
+    --texto-suave:#68746e;
+
+    --borde:#baa676;
+    --borde-suave:#d0c09a;
+
+    --sombra:
+        0 10px 28px rgba(55,43,20,.10),
+        0 3px 8px rgba(55,43,20,.05);
 }
+
+
+*{
+    box-sizing:border-box;
+}
+
+
+html{
+    min-height:100%;
+}
+
+
+body{
+    position:relative;
+
+    min-height:100vh;
+
+    margin:0;
+
+    padding-bottom:82px;
+
+    color:var(--texto);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at 12% 12%,
+            rgba(255,255,255,.24),
+            transparent 22%
+        ),
+
+        radial-gradient(
+            circle at 88% 15%,
+            rgba(33,126,151,.12),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 36% 74%,
+            rgba(181,83,45,.06),
+            transparent 30%
+        ),
+
+        linear-gradient(
+            180deg,
+            #dce8dd 0%,
+            #efe3bc 34%,
+            #e8d29f 72%,
+            #d7bd82 100%
+        );
+}
+
+
+body::before{
+    content:"";
+
+    position:fixed;
+
+    left:-10%;
+    right:-10%;
+    bottom:-95px;
+
+    height:250px;
+
+    z-index:-1;
+
+    opacity:.38;
+
+    border-radius:50%;
+
+    background:
+        repeating-radial-gradient(
+            ellipse at center bottom,
+
+            transparent 0 28px,
+
+            rgba(25,126,152,.18) 29px 32px,
+
+            transparent 33px 56px,
+
+            rgba(11,117,109,.16) 57px 60px,
+
+            transparent 61px 86px
+        );
+
+    pointer-events:none;
+}
+
+
+body::after{
+    content:"";
+
+    position:fixed;
+
+    width:300px;
+    height:300px;
+
+    right:-145px;
+    top:145px;
+
+    z-index:-1;
+
+    border:
+        15px double
+        rgba(11,117,109,.055);
+
+    border-radius:50%;
+
+    pointer-events:none;
+}
+
 
 a{
     color:inherit;
     text-decoration:none;
 }
 
+
 button,
 select{
     font:inherit;
 }
+
+
+button{
+    cursor:pointer;
+}
+
+
+/* =========================================
+   APP
+========================================= */
+
 
 .app-equipos{
     width:100%;
     min-height:100vh;
 }
 
+
+/* =========================================
+   TOPBAR
+========================================= */
+
+
 .topbar{
     position:sticky;
+
     top:0;
+
     z-index:50;
 
     display:flex;
@@ -29,21 +205,64 @@ select{
     justify-content:space-between;
 
     width:100%;
-    padding:10px 14px;
 
-    background:rgba(255,255,255,.96);
-    border-bottom:1px solid #e5e7eb;
+    padding:
+        10px
+        14px;
+
+    border-bottom:
+        1px solid
+        #ab9969;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(244,230,193,.97),
+            rgba(255,247,224,.97)
+        );
+
+    box-shadow:
+        0 5px 15px
+        rgba(60,46,22,.08);
 
     backdrop-filter:blur(10px);
 }
 
+
+.topbar::after{
+    content:"";
+
+    position:absolute;
+
+    left:14px;
+    right:14px;
+    bottom:-1px;
+
+    height:5px;
+
+    border-top:
+        3px solid
+        rgba(11,117,109,.72);
+
+    border-bottom:
+        1px solid
+        rgba(25,126,152,.42);
+
+    border-radius:50%;
+
+    opacity:.68;
+}
+
+
 .topbar-identidad{
     display:flex;
     align-items:center;
+
     gap:10px;
 
     min-width:0;
 }
+
 
 .btn-volver{
     width:42px;
@@ -55,22 +274,44 @@ select{
 
     flex-shrink:0;
 
-    border-radius:12px;
+    border:
+        1px solid
+        #a99567;
 
-    background:#f2f4f7;
-    color:#344054;
+    border-radius:10px;
 
-    font-size:1.25rem;
-    font-weight:700;
+    background:#e8d4a1;
+
+    color:var(--tinta);
+
+    font-size:1.22rem;
+    font-weight:900;
 }
+
 
 .topbar-logo{
     width:44px;
     height:44px;
 
-    object-fit:contain;
     flex-shrink:0;
+
+    padding:2px;
+
+    object-fit:contain;
+
+    border:
+        2px solid
+        var(--jade-oscuro);
+
+    border-radius:50%;
+
+    background:#fff5d8;
+
+    box-shadow:
+        0 3px 10px
+        rgba(45,40,24,.12);
 }
+
 
 .topbar-texto{
     display:flex;
@@ -79,19 +320,26 @@ select{
     min-width:0;
 }
 
+
 .topbar-texto span{
-    color:#667085;
-    font-size:.72rem;
+    color:var(--terracota-oscura);
+
+    font-size:.70rem;
+    font-weight:800;
 }
 
+
 .topbar-texto strong{
-    color:#132238;
-    font-size:1rem;
+    color:var(--tinta);
+
+    font-size:.98rem;
+    font-weight:900;
 
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
 }
+
 
 .btn-perfil{
     width:44px;
@@ -103,173 +351,449 @@ select{
 
     flex-shrink:0;
 
+    border:
+        2px solid
+        var(--tinta);
+
     border-radius:50%;
 
-    background:#0f766e;
+    background:
+        linear-gradient(
+            145deg,
+            var(--terracota-2),
+            var(--terracota)
+        );
+
     color:#ffffff;
 
-    font-weight:800;
+    font-weight:900;
 }
+
+
+/* =========================================
+   CONTENIDO
+========================================= */
+
 
 .contenido-equipos{
     width:100%;
     max-width:1180px;
 
     margin:0 auto;
-    padding:18px 14px 28px;
+
+    padding:
+        18px
+        14px
+        28px;
 }
 
+
+/* =========================================
+   ENCABEZADO
+========================================= */
+
+
 .encabezado-pagina{
-    margin-bottom:22px;
+    position:relative;
+
+    margin-bottom:20px;
+
+    padding:20px;
+
+    overflow:hidden;
+
+    border:
+        2px solid
+        var(--tinta);
+
+    border-radius:17px;
+
+    background:
+        radial-gradient(
+            circle at 88% 12%,
+            rgba(255,255,255,.08),
+            transparent 25%
+        ),
+
+        linear-gradient(
+            135deg,
+            #075e57,
+            #08796f 55%,
+            #17677c
+        );
+
+    color:#ffffff;
+
+    box-shadow:
+        0 12px 28px
+        rgba(23,69,63,.16);
 }
+
+
+.encabezado-pagina::before{
+    content:"";
+
+    position:absolute;
+
+    left:-7%;
+    right:-7%;
+    bottom:-58px;
+
+    height:120px;
+
+    border-radius:50%;
+
+    border-top:
+        8px double
+        rgba(112,194,202,.20);
+
+    transform:rotate(-2deg);
+}
+
+
+.encabezado-pagina::after{
+    content:"⚽";
+
+    position:absolute;
+
+    right:-8px;
+    top:-16px;
+
+    font-size:7rem;
+
+    opacity:.045;
+
+    transform:rotate(-14deg);
+}
+
+
+.encabezado-pagina > *{
+    position:relative;
+    z-index:2;
+}
+
 
 .encabezado-mini{
     display:block;
 
     margin-bottom:5px;
 
-    color:#0f766e;
+    color:#f3d677;
 
-    font-size:.72rem;
-    font-weight:800;
+    font-size:.68rem;
+    font-weight:900;
 
     text-transform:uppercase;
     letter-spacing:.07em;
 }
 
+
 .encabezado-pagina h1{
-    margin-bottom:7px;
+    margin:
+        0 0
+        7px;
 
-    color:#132238;
+    color:#ffffff;
 
-    font-size:1.55rem;
+    font-size:1.53rem;
     line-height:1.15;
+
+    font-weight:900;
 }
+
 
 .encabezado-pagina p{
     max-width:580px;
 
-    color:#667085;
+    margin:0;
 
-    font-size:.88rem;
+    color:#e1f0ed;
+
+    font-size:.86rem;
     line-height:1.45;
 }
+
+
+/* =========================================
+   SELECTOR CATEGORÍA
+========================================= */
+
 
 .selector-categoria{
     display:flex;
     flex-direction:column;
+
     gap:7px;
 
     margin-bottom:18px;
+
+    padding:14px;
+
+    border:
+        1px solid
+        #a99567;
+
+    border-radius:13px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #f0dda8,
+            #e5cb91
+        );
+
+    box-shadow:
+        0 4px 13px
+        rgba(67,50,22,.05);
 }
+
 
 .selector-categoria label{
-    color:#344054;
+    color:var(--tinta);
 
-    font-size:.82rem;
-    font-weight:700;
+    font-size:.80rem;
+    font-weight:900;
 }
+
 
 .selector-categoria select{
     width:100%;
     min-height:50px;
 
-    padding:0 14px;
+    padding:
+        0 14px;
 
-    border:1px solid #d0d5dd;
-    border-radius:13px;
+    border:
+        1px solid
+        #9f8b58;
 
-    background:#ffffff;
-    color:#101828;
+    border-radius:11px;
+
+    background:
+        rgba(255,247,223,.88);
+
+    color:var(--tinta);
 
     font-size:16px;
+
     outline:none;
 }
 
+
 .selector-categoria select:focus{
-    border-color:#0f766e;
-    box-shadow:0 0 0 3px rgba(15,118,110,.12);
+    border-color:var(--jade);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(11,117,109,.12);
 }
+
+
+/* =========================================
+   RESUMEN CATEGORÍA
+========================================= */
+
 
 .resumen-categoria{
     display:flex;
     align-items:flex-end;
     justify-content:space-between;
+
     gap:14px;
 
     margin-bottom:14px;
 }
+
 
 .seccion-mini{
     display:block;
 
     margin-bottom:2px;
 
-    color:#0f766e;
+    color:var(--terracota-oscura);
 
-    font-size:.7rem;
-    font-weight:800;
+    font-size:.68rem;
+    font-weight:900;
 
     text-transform:uppercase;
     letter-spacing:.07em;
 }
 
+
 .resumen-categoria h2{
-    color:#132238;
-    font-size:1.2rem;
+    margin:0;
+
+    color:var(--tinta);
+
+    font-size:1.18rem;
+    font-weight:900;
 }
+
 
 .total-equipos{
     display:inline-flex;
     align-items:center;
 
     min-height:30px;
-    padding:6px 10px;
+
+    padding:
+        6px
+        10px;
+
+    border:
+        1px solid
+        #83b6a5;
 
     border-radius:999px;
 
-    background:#edf4f3;
-    color:#0f766e;
+    background:#d7e9e3;
 
-    font-size:.72rem;
-    font-weight:800;
+    color:var(--jade-oscuro);
+
+    font-size:.71rem;
+    font-weight:900;
 
     white-space:nowrap;
 }
 
+
+/* =========================================
+   GRID
+========================================= */
+
+
 .grid-equipos{
     display:grid;
+
     grid-template-columns:1fr;
+
     gap:12px;
 }
 
+
+/* =========================================
+   CARD EQUIPO
+========================================= */
+
+
 .equipo-card{
+    position:relative;
+
     overflow:hidden;
 
     padding:16px;
 
-    border:1px solid #e4e7ec;
-    border-radius:19px;
+    border:
+        1px solid
+        #b39c68;
 
-    background:#ffffff;
+    border-radius:15px;
 
-    box-shadow:0 6px 20px rgba(15,23,42,.04);
+    background:
+        linear-gradient(
+            150deg,
+            #f3e1ae,
+            #ead3a0
+        );
+
+    box-shadow:
+        0 6px 20px
+        rgba(65,48,21,.07);
 
     transition:.18s ease;
 }
 
+
+.equipo-card:nth-child(even){
+    border-color:#88aca2;
+
+    background:
+        linear-gradient(
+            150deg,
+            #d7e9e3,
+            #c6ded6
+        );
+}
+
+
+.equipo-card:nth-child(3n){
+    border-color:#ae8d66;
+
+    background:
+        linear-gradient(
+            150deg,
+            #efd6b8,
+            #dfb98f
+        );
+}
+
+
+.equipo-card::before{
+    content:"";
+
+    position:absolute;
+
+    left:14px;
+    right:14px;
+    top:0;
+
+    height:5px;
+
+    border-top:
+        3px solid
+        rgba(11,117,109,.70);
+
+    border-bottom:
+        1px solid
+        rgba(25,126,152,.34);
+
+    border-radius:50%;
+}
+
+
+.equipo-card::after{
+    content:"";
+
+    position:absolute;
+
+    width:105px;
+    height:105px;
+
+    right:-52px;
+    bottom:-52px;
+
+    border:
+        13px double
+        rgba(10,74,68,.04);
+
+    border-radius:50%;
+
+    pointer-events:none;
+}
+
+
 .equipo-card-top{
+    position:relative;
+    z-index:2;
+
     display:flex;
     align-items:center;
     justify-content:space-between;
+
     gap:12px;
 
     margin-bottom:14px;
 }
 
+
+/* =========================================
+   ESCUDO
+========================================= */
+
+
 .escudo-equipo{
-    width:62px;
-    height:62px;
+    width:64px;
+    height:64px;
 
     display:flex;
     align-items:center;
@@ -277,22 +801,46 @@ select{
 
     flex-shrink:0;
 
-    border-radius:18px;
+    overflow:hidden;
 
-    border:1px solid #dfe4e8;
+    border:
+        1px solid
+        rgba(20,44,41,.60);
+
+    border-radius:14px;
 
     background:
         linear-gradient(
             145deg,
-            #f4f6f8,
-            #e8ecef
+            #d7e8e2,
+            #ead9aa
         );
 
-    color:#0f766e;
+    color:var(--jade-oscuro);
 
     font-size:1.1rem;
     font-weight:900;
+
+    box-shadow:
+        0 3px 9px
+        rgba(42,44,30,.07);
 }
+
+
+.escudo-equipo img{
+    width:100%;
+    height:100%;
+
+    display:block;
+
+    object-fit:contain;
+}
+
+
+/* =========================================
+   POSICIÓN
+========================================= */
+
 
 .posicion-badge{
     display:inline-flex;
@@ -302,43 +850,84 @@ select{
     min-width:38px;
     height:30px;
 
-    padding:0 9px;
+    padding:
+        0 9px;
+
+    border:
+        1px solid
+        #806f43;
 
     border-radius:999px;
 
-    background:#eef7f5;
-    color:#0f766e;
+    background:
+        linear-gradient(
+            145deg,
+            #e7c56e,
+            #d7a948
+        );
 
-    font-size:.74rem;
-    font-weight:800;
+    color:#533e0e;
+
+    font-size:.73rem;
+    font-weight:900;
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.25);
 }
 
+
+/* =========================================
+   INFORMACIÓN EQUIPO
+========================================= */
+
+
 .equipo-card-info{
+    position:relative;
+    z-index:2;
+
     margin-bottom:14px;
 }
 
+
 .equipo-card-info h3{
-    margin-bottom:3px;
+    margin:
+        0 0
+        3px;
 
-    color:#182230;
+    color:var(--tinta);
 
-    font-size:1.05rem;
+    font-size:1.03rem;
+    font-weight:900;
 }
+
 
 .equipo-card-info span{
-    color:#667085;
+    color:#696252;
 
-    font-size:.75rem;
+    font-size:.74rem;
 }
 
+
+/* =========================================
+   ESTADÍSTICAS
+========================================= */
+
+
 .equipo-estadisticas{
+    position:relative;
+    z-index:2;
+
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+
+    grid-template-columns:
+        repeat(3,1fr);
 
     gap:7px;
 
     margin-bottom:13px;
 }
+
 
 .equipo-estadisticas > div{
     display:flex;
@@ -348,48 +937,78 @@ select{
 
     min-width:0;
 
-    padding:9px 5px;
+    padding:
+        9px
+        5px;
 
-    border-radius:11px;
+    border:
+        1px solid
+        rgba(110,87,42,.16);
 
-    background:#f8fafb;
+    border-radius:9px;
+
+    background:
+        rgba(255,247,223,.50);
 }
+
+
+.equipo-card:nth-child(even)
+.equipo-estadisticas > div{
+    background:
+        rgba(239,250,246,.44);
+}
+
 
 .equipo-estadisticas span{
     margin-bottom:3px;
 
-    color:#667085;
+    color:#756d59;
 
-    font-size:.62rem;
-    font-weight:700;
+    font-size:.61rem;
+    font-weight:800;
 }
+
 
 .equipo-estadisticas strong{
-    color:#344054;
+    color:var(--tinta-2);
 
-    font-size:.86rem;
+    font-size:.85rem;
+    font-weight:900;
 }
+
 
 .positivo{
-    color:#18794e !important;
+    color:#176c4a !important;
 }
+
 
 .negativo{
-    color:#b42318 !important;
+    color:#a4372c !important;
 }
 
+
+/* =========================================
+   META
+========================================= */
+
+
 .equipo-meta{
+    position:relative;
+    z-index:2;
+
     display:flex;
     align-items:center;
     justify-content:space-between;
+
     gap:12px;
 
     margin-bottom:12px;
 
-    color:#667085;
+    color:#696252;
 
-    font-size:.72rem;
+    font-size:.71rem;
 }
+
 
 .equipo-meta > span:first-child{
     min-width:0;
@@ -399,122 +1018,344 @@ select{
     white-space:nowrap;
 }
 
+
 .estado-activo{
-    color:#18794e;
-    font-weight:700;
+    display:inline-flex;
+    align-items:center;
+
+    padding:
+        4px
+        7px;
+
+    border:
+        1px solid
+        #83bba1;
+
+    border-radius:999px;
+
+    background:#d9eee0;
+
+    color:#176c4a;
+
+    font-weight:900;
+
     white-space:nowrap;
 }
+
 
 .estado-descalificado{
-    color:#b42318;
-    font-weight:800;
+    display:inline-flex;
+    align-items:center;
+
+    padding:
+        4px
+        7px;
+
+    border:
+        1px solid
+        #d18b80;
+
+    border-radius:999px;
+
+    background:#f1d5cf;
+
+    color:#922f25;
+
+    font-weight:900;
+
     white-space:nowrap;
 }
 
+
+/* =========================================
+   DESCALIFICACIÓN
+========================================= */
+
+
 .motivo-descalificacion{
-    margin:-2px 0 12px;
+    position:relative;
+    z-index:2;
 
-    padding:9px 10px;
+    margin:
+        -2px 0
+        12px;
 
-    border-radius:10px;
+    padding:
+        9px
+        10px;
 
-    background:#fff4f2;
+    border:
+        1px solid
+        #c9897e;
 
-    color:#b42318;
+    border-radius:9px;
 
-    font-size:.7rem;
+    background:
+        linear-gradient(
+            145deg,
+            #efd3cd,
+            #e6bbb1
+        );
+
+    color:#8f3027;
+
+    font-size:.69rem;
     line-height:1.35;
 }
 
+
 .equipo-descalificado{
-    border-color:#f3c9c5;
-    background:#fffdfd;
+    border-color:#c9897e;
+
+    background:
+        linear-gradient(
+            150deg,
+            #ecd0c8,
+            #ddb5a9
+        );
 }
+
+
+.equipo-descalificado::before{
+    border-top-color:
+        rgba(184,69,53,.62);
+
+    border-bottom-color:
+        rgba(133,57,31,.30);
+}
+
 
 .equipo-descalificado .escudo-equipo{
     filter:grayscale(.55);
+
     opacity:.75;
 }
 
+
+/* =========================================
+   BOTÓN VER EQUIPO
+========================================= */
+
+
 .btn-ver-equipo{
+    position:relative;
+    z-index:2;
+
     min-height:44px;
 
     display:flex;
     align-items:center;
     justify-content:center;
 
-    border-radius:12px;
+    width:100%;
 
-    background:#f1f7f6;
-    color:#0f766e;
+    border:
+        1px solid
+        #075d56;
 
-    font-size:.8rem;
-    font-weight:800;
+    border-radius:10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--jade),
+            var(--agua)
+        );
+
+    color:#ffffff;
+
+    font-size:.79rem;
+    font-weight:900;
+
+    box-shadow:
+        0 4px 10px
+        rgba(10,95,87,.11);
 }
+
+
+/* =========================================
+   BOTTOM NAV
+========================================= */
+
 
 .bottom-nav{
     position:fixed;
+
     left:0;
     right:0;
     bottom:0;
+
     z-index:60;
 
     display:grid;
-    grid-template-columns:repeat(5,1fr);
+
+    grid-template-columns:
+        repeat(5,1fr);
 
     min-height:68px;
 
-    border-top:1px solid #e4e7ec;
+    border-top:
+        1px solid
+        #9d8b60;
 
-    background:rgba(255,255,255,.98);
+    background:
+        linear-gradient(
+            90deg,
+            rgba(229,207,154,.98),
+            rgba(245,231,194,.98)
+        );
+
+    box-shadow:
+        0 -5px 18px
+        rgba(64,51,28,.08);
 
     backdrop-filter:blur(10px);
 }
 
+
+.bottom-nav::before{
+    content:"";
+
+    position:absolute;
+
+    left:14px;
+    right:14px;
+    top:-1px;
+
+    height:5px;
+
+    border-top:
+        3px solid
+        var(--jade);
+
+    border-bottom:
+        1px solid
+        var(--agua);
+
+    border-radius:50%;
+
+    opacity:.55;
+}
+
+
 .bottom-item{
+    position:relative;
+
     display:flex;
     flex-direction:column;
     align-items:center;
     justify-content:center;
+
     gap:3px;
 
     min-width:0;
 
-    color:#667085;
+    color:#666b60;
 }
+
 
 .bottom-item span{
-    font-size:1.2rem;
+    font-size:1.18rem;
 }
 
+
 .bottom-item small{
-    font-size:.67rem;
-    font-weight:600;
+    font-size:.65rem;
+    font-weight:700;
 }
+
+
+.bottom-item.active{
+    color:var(--jade-oscuro);
+
+    font-weight:900;
+}
+
+
+.bottom-item.active::after{
+    content:"";
+
+    position:absolute;
+
+    bottom:5px;
+
+    width:6px;
+    height:6px;
+
+    border-radius:50%;
+
+    background:var(--terracota);
+}
+
+
+/* =========================================
+   HOVER
+========================================= */
+
 
 @media (hover:hover) and (pointer:fine){
 
-    .equipo-card:hover{
-        transform:translateY(-2px);
-
-        border-color:#cfd8df;
-
-        box-shadow:0 10px 28px rgba(15,23,42,.06);
+    .equipo-card,
+    .btn-ver-equipo,
+    .btn-volver,
+    .btn-perfil,
+    .bottom-item{
+        transition:.18s ease;
     }
 
+
+    .equipo-card:hover{
+        transform:translateY(-3px);
+
+        border-color:#7d693e;
+
+        box-shadow:
+            0 10px 28px
+            rgba(65,48,21,.11);
+    }
+
+
     .btn-ver-equipo:hover{
-        background:#e4f1ef;
+        filter:brightness(1.06);
+    }
+
+
+    .btn-volver:hover{
+        background:#dcc085;
+    }
+
+
+    .btn-perfil:hover{
+        filter:brightness(1.06);
+    }
+
+
+    .bottom-item:hover{
+        color:var(--jade-oscuro);
     }
 
 }
+
+
+/* =========================================
+   DESDE 620PX
+========================================= */
+
 
 @media (min-width:620px){
 
     .grid-equipos{
-        grid-template-columns:repeat(2,minmax(0,1fr));
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
     }
 
 }
+
+
+/* =========================================
+   DESDE 700PX
+========================================= */
+
 
 @media (min-width:700px){
 
@@ -522,38 +1363,225 @@ select{
         padding-bottom:0;
     }
 
+
     .topbar{
-        padding:12px 24px;
+        padding:
+            12px
+            24px;
     }
 
-    .contenido-equipos{
-        padding:28px 24px 40px;
+
+    .topbar::after{
+        left:24px;
+        right:24px;
     }
+
+
+    .contenido-equipos{
+        padding:
+            28px
+            24px
+            40px;
+    }
+
 
     .selector-categoria{
         max-width:360px;
     }
 
+
     .bottom-nav{
         position:static;
 
-        width:100%;
+        width:calc(100% - 48px);
         max-width:1180px;
 
-        margin:0 auto 30px;
+        margin:
+            0 auto
+            30px;
 
         overflow:hidden;
 
-        border:1px solid #e4e7ec;
-        border-radius:18px;
+        border:
+            1px solid
+            #9d8b60;
+
+        border-radius:15px;
     }
 
 }
 
+
+/* =========================================
+   DESKTOP
+========================================= */
+
+
 @media (min-width:980px){
 
     .grid-equipos{
-        grid-template-columns:repeat(3,minmax(0,1fr));
+        grid-template-columns:
+            repeat(3,minmax(0,1fr));
+    }
+
+}
+
+
+/* =========================================
+   CELULARES
+========================================= */
+
+
+@media (max-width:500px){
+
+    body::after{
+        display:none;
+    }
+
+
+    .topbar{
+        padding:
+            8px
+            10px;
+    }
+
+
+    .topbar::after{
+        left:10px;
+        right:10px;
+    }
+
+
+    .btn-volver{
+        width:39px;
+        height:39px;
+    }
+
+
+    .topbar-logo{
+        width:41px;
+        height:41px;
+    }
+
+
+    .topbar-texto strong{
+        max-width:155px;
+
+        font-size:.86rem;
+    }
+
+
+    .topbar-texto span{
+        font-size:.61rem;
+    }
+
+
+    .btn-perfil{
+        width:40px;
+        height:40px;
+
+        font-size:.75rem;
+    }
+
+
+    .contenido-equipos{
+        padding:
+            14px
+            10px
+            25px;
+    }
+
+
+    .encabezado-pagina{
+        padding:17px;
+
+        border-radius:14px;
+    }
+
+
+    .encabezado-pagina h1{
+        font-size:1.30rem;
+    }
+
+
+    .encabezado-pagina p{
+        font-size:.75rem;
+    }
+
+
+    .selector-categoria{
+        padding:12px;
+
+        border-radius:11px;
+    }
+
+
+    .equipo-card{
+        padding:13px;
+
+        border-radius:12px;
+    }
+
+
+    .escudo-equipo{
+        width:56px;
+        height:56px;
+
+        border-radius:12px;
+    }
+
+
+    .equipo-card-info h3{
+        font-size:.94rem;
+    }
+
+
+    .equipo-card-info span{
+        font-size:.68rem;
+    }
+
+
+    .equipo-estadisticas{
+        gap:6px;
+    }
+
+
+    .equipo-estadisticas > div{
+        padding:
+            8px
+            4px;
+    }
+
+
+    .equipo-estadisticas span{
+        font-size:.55rem;
+    }
+
+
+    .equipo-estadisticas strong{
+        font-size:.78rem;
+    }
+
+
+    .btn-ver-equipo{
+        min-height:42px;
+
+        font-size:.72rem;
+    }
+
+
+    .bottom-nav{
+        min-height:66px;
+    }
+
+
+    .bottom-item span{
+        font-size:1.06rem;
+    }
+
+
+    .bottom-item small{
+        font-size:.57rem;
     }
 
 }

@@ -45,7 +45,9 @@
                 <img
                     src="imagenes/logo.png"
                     alt="Liga Deportiva Río Grande"
-                    class="topbar-logo"
+                    class="topbar-logo logo-ampliable"
+                    data-logo-ampliable
+                    title="Ver logo"
                 >
 
                 <div class="topbar-texto">
@@ -125,81 +127,27 @@
                 </div>
 
 
-                <article class="partido-destacado">
+                <div id="contenedorProximoPartido">
 
-                    <div class="partido-info-superior">
+                    <article class="partido-destacado">
 
-                        <span class="badge-jornada">
-                            Jornada 1
-                        </span>
-
-                        <span class="badge-proximo">
-                            Próximo
-                        </span>
-
-                    </div>
-
-
-                    <div class="partido-equipos">
-
-                        <div class="equipo">
-
-                            <div class="escudo-placeholder">
-                                J
-                            </div>
-
-                            <strong>
-                                Juárez
-                            </strong>
-
+                        <div
+                            style="
+                                min-height:170px;
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                text-align:center;
+                                color:#68746e;
+                                font-size:.76rem;
+                            "
+                        >
+                            Cargando próximo partido...
                         </div>
 
+                    </article>
 
-                        <div class="versus">
-
-                            <span class="hora">
-                                3:00 PM
-                            </span>
-
-                            <strong>
-                                VS
-                            </strong>
-
-                            <span class="fecha">
-                                Sábado
-                            </span>
-
-                        </div>
-
-
-                        <div class="equipo">
-
-                            <div class="escudo-placeholder">
-                                C
-                            </div>
-
-                            <strong>
-                                Chacales
-                            </strong>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="partido-footer">
-
-                        <span>
-                            Categoría Libre
-                        </span>
-
-                        <span>
-                            Campo Municipal
-                        </span>
-
-                    </div>
-
-                </article>
+                </div>
 
             </section>
 
@@ -392,72 +340,162 @@
                 </div>
 
 
-                <div class="resultados-lista">
+                <div
+                    id="listaUltimosResultados"
+                    class="resultados-lista"
+                >
 
                     <article class="resultado-card">
 
-                        <div class="resultado-meta">
-
-                            <span>
-                                Jornada 1
-                            </span>
-
-                            <span>
-                                Finalizado
-                            </span>
-
-                        </div>
-
-                        <div class="resultado-equipos">
-
-                            <span>
-                                Santos FC
-                            </span>
-
-                            <strong>
-                                2 - 1
-                            </strong>
-
-                            <span>
-                                La Roma FC
-                            </span>
-
+                        <div
+                            style="
+                                min-height:75px;
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                text-align:center;
+                                color:#68746e;
+                                font-size:.72rem;
+                            "
+                        >
+                            Cargando últimos resultados...
                         </div>
 
                     </article>
 
+                </div>
 
-                    <article class="resultado-card">
+            </section>
 
-                        <div class="resultado-meta">
 
-                            <span>
-                                Jornada 1
-                            </span>
+            <section class="informacion-publica">
 
-                            <span>
-                                Finalizado
-                            </span>
+                <div class="seccion-cabecera">
 
+                    <div>
+
+                        <span class="seccion-mini">
+                            Información
+                        </span>
+
+                        <h2>
+                            Liga y comunidad
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="grid-info-publica">
+
+                    <div
+                        class="info-publica-card facebook-proximo"
+                        aria-disabled="true"
+                    >
+
+                        <div class="info-publica-icono">
+                            📘
                         </div>
 
-                        <div class="resultado-equipos">
-
-                            <span>
-                                Costa Azul
-                            </span>
+                        <div class="info-publica-contenido">
 
                             <strong>
-                                0 - 0
+                                Facebook
                             </strong>
 
                             <span>
-                                Pumas
+                                Página oficial de la Liga
                             </span>
 
                         </div>
 
-                    </article>
+                        <small class="info-proximamente">
+                            Próximamente
+                        </small>
+
+                    </div>
+
+
+                    <a
+                        href="terminos.html"
+                        class="info-publica-card"
+                    >
+
+                        <div class="info-publica-icono">
+                            📄
+                        </div>
+
+                        <div class="info-publica-contenido">
+
+                            <strong>
+                                Términos y Condiciones
+                            </strong>
+
+                            <span>
+                                Condiciones de uso de la plataforma
+                            </span>
+
+                        </div>
+
+                        <span class="info-publica-flecha">
+                            ›
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="privacidad.html"
+                        class="info-publica-card"
+                    >
+
+                        <div class="info-publica-icono">
+                            🔐
+                        </div>
+
+                        <div class="info-publica-contenido">
+
+                            <strong>
+                                Política de Privacidad
+                            </strong>
+
+                            <span>
+                                Información sobre protección de datos
+                            </span>
+
+                        </div>
+
+                        <span class="info-publica-flecha">
+                            ›
+                        </span>
+
+                    </a>
+
+                </div>
+
+
+                <div class="firma-publica">
+
+                    <img
+                        src="imagenes/logo.png"
+                        alt="Liga Deportiva Río Grande"
+                        class="logo-ampliable"
+                        data-logo-ampliable
+                        title="Ver logo"
+                    >
+
+                    <div>
+
+                        <strong>
+                            Liga Deportiva Río Grande
+                        </strong>
+
+                        <span>
+                            Villa de Tututepec, Oaxaca
+                        </span>
+
+                    </div>
 
                 </div>
 
@@ -634,6 +672,90 @@
                 </div>
 
 
+                <div class="menu-mas-separador"></div>
+
+
+                <div class="menu-mas-legal">
+
+                    <span class="menu-legal-titulo">
+                        Liga y comunidad
+                    </span>
+
+
+                    <div
+                        class="menu-legal-link facebook-deshabilitado"
+                        aria-disabled="true"
+                    >
+
+                        <span>
+                            📘
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Facebook
+                            </strong>
+
+                            <small>
+                                Próximamente
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <a
+                        href="terminos.html"
+                        class="menu-legal-link"
+                    >
+
+                        <span>
+                            📄
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Términos y Condiciones
+                            </strong>
+
+                            <small>
+                                Condiciones de uso
+                            </small>
+
+                        </div>
+
+                    </a>
+
+
+                    <a
+                        href="privacidad.html"
+                        class="menu-legal-link"
+                    >
+
+                        <span>
+                            🔐
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Política de Privacidad
+                            </strong>
+
+                            <small>
+                                Protección de datos
+                            </small>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+
                 <button
                     type="button"
                     id="btnCerrarSesion"
@@ -641,6 +763,60 @@
                 >
                     Cerrar sesión
                 </button>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="modalLogo"
+            class="modal-logo hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Logo de la Liga Deportiva Río Grande"
+        >
+
+            <div class="modal-logo-contenido">
+
+                <button
+                    type="button"
+                    id="btnCerrarModalLogo"
+                    class="btn-cerrar-modal-logo"
+                    aria-label="Cerrar"
+                >
+                    ×
+                </button>
+
+
+                <span class="modal-logo-mini">
+                    LIGA MUNICIPAL DE FÚTBOL
+                </span>
+
+
+                <img
+                    src="imagenes/logo.png"
+                    alt="Logo oficial de la Liga Deportiva Río Grande"
+                    class="logo-modal-grande"
+                >
+
+
+                <div class="modal-logo-texto">
+
+                    <strong>
+                        Liga Deportiva Río Grande
+                    </strong>
+
+                    <span>
+                        Villa de Tututepec, Oaxaca
+                    </span>
+
+                </div>
+
+
+                <p class="modal-logo-ayuda">
+                    Logo oficial de la Liga. Toca fuera de esta ventana para cerrar.
+                </p>
 
             </div>
 

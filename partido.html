@@ -1,15 +1,34 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Partido | Liga Deportiva Río Grande</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="icon" href="imagenes/favicon.png">
+    <title>
+        Partido | Liga Deportiva Río Grande
+    </title>
 
-    <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/partido.css">
+    <link
+        rel="icon"
+        href="imagenes/logo.png"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/global.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/partido.css"
+    >
+
 </head>
 
 <body>
@@ -21,12 +40,13 @@
             <div class="topbar-identidad">
 
                 <a
-                    href="jornadas.html"
+                    href="partidos.html"
                     class="btn-volver"
-                    aria-label="Volver a jornadas"
+                    aria-label="Volver a partidos"
                 >
                     ←
                 </a>
+
 
                 <img
                     src="imagenes/logo.png"
@@ -34,9 +54,17 @@
                     class="topbar-logo"
                 >
 
+
                 <div class="topbar-texto">
-                    <span>Liga Municipal</span>
-                    <strong>Detalle del partido</strong>
+
+                    <span>
+                        Liga Municipal
+                    </span>
+
+                    <strong>
+                        Detalle del partido
+                    </strong>
+
                 </div>
 
             </div>
@@ -48,32 +76,47 @@
                 class="btn-perfil"
                 aria-label="Abrir perfil"
             >
+
                 <span id="perfilInicial">
                     U
                 </span>
+
             </button>
 
         </header>
 
 
-        <main class="contenido-partido">
+        <main
+            id="contenidoPartido"
+            class="contenido-partido"
+            hidden
+        >
 
             <section class="partido-hero">
 
                 <div class="partido-meta-superior">
 
                     <div>
-                        <span class="categoria">
-                            Categoría Libre
+
+                        <span
+                            id="categoriaPartido"
+                            class="categoria"
+                        >
+                            Sin categoría
                         </span>
 
-                        <strong>
-                            Jornada 4
+                        <strong id="jornadaPartido">
+                            Sin jornada
                         </strong>
+
                     </div>
 
-                    <span class="estado finalizado">
-                        Finalizado
+
+                    <span
+                        id="estadoPartido"
+                        class="estado proximo"
+                    >
+                        Próximo
                     </span>
 
                 </div>
@@ -83,12 +126,15 @@
 
                     <div class="equipo">
 
-                        <div class="escudo-grande">
-                            J
+                        <div
+                            id="escudoLocal"
+                            class="escudo-grande"
+                        >
+                            L
                         </div>
 
-                        <strong>
-                            Juárez
+                        <strong id="nombreLocal">
+                            Local
                         </strong>
 
                     </div>
@@ -96,18 +142,27 @@
 
                     <div class="marcador-centro">
 
-                        <span class="texto-final">
-                            Resultado final
+                        <span
+                            id="textoMarcador"
+                            class="texto-final"
+                        >
+                            Próximo partido
                         </span>
 
-                        <div class="resultado">
-                            3
-                            <span>-</span>
-                            1
+
+                        <div
+                            id="resultadoPartido"
+                            class="resultado"
+                        >
+                            <span>VS</span>
                         </div>
 
-                        <span class="fecha-corta">
-                            22 Ago 2026
+
+                        <span
+                            id="fechaPartido"
+                            class="fecha-corta"
+                        >
+                            Por definir
                         </span>
 
                     </div>
@@ -115,12 +170,15 @@
 
                     <div class="equipo">
 
-                        <div class="escudo-grande">
-                            P
+                        <div
+                            id="escudoVisitante"
+                            class="escudo-grande"
+                        >
+                            V
                         </div>
 
-                        <strong>
-                            Pumas
+                        <strong id="nombreVisitante">
+                            Visitante
                         </strong>
 
                     </div>
@@ -131,27 +189,65 @@
                 <div class="datos-partido">
 
                     <div>
-                        <span>🕒</span>
+
+                        <span>
+                            🕒
+                        </span>
+
                         <p>
-                            <small>Hora</small>
-                            <strong>4:00 PM</strong>
+
+                            <small>
+                                Hora
+                            </small>
+
+                            <strong id="horaPartido">
+                                Por definir
+                            </strong>
+
                         </p>
+
                     </div>
 
-                    <div>
-                        <span>📍</span>
-                        <p>
-                            <small>Campo</small>
-                            <strong>Campo Municipal</strong>
-                        </p>
-                    </div>
 
                     <div>
-                        <span>🧑‍⚖️</span>
+
+                        <span>
+                            📍
+                        </span>
+
                         <p>
-                            <small>Árbitro</small>
-                            <strong>Juan Diego</strong>
+
+                            <small>
+                                Campo
+                            </small>
+
+                            <strong id="campoPartido">
+                                Por definir
+                            </strong>
+
                         </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            🧑‍⚖️
+                        </span>
+
+                        <p>
+
+                            <small>
+                                Árbitro
+                            </small>
+
+                            <strong id="arbitroPartido">
+                                Por asignar
+                            </strong>
+
+                        </p>
+
                     </div>
 
                 </div>
@@ -159,11 +255,15 @@
             </section>
 
 
-            <section class="resumen-partido">
+            <section
+                id="seccionResumen"
+                class="resumen-partido"
+            >
 
                 <div class="seccion-cabecera">
 
                     <div>
+
                         <span class="seccion-mini">
                             Resumen oficial
                         </span>
@@ -171,6 +271,7 @@
                         <h2>
                             Partido
                         </h2>
+
                     </div>
 
                 </div>
@@ -185,13 +286,15 @@
                         </span>
 
                         <div>
-                            <strong>
-                                4
+
+                            <strong id="totalGoles">
+                                0
                             </strong>
 
                             <small>
                                 Goles
                             </small>
+
                         </div>
 
                     </article>
@@ -204,13 +307,15 @@
                         </span>
 
                         <div>
-                            <strong>
-                                3
+
+                            <strong id="totalAmarillas">
+                                0
                             </strong>
 
                             <small>
                                 Amarillas
                             </small>
+
                         </div>
 
                     </article>
@@ -223,13 +328,15 @@
                         </span>
 
                         <div>
-                            <strong>
-                                1
+
+                            <strong id="totalRojas">
+                                0
                             </strong>
 
                             <small>
                                 Rojas
                             </small>
+
                         </div>
 
                     </article>
@@ -242,13 +349,15 @@
                         </span>
 
                         <div>
-                            <strong>
-                                22
+
+                            <strong id="totalParticipantes">
+                                0
                             </strong>
 
                             <small>
                                 Participantes
                             </small>
+
                         </div>
 
                     </article>
@@ -258,11 +367,15 @@
             </section>
 
 
-            <section class="eventos-partido">
+            <section
+                id="seccionGoles"
+                class="eventos-partido"
+            >
 
                 <div class="seccion-cabecera">
 
                     <div>
+
                         <span class="seccion-mini">
                             Cédula arbitral
                         </span>
@@ -270,138 +383,30 @@
                         <h2>
                             Goles
                         </h2>
+
                     </div>
 
                 </div>
 
 
-                <div class="eventos-lista">
-
-                    <article class="evento-card">
-
-                        <div class="evento-minuto">
-                            12'
-                        </div>
-
-                        <div class="evento-icono gol">
-                            ⚽
-                        </div>
-
-                        <div class="evento-info">
-
-                            <strong>
-                                Juan Pérez
-                            </strong>
-
-                            <span>
-                                Juárez
-                            </span>
-
-                        </div>
-
-                        <div class="evento-marcador">
-                            1 - 0
-                        </div>
-
-                    </article>
-
-
-                    <article class="evento-card">
-
-                        <div class="evento-minuto">
-                            33'
-                        </div>
-
-                        <div class="evento-icono gol">
-                            ⚽
-                        </div>
-
-                        <div class="evento-info">
-
-                            <strong>
-                                Roberto López
-                            </strong>
-
-                            <span>
-                                Juárez
-                            </span>
-
-                        </div>
-
-                        <div class="evento-marcador">
-                            2 - 0
-                        </div>
-
-                    </article>
-
-
-                    <article class="evento-card">
-
-                        <div class="evento-minuto">
-                            56'
-                        </div>
-
-                        <div class="evento-icono gol">
-                            ⚽
-                        </div>
-
-                        <div class="evento-info">
-
-                            <strong>
-                                Luis Martínez
-                            </strong>
-
-                            <span>
-                                Pumas
-                            </span>
-
-                        </div>
-
-                        <div class="evento-marcador">
-                            2 - 1
-                        </div>
-
-                    </article>
-
-
-                    <article class="evento-card">
-
-                        <div class="evento-minuto">
-                            81'
-                        </div>
-
-                        <div class="evento-icono gol">
-                            ⚽
-                        </div>
-
-                        <div class="evento-info">
-
-                            <strong>
-                                Juan Pérez
-                            </strong>
-
-                            <span>
-                                Juárez
-                            </span>
-
-                        </div>
-
-                        <div class="evento-marcador">
-                            3 - 1
-                        </div>
-
-                    </article>
-
+                <div
+                    id="listaGoles"
+                    class="eventos-lista"
+                >
                 </div>
 
             </section>
 
 
-            <section class="tarjetas-partido">
+            <section
+                id="seccionTarjetas"
+                class="tarjetas-partido"
+            >
 
                 <div class="seccion-cabecera">
 
                     <div>
+
                         <span class="seccion-mini">
                             Disciplina
                         </span>
@@ -409,114 +414,30 @@
                         <h2>
                             Tarjetas
                         </h2>
+
                     </div>
 
                 </div>
 
 
-                <div class="tarjetas-grid">
-
-                    <article class="tarjeta-evento">
-
-                        <div class="tarjeta-visual amarilla"></div>
-
-                        <div class="tarjeta-info">
-
-                            <strong>
-                                Miguel Díaz
-                            </strong>
-
-                            <span>
-                                Juárez
-                            </span>
-
-                            <small>
-                                Minuto 25'
-                            </small>
-
-                        </div>
-
-                    </article>
-
-
-                    <article class="tarjeta-evento">
-
-                        <div class="tarjeta-visual amarilla"></div>
-
-                        <div class="tarjeta-info">
-
-                            <strong>
-                                Pedro Ramírez
-                            </strong>
-
-                            <span>
-                                Pumas
-                            </span>
-
-                            <small>
-                                Minuto 44'
-                            </small>
-
-                        </div>
-
-                    </article>
-
-
-                    <article class="tarjeta-evento">
-
-                        <div class="tarjeta-visual amarilla"></div>
-
-                        <div class="tarjeta-info">
-
-                            <strong>
-                                Andrés García
-                            </strong>
-
-                            <span>
-                                Juárez
-                            </span>
-
-                            <small>
-                                Minuto 64'
-                            </small>
-
-                        </div>
-
-                    </article>
-
-
-                    <article class="tarjeta-evento tarjeta-roja-evento">
-
-                        <div class="tarjeta-visual roja"></div>
-
-                        <div class="tarjeta-info">
-
-                            <strong>
-                                Roberto López
-                            </strong>
-
-                            <span>
-                                Juárez
-                            </span>
-
-                            <small>
-                                Minuto 72'
-                            </small>
-
-                        </div>
-
-                    </article>
-
+                <div
+                    id="listaTarjetas"
+                    class="tarjetas-grid"
+                >
                 </div>
 
             </section>
 
 
-            <section class="incidencias">
+            <section
+                id="seccionIncidencias"
+                class="incidencias"
+            >
 
                 <div class="seccion-cabecera">
 
                     <div>
+
                         <span class="seccion-mini">
                             Registro arbitral
                         </span>
@@ -524,6 +445,7 @@
                         <h2>
                             Incidencias
                         </h2>
+
                     </div>
 
                 </div>
@@ -535,15 +457,15 @@
                         🧑‍⚖️
                     </div>
 
+
                     <div>
 
                         <strong>
                             Observación del árbitro
                         </strong>
 
-                        <p>
-                            Partido finalizado sin incidentes mayores.
-                            Se registró una expulsión durante el segundo tiempo.
+                        <p id="textoIncidencias">
+                            Sin incidencias registradas.
                         </p>
 
                     </div>
@@ -553,11 +475,15 @@
             </section>
 
 
-            <section class="alineaciones">
+            <section
+                id="seccionAlineaciones"
+                class="alineaciones"
+            >
 
                 <div class="seccion-cabecera">
 
                     <div>
+
                         <span class="seccion-mini">
                             Participantes
                         </span>
@@ -565,6 +491,7 @@
                         <h2>
                             Jugadores registrados
                         </h2>
+
                     </div>
 
                 </div>
@@ -576,49 +503,24 @@
 
                         <div class="alineacion-header">
 
-                            <div class="escudo-pequeno">
-                                J
+                            <div
+                                id="escudoLocalPequeno"
+                                class="escudo-pequeno"
+                            >
+                                L
                             </div>
 
-                            <strong>
-                                Juárez
+                            <strong id="alineacionNombreLocal">
+                                Local
                             </strong>
 
                         </div>
 
 
-                        <div class="alineacion-lista">
-
-                            <a href="jugador.html">
-                                <span>#1</span>
-                                Pedro Santos
-                            </a>
-
-                            <a href="jugador.html">
-                                <span>#5</span>
-                                Miguel Díaz
-                            </a>
-
-                            <a href="jugador.html">
-                                <span>#7</span>
-                                Andrés García
-                            </a>
-
-                            <a href="jugador.html">
-                                <span>#8</span>
-                                Carlos López
-                            </a>
-
-                            <a href="jugador.html">
-                                <span>#9</span>
-                                Roberto López
-                            </a>
-
-                            <a href="jugador.html">
-                                <span>#10</span>
-                                Juan Pérez
-                            </a>
-
+                        <div
+                            id="alineacionLocal"
+                            class="alineacion-lista"
+                        >
                         </div>
 
                     </article>
@@ -628,49 +530,24 @@
 
                         <div class="alineacion-header">
 
-                            <div class="escudo-pequeno">
-                                P
+                            <div
+                                id="escudoVisitantePequeno"
+                                class="escudo-pequeno"
+                            >
+                                V
                             </div>
 
-                            <strong>
-                                Pumas
+                            <strong id="alineacionNombreVisitante">
+                                Visitante
                             </strong>
 
                         </div>
 
 
-                        <div class="alineacion-lista">
-
-                            <a href="jugador.html">
-                                <span>#1</span>
-                                Mario Hernández
-                            </a>
-
-                            <a href="jugador.html">
-                                <span>#4</span>
-                                César García
-                            </a>
-
-                            <a href="jugador.html">
-                                <span>#6</span>
-                                Pedro Ramírez
-                            </a>
-
-                            <a href="jugador.html">
-                                <span>#8</span>
-                                Daniel Cruz
-                            </a>
-
-                            <a href="jugador.html">
-                                <span>#9</span>
-                                Luis Martínez
-                            </a>
-
-                            <a href="jugador.html">
-                                <span>#11</span>
-                                José Santos
-                            </a>
-
+                        <div
+                            id="alineacionVisitante"
+                            class="alineacion-lista"
+                        >
                         </div>
 
                     </article>
@@ -680,21 +557,24 @@
             </section>
 
 
-            <section class="aviso-oficial">
+            <section
+                id="avisoOficial"
+                class="aviso-oficial"
+            >
 
                 <div class="aviso-icono">
                     🛡️
                 </div>
 
+
                 <div>
 
                     <strong>
-                        Resultado oficial
+                        Información oficial
                     </strong>
 
-                    <p>
-                        Los datos mostrados provienen de la cédula
-                        registrada por el árbitro asignado al encuentro.
+                    <p id="textoAvisoOficial">
+                        Los datos mostrados corresponden al registro oficial del encuentro.
                     </p>
 
                 </div>
@@ -704,36 +584,195 @@
         </main>
 
 
+        <section
+            id="estadoCargaPartido"
+            class="contenido-partido"
+        >
+
+            <div
+                style="
+                    min-height:320px;
+                    display:flex;
+                    flex-direction:column;
+                    align-items:center;
+                    justify-content:center;
+                    gap:12px;
+                    text-align:center;
+                "
+            >
+
+                <div
+                    style="
+                        width:42px;
+                        height:42px;
+                        border:4px solid rgba(11,117,109,.15);
+                        border-top-color:#0b756d;
+                        border-radius:50%;
+                        animation:girarPartido .8s linear infinite;
+                    "
+                >
+                </div>
+
+                <strong>
+                    Cargando partido...
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <section
+            id="estadoErrorPartido"
+            class="contenido-partido"
+            hidden
+        >
+
+            <div
+                style="
+                    min-height:320px;
+                    display:flex;
+                    flex-direction:column;
+                    align-items:center;
+                    justify-content:center;
+                    gap:8px;
+                    padding:25px;
+                    text-align:center;
+                "
+            >
+
+                <div
+                    style="
+                        font-size:2.5rem;
+                    "
+                >
+                    ⚽
+                </div>
+
+                <h2 id="tituloErrorPartido">
+                    Partido no encontrado
+                </h2>
+
+                <p id="textoErrorPartido">
+                    No pudimos encontrar la información de este encuentro.
+                </p>
+
+                <a
+                    href="partidos.html"
+                    style="
+                        margin-top:10px;
+                        padding:10px 16px;
+                        border-radius:10px;
+                        background:#0b756d;
+                        color:#ffffff;
+                        font-weight:800;
+                    "
+                >
+                    Volver a partidos
+                </a>
+
+            </div>
+
+        </section>
+
+
         <nav class="bottom-nav">
 
-            <a href="publico.html" class="bottom-item">
-                <span>🏠</span>
-                <small>Inicio</small>
+            <a
+                href="publico.html"
+                class="bottom-item"
+            >
+
+                <span>
+                    🏠
+                </span>
+
+                <small>
+                    Inicio
+                </small>
+
             </a>
 
-            <a href="jornadas.html" class="bottom-item active">
-                <span>📅</span>
-                <small>Jornadas</small>
+
+            <a
+                href="jornadas.html"
+                class="bottom-item"
+            >
+
+                <span>
+                    📅
+                </span>
+
+                <small>
+                    Jornadas
+                </small>
+
             </a>
 
-            <a href="tablas.html" class="bottom-item">
-                <span>🏆</span>
-                <small>Tabla</small>
+
+            <a
+                href="tablas.html"
+                class="bottom-item"
+            >
+
+                <span>
+                    🏆
+                </span>
+
+                <small>
+                    Tabla
+                </small>
+
             </a>
 
-            <a href="chat.html" class="bottom-item">
-                <span>💬</span>
-                <small>Chat</small>
+
+            <a
+                href="chat.html"
+                class="bottom-item"
+            >
+
+                <span>
+                    💬
+                </span>
+
+                <small>
+                    Chat
+                </small>
+
             </a>
 
-            <a href="publico.html" class="bottom-item">
-                <span>☰</span>
-                <small>Más</small>
+
+            <a
+                href="partidos.html"
+                class="bottom-item active"
+            >
+
+                <span>
+                    ⚽
+                </span>
+
+                <small>
+                    Partidos
+                </small>
+
             </a>
 
         </nav>
 
     </div>
+
+
+    <style>
+
+        @keyframes girarPartido{
+
+            to{
+                transform:rotate(360deg);
+            }
+
+        }
+
+    </style>
 
 
     <script
@@ -742,4 +781,5 @@
     ></script>
 
 </body>
+
 </html>

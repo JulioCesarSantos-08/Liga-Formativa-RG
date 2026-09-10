@@ -1,14 +1,34 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Equipo | Liga Deportiva Río Grande</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="icon" href="imagenes/favicon.png">
-    <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/equipo.css">
+    <title>
+        Equipo | Liga Deportiva Río Grande
+    </title>
+
+    <link
+        rel="icon"
+        href="imagenes/logo.png"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/global.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/equipo.css"
+    >
+
 </head>
 
 <body>
@@ -27,18 +47,28 @@
                     ←
                 </a>
 
+
                 <img
                     src="imagenes/logo.png"
                     alt="Liga Deportiva Río Grande"
                     class="topbar-logo"
                 >
 
+
                 <div class="topbar-texto">
-                    <span>Liga Municipal</span>
-                    <strong>Equipo</strong>
+
+                    <span>
+                        Liga Municipal
+                    </span>
+
+                    <strong id="topbarNombreEquipo">
+                        Equipo
+                    </strong>
+
                 </div>
 
             </div>
+
 
             <button
                 type="button"
@@ -46,34 +76,56 @@
                 class="btn-perfil"
                 aria-label="Abrir perfil"
             >
-                <span id="perfilInicial">U</span>
+
+                <span id="perfilInicial">
+                    U
+                </span>
+
             </button>
 
         </header>
 
 
-        <main class="contenido-equipo">
+        <main
+            id="contenidoEquipo"
+            class="contenido-equipo"
+            hidden
+        >
 
             <section class="hero-equipo">
 
-                <div class="hero-escudo">
-                    J
+                <div
+                    id="heroEscudo"
+                    class="hero-escudo"
+                >
+                    E
                 </div>
+
 
                 <div class="hero-info">
 
-                    <span class="hero-categoria">
-                        Categoría Libre
+                    <span
+                        id="heroCategoria"
+                        class="hero-categoria"
+                    >
+                        Sin categoría
                     </span>
 
-                    <h1>
-                        Juárez
+
+                    <h1 id="nombreEquipo">
+                        Equipo
                     </h1>
 
+
                     <div class="hero-estado">
-                        <span class="estado-activo">
+
+                        <span
+                            id="estadoEquipo"
+                            class="estado-activo"
+                        >
                             ● Activo
                         </span>
+
                     </div>
 
                 </div>
@@ -89,8 +141,8 @@
                         Posición
                     </span>
 
-                    <strong>
-                        1°
+                    <strong id="posicionEquipo">
+                        -
                     </strong>
 
                 </div>
@@ -102,8 +154,8 @@
                         Puntos
                     </span>
 
-                    <strong>
-                        10
+                    <strong id="puntosEquipo">
+                        0
                     </strong>
 
                 </div>
@@ -115,8 +167,8 @@
                         Partidos
                     </span>
 
-                    <strong>
-                        4
+                    <strong id="partidosEquipo">
+                        0
                     </strong>
 
                 </div>
@@ -128,8 +180,8 @@
                         DG
                     </span>
 
-                    <strong class="positivo">
-                        +6
+                    <strong id="diferenciaEquipo">
+                        0
                     </strong>
 
                 </div>
@@ -142,6 +194,7 @@
                 <div class="seccion-cabecera">
 
                     <div>
+
                         <span class="seccion-mini">
                             Temporada actual
                         </span>
@@ -149,6 +202,7 @@
                         <h2>
                             Estadísticas
                         </h2>
+
                     </div>
 
                 </div>
@@ -157,39 +211,104 @@
                 <div class="stats-grid">
 
                     <div>
-                        <span>PJ</span>
-                        <strong>4</strong>
-                        <small>Jugados</small>
+
+                        <span>
+                            PJ
+                        </span>
+
+                        <strong id="statPJ">
+                            0
+                        </strong>
+
+                        <small>
+                            Jugados
+                        </small>
+
                     </div>
 
-                    <div>
-                        <span>PG</span>
-                        <strong>3</strong>
-                        <small>Ganados</small>
-                    </div>
 
                     <div>
-                        <span>PE</span>
-                        <strong>1</strong>
-                        <small>Empates</small>
+
+                        <span>
+                            PG
+                        </span>
+
+                        <strong id="statPG">
+                            0
+                        </strong>
+
+                        <small>
+                            Ganados
+                        </small>
+
                     </div>
 
-                    <div>
-                        <span>PP</span>
-                        <strong>0</strong>
-                        <small>Perdidos</small>
-                    </div>
 
                     <div>
-                        <span>GF</span>
-                        <strong>9</strong>
-                        <small>A favor</small>
+
+                        <span>
+                            PE
+                        </span>
+
+                        <strong id="statPE">
+                            0
+                        </strong>
+
+                        <small>
+                            Empates
+                        </small>
+
                     </div>
 
+
                     <div>
-                        <span>GC</span>
-                        <strong>3</strong>
-                        <small>En contra</small>
+
+                        <span>
+                            PP
+                        </span>
+
+                        <strong id="statPP">
+                            0
+                        </strong>
+
+                        <small>
+                            Perdidos
+                        </small>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            GF
+                        </span>
+
+                        <strong id="statGF">
+                            0
+                        </strong>
+
+                        <small>
+                            A favor
+                        </small>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            GC
+                        </span>
+
+                        <strong id="statGC">
+                            0
+                        </strong>
+
+                        <small>
+                            En contra
+                        </small>
+
                     </div>
 
                 </div>
@@ -202,6 +321,7 @@
                 <div class="seccion-cabecera">
 
                     <div>
+
                         <span class="seccion-mini">
                             Próximamente
                         </span>
@@ -209,78 +329,33 @@
                         <h2>
                             Próximo partido
                         </h2>
+
                     </div>
 
                 </div>
 
 
-                <article class="partido-card">
+                <div id="proximoPartidoContenido">
 
-                    <div class="partido-superior">
+                    <article class="partido-card">
 
-                        <span>
-                            Jornada 5
-                        </span>
-
-                        <span class="estado-partido">
-                            Próximo
-                        </span>
-
-                    </div>
-
-
-                    <div class="partido-principal">
-
-                        <div class="equipo-partido">
-
-                            <div class="escudo-partido">
-                                J
-                            </div>
-
-                            <strong>
-                                Juárez
-                            </strong>
-
+                        <div
+                            style="
+                                min-height:150px;
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                text-align:center;
+                                color:#68746e;
+                                font-size:.72rem;
+                            "
+                        >
+                            Buscando próximo partido...
                         </div>
 
+                    </article>
 
-                        <div class="partido-centro">
-
-                            <span class="hora">
-                                4:00 PM
-                            </span>
-
-                            <strong>
-                                VS
-                            </strong>
-
-                            <span>
-                                Sábado 5 de septiembre
-                            </span>
-
-                        </div>
-
-
-                        <div class="equipo-partido">
-
-                            <div class="escudo-partido">
-                                S
-                            </div>
-
-                            <strong>
-                                Santos FC
-                            </strong>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="partido-campo">
-                        📍 Campo Municipal
-                    </div>
-
-                </article>
+                </div>
 
             </section>
 
@@ -290,6 +365,7 @@
                 <div class="seccion-cabecera">
 
                     <div>
+
                         <span class="seccion-mini">
                             Historial reciente
                         </span>
@@ -297,105 +373,16 @@
                         <h2>
                             Últimos resultados
                         </h2>
+
                     </div>
 
                 </div>
 
 
-                <div class="resultados-lista">
-
-                    <article class="resultado-card">
-
-                        <div>
-                            <span>
-                                Jornada 4
-                            </span>
-
-                            <small>
-                                Finalizado
-                            </small>
-                        </div>
-
-                        <div class="resultado-partido">
-
-                            <span>
-                                Juárez
-                            </span>
-
-                            <strong class="resultado-victoria">
-                                3 - 1
-                            </strong>
-
-                            <span>
-                                Pumas
-                            </span>
-
-                        </div>
-
-                    </article>
-
-
-                    <article class="resultado-card">
-
-                        <div>
-                            <span>
-                                Jornada 3
-                            </span>
-
-                            <small>
-                                Finalizado
-                            </small>
-                        </div>
-
-                        <div class="resultado-partido">
-
-                            <span>
-                                Atlas
-                            </span>
-
-                            <strong class="resultado-empate">
-                                1 - 1
-                            </strong>
-
-                            <span>
-                                Juárez
-                            </span>
-
-                        </div>
-
-                    </article>
-
-
-                    <article class="resultado-card">
-
-                        <div>
-                            <span>
-                                Jornada 2
-                            </span>
-
-                            <small>
-                                Finalizado
-                            </small>
-                        </div>
-
-                        <div class="resultado-partido">
-
-                            <span>
-                                Juárez
-                            </span>
-
-                            <strong class="resultado-victoria">
-                                2 - 0
-                            </strong>
-
-                            <span>
-                                Chacales
-                            </span>
-
-                        </div>
-
-                    </article>
-
+                <div
+                    id="listaResultados"
+                    class="resultados-lista"
+                >
                 </div>
 
             </section>
@@ -406,6 +393,7 @@
                 <div class="seccion-cabecera">
 
                     <div>
+
                         <span class="seccion-mini">
                             Plantilla oficial
                         </span>
@@ -413,10 +401,15 @@
                         <h2>
                             Jugadores
                         </h2>
+
                     </div>
 
-                    <span class="contador-plantilla">
-                        6 / 26
+
+                    <span
+                        id="contadorPlantilla"
+                        class="contador-plantilla"
+                    >
+                        0 jugadores
                     </span>
 
                 </div>
@@ -426,179 +419,116 @@
                     id="listaJugadores"
                     class="grid-jugadores"
                 >
-
-                    <a
-                        href="jugador.html"
-                        class="jugador-card"
-                    >
-
-                        <div class="foto-jugador">
-                            JP
-                        </div>
-
-                        <div class="jugador-info">
-
-                            <strong>
-                                Juan Pérez
-                            </strong>
-
-                            <span>
-                                #10 · Delantero
-                            </span>
-
-                            <small>
-                                ⚽ 5 goles
-                            </small>
-
-                        </div>
-
-                    </a>
-
-
-                    <a
-                        href="jugador.html"
-                        class="jugador-card"
-                    >
-
-                        <div class="foto-jugador">
-                            CL
-                        </div>
-
-                        <div class="jugador-info">
-
-                            <strong>
-                                Carlos López
-                            </strong>
-
-                            <span>
-                                #8 · Mediocampista
-                            </span>
-
-                            <small>
-                                ⚽ 2 goles
-                            </small>
-
-                        </div>
-
-                    </a>
-
-
-                    <a
-                        href="jugador.html"
-                        class="jugador-card"
-                    >
-
-                        <div class="foto-jugador">
-                            MD
-                        </div>
-
-                        <div class="jugador-info">
-
-                            <strong>
-                                Miguel Díaz
-                            </strong>
-
-                            <span>
-                                #5 · Defensa
-                            </span>
-
-                            <small>
-                                🟨 1 amarilla
-                            </small>
-
-                        </div>
-
-                    </a>
-
-
-                    <a
-                        href="jugador.html"
-                        class="jugador-card"
-                    >
-
-                        <div class="foto-jugador">
-                            PS
-                        </div>
-
-                        <div class="jugador-info">
-
-                            <strong>
-                                Pedro Santos
-                            </strong>
-
-                            <span>
-                                #1 · Portero
-                            </span>
-
-                            <small>
-                                4 partidos
-                            </small>
-
-                        </div>
-
-                    </a>
-
-
-                    <a
-                        href="jugador.html"
-                        class="jugador-card"
-                    >
-
-                        <div class="foto-jugador">
-                            AG
-                        </div>
-
-                        <div class="jugador-info">
-
-                            <strong>
-                                Andrés García
-                            </strong>
-
-                            <span>
-                                #7 · Mediocampista
-                            </span>
-
-                            <small>
-                                ⚽ 1 gol
-                            </small>
-
-                        </div>
-
-                    </a>
-
-
-                    <a
-                        href="jugador.html"
-                        class="jugador-card jugador-suspendido"
-                    >
-
-                        <div class="foto-jugador">
-                            RL
-                        </div>
-
-                        <div class="jugador-info">
-
-                            <strong>
-                                Roberto López
-                            </strong>
-
-                            <span>
-                                #9 · Delantero
-                            </span>
-
-                            <small class="texto-suspendido">
-                                ⛔ Suspendido
-                            </small>
-
-                        </div>
-
-                    </a>
-
                 </div>
 
             </section>
 
         </main>
+
+
+        <section
+            id="estadoCargaEquipo"
+            class="contenido-equipo"
+        >
+
+            <div
+                style="
+                    min-height:380px;
+                    display:flex;
+                    flex-direction:column;
+                    align-items:center;
+                    justify-content:center;
+                    gap:12px;
+                    text-align:center;
+                "
+            >
+
+                <div
+                    style="
+                        width:42px;
+                        height:42px;
+                        border:4px solid rgba(11,117,109,.15);
+                        border-top-color:#0b756d;
+                        border-radius:50%;
+                        animation:girarEquipo .8s linear infinite;
+                    "
+                >
+                </div>
+
+
+                <strong>
+                    Cargando equipo...
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <section
+            id="estadoErrorEquipo"
+            class="contenido-equipo"
+            hidden
+        >
+
+            <div
+                style="
+                    min-height:380px;
+                    display:flex;
+                    flex-direction:column;
+                    align-items:center;
+                    justify-content:center;
+                    gap:8px;
+                    padding:25px;
+                    text-align:center;
+                "
+            >
+
+                <div
+                    style="
+                        font-size:2.5rem;
+                    "
+                >
+                    🛡️
+                </div>
+
+
+                <h2 id="tituloErrorEquipo">
+                    Equipo no encontrado
+                </h2>
+
+
+                <p
+                    id="textoErrorEquipo"
+                    style="
+                        max-width:360px;
+                        color:#68746e;
+                        font-size:.72rem;
+                        line-height:1.45;
+                    "
+                >
+                    No pudimos encontrar la información
+                    del equipo solicitado.
+                </p>
+
+
+                <a
+                    href="equipos.html"
+                    style="
+                        margin-top:10px;
+                        padding:10px 16px;
+                        border-radius:10px;
+                        background:#0b756d;
+                        color:#ffffff;
+                        font-weight:800;
+                    "
+                >
+                    Volver a equipos
+                </a>
+
+            </div>
+
+        </section>
 
 
         <nav class="bottom-nav">
@@ -607,45 +537,97 @@
                 href="publico.html"
                 class="bottom-item"
             >
-                <span>🏠</span>
-                <small>Inicio</small>
+
+                <span>
+                    🏠
+                </span>
+
+                <small>
+                    Inicio
+                </small>
+
             </a>
+
 
             <a
                 href="jornadas.html"
                 class="bottom-item"
             >
-                <span>📅</span>
-                <small>Jornadas</small>
+
+                <span>
+                    📅
+                </span>
+
+                <small>
+                    Jornadas
+                </small>
+
             </a>
+
 
             <a
                 href="tablas.html"
                 class="bottom-item"
             >
-                <span>🏆</span>
-                <small>Tabla</small>
+
+                <span>
+                    🏆
+                </span>
+
+                <small>
+                    Tabla
+                </small>
+
             </a>
+
 
             <a
                 href="chat.html"
                 class="bottom-item"
             >
-                <span>💬</span>
-                <small>Chat</small>
+
+                <span>
+                    💬
+                </span>
+
+                <small>
+                    Chat
+                </small>
+
             </a>
+
 
             <a
                 href="equipos.html"
                 class="bottom-item active"
             >
-                <span>🛡️</span>
-                <small>Equipos</small>
+
+                <span>
+                    🛡️
+                </span>
+
+                <small>
+                    Equipos
+                </small>
+
             </a>
 
         </nav>
 
     </div>
+
+
+    <style>
+
+        @keyframes girarEquipo{
+
+            to{
+                transform:rotate(360deg);
+            }
+
+        }
+
+    </style>
 
 
     <script
@@ -654,4 +636,5 @@
     ></script>
 
 </body>
+
 </html>

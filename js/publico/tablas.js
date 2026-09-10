@@ -1,5 +1,5 @@
 import {
-    protegerPagina
+    protegerPaginaPublica
 } from "../roles.js";
 
 
@@ -13,9 +13,8 @@ const tablaEquiposDesktop = document.getElementById("tablaEquiposDesktop");
 const tablaEquiposMobile = document.getElementById("tablaEquiposMobile");
 
 
-const usuario = await protegerPagina([
-    "publico"
-]);
+const usuario =
+    await protegerPaginaPublica();
 
 
 if (usuario) {

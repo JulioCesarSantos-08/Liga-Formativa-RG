@@ -1,15 +1,34 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Noticias | Liga Deportiva Río Grande</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="icon" href="imagenes/favicon.png">
+    <title>
+        Noticias | Liga Deportiva Río Grande
+    </title>
 
-    <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/noticias.css">
+    <link
+        rel="icon"
+        href="imagenes/logo.png"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/global.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/noticias.css"
+    >
+
 </head>
 
 <body>
@@ -28,28 +47,40 @@
                     ←
                 </a>
 
+
                 <img
                     src="imagenes/logo.png"
                     alt="Liga Deportiva Río Grande"
                     class="topbar-logo"
                 >
 
+
                 <div class="topbar-texto">
-                    <span>Liga Municipal</span>
-                    <strong>Noticias</strong>
+
+                    <span>
+                        Liga Municipal
+                    </span>
+
+                    <strong>
+                        Noticias
+                    </strong>
+
                 </div>
 
             </div>
+
 
             <button
                 type="button"
                 id="btnPerfil"
                 class="btn-perfil"
-                aria-label="Abrir perfil"
+                aria-label="Volver al inicio"
             >
+
                 <span id="perfilInicial">
                     U
                 </span>
+
             </button>
 
         </header>
@@ -68,8 +99,9 @@
                 </h1>
 
                 <p>
-                    Consulta comunicados, sanciones, cambios de horarios,
-                    resultados destacados y noticias oficiales de la liga.
+                    Consulta comunicados, sanciones,
+                    novedades de partidos y publicaciones
+                    oficiales de la Liga Río Grande.
                 </p>
 
             </section>
@@ -85,6 +117,7 @@
                     Todas
                 </button>
 
+
                 <button
                     type="button"
                     class="filtro-noticia"
@@ -92,6 +125,7 @@
                 >
                     📢 Comunicados
                 </button>
+
 
                 <button
                     type="button"
@@ -101,6 +135,7 @@
                     🚨 Sanciones
                 </button>
 
+
                 <button
                     type="button"
                     class="filtro-noticia"
@@ -108,6 +143,7 @@
                 >
                     ⚽ Partidos
                 </button>
+
 
                 <button
                     type="button"
@@ -120,18 +156,16 @@
             </section>
 
 
-            <section class="noticia-destacada">
+            <section
+                id="seccionDestacada"
+                class="noticia-destacada"
+                hidden
+            >
 
-                <div class="noticia-imagen-principal">
-
-                    <div class="imagen-placeholder">
-                        ⚽
-                    </div>
-
-                    <span class="badge-oficial">
-                        🛡️ OFICIAL
-                    </span>
-
+                <div
+                    id="destacadaImagen"
+                    class="noticia-imagen-principal"
+                >
                 </div>
 
 
@@ -139,32 +173,36 @@
 
                     <div class="noticia-meta">
 
-                        <span class="tipo-noticia comunicado">
+                        <span
+                            id="destacadaTipo"
+                            class="tipo-noticia comunicado"
+                        >
                             Comunicado
                         </span>
 
-                        <span>
-                            26 de agosto de 2026
+                        <span id="destacadaFecha">
+                            -
                         </span>
 
                     </div>
 
-                    <h2>
-                        Jornada 5 tendrá nuevos horarios este fin de semana
+
+                    <h2 id="destacadaTitulo">
+                        Noticia
                     </h2>
 
-                    <p>
-                        La Liga Deportiva Río Grande informa que algunos
-                        encuentros de la próxima jornada tendrán modificaciones
-                        en sus horarios.
+
+                    <p id="destacadaResumen">
                     </p>
 
-                    <button
-                        type="button"
+
+                    <a
+                        id="destacadaEnlace"
+                        href="#"
                         class="btn-leer-noticia"
                     >
-                        Leer comunicado
-                    </button>
+                        Ver publicación
+                    </a>
 
                 </div>
 
@@ -191,331 +229,85 @@
 
 
                 <div
-                    id="listaNoticias"
-                    class="grid-noticias"
+                    id="estadoCargaNoticias"
+                    style="
+                        min-height:220px;
+                        display:flex;
+                        flex-direction:column;
+                        align-items:center;
+                        justify-content:center;
+                        gap:8px;
+                        padding:20px;
+                        text-align:center;
+                        color:#68746e;
+                    "
                 >
 
-
-                    <article
-                        class="noticia-card"
-                        data-tipo="sancion"
+                    <span
+                        style="
+                            font-size:2rem;
+                        "
                     >
+                        📰
+                    </span>
 
-                        <div class="noticia-imagen">
+                    <strong>
+                        Cargando noticias...
+                    </strong>
 
-                            <div class="imagen-placeholder sancion-img">
-                                🟥
-                            </div>
-
-                            <span class="badge-oficial pequeno">
-                                OFICIAL
-                            </span>
-
-                        </div>
+                </div>
 
 
-                        <div class="noticia-contenido">
-
-                            <div class="noticia-meta">
-
-                                <span class="tipo-noticia sancion">
-                                    Sanción
-                                </span>
-
-                                <span>
-                                    Hoy
-                                </span>
-
-                            </div>
-
-                            <h3>
-                                Jugador suspendido por tarjeta roja
-                            </h3>
-
-                            <p>
-                                El jugador Roberto López deberá cumplir
-                                una suspensión durante el próximo encuentro.
-                            </p>
-
-                            <button
-                                type="button"
-                                class="btn-noticia"
-                            >
-                                Ver noticia
-                            </button>
-
-                        </div>
-
-                    </article>
+                <div
+                    id="listaNoticias"
+                    class="grid-noticias"
+                    hidden
+                >
+                </div>
 
 
-                    <article
-                        class="noticia-card"
-                        data-tipo="partido"
+                <div
+                    id="estadoSinNoticias"
+                    hidden
+                    style="
+                        min-height:220px;
+                        display:flex;
+                        flex-direction:column;
+                        align-items:center;
+                        justify-content:center;
+                        gap:8px;
+                        padding:20px;
+                        text-align:center;
+                        border:1px solid #baa676;
+                        border-radius:14px;
+                        background:rgba(255,248,232,.75);
+                    "
+                >
+
+                    <span
+                        style="
+                            font-size:2rem;
+                        "
                     >
+                        📰
+                    </span>
 
-                        <div class="noticia-imagen">
+                    <strong>
+                        No hay publicaciones
+                    </strong>
 
-                            <div class="imagen-placeholder">
-                                🏆
-                            </div>
-
-                            <span class="badge-oficial pequeno">
-                                OFICIAL
-                            </span>
-
-                        </div>
-
-
-                        <div class="noticia-contenido">
-
-                            <div class="noticia-meta">
-
-                                <span class="tipo-noticia partido">
-                                    Partido
-                                </span>
-
-                                <span>
-                                    Ayer
-                                </span>
-
-                            </div>
-
-                            <h3>
-                                Juárez vence 3-1 a Pumas
-                            </h3>
-
-                            <p>
-                                Juárez consiguió una nueva victoria y
-                                continúa en la primera posición de la tabla.
-                            </p>
-
-                            <a
-                                href="partido.html"
-                                class="btn-noticia"
-                            >
-                                Ver partido
-                            </a>
-
-                        </div>
-
-                    </article>
-
-
-                    <article
-                        class="noticia-card"
-                        data-tipo="comunicado"
+                    <p
+                        style="
+                            max-width:340px;
+                            margin:0;
+                            color:#68746e;
+                            font-size:.72rem;
+                            line-height:1.45;
+                        "
                     >
-
-                        <div class="noticia-imagen">
-
-                            <div class="imagen-placeholder">
-                                📢
-                            </div>
-
-                            <span class="badge-oficial pequeno">
-                                OFICIAL
-                            </span>
-
-                        </div>
-
-
-                        <div class="noticia-contenido">
-
-                            <div class="noticia-meta">
-
-                                <span class="tipo-noticia comunicado">
-                                    Comunicado
-                                </span>
-
-                                <span>
-                                    24 Ago
-                                </span>
-
-                            </div>
-
-                            <h3>
-                                Actualización del calendario de partidos
-                            </h3>
-
-                            <p>
-                                Consulta las modificaciones realizadas
-                                en los encuentros correspondientes a la
-                                próxima jornada.
-                            </p>
-
-                            <a
-                                href="jornadas.html"
-                                class="btn-noticia"
-                            >
-                                Consultar jornadas
-                            </a>
-
-                        </div>
-
-                    </article>
-
-
-                    <article
-                        class="noticia-card"
-                        data-tipo="general"
-                    >
-
-                        <div class="noticia-imagen">
-
-                            <div class="imagen-placeholder">
-                                ⚽
-                            </div>
-
-                            <span class="badge-oficial pequeno">
-                                OFICIAL
-                            </span>
-
-                        </div>
-
-
-                        <div class="noticia-contenido">
-
-                            <div class="noticia-meta">
-
-                                <span class="tipo-noticia general">
-                                    General
-                                </span>
-
-                                <span>
-                                    22 Ago
-                                </span>
-
-                            </div>
-
-                            <h3>
-                                Tabla general actualizada
-                            </h3>
-
-                            <p>
-                                Ya puedes consultar las posiciones
-                                actualizadas después de los últimos
-                                encuentros disputados.
-                            </p>
-
-                            <a
-                                href="tablas.html"
-                                class="btn-noticia"
-                            >
-                                Ver tabla general
-                            </a>
-
-                        </div>
-
-                    </article>
-
-
-                    <article
-                        class="noticia-card"
-                        data-tipo="sancion"
-                    >
-
-                        <div class="noticia-imagen">
-
-                            <div class="imagen-placeholder sancion-img">
-                                ⛔
-                            </div>
-
-                            <span class="badge-oficial pequeno">
-                                OFICIAL
-                            </span>
-
-                        </div>
-
-
-                        <div class="noticia-contenido">
-
-                            <div class="noticia-meta">
-
-                                <span class="tipo-noticia sancion">
-                                    Sanción
-                                </span>
-
-                                <span>
-                                    20 Ago
-                                </span>
-
-                            </div>
-
-                            <h3>
-                                Equipo recibe sanción administrativa
-                            </h3>
-
-                            <p>
-                                La administración de la liga informa
-                                sobre una sanción aplicada por incumplimiento
-                                del reglamento.
-                            </p>
-
-                            <button
-                                type="button"
-                                class="btn-noticia"
-                            >
-                                Ver comunicado
-                            </button>
-
-                        </div>
-
-                    </article>
-
-
-                    <article
-                        class="noticia-card"
-                        data-tipo="general"
-                    >
-
-                        <div class="noticia-imagen">
-
-                            <div class="imagen-placeholder">
-                                👥
-                            </div>
-
-                            <span class="badge-oficial pequeno">
-                                OFICIAL
-                            </span>
-
-                        </div>
-
-
-                        <div class="noticia-contenido">
-
-                            <div class="noticia-meta">
-
-                                <span class="tipo-noticia general">
-                                    General
-                                </span>
-
-                                <span>
-                                    18 Ago
-                                </span>
-
-                            </div>
-
-                            <h3>
-                                Nuevos jugadores registrados
-                            </h3>
-
-                            <p>
-                                Las plantillas de distintos clubes han
-                                sido actualizadas con nuevos registros.
-                            </p>
-
-                            <a
-                                href="jugadores.html"
-                                class="btn-noticia"
-                            >
-                                Ver jugadores
-                            </a>
-
-                        </div>
-
-                    </article>
-
+                        Cuando la administración publique
+                        una noticia oficial aparecerá aquí.
+                    </p>
 
                 </div>
 
@@ -528,6 +320,7 @@
                     🛡️
                 </div>
 
+
                 <div>
 
                     <strong>
@@ -535,9 +328,9 @@
                     </strong>
 
                     <p>
-                        Las noticias identificadas como oficiales han sido
-                        publicadas directamente por la administración de
-                        la Liga Deportiva Río Grande.
+                        Las publicaciones mostradas en esta sección
+                        provienen directamente de la administración
+                        de la Liga Deportiva Río Grande.
                     </p>
 
                 </div>
@@ -586,11 +379,11 @@
 
 
             <a
-                href="publico.html"
+                href="noticias.html"
                 class="bottom-item active"
             >
-                <span>☰</span>
-                <small>Más</small>
+                <span>📰</span>
+                <small>Noticias</small>
             </a>
 
         </nav>
@@ -604,4 +397,5 @@
     ></script>
 
 </body>
+
 </html>

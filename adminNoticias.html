@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#0f766e"
+    >
+
+    <title>
+        Administrar Noticias | Liga Deportiva Río Grande
+    </title>
+
+    <link
+        rel="icon"
+        href="imagenes/logo.png"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/global.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/adminNoticias.css"
+    >
+
+</head>
+
+<body>
+
+    <div class="admin-noticias-page">
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <a
+                    href="admin.html"
+                    class="btn-volver"
+                    aria-label="Volver al panel"
+                >
+                    ←
+                </a>
+
+
+                <img
+                    src="imagenes/logo.png"
+                    alt="Liga Deportiva Río Grande"
+                    class="topbar-logo"
+                >
+
+
+                <div class="topbar-titulo">
+
+                    <span>
+                        Panel administrativo
+                    </span>
+
+                    <strong>
+                        Noticias
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="topbar-acciones">
+
+                <a
+                    href="noticias.html"
+                    class="btn-ver-publico"
+                >
+                    👁️ Ver noticias
+                </a>
+
+
+                <button
+                    type="button"
+                    id="btnNuevaNoticia"
+                    class="btn-nueva-noticia"
+                >
+                    ＋ Nueva noticia
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <main class="contenido-admin">
+
+            <section class="encabezado-admin">
+
+                <div>
+
+                    <span class="encabezado-mini">
+                        COMUNICACIÓN OFICIAL
+                    </span>
+
+                    <h1>
+                        Administración de noticias
+                    </h1>
+
+                    <p>
+                        Publica comunicados, sanciones,
+                        novedades de partidos y avisos oficiales
+                        para los usuarios de la liga.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="btnNuevaNoticiaHero"
+                    class="btn-principal"
+                >
+                    ＋ Crear publicación
+                </button>
+
+            </section>
+
+
+            <section class="resumen-grid">
+
+                <article class="resumen-card">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong id="totalNoticias">
+                        0
+                    </strong>
+
+                    <small>
+                        Publicaciones registradas
+                    </small>
+
+                </article>
+
+
+                <article class="resumen-card activa">
+
+                    <span>
+                        Activas
+                    </span>
+
+                    <strong id="totalActivas">
+                        0
+                    </strong>
+
+                    <small>
+                        Visibles al público
+                    </small>
+
+                </article>
+
+
+                <article class="resumen-card destacada">
+
+                    <span>
+                        Destacadas
+                    </span>
+
+                    <strong id="totalDestacadas">
+                        0
+                    </strong>
+
+                    <small>
+                        En portada de noticias
+                    </small>
+
+                </article>
+
+
+                <article class="resumen-card inactiva">
+
+                    <span>
+                        Ocultas
+                    </span>
+
+                    <strong id="totalInactivas">
+                        0
+                    </strong>
+
+                    <small>
+                        No visibles al público
+                    </small>
+
+                </article>
+
+            </section>
+
+
+            <section class="panel-filtros">
+
+                <div class="buscador-admin">
+
+                    <span>
+                        🔎
+                    </span>
+
+                    <input
+                        type="search"
+                        id="buscarNoticia"
+                        placeholder="Buscar por título o contenido..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <select id="filtroTipo">
+
+                    <option value="todas">
+                        Todos los tipos
+                    </option>
+
+                    <option value="comunicado">
+                        Comunicados
+                    </option>
+
+                    <option value="sancion">
+                        Sanciones
+                    </option>
+
+                    <option value="partido">
+                        Partidos
+                    </option>
+
+                    <option value="general">
+                        General
+                    </option>
+
+                </select>
+
+
+                <select id="filtroEstado">
+
+                    <option value="todas">
+                        Todas
+                    </option>
+
+                    <option value="activas">
+                        Activas
+                    </option>
+
+                    <option value="inactivas">
+                        Ocultas
+                    </option>
+
+                    <option value="destacadas">
+                        Destacadas
+                    </option>
+
+                </select>
+
+            </section>
+
+
+            <section class="seccion-listado">
+
+                <div class="seccion-cabecera">
+
+                    <div>
+
+                        <span class="seccion-mini">
+                            PUBLICACIONES
+                        </span>
+
+                        <h2>
+                            Noticias registradas
+                        </h2>
+
+                    </div>
+
+
+                    <span
+                        id="contadorListado"
+                        class="contador-listado"
+                    >
+                        0 noticias
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="estadoCarga"
+                    class="estado-panel"
+                >
+
+                    <div class="spinner"></div>
+
+                    <strong>
+                        Cargando noticias...
+                    </strong>
+
+                </div>
+
+
+                <div
+                    id="estadoVacio"
+                    class="estado-panel"
+                    hidden
+                >
+
+                    <div class="estado-icono">
+                        📰
+                    </div>
+
+                    <strong>
+                        No hay noticias registradas
+                    </strong>
+
+                    <p>
+                        Crea la primera publicación oficial
+                        de la liga.
+                    </p>
+
+                </div>
+
+
+                <div
+                    id="listaNoticiasAdmin"
+                    class="noticias-admin-grid"
+                    hidden
+                >
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <div
+        id="modalNoticia"
+        class="modal-overlay"
+        hidden
+    >
+
+        <section class="modal-noticia">
+
+            <header class="modal-header">
+
+                <div>
+
+                    <span class="modal-mini">
+                        PUBLICACIÓN OFICIAL
+                    </span>
+
+                    <h2 id="modalTitulo">
+                        Nueva noticia
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="btnCerrarModal"
+                    class="btn-cerrar-modal"
+                    aria-label="Cerrar"
+                >
+                    ×
+                </button>
+
+            </header>
+
+
+            <form id="formNoticia">
+
+                <input
+                    type="hidden"
+                    id="noticiaId"
+                >
+
+
+                <div class="form-grid">
+
+                    <div class="campo campo-ancho">
+
+                        <label for="tituloNoticia">
+                            Título *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="tituloNoticia"
+                            maxlength="120"
+                            placeholder="Ej. Cambio de horario Jornada 4"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="tipoNoticia">
+                            Tipo *
+                        </label>
+
+                        <select
+                            id="tipoNoticia"
+                            required
+                        >
+
+                            <option value="comunicado">
+                                📢 Comunicado
+                            </option>
+
+                            <option value="sancion">
+                                🚨 Sanción
+                            </option>
+
+                            <option value="partido">
+                                ⚽ Partido
+                            </option>
+
+                            <option value="general">
+                                📰 General
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="estadoNoticia">
+                            Visibilidad
+                        </label>
+
+                        <select id="estadoNoticia">
+
+                            <option value="activa">
+                                Publicada
+                            </option>
+
+                            <option value="inactiva">
+                                Oculta
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="campo campo-ancho">
+
+                        <label for="resumenNoticia">
+                            Resumen *
+                        </label>
+
+                        <textarea
+                            id="resumenNoticia"
+                            maxlength="280"
+                            rows="3"
+                            placeholder="Texto breve que aparecerá en la tarjeta..."
+                            required
+                        ></textarea>
+
+                        <small>
+                            Máximo 280 caracteres
+                        </small>
+
+                    </div>
+
+
+                    <div class="campo campo-ancho">
+
+                        <label for="contenidoNoticia">
+                            Contenido completo
+                        </label>
+
+                        <textarea
+                            id="contenidoNoticia"
+                            rows="7"
+                            maxlength="5000"
+                            placeholder="Escribe aquí el comunicado completo..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="campo campo-ancho">
+
+                        <label for="imagenNoticia">
+                            Imagen
+                        </label>
+
+                        <input
+                            type="file"
+                            id="imagenNoticia"
+                            accept="image/*"
+                        >
+
+
+                        <div
+                            id="previewImagen"
+                            class="preview-imagen"
+                        >
+
+                            <div
+                                id="previewPlaceholder"
+                                class="preview-placeholder"
+                            >
+                                🖼️
+                                <span>
+                                    Sin imagen seleccionada
+                                </span>
+                            </div>
+
+
+                            <img
+                                id="previewImagenArchivo"
+                                alt="Vista previa"
+                                hidden
+                            >
+
+                        </div>
+
+
+                        <span
+                            id="estadoImagen"
+                            class="estado-imagen"
+                        >
+                        </span>
+
+                    </div>
+
+
+                    <div class="campo campo-ancho">
+
+                        <label class="switch-linea">
+
+                            <input
+                                type="checkbox"
+                                id="noticiaDestacada"
+                            >
+
+                            <span>
+                                ⭐ Marcar como noticia destacada
+                            </span>
+
+                        </label>
+
+                        <small>
+                            Solo una noticia debería permanecer
+                            destacada como principal.
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <section class="seccion-enlace">
+
+                    <div class="seccion-form-header">
+
+                        <div>
+
+                            <span>
+                                ENLACE OPCIONAL
+                            </span>
+
+                            <strong>
+                                Relacionar publicación
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-grid">
+
+                        <div class="campo">
+
+                            <label for="tipoEnlace">
+                                Tipo de enlace
+                            </label>
+
+                            <select id="tipoEnlace">
+
+                                <option value="ninguno">
+                                    Sin enlace
+                                </option>
+
+                                <option value="partido">
+                                    Partido
+                                </option>
+
+                                <option value="equipo">
+                                    Equipo
+                                </option>
+
+                                <option value="jugador">
+                                    Jugador
+                                </option>
+
+                                <option value="personalizado">
+                                    Enlace personalizado
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div
+                            id="grupoPartido"
+                            class="campo"
+                            hidden
+                        >
+
+                            <label for="partidoNoticia">
+                                Partido
+                            </label>
+
+                            <select id="partidoNoticia">
+
+                                <option value="">
+                                    Selecciona un partido
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div
+                            id="grupoEquipo"
+                            class="campo"
+                            hidden
+                        >
+
+                            <label for="equipoNoticia">
+                                Equipo
+                            </label>
+
+                            <select id="equipoNoticia">
+
+                                <option value="">
+                                    Selecciona un equipo
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div
+                            id="grupoJugador"
+                            class="campo"
+                            hidden
+                        >
+
+                            <label for="jugadorNoticia">
+                                Jugador
+                            </label>
+
+                            <select id="jugadorNoticia">
+
+                                <option value="">
+                                    Selecciona un jugador
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div
+                            id="grupoEnlacePersonalizado"
+                            class="campo campo-ancho"
+                            hidden
+                        >
+
+                            <label for="enlaceNoticia">
+                                URL o página
+                            </label>
+
+                            <input
+                                type="text"
+                                id="enlaceNoticia"
+                                placeholder="Ej. jornadas.html"
+                            >
+
+                        </div>
+
+
+                        <div class="campo campo-ancho">
+
+                            <label for="textoBoton">
+                                Texto del botón
+                            </label>
+
+                            <input
+                                type="text"
+                                id="textoBoton"
+                                maxlength="40"
+                                placeholder="Ej. Ver comunicado"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <div class="modal-acciones">
+
+                    <button
+                        type="button"
+                        id="btnCancelarModal"
+                        class="btn-secundario"
+                    >
+                        Cancelar
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        id="btnGuardarNoticia"
+                        class="btn-guardar"
+                    >
+                        Guardar publicación
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </div>
+
+
+    <div
+        id="modalEliminar"
+        class="modal-overlay"
+        hidden
+    >
+
+        <section class="modal-confirmacion">
+
+            <div class="confirmacion-icono">
+                🗑️
+            </div>
+
+            <h2>
+                Eliminar noticia
+            </h2>
+
+            <p>
+                Esta publicación se eliminará de forma permanente.
+                Esta acción no se puede deshacer.
+            </p>
+
+
+            <div class="modal-acciones">
+
+                <button
+                    type="button"
+                    id="btnCancelarEliminar"
+                    class="btn-secundario"
+                >
+                    Cancelar
+                </button>
+
+
+                <button
+                    type="button"
+                    id="btnConfirmarEliminar"
+                    class="btn-eliminar"
+                >
+                    Eliminar
+                </button>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <div
+        id="toast"
+        class="toast"
+        hidden
+    >
+
+        <div
+            id="toastIcono"
+            class="toast-icono"
+        >
+            ✓
+        </div>
+
+
+        <div>
+
+            <strong id="toastTitulo">
+                Listo
+            </strong>
+
+            <span id="toastTexto">
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <script
+        type="module"
+        src="js/admin/adminNoticias.js"
+    ></script>
+
+</body>
+
+</html>

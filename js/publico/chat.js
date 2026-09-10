@@ -1,42 +1,108 @@
 import {
-    protegerPagina
+    collection,
+    addDoc,
+    query,
+    orderBy,
+    limit,
+    onSnapshot,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+import {
+    db
+} from "../firebase.js";
+
+import {
+    protegerPaginaPublica
 } from "../roles.js";
 
 
-const perfilInicial = document.getElementById("perfilInicial");
-const btnPerfil = document.getElementById("btnPerfil");
+const perfilInicial =
+    document.getElementById(
+        "perfilInicial"
+    );
 
-const listaMensajes = document.getElementById("listaMensajes");
+const btnPerfil =
+    document.getElementById(
+        "btnPerfil"
+    );
 
-const formMensaje = document.getElementById("formMensaje");
-const mensajeTexto = document.getElementById("mensajeTexto");
-const contadorCaracteres = document.getElementById("contadorCaracteres");
-const btnEnviar = document.getElementById("btnEnviar");
+const listaMensajes =
+    document.getElementById(
+        "listaMensajes"
+    );
+
+const formMensaje =
+    document.getElementById(
+        "formMensaje"
+    );
+
+const mensajeTexto =
+    document.getElementById(
+        "mensajeTexto"
+    );
+
+const contadorCaracteres =
+    document.getElementById(
+        "contadorCaracteres"
+    );
+
+const btnEnviar =
+    document.getElementById(
+        "btnEnviar"
+    );
+
+const estadoConexion =
+    document.getElementById(
+        "estadoConexion"
+    );
 
 
-const usuario = await protegerPagina([
-    "publico"
-]);
+let usuarioActual = null;
+
+let primeraCarga = true;
+
+let fechaAnteriorRender = "";
+
+
+const usuario =
+    await protegerPaginaPublica();
 
 
 if (usuario) {
 
-    cargarUsuario(usuario);
+    usuarioActual =
+        usuario;
+
+    cargarUsuario(
+        usuario
+    );
+
     activarEventos();
+
     actualizarContador();
-    irAlUltimoMensaje();
+
+    actualizarEstadoBoton();
+
+    escucharMensajes();
 
 }
 
 
-function cargarUsuario(usuario) {
+function cargarUsuario(
+    usuario
+) {
 
     const nombre =
-        usuario.nombre?.trim() ||
-        "Usuario";
+        obtenerNombreUsuario(
+            usuario
+        );
+
 
     perfilInicial.textContent =
-        obtenerInicial(nombre);
+        obtenerInicial(
+            nombre
+        );
 
 }
 
@@ -59,7 +125,9 @@ function activarEventos() {
         () => {
 
             ajustarTextarea();
+
             actualizarContador();
+
             actualizarEstadoBoton();
 
         }
@@ -68,11 +136,36 @@ function activarEventos() {
 
     formMensaje.addEventListener(
         "submit",
-        (event) => {
+        async event => {
 
             event.preventDefault();
 
-            enviarMensaje();
+            await enviarMensaje();
+
+        }
+    );
+
+
+    mensajeTexto.addEventListener(
+        "keydown",
+        async event => {
+
+            if (
+                event.key === "Enter" &&
+                !event.shiftKey
+            ) {
+
+                event.preventDefault();
+
+                if (
+                    !btnEnviar.disabled
+                ) {
+
+                    await enviarMensaje();
+
+                }
+
+            }
 
         }
     );
@@ -80,121 +173,719 @@ function activarEventos() {
 }
 
 
-function enviarMensaje() {
+function escucharMensajes() {
+
+    estadoConexion.textContent =
+        "Conectando...";
+
+
+    const referencia =
+        query(
+            collection(
+                db,
+                "chatMensajes"
+            ),
+            orderBy(
+                "creadoEn",
+                "desc"
+            ),
+            limit(
+                100
+            )
+        );
+
+
+    onSnapshot(
+        referencia,
+        snapshot => {
+
+            const mensajes =
+                snapshot.docs
+                    .map(
+                        documento => ({
+                            id:
+                                documento.id,
+
+                            ...documento.data()
+                        })
+                    )
+                    .reverse();
+
+
+            renderizarMensajes(
+                mensajes
+            );
+
+
+            estadoConexion.textContent =
+                "En línea";
+
+
+            if (
+                primeraCarga
+            ) {
+
+                primeraCarga =
+                    false;
+
+                irAlUltimoMensaje(
+                    false
+                );
+
+            } else {
+
+                irAlUltimoMensaje(
+                    true
+                );
+
+            }
+
+        },
+        error => {
+
+            console.error(
+                "Error escuchando chat:",
+                error
+            );
+
+
+            estadoConexion.textContent =
+                "Sin conexión";
+
+
+            listaMensajes.innerHTML = `
+                <div
+                    style="
+                        min-height:320px;
+                        display:flex;
+                        flex-direction:column;
+                        align-items:center;
+                        justify-content:center;
+                        gap:8px;
+                        padding:20px;
+                        text-align:center;
+                        color:#68746e;
+                    "
+                >
+                    <span
+                        style="
+                            font-size:1.8rem;
+                        "
+                    >
+                        ⚠️
+                    </span>
+
+                    <strong>
+                        No pudimos cargar el chat
+                    </strong>
+
+                    <span
+                        style="
+                            max-width:330px;
+                            font-size:.7rem;
+                            line-height:1.4;
+                        "
+                    >
+                        Verifica tu conexión o los permisos de Firestore.
+                    </span>
+                </div>
+            `;
+
+        }
+    );
+
+}
+
+
+async function enviarMensaje() {
+
+    if (
+        !usuarioActual
+    ) {
+
+        return;
+
+    }
+
 
     const texto =
         mensajeTexto.value
             .trim()
-            .replace(/\s+/g, " ");
+            .replace(
+                /\s+/g,
+                " "
+            );
 
 
     if (!texto) {
+
         return;
+
     }
 
 
-    if (texto.length > 400) {
+    if (
+        texto.length > 400
+    ) {
+
         return;
+
     }
+
+
+    btnEnviar.disabled =
+        true;
+
+
+    const textoBotonAnterior =
+        btnEnviar.textContent;
+
+
+    btnEnviar.textContent =
+        "…";
+
+
+    try {
+
+        await addDoc(
+            collection(
+                db,
+                "chatMensajes"
+            ),
+            {
+                usuarioId:
+                    usuarioActual.uid ||
+                    usuarioActual.id ||
+                    null,
+
+                nombre:
+                    obtenerNombreUsuario(
+                        usuarioActual
+                    ),
+
+                rol:
+                    usuarioActual.rol ||
+                    "publico",
+
+                texto,
+
+                creadoEn:
+                    serverTimestamp()
+            }
+        );
+
+
+        mensajeTexto.value =
+            "";
+
+
+        mensajeTexto.style.height =
+            "48px";
+
+
+        actualizarContador();
+
+        actualizarEstadoBoton();
+
+        mensajeTexto.focus();
+
+    } catch (error) {
+
+        console.error(
+            "Error enviando mensaje:",
+            error
+        );
+
+
+        alert(
+            "No se pudo enviar el mensaje. Intenta nuevamente."
+        );
+
+    } finally {
+
+        btnEnviar.textContent =
+            textoBotonAnterior ||
+            "➤";
+
+
+        actualizarEstadoBoton();
+
+    }
+
+}
+
+
+function renderizarMensajes(
+    mensajes
+) {
+
+    listaMensajes.innerHTML =
+        "";
+
+
+    fechaAnteriorRender =
+        "";
+
+
+    if (!mensajes.length) {
+
+        listaMensajes.innerHTML = `
+            <div
+                style="
+                    min-height:320px;
+                    display:flex;
+                    flex-direction:column;
+                    align-items:center;
+                    justify-content:center;
+                    gap:8px;
+                    padding:20px;
+                    text-align:center;
+                    color:#68746e;
+                "
+            >
+
+                <span
+                    style="
+                        font-size:2rem;
+                    "
+                >
+                    💬
+                </span>
+
+                <strong>
+                    Todavía no hay mensajes
+                </strong>
+
+                <span
+                    style="
+                        max-width:320px;
+                        font-size:.7rem;
+                        line-height:1.4;
+                    "
+                >
+                    Sé el primero en escribir en la comunidad.
+                </span>
+
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    mensajes.forEach(
+        mensaje => {
+
+            agregarSeparadorFecha(
+                mensaje
+            );
+
+
+            renderizarMensaje(
+                mensaje
+            );
+
+        }
+    );
+
+}
+
+
+function agregarSeparadorFecha(
+    mensaje
+) {
+
+    const fecha =
+        obtenerFechaMensaje(
+            mensaje
+        );
+
+
+    const claveFecha =
+        obtenerClaveFecha(
+            fecha
+        );
+
+
+    if (
+        claveFecha ===
+        fechaAnteriorRender
+    ) {
+
+        return;
+
+    }
+
+
+    fechaAnteriorRender =
+        claveFecha;
+
+
+    const separador =
+        document.createElement(
+            "div"
+        );
+
+
+    separador.className =
+        "separador-fecha";
+
+
+    separador.innerHTML = `
+        <span>
+            ${escaparHTML(
+                formatearEtiquetaFecha(
+                    fecha
+                )
+            )}
+        </span>
+    `;
+
+
+    listaMensajes.appendChild(
+        separador
+    );
+
+}
+
+
+function renderizarMensaje(
+    mensaje
+) {
+
+    const esPropio =
+        esMensajePropio(
+            mensaje
+        );
 
 
     const nombre =
-        usuario.nombre?.trim() ||
+        mensaje.nombre ||
         "Usuario";
 
 
-    const mensaje =
-        document.createElement("article");
+    const articulo =
+        document.createElement(
+            "article"
+        );
 
 
-    mensaje.className =
-        "mensaje mensaje-propio";
+    articulo.className =
+        esPropio
+            ? "mensaje mensaje-propio"
+            : "mensaje mensaje-otro";
 
 
-    mensaje.innerHTML = `
+    const avatar = `
+        <div class="avatar ${
+            esPropio
+                ? "propio"
+                : ""
+        }">
+            ${escaparHTML(
+                obtenerInicial(
+                    nombre
+                )
+            )}
+        </div>
+    `;
 
+
+    const contenido = `
         <div class="mensaje-contenido">
 
             <div class="mensaje-meta">
 
                 <strong>
-                    Tú
+                    ${
+                        esPropio
+                            ? "Tú"
+                            : escaparHTML(
+                                nombre
+                            )
+                    }
                 </strong>
 
                 <span>
-                    ${obtenerHoraActual()}
+                    ${escaparHTML(
+                        formatearHoraMensaje(
+                            mensaje
+                        )
+                    )}
                 </span>
 
             </div>
 
 
-            <div class="burbuja"></div>
+            <div class="burbuja">
+                ${escaparHTML(
+                    mensaje.texto ||
+                    ""
+                )}
+            </div>
 
         </div>
-
-
-        <div class="avatar propio">
-            ${obtenerInicial(nombre)}
-        </div>
-
     `;
 
 
-    const burbuja =
-        mensaje.querySelector(
-            ".burbuja"
-        );
+    if (esPropio) {
 
+        articulo.innerHTML = `
+            ${contenido}
+            ${avatar}
+        `;
 
-    burbuja.textContent =
-        texto;
+    } else {
+
+        articulo.innerHTML = `
+            ${avatar}
+            ${contenido}
+        `;
+
+    }
 
 
     listaMensajes.appendChild(
-        mensaje
+        articulo
     );
-
-
-    mensajeTexto.value =
-        "";
-
-
-    mensajeTexto.style.height =
-        "48px";
-
-
-    actualizarContador();
-    actualizarEstadoBoton();
-    irAlUltimoMensaje();
 
 }
 
 
-function obtenerHoraActual() {
+function esMensajePropio(
+    mensaje
+) {
 
-    const ahora =
-        new Date();
+    const usuarioIdActual =
+        usuarioActual?.uid ||
+        usuarioActual?.id ||
+        "";
 
 
-    return ahora.toLocaleTimeString(
+    return (
+        mensaje.usuarioId ===
+        usuarioIdActual
+    );
+
+}
+
+
+function obtenerFechaMensaje(
+    mensaje
+) {
+
+    const valor =
+        mensaje.creadoEn;
+
+
+    if (
+        valor &&
+        typeof valor.toDate ===
+            "function"
+    ) {
+
+        return valor.toDate();
+
+    }
+
+
+    if (
+        valor instanceof Date
+    ) {
+
+        return valor;
+
+    }
+
+
+    if (valor) {
+
+        const fecha =
+            new Date(
+                valor
+            );
+
+
+        if (
+            !Number.isNaN(
+                fecha.getTime()
+            )
+        ) {
+
+            return fecha;
+
+        }
+
+    }
+
+
+    return new Date();
+
+}
+
+
+function formatearHoraMensaje(
+    mensaje
+) {
+
+    const fecha =
+        obtenerFechaMensaje(
+            mensaje
+        );
+
+
+    return fecha.toLocaleTimeString(
         "es-MX",
         {
-            hour: "numeric",
-            minute: "2-digit"
+            hour:
+                "numeric",
+
+            minute:
+                "2-digit",
+
+            hour12:
+                true
         }
     );
 
 }
 
 
-function obtenerInicial(nombre) {
+function formatearEtiquetaFecha(
+    fecha
+) {
+
+    const hoy =
+        new Date();
+
+
+    const ayer =
+        new Date(
+            hoy
+        );
+
+
+    ayer.setDate(
+        hoy.getDate() - 1
+    );
+
+
+    if (
+        mismaFecha(
+            fecha,
+            hoy
+        )
+    ) {
+
+        return "Hoy";
+
+    }
+
+
+    if (
+        mismaFecha(
+            fecha,
+            ayer
+        )
+    ) {
+
+        return "Ayer";
+
+    }
+
+
+    return fecha.toLocaleDateString(
+        "es-MX",
+        {
+            day:
+                "numeric",
+
+            month:
+                "short",
+
+            year:
+                fecha.getFullYear() !==
+                hoy.getFullYear()
+                    ? "numeric"
+                    : undefined
+        }
+    );
+
+}
+
+
+function obtenerClaveFecha(
+    fecha
+) {
+
+    return [
+        fecha.getFullYear(),
+        String(
+            fecha.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        ),
+        String(
+            fecha.getDate()
+        ).padStart(
+            2,
+            "0"
+        )
+    ].join(
+        "-"
+    );
+
+}
+
+
+function mismaFecha(
+    fechaA,
+    fechaB
+) {
+
+    return (
+        fechaA.getFullYear() ===
+            fechaB.getFullYear() &&
+        fechaA.getMonth() ===
+            fechaB.getMonth() &&
+        fechaA.getDate() ===
+            fechaB.getDate()
+    );
+
+}
+
+
+function obtenerNombreUsuario(
+    usuario
+) {
+
+    return (
+        usuario.nombre?.trim() ||
+        usuario.firebaseUser
+            ?.displayName
+            ?.trim() ||
+        "Usuario"
+    );
+
+}
+
+
+function obtenerInicial(
+    nombre
+) {
 
     const texto =
-        nombre.trim();
+        String(
+            nombre || ""
+        ).trim();
 
 
     if (!texto) {
+
         return "U";
+
     }
 
 
@@ -215,20 +906,24 @@ function actualizarContador() {
         `${total}/400`;
 
 
-    if (total >= 380) {
+    if (
+        total >= 380
+    ) {
 
         contadorCaracteres.style.color =
-            "#b42318";
+            "#b84535";
 
         return;
 
     }
 
 
-    if (total >= 330) {
+    if (
+        total >= 330
+    ) {
 
         contadorCaracteres.style.color =
-            "#b54708";
+            "#85391f";
 
         return;
 
@@ -236,7 +931,7 @@ function actualizarContador() {
 
 
     contadorCaracteres.style.color =
-        "#98a2b3";
+        "#81775e";
 
 }
 
@@ -273,26 +968,55 @@ function ajustarTextarea() {
 }
 
 
-function irAlUltimoMensaje() {
+function irAlUltimoMensaje(
+    suave = true
+) {
 
     requestAnimationFrame(
         () => {
 
-            const ultimoMensaje =
-                listaMensajes.lastElementChild;
+            listaMensajes.scrollTo({
+                top:
+                    listaMensajes.scrollHeight,
 
-
-            if (!ultimoMensaje) {
-                return;
-            }
-
-
-            ultimoMensaje.scrollIntoView({
-                behavior: "smooth",
-                block: "end"
+                behavior:
+                    suave
+                        ? "smooth"
+                        : "auto"
             });
 
         }
     );
+
+}
+
+
+function escaparHTML(
+    valor
+) {
+
+    return String(
+        valor ?? ""
+    )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }

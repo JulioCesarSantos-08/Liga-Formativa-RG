@@ -1,274 +1,116 @@
 import {
-    protegerPagina
+    collection,
+    getDocs
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+import {
+    db
+} from "../firebase.js";
+
+import {
+    protegerPaginaPublica
 } from "../roles.js";
 
 
-const perfilInicial = document.getElementById("perfilInicial");
-const btnPerfil = document.getElementById("btnPerfil");
+const perfilInicial =
+    document.getElementById(
+        "perfilInicial"
+    );
 
-const buscarJugador = document.getElementById("buscarJugador");
-const categoriaSelect = document.getElementById("categoriaSelect");
-const equipoSelect = document.getElementById("equipoSelect");
-
-const tituloListado = document.getElementById("tituloListado");
-const contadorJugadores = document.getElementById("contadorJugadores");
-const listaJugadores = document.getElementById("listaJugadores");
+const btnPerfil =
+    document.getElementById(
+        "btnPerfil"
+    );
 
 
-const usuario = await protegerPagina([
-    "publico"
-]);
+const buscarJugador =
+    document.getElementById(
+        "buscarJugador"
+    );
+
+const categoriaSelect =
+    document.getElementById(
+        "categoriaSelect"
+    );
+
+const equipoSelect =
+    document.getElementById(
+        "equipoSelect"
+    );
+
+
+const tituloListado =
+    document.getElementById(
+        "tituloListado"
+    );
+
+const contadorJugadores =
+    document.getElementById(
+        "contadorJugadores"
+    );
+
+const listaJugadores =
+    document.getElementById(
+        "listaJugadores"
+    );
+
+
+const estadoCargaJugadores =
+    document.getElementById(
+        "estadoCargaJugadores"
+    );
+
+const estadoVacioJugadores =
+    document.getElementById(
+        "estadoVacioJugadores"
+    );
+
+
+let usuarioActual = null;
+
+let categorias = [];
+
+let equipos = [];
+
+let jugadores = [];
+
+
+const usuario =
+    await protegerPaginaPublica();
 
 
 if (usuario) {
 
-    cargarUsuario(usuario);
+    usuarioActual =
+        usuario;
+
+    cargarUsuario(
+        usuario
+    );
+
     activarEventos();
-    cargarCategoria();
+
+    await cargarDatos();
 
 }
 
 
-const datosJugadores = {
-
-    libre: [
-        {
-            nombre: "Juan Pérez",
-            iniciales: "JP",
-            dorsal: 10,
-            equipo: "Juárez",
-            posicion: "Delantero",
-            pj: 4,
-            goles: 5,
-            amarillas: 1,
-            rojas: 0,
-            estado: "activo"
-        },
-
-        {
-            nombre: "Carlos López",
-            iniciales: "CL",
-            dorsal: 8,
-            equipo: "Juárez",
-            posicion: "Mediocampista",
-            pj: 4,
-            goles: 2,
-            amarillas: 0,
-            rojas: 0,
-            estado: "activo"
-        },
-
-        {
-            nombre: "Miguel Díaz",
-            iniciales: "MD",
-            dorsal: 5,
-            equipo: "Juárez",
-            posicion: "Defensa",
-            pj: 4,
-            goles: 0,
-            amarillas: 1,
-            rojas: 0,
-            estado: "activo"
-        },
-
-        {
-            nombre: "Pedro Santos",
-            iniciales: "PS",
-            dorsal: 1,
-            equipo: "Juárez",
-            posicion: "Portero",
-            pj: 4,
-            goles: 0,
-            amarillas: 0,
-            rojas: 0,
-            estado: "activo"
-        },
-
-        {
-            nombre: "Andrés García",
-            iniciales: "AG",
-            dorsal: 7,
-            equipo: "Juárez",
-            posicion: "Mediocampista",
-            pj: 4,
-            goles: 1,
-            amarillas: 2,
-            rojas: 0,
-            estado: "activo"
-        },
-
-        {
-            nombre: "Roberto López",
-            iniciales: "RL",
-            dorsal: 9,
-            equipo: "Juárez",
-            posicion: "Delantero",
-            pj: 4,
-            goles: 1,
-            amarillas: 3,
-            rojas: 1,
-            estado: "suspendido"
-        },
-
-        {
-            nombre: "José Ramírez",
-            iniciales: "JR",
-            dorsal: 11,
-            equipo: "Santos FC",
-            posicion: "Delantero",
-            pj: 4,
-            goles: 4,
-            amarillas: 1,
-            rojas: 0,
-            estado: "activo"
-        },
-
-        {
-            nombre: "Mario Cruz",
-            iniciales: "MC",
-            dorsal: 6,
-            equipo: "Santos FC",
-            posicion: "Mediocampista",
-            pj: 4,
-            goles: 2,
-            amarillas: 2,
-            rojas: 0,
-            estado: "activo"
-        },
-
-        {
-            nombre: "Daniel Hernández",
-            iniciales: "DH",
-            dorsal: 4,
-            equipo: "Chacales",
-            posicion: "Defensa",
-            pj: 4,
-            goles: 0,
-            amarillas: 1,
-            rojas: 0,
-            estado: "activo"
-        },
-
-        {
-            nombre: "Luis Martínez",
-            iniciales: "LM",
-            dorsal: 9,
-            equipo: "Chacales",
-            posicion: "Delantero",
-            pj: 4,
-            goles: 3,
-            amarillas: 0,
-            rojas: 0,
-            estado: "activo"
-        }
-    ],
-
-    juvenil: [
-        {
-            nombre: "Ángel Torres",
-            iniciales: "AT",
-            dorsal: 10,
-            equipo: "Costa Azul",
-            posicion: "Delantero",
-            pj: 3,
-            goles: 5,
-            amarillas: 0,
-            rojas: 0,
-            estado: "activo"
-        },
-
-        {
-            nombre: "Mateo García",
-            iniciales: "MG",
-            dorsal: 8,
-            equipo: "Costa Azul",
-            posicion: "Mediocampista",
-            pj: 3,
-            goles: 2,
-            amarillas: 1,
-            rojas: 0,
-            estado: "activo"
-        },
-
-        {
-            nombre: "Emiliano López",
-            iniciales: "EL",
-            dorsal: 9,
-            equipo: "La Soledad",
-            posicion: "Delantero",
-            pj: 3,
-            goles: 3,
-            amarillas: 0,
-            rojas: 0,
-            estado: "activo"
-        },
-
-        {
-            nombre: "Santiago Díaz",
-            iniciales: "SD",
-            dorsal: 5,
-            equipo: "Juárez Juvenil",
-            posicion: "Defensa",
-            pj: 3,
-            goles: 0,
-            amarillas: 2,
-            rojas: 0,
-            estado: "activo"
-        }
-    ],
-
-    infantil: [
-        {
-            nombre: "Diego Santos",
-            iniciales: "DS",
-            dorsal: 10,
-            equipo: "Chacales Infantil",
-            posicion: "Delantero",
-            pj: 2,
-            goles: 4,
-            amarillas: 0,
-            rojas: 0,
-            estado: "activo"
-        },
-
-        {
-            nombre: "Gael López",
-            iniciales: "GL",
-            dorsal: 7,
-            equipo: "Santos Infantil",
-            posicion: "Mediocampista",
-            pj: 2,
-            goles: 2,
-            amarillas: 0,
-            rojas: 0,
-            estado: "activo"
-        },
-
-        {
-            nombre: "Ian Pérez",
-            iniciales: "IP",
-            dorsal: 1,
-            equipo: "Costa Azul Infantil",
-            posicion: "Portero",
-            pj: 2,
-            goles: 0,
-            amarillas: 0,
-            rojas: 0,
-            estado: "activo"
-        }
-    ]
-
-};
-
-
-function cargarUsuario(usuario) {
+function cargarUsuario(
+    usuario
+) {
 
     const nombre =
         usuario.nombre?.trim() ||
+        usuario.firebaseUser
+            ?.displayName
+            ?.trim() ||
         "Usuario";
 
+
     perfilInicial.textContent =
-        nombre.charAt(0).toUpperCase();
+        nombre
+            .charAt(0)
+            .toUpperCase();
 
 }
 
@@ -279,7 +121,11 @@ function activarEventos() {
         "change",
         () => {
 
-            cargarCategoria();
+            cargarEquiposSelector();
+
+            aplicarFiltros();
+
+            actualizarURL();
 
         }
     );
@@ -287,7 +133,13 @@ function activarEventos() {
 
     equipoSelect.addEventListener(
         "change",
-        aplicarFiltros
+        () => {
+
+            aplicarFiltros();
+
+            actualizarURL();
+
+        }
     );
 
 
@@ -310,84 +162,373 @@ function activarEventos() {
 }
 
 
-function cargarCategoria() {
+async function cargarDatos() {
 
-    const categoria =
-        categoriaSelect.value;
-
-    const textoCategoria =
-        categoriaSelect.options[
-            categoriaSelect.selectedIndex
-        ].textContent.trim();
-
-    tituloListado.textContent =
-        textoCategoria;
+    mostrarCarga();
 
 
-    cargarEquiposSelector(
-        datosJugadores[categoria] || []
-    );
+    try {
+
+        const [
+            snapshotCategorias,
+            snapshotEquipos,
+            snapshotJugadores
+        ] = await Promise.all([
+
+            getDocs(
+                collection(
+                    db,
+                    "categorias"
+                )
+            ),
+
+            getDocs(
+                collection(
+                    db,
+                    "equipos"
+                )
+            ),
+
+            getDocs(
+                collection(
+                    db,
+                    "jugadores"
+                )
+            )
+
+        ]);
 
 
-    aplicarFiltros();
+        categorias =
+            snapshotCategorias.docs.map(
+                documento => ({
+                    id:
+                        documento.id,
+
+                    ...documento.data()
+                })
+            );
+
+
+        equipos =
+            snapshotEquipos.docs.map(
+                documento => ({
+                    id:
+                        documento.id,
+
+                    ...documento.data()
+                })
+            );
+
+
+        jugadores =
+            snapshotJugadores.docs.map(
+                documento => ({
+                    id:
+                        documento.id,
+
+                    ...documento.data()
+                })
+            );
+
+
+        ordenarDatos();
+
+        llenarCategorias();
+
+        cargarValoresURL();
+
+        cargarEquiposSelector(
+            true
+        );
+
+        aplicarFiltros();
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando jugadores:",
+            error
+        );
+
+
+        mostrarVacio(
+            "No pudimos cargar los jugadores."
+        );
+
+    }
 
 }
 
 
-function cargarEquiposSelector(jugadores) {
+function ordenarDatos() {
+
+    categorias.sort(
+        (a, b) =>
+            String(
+                a.nombre || ""
+            ).localeCompare(
+                String(
+                    b.nombre || ""
+                ),
+                "es"
+            )
+    );
+
+
+    equipos.sort(
+        (a, b) =>
+            String(
+                a.nombre || ""
+            ).localeCompare(
+                String(
+                    b.nombre || ""
+                ),
+                "es"
+            )
+    );
+
+
+    jugadores.sort(
+        (a, b) =>
+            obtenerNombreJugador(
+                a
+            ).localeCompare(
+                obtenerNombreJugador(
+                    b
+                ),
+                "es"
+            )
+    );
+
+}
+
+
+function llenarCategorias() {
+
+    categoriaSelect.innerHTML =
+        "";
+
+
+    const categoriasDisponibles =
+        categorias.filter(
+            categoria =>
+                jugadores.some(
+                    jugador =>
+                        jugador.categoriaId ===
+                        categoria.id
+                )
+        );
+
+
+    const lista =
+        categoriasDisponibles.length
+            ? categoriasDisponibles
+            : categorias;
+
+
+    if (!lista.length) {
+
+        const option =
+            document.createElement(
+                "option"
+            );
+
+
+        option.value =
+            "";
+
+        option.textContent =
+            "Sin categorías";
+
+
+        categoriaSelect.appendChild(
+            option
+        );
+
+
+        categoriaSelect.disabled =
+            true;
+
+        return;
+
+    }
+
+
+    categoriaSelect.disabled =
+        false;
+
+
+    lista.forEach(
+        categoria => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                categoria.id;
+
+            option.textContent =
+                categoria.nombre ||
+                "Sin nombre";
+
+
+            categoriaSelect.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+function cargarValoresURL() {
+
+    const parametros =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const categoriaId =
+        parametros.get(
+            "categoria"
+        );
+
+
+    const equipoId =
+        parametros.get(
+            "equipo"
+        );
+
+
+    if (
+        categoriaId &&
+        existeOpcion(
+            categoriaSelect,
+            categoriaId
+        )
+    ) {
+
+        categoriaSelect.value =
+            categoriaId;
+
+    }
+
+
+    equipoSelect.dataset.equipoUrl =
+        equipoId || "";
+
+}
+
+
+function cargarEquiposSelector(
+    usarURL = false
+) {
+
+    const categoriaId =
+        categoriaSelect.value;
+
+
+    const equipoSeleccionadoAnterior =
+        equipoSelect.value;
+
+
+    const equipoURL =
+        usarURL
+            ? equipoSelect.dataset.equipoUrl
+            : "";
+
 
     equipoSelect.innerHTML = `
-        <option value="todos">
+        <option value="">
             Todos los equipos
         </option>
     `;
 
 
-    const equipos =
-        [
-            ...new Set(
-                jugadores.map(
-                    jugador =>
-                        jugador.equipo
-                )
-            )
-        ]
-        .sort(
-            (a, b) =>
-                a.localeCompare(
-                    b,
-                    "es"
-                )
+    const equiposCategoria =
+        equipos.filter(
+            equipo =>
+                !categoriaId ||
+                equipo.categoriaId ===
+                    categoriaId
         );
 
 
-    equipos.forEach((equipo) => {
+    equiposCategoria.forEach(
+        equipo => {
 
-        const option =
-            document.createElement("option");
+            const option =
+                document.createElement(
+                    "option"
+                );
 
-        option.value =
-            equipo;
 
-        option.textContent =
-            equipo;
+            option.value =
+                equipo.id;
 
-        equipoSelect.appendChild(
-            option
-        );
+            option.textContent =
+                equipo.nombre ||
+                "Equipo";
 
-    });
+
+            equipoSelect.appendChild(
+                option
+            );
+
+        }
+    );
+
+
+    if (
+        equipoURL &&
+        existeOpcion(
+            equipoSelect,
+            equipoURL
+        )
+    ) {
+
+        equipoSelect.value =
+            equipoURL;
+
+        equipoSelect.dataset.equipoUrl =
+            "";
+
+        return;
+
+    }
+
+
+    if (
+        equipoSeleccionadoAnterior &&
+        existeOpcion(
+            equipoSelect,
+            equipoSeleccionadoAnterior
+        )
+    ) {
+
+        equipoSelect.value =
+            equipoSeleccionadoAnterior;
+
+    }
 
 }
 
 
 function aplicarFiltros() {
 
-    const categoria =
+    const categoriaId =
         categoriaSelect.value;
 
-    const equipo =
+
+    const equipoId =
         equipoSelect.value;
+
 
     const busqueda =
         normalizarTexto(
@@ -395,41 +536,75 @@ function aplicarFiltros() {
         );
 
 
-    const jugadoresBase =
-        datosJugadores[categoria] || [];
-
-
     const jugadoresFiltrados =
-        jugadoresBase.filter(
-            (jugador) => {
+        jugadores.filter(
+            jugador => {
+
+                const coincideCategoria =
+                    !categoriaId ||
+                    jugador.categoriaId ===
+                        categoriaId;
+
 
                 const coincideEquipo =
-                    equipo === "todos" ||
-                    jugador.equipo === equipo;
+                    !equipoId ||
+                    jugador.equipoId ===
+                        equipoId;
 
 
-                const coincideNombre =
+                const nombre =
                     normalizarTexto(
-                        jugador.nombre
-                    ).includes(
+                        obtenerNombreJugador(
+                            jugador
+                        )
+                    );
+
+
+                const equipo =
+                    normalizarTexto(
+                        obtenerNombreEquipoJugador(
+                            jugador
+                        )
+                    );
+
+
+                const dorsal =
+                    String(
+                        jugador.numero ??
+                        jugador.dorsal ??
+                        ""
+                    );
+
+
+                const coincideBusqueda =
+                    !busqueda ||
+                    nombre.includes(
+                        busqueda
+                    ) ||
+                    equipo.includes(
+                        busqueda
+                    ) ||
+                    dorsal.includes(
                         busqueda
                     );
 
 
                 return (
+                    coincideCategoria &&
                     coincideEquipo &&
-                    coincideNombre
+                    coincideBusqueda
                 );
 
             }
         );
 
 
-    actualizarTitulo(
-        categoria,
-        equipo
+    jugadoresFiltrados.sort(
+        ordenarJugadores
     );
 
+
+    actualizarTitulo();
 
     actualizarContador(
         jugadoresFiltrados.length
@@ -443,21 +618,141 @@ function aplicarFiltros() {
 }
 
 
-function actualizarTitulo(
-    categoria,
-    equipo
+function ordenarJugadores(
+    a,
+    b
 ) {
 
-    const textoCategoria =
-        categoriaSelect.options[
-            categoriaSelect.selectedIndex
-        ].textContent.trim();
+    const suspendidoA =
+        estaSuspendido(
+            a
+        );
+
+    const suspendidoB =
+        estaSuspendido(
+            b
+        );
 
 
-    if (equipo === "todos") {
+    if (
+        suspendidoA !==
+        suspendidoB
+    ) {
+
+        return suspendidoA
+            ? 1
+            : -1;
+
+    }
+
+
+    const equipoA =
+        obtenerNombreEquipoJugador(
+            a
+        );
+
+
+    const equipoB =
+        obtenerNombreEquipoJugador(
+            b
+        );
+
+
+    const comparacionEquipo =
+        equipoA.localeCompare(
+            equipoB,
+            "es"
+        );
+
+
+    if (
+        comparacionEquipo !== 0
+    ) {
+
+        return comparacionEquipo;
+
+    }
+
+
+    const numeroA =
+        obtenerNumeroOrden(
+            a
+        );
+
+
+    const numeroB =
+        obtenerNumeroOrden(
+            b
+        );
+
+
+    if (
+        numeroA !==
+        numeroB
+    ) {
+
+        return (
+            numeroA -
+            numeroB
+        );
+
+    }
+
+
+    return obtenerNombreJugador(
+        a
+    ).localeCompare(
+        obtenerNombreJugador(
+            b
+        ),
+        "es"
+    );
+
+}
+
+
+function actualizarTitulo() {
+
+    const categoriaId =
+        categoriaSelect.value;
+
+
+    const equipoId =
+        equipoSelect.value;
+
+
+    if (equipoId) {
+
+        const equipo =
+            equipos.find(
+                item =>
+                    item.id ===
+                    equipoId
+            );
+
 
         tituloListado.textContent =
-            textoCategoria;
+            equipo?.nombre ||
+            "Equipo";
+
+        return;
+
+    }
+
+
+    if (categoriaId) {
+
+        const categoria =
+            categorias.find(
+                item =>
+                    item.id ===
+                    categoriaId
+            );
+
+
+        tituloListado.textContent =
+            categoria?.nombre ||
+            "Jugadores";
 
         return;
 
@@ -465,12 +760,14 @@ function actualizarTitulo(
 
 
     tituloListado.textContent =
-        equipo;
+        "Jugadores";
 
 }
 
 
-function actualizarContador(total) {
+function actualizarContador(
+    total
+) {
 
     contadorJugadores.textContent =
         `${total} ${
@@ -482,207 +779,693 @@ function actualizarContador(total) {
 }
 
 
-function renderizarJugadores(jugadores) {
+function renderizarJugadores(
+    lista
+) {
 
-    listaJugadores.innerHTML = "";
+    listaJugadores.innerHTML =
+        "";
 
 
-    if (!jugadores.length) {
+    estadoCargaJugadores.hidden =
+        true;
 
-        listaJugadores.innerHTML = `
-            <div
-                style="
-                    padding:26px 18px;
-                    text-align:center;
-                    background:#ffffff;
-                    border:1px solid #e4e7ec;
-                    border-radius:18px;
-                    color:#667085;
-                    line-height:1.5;
-                "
-            >
-                No encontramos jugadores con los filtros seleccionados.
-            </div>
-        `;
+
+    if (!lista.length) {
+
+        listaJugadores.hidden =
+            true;
+
+        estadoVacioJugadores.hidden =
+            false;
 
         return;
 
     }
 
 
-    jugadores.forEach((jugador) => {
+    estadoVacioJugadores.hidden =
+        true;
 
-        const tarjeta =
-            document.createElement("article");
-
-
-        tarjeta.className =
-            jugador.estado === "suspendido"
-                ? "jugador-card jugador-suspendido"
-                : "jugador-card";
+    listaJugadores.hidden =
+        false;
 
 
-        const suspensionBadge =
-            jugador.estado === "suspendido"
-                ? `
-                    <div class="suspension-badge">
-                        Suspendido
+    lista.forEach(
+        jugador => {
+
+            const tarjeta =
+                document.createElement(
+                    "article"
+                );
+
+
+            const suspendido =
+                estaSuspendido(
+                    jugador
+                );
+
+
+            tarjeta.className =
+                suspendido
+                    ? "jugador-card jugador-suspendido"
+                    : "jugador-card";
+
+
+            const nombre =
+                obtenerNombreJugador(
+                    jugador
+                );
+
+
+            const equipoNombre =
+                obtenerNombreEquipoJugador(
+                    jugador
+                );
+
+
+            const numero =
+                jugador.numero ??
+                jugador.dorsal ??
+                "-";
+
+
+            const suspensionBadge =
+                suspendido
+                    ? `
+                        <div class="suspension-badge">
+                            Suspendido
+                        </div>
+                    `
+                    : "";
+
+
+            const avisoSuspension =
+                suspendido
+                    ? `
+                        <div class="aviso-suspension">
+
+                            <span>
+                                ⛔
+                            </span>
+
+                            <p>
+                                No disponible para el próximo partido.
+                            </p>
+
+                        </div>
+                    `
+                    : "";
+
+
+            tarjeta.innerHTML = `
+
+                ${suspensionBadge}
+
+
+                <a
+                    href="jugador.html?id=${encodeURIComponent(
+                        jugador.id
+                    )}"
+                    class="jugador-contenido"
+                >
+
+                    <div class="foto-jugador">
+
+                        ${obtenerFotoHTML(
+                            jugador,
+                            nombre
+                        )}
+
+                        <div class="numero-jugador">
+                            ${escaparHTML(
+                                numero
+                            )}
+                        </div>
+
                     </div>
-                `
-                : "";
 
 
-        const avisoSuspension =
-            jugador.estado === "suspendido"
-                ? `
-                    <div class="aviso-suspension">
+                    <div class="jugador-info">
 
-                        <span>
-                            ⛔
+                        <span class="equipo-jugador">
+                            ${escaparHTML(
+                                equipoNombre
+                            )}
                         </span>
 
-                        <p>
-                            No disponible para el próximo partido.
-                        </p>
+
+                        <h3>
+                            ${escaparHTML(
+                                nombre
+                            )}
+                        </h3>
+
+
+                        <span class="posicion-jugador">
+                            ${obtenerTextoJugador(
+                                jugador
+                            )}
+                        </span>
 
                     </div>
-                `
-                : "";
+
+                </a>
 
 
-        tarjeta.innerHTML = `
+                <div class="estadisticas-jugador">
 
-            ${suspensionBadge}
+                    <div>
+
+                        <span>
+                            PJ
+                        </span>
+
+                        <strong>
+                            ${obtenerPartidosJugador(
+                                jugador
+                            )}
+                        </strong>
+
+                    </div>
 
 
-            <a
-                href="jugador.html"
-                class="jugador-contenido"
-            >
+                    <div>
 
-                <div class="foto-jugador">
+                        <span>
+                            Goles
+                        </span>
 
-                    <span>
-                        ${jugador.iniciales}
-                    </span>
+                        <strong>
+                            ${numeroSeguro(
+                                jugador.goles
+                            )}
+                        </strong>
 
-                    <div class="numero-jugador">
-                        ${jugador.dorsal}
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            🟨
+                        </span>
+
+                        <strong>
+                            ${numeroSeguro(
+                                jugador.amarillas
+                            )}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            🟥
+                        </span>
+
+                        <strong class="${
+                            numeroSeguro(
+                                jugador.rojas
+                            ) > 0
+                                ? "roja"
+                                : ""
+                        }">
+                            ${numeroSeguro(
+                                jugador.rojas
+                            )}
+                        </strong>
+
                     </div>
 
                 </div>
 
 
-                <div class="jugador-info">
-
-                    <span class="equipo-jugador">
-                        ${jugador.equipo}
-                    </span>
-
-                    <h3>
-                        ${jugador.nombre}
-                    </h3>
-
-                    <span class="posicion-jugador">
-                        ${jugador.posicion}
-                    </span>
-
-                </div>
-
-            </a>
+                ${avisoSuspension}
 
 
-            <div class="estadisticas-jugador">
+                <a
+                    href="jugador.html?id=${encodeURIComponent(
+                        jugador.id
+                    )}"
+                    class="btn-ver-jugador"
+                >
+                    Ver perfil
+                </a>
 
-                <div>
-
-                    <span>
-                        PJ
-                    </span>
-
-                    <strong>
-                        ${jugador.pj}
-                    </strong>
-
-                </div>
+            `;
 
 
-                <div>
+            listaJugadores.appendChild(
+                tarjeta
+            );
 
-                    <span>
-                        Goles
-                    </span>
-
-                    <strong>
-                        ${jugador.goles}
-                    </strong>
-
-                </div>
-
-
-                <div>
-
-                    <span>
-                        🟨
-                    </span>
-
-                    <strong>
-                        ${jugador.amarillas}
-                    </strong>
-
-                </div>
-
-
-                <div>
-
-                    <span>
-                        🟥
-                    </span>
-
-                    <strong class="${
-                        jugador.rojas > 0
-                            ? "roja"
-                            : ""
-                    }">
-                        ${jugador.rojas}
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            ${avisoSuspension}
-
-
-            <a
-                href="jugador.html"
-                class="btn-ver-jugador"
-            >
-                Ver perfil
-            </a>
-
-        `;
-
-
-        listaJugadores.appendChild(
-            tarjeta
-        );
-
-    });
+        }
+    );
 
 }
 
 
-function normalizarTexto(texto) {
+function obtenerFotoHTML(
+    jugador,
+    nombre
+) {
 
-    return texto
+    const foto =
+        jugador.fotoUrl ||
+        "";
+
+
+    if (foto) {
+
+        return `
+            <img
+                src="${escaparAtributo(
+                    foto
+                )}"
+                alt="${escaparAtributo(
+                    nombre
+                )}"
+                loading="lazy"
+            >
+        `;
+
+    }
+
+
+    return `
+        <span>
+            ${escaparHTML(
+                obtenerIniciales(
+                    nombre
+                )
+            )}
+        </span>
+    `;
+
+}
+
+
+function obtenerTextoJugador(
+    jugador
+) {
+
+    if (
+        jugador.posicion
+    ) {
+
+        return escaparHTML(
+            jugador.posicion
+        );
+
+    }
+
+
+    if (
+        jugador.activo ===
+        false
+    ) {
+
+        return "Inactivo";
+
+    }
+
+
+    return "Jugador";
+
+}
+
+
+function obtenerNombreJugador(
+    jugador
+) {
+
+    return (
+        jugador.nombreCompleto ||
+        jugador.nombre ||
+        "Jugador"
+    );
+
+}
+
+
+function obtenerNombreEquipoJugador(
+    jugador
+) {
+
+    if (
+        jugador.equipoNombre
+    ) {
+
+        return jugador.equipoNombre;
+
+    }
+
+
+    const equipo =
+        equipos.find(
+            item =>
+                item.id ===
+                jugador.equipoId
+        );
+
+
+    return (
+        equipo?.nombre ||
+        "Sin equipo"
+    );
+
+}
+
+
+function obtenerPartidosJugador(
+    jugador
+) {
+
+    const posiblesCampos = [
+        jugador.pj,
+        jugador.partidos,
+        jugador.partidosJugados
+    ];
+
+
+    for (
+        const valor of posiblesCampos
+    ) {
+
+        const numero =
+            Number(
+                valor
+            );
+
+
+        if (
+            Number.isFinite(
+                numero
+            )
+        ) {
+
+            return numero;
+
+        }
+
+    }
+
+
+    return 0;
+
+}
+
+
+function estaSuspendido(
+    jugador
+) {
+
+    return (
+        jugador.suspendido ===
+            true ||
+        numeroSeguro(
+            jugador.partidosSuspensionPendientes
+        ) > 0
+    );
+
+}
+
+
+function obtenerNumeroOrden(
+    jugador
+) {
+
+    const numero =
+        Number(
+            jugador.numero ??
+            jugador.dorsal
+        );
+
+
+    if (
+        !Number.isFinite(
+            numero
+        )
+    ) {
+
+        return 999;
+
+    }
+
+
+    return numero;
+
+}
+
+
+function obtenerIniciales(
+    nombre
+) {
+
+    const palabras =
+        String(
+            nombre || ""
+        )
+            .trim()
+            .split(/\s+/)
+            .filter(Boolean);
+
+
+    if (!palabras.length) {
+
+        return "J";
+
+    }
+
+
+    if (
+        palabras.length === 1
+    ) {
+
+        return palabras[0]
+            .charAt(0)
+            .toUpperCase();
+
+    }
+
+
+    return (
+        palabras[0]
+            .charAt(0) +
+        palabras[1]
+            .charAt(0)
+    ).toUpperCase();
+
+}
+
+
+function actualizarURL() {
+
+    const url =
+        new URL(
+            window.location.href
+        );
+
+
+    const categoriaId =
+        categoriaSelect.value;
+
+
+    const equipoId =
+        equipoSelect.value;
+
+
+    if (categoriaId) {
+
+        url.searchParams.set(
+            "categoria",
+            categoriaId
+        );
+
+    } else {
+
+        url.searchParams.delete(
+            "categoria"
+        );
+
+    }
+
+
+    if (equipoId) {
+
+        url.searchParams.set(
+            "equipo",
+            equipoId
+        );
+
+    } else {
+
+        url.searchParams.delete(
+            "equipo"
+        );
+
+    }
+
+
+    window.history.replaceState(
+        {},
+        "",
+        url
+    );
+
+}
+
+
+function existeOpcion(
+    select,
+    valor
+) {
+
+    return Array.from(
+        select.options
+    ).some(
+        option =>
+            option.value ===
+            valor
+    );
+
+}
+
+
+function mostrarCarga() {
+
+    estadoCargaJugadores.hidden =
+        false;
+
+    estadoVacioJugadores.hidden =
+        true;
+
+    listaJugadores.hidden =
+        true;
+
+}
+
+
+function mostrarVacio(
+    mensaje = ""
+) {
+
+    estadoCargaJugadores.hidden =
+        true;
+
+    listaJugadores.hidden =
+        true;
+
+    estadoVacioJugadores.hidden =
+        false;
+
+
+    if (mensaje) {
+
+        const parrafo =
+            estadoVacioJugadores.querySelector(
+                "p"
+            );
+
+
+        if (parrafo) {
+
+            parrafo.textContent =
+                mensaje;
+
+        }
+
+    }
+
+}
+
+
+function normalizarTexto(
+    texto
+) {
+
+    return String(
+        texto || ""
+    )
         .toLowerCase()
-        .normalize("NFD")
+        .normalize(
+            "NFD"
+        )
         .replace(
             /[\u0300-\u036f]/g,
             ""
         )
         .trim();
+
+}
+
+
+function numeroSeguro(
+    valor
+) {
+
+    const numero =
+        Number(
+            valor
+        );
+
+
+    if (
+        !Number.isFinite(
+            numero
+        )
+    ) {
+
+        return 0;
+
+    }
+
+
+    return numero;
+
+}
+
+
+function escaparHTML(
+    valor
+) {
+
+    return String(
+        valor ?? ""
+    )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+function escaparAtributo(
+    valor
+) {
+
+    return escaparHTML(
+        valor
+    );
 
 }

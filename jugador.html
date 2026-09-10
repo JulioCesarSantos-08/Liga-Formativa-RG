@@ -1,15 +1,34 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Jugador | Liga Deportiva Río Grande</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="icon" href="imagenes/favicon.png">
+    <title>
+        Jugador | Liga Deportiva Río Grande
+    </title>
 
-    <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/jugador.css">
+    <link
+        rel="icon"
+        href="imagenes/logo.png"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/global.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/jugador.css"
+    >
+
 </head>
 
 <body>
@@ -28,15 +47,24 @@
                     ←
                 </a>
 
+
                 <img
                     src="imagenes/logo.png"
                     alt="Liga Deportiva Río Grande"
                     class="topbar-logo"
                 >
 
+
                 <div class="topbar-texto">
-                    <span>Liga Municipal</span>
-                    <strong>Perfil del jugador</strong>
+
+                    <span>
+                        Liga Municipal
+                    </span>
+
+                    <strong id="topbarNombreJugador">
+                        Perfil del jugador
+                    </strong>
+
                 </div>
 
             </div>
@@ -48,38 +76,63 @@
                 class="btn-perfil"
                 aria-label="Abrir perfil"
             >
+
                 <span id="perfilInicial">
                     U
                 </span>
+
             </button>
 
         </header>
 
 
-        <main class="contenido-jugador">
+        <main
+            id="contenidoJugador"
+            class="contenido-jugador"
+            hidden
+        >
 
             <section class="tarjeta-jugador">
 
                 <div class="tarjeta-fondo"></div>
 
+
                 <div class="tarjeta-superior">
 
-                    <div class="club-mini">
+                    <a
+                        id="enlaceEquipo"
+                        href="equipos.html"
+                        class="club-mini"
+                    >
 
-                        <div class="club-escudo">
-                            J
+                        <div
+                            id="clubEscudo"
+                            class="club-escudo"
+                        >
+                            E
                         </div>
+
 
                         <div>
-                            <span>Club</span>
-                            <strong>Juárez</strong>
+
+                            <span>
+                                Club
+                            </span>
+
+                            <strong id="clubNombre">
+                                Equipo
+                            </strong>
+
                         </div>
 
-                    </div>
+                    </a>
 
 
-                    <div class="dorsal-grande">
-                        10
+                    <div
+                        id="dorsalGrande"
+                        class="dorsal-grande"
+                    >
+                        #-
                     </div>
 
                 </div>
@@ -89,11 +142,18 @@
 
                     <div class="foto-principal">
 
-                        <div class="foto-placeholder">
-                            JP
+                        <div
+                            id="fotoJugador"
+                            class="foto-placeholder"
+                        >
+                            J
                         </div>
 
-                        <span class="estado-jugador activo">
+
+                        <span
+                            id="estadoJugador"
+                            class="estado-jugador activo"
+                        >
                             Activo
                         </span>
 
@@ -102,16 +162,24 @@
 
                     <div class="jugador-datos">
 
-                        <span class="categoria-jugador">
-                            Categoría Libre
+                        <span
+                            id="categoriaJugador"
+                            class="categoria-jugador"
+                        >
+                            Sin categoría
                         </span>
 
-                        <h1>
-                            Juan Pérez
+
+                        <h1 id="nombreJugador">
+                            Jugador
                         </h1>
 
-                        <span class="posicion">
-                            Delantero
+
+                        <span
+                            id="posicionJugador"
+                            class="posicion"
+                        >
+                            Jugador
                         </span>
 
                     </div>
@@ -122,23 +190,54 @@
                 <div class="tarjeta-stats">
 
                     <div>
-                        <strong>4</strong>
-                        <span>Partidos</span>
+
+                        <strong id="resumenPartidos">
+                            0
+                        </strong>
+
+                        <span>
+                            Partidos
+                        </span>
+
                     </div>
 
-                    <div>
-                        <strong>5</strong>
-                        <span>Goles</span>
-                    </div>
 
                     <div>
-                        <strong>1</strong>
-                        <span>Amarilla</span>
+
+                        <strong id="resumenGoles">
+                            0
+                        </strong>
+
+                        <span>
+                            Goles
+                        </span>
+
                     </div>
 
+
                     <div>
-                        <strong>0</strong>
-                        <span>Rojas</span>
+
+                        <strong id="resumenAmarillas">
+                            0
+                        </strong>
+
+                        <span>
+                            Amarillas
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong id="resumenRojas">
+                            0
+                        </strong>
+
+                        <span>
+                            Rojas
+                        </span>
+
                     </div>
 
                 </div>
@@ -151,6 +250,7 @@
                 <div class="seccion-cabecera">
 
                     <div>
+
                         <span class="seccion-mini">
                             Temporada actual
                         </span>
@@ -158,6 +258,7 @@
                         <h2>
                             Rendimiento
                         </h2>
+
                     </div>
 
                 </div>
@@ -171,18 +272,21 @@
                             ⚽
                         </div>
 
+
                         <div>
+
                             <span>
                                 Goles
                             </span>
 
-                            <strong>
-                                5
+                            <strong id="rendimientoGoles">
+                                0
                             </strong>
 
-                            <small>
-                                En 4 partidos
+                            <small id="textoGolesPartidos">
+                                En 0 partidos
                             </small>
+
                         </div>
 
                     </article>
@@ -194,18 +298,21 @@
                             📊
                         </div>
 
+
                         <div>
+
                             <span>
                                 Promedio
                             </span>
 
-                            <strong>
-                                1.25
+                            <strong id="promedioGoles">
+                                0.00
                             </strong>
 
                             <small>
                                 Goles por partido
                             </small>
+
                         </div>
 
                     </article>
@@ -217,18 +324,21 @@
                             👕
                         </div>
 
+
                         <div>
+
                             <span>
                                 Partidos
                             </span>
 
-                            <strong>
-                                4
+                            <strong id="rendimientoPartidos">
+                                0
                             </strong>
 
                             <small>
                                 Jugados
                             </small>
+
                         </div>
 
                     </article>
@@ -240,18 +350,21 @@
                             🔢
                         </div>
 
+
                         <div>
+
                             <span>
                                 Dorsal
                             </span>
 
-                            <strong>
-                                #10
+                            <strong id="rendimientoDorsal">
+                                #-
                             </strong>
 
                             <small>
                                 Número registrado
                             </small>
+
                         </div>
 
                     </article>
@@ -266,6 +379,7 @@
                 <div class="seccion-cabecera">
 
                     <div>
+
                         <span class="seccion-mini">
                             Control disciplinario
                         </span>
@@ -273,6 +387,7 @@
                         <h2>
                             Tarjetas y sanciones
                         </h2>
+
                     </div>
 
                 </div>
@@ -284,14 +399,15 @@
 
                         <div class="tarjeta-color amarilla"></div>
 
+
                         <div class="disciplina-info">
 
                             <span>
                                 Tarjetas amarillas
                             </span>
 
-                            <strong>
-                                1
+                            <strong id="disciplinaAmarillas">
+                                0
                             </strong>
 
                             <small>
@@ -307,13 +423,14 @@
 
                         <div class="tarjeta-color roja"></div>
 
+
                         <div class="disciplina-info">
 
                             <span>
                                 Tarjetas rojas
                             </span>
 
-                            <strong>
+                            <strong id="disciplinaRojas">
                                 0
                             </strong>
 
@@ -328,19 +445,26 @@
                 </div>
 
 
-                <div class="estado-disciplina correcto">
+                <div
+                    id="estadoDisciplina"
+                    class="estado-disciplina correcto"
+                >
 
-                    <div class="estado-icono">
+                    <div
+                        id="estadoDisciplinaIcono"
+                        class="estado-icono"
+                    >
                         ✓
                     </div>
 
+
                     <div>
 
-                        <strong>
+                        <strong id="estadoDisciplinaTitulo">
                             Disponible para jugar
                         </strong>
 
-                        <p>
+                        <p id="estadoDisciplinaTexto">
                             Actualmente este jugador no tiene
                             ninguna suspensión activa.
                         </p>
@@ -357,6 +481,7 @@
                 <div class="seccion-cabecera">
 
                     <div>
+
                         <span class="seccion-mini">
                             Información pública
                         </span>
@@ -364,6 +489,7 @@
                         <h2>
                             Datos del jugador
                         </h2>
+
                     </div>
 
                 </div>
@@ -377,8 +503,8 @@
                             Equipo
                         </span>
 
-                        <strong>
-                            Juárez
+                        <strong id="datoEquipo">
+                            -
                         </strong>
 
                     </div>
@@ -390,8 +516,8 @@
                             Categoría
                         </span>
 
-                        <strong>
-                            Libre
+                        <strong id="datoCategoria">
+                            -
                         </strong>
 
                     </div>
@@ -403,8 +529,8 @@
                             Posición
                         </span>
 
-                        <strong>
-                            Delantero
+                        <strong id="datoPosicion">
+                            -
                         </strong>
 
                     </div>
@@ -416,8 +542,8 @@
                             Número
                         </span>
 
-                        <strong>
-                            #10
+                        <strong id="datoNumero">
+                            #-
                         </strong>
 
                     </div>
@@ -432,6 +558,7 @@
                 <div class="seccion-cabecera">
 
                     <div>
+
                         <span class="seccion-mini">
                             Últimas jornadas
                         </span>
@@ -439,172 +566,16 @@
                         <h2>
                             Historial
                         </h2>
+
                     </div>
 
                 </div>
 
 
-                <div class="historial-lista">
-
-                    <article class="historial-card">
-
-                        <div class="historial-jornada">
-
-                            <strong>
-                                J4
-                            </strong>
-
-                            <span>
-                                vs Pumas
-                            </span>
-
-                        </div>
-
-
-                        <div class="historial-resultado">
-
-                            <span class="victoria">
-                                3 - 1
-                            </span>
-
-                            <small>
-                                Victoria
-                            </small>
-
-                        </div>
-
-
-                        <div class="historial-eventos">
-
-                            <span>
-                                ⚽ 2
-                            </span>
-
-                            <span>
-                                🟨 1
-                            </span>
-
-                        </div>
-
-                    </article>
-
-
-                    <article class="historial-card">
-
-                        <div class="historial-jornada">
-
-                            <strong>
-                                J3
-                            </strong>
-
-                            <span>
-                                vs Atlas
-                            </span>
-
-                        </div>
-
-
-                        <div class="historial-resultado">
-
-                            <span class="empate">
-                                1 - 1
-                            </span>
-
-                            <small>
-                                Empate
-                            </small>
-
-                        </div>
-
-
-                        <div class="historial-eventos">
-
-                            <span>
-                                ⚽ 1
-                            </span>
-
-                        </div>
-
-                    </article>
-
-
-                    <article class="historial-card">
-
-                        <div class="historial-jornada">
-
-                            <strong>
-                                J2
-                            </strong>
-
-                            <span>
-                                vs Chacales
-                            </span>
-
-                        </div>
-
-
-                        <div class="historial-resultado">
-
-                            <span class="victoria">
-                                2 - 0
-                            </span>
-
-                            <small>
-                                Victoria
-                            </small>
-
-                        </div>
-
-
-                        <div class="historial-eventos">
-
-                            <span>
-                                ⚽ 1
-                            </span>
-
-                        </div>
-
-                    </article>
-
-
-                    <article class="historial-card">
-
-                        <div class="historial-jornada">
-
-                            <strong>
-                                J1
-                            </strong>
-
-                            <span>
-                                vs Santos FC
-                            </span>
-
-                        </div>
-
-
-                        <div class="historial-resultado">
-
-                            <span class="victoria">
-                                3 - 1
-                            </span>
-
-                            <small>
-                                Victoria
-                            </small>
-
-                        </div>
-
-
-                        <div class="historial-eventos">
-
-                            <span>
-                                ⚽ 1
-                            </span>
-
-                        </div>
-
-                    </article>
-
+                <div
+                    id="historialJugador"
+                    class="historial-lista"
+                >
                 </div>
 
             </section>
@@ -616,6 +587,7 @@
                     🛡️
                 </div>
 
+
                 <div>
 
                     <strong>
@@ -623,7 +595,7 @@
                     </strong>
 
                     <p>
-                        Las estadísticas mostradas se actualizarán
+                        Las estadísticas mostradas se actualizan
                         con la información registrada en las cédulas
                         oficiales de los partidos.
                     </p>
@@ -635,14 +607,126 @@
         </main>
 
 
+        <section
+            id="estadoCargaJugador"
+            class="contenido-jugador"
+        >
+
+            <div
+                style="
+                    min-height:400px;
+                    display:flex;
+                    flex-direction:column;
+                    align-items:center;
+                    justify-content:center;
+                    gap:12px;
+                    text-align:center;
+                "
+            >
+
+                <div
+                    style="
+                        width:42px;
+                        height:42px;
+                        border:4px solid rgba(11,117,109,.15);
+                        border-top-color:#0b756d;
+                        border-radius:50%;
+                        animation:girarJugador .8s linear infinite;
+                    "
+                >
+                </div>
+
+
+                <strong>
+                    Cargando jugador...
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <section
+            id="estadoErrorJugador"
+            class="contenido-jugador"
+            hidden
+        >
+
+            <div
+                style="
+                    min-height:400px;
+                    display:flex;
+                    flex-direction:column;
+                    align-items:center;
+                    justify-content:center;
+                    gap:8px;
+                    padding:25px;
+                    text-align:center;
+                "
+            >
+
+                <div
+                    style="
+                        font-size:2.5rem;
+                    "
+                >
+                    👤
+                </div>
+
+
+                <h2 id="tituloErrorJugador">
+                    Jugador no encontrado
+                </h2>
+
+
+                <p
+                    id="textoErrorJugador"
+                    style="
+                        max-width:370px;
+                        color:#68746e;
+                        font-size:.74rem;
+                        line-height:1.5;
+                    "
+                >
+                    No pudimos encontrar la información
+                    del jugador solicitado.
+                </p>
+
+
+                <a
+                    href="jugadores.html"
+                    style="
+                        margin-top:10px;
+                        padding:10px 16px;
+                        border-radius:10px;
+                        background:#0b756d;
+                        color:#ffffff;
+                        font-weight:800;
+                    "
+                >
+                    Volver a jugadores
+                </a>
+
+            </div>
+
+        </section>
+
+
         <nav class="bottom-nav">
 
             <a
                 href="publico.html"
                 class="bottom-item"
             >
-                <span>🏠</span>
-                <small>Inicio</small>
+
+                <span>
+                    🏠
+                </span>
+
+                <small>
+                    Inicio
+                </small>
+
             </a>
 
 
@@ -650,8 +734,15 @@
                 href="jornadas.html"
                 class="bottom-item"
             >
-                <span>📅</span>
-                <small>Jornadas</small>
+
+                <span>
+                    📅
+                </span>
+
+                <small>
+                    Jornadas
+                </small>
+
             </a>
 
 
@@ -659,8 +750,15 @@
                 href="tablas.html"
                 class="bottom-item"
             >
-                <span>🏆</span>
-                <small>Tabla</small>
+
+                <span>
+                    🏆
+                </span>
+
+                <small>
+                    Tabla
+                </small>
+
             </a>
 
 
@@ -668,8 +766,15 @@
                 href="chat.html"
                 class="bottom-item"
             >
-                <span>💬</span>
-                <small>Chat</small>
+
+                <span>
+                    💬
+                </span>
+
+                <small>
+                    Chat
+                </small>
+
             </a>
 
 
@@ -677,13 +782,33 @@
                 href="jugadores.html"
                 class="bottom-item active"
             >
-                <span>👥</span>
-                <small>Jugadores</small>
+
+                <span>
+                    👥
+                </span>
+
+                <small>
+                    Jugadores
+                </small>
+
             </a>
 
         </nav>
 
     </div>
+
+
+    <style>
+
+        @keyframes girarJugador{
+
+            to{
+                transform:rotate(360deg);
+            }
+
+        }
+
+    </style>
 
 
     <script
@@ -692,4 +817,5 @@
     ></script>
 
 </body>
+
 </html>

@@ -1,99 +1,20 @@
-:root{
-    --tinta:#102b28;
-    --tinta-2:#2a403b;
-
-    --jade:#0b756d;
-    --jade-2:#12877d;
-    --jade-oscuro:#07574f;
-    --jade-profundo:#063f3b;
-    --jade-claro:#d7ece6;
-
-    --agua:#197e98;
-    --agua-2:#2a96aa;
-    --agua-clara:#70c2ca;
-
-    --terracota:#b9542e;
-    --terracota-2:#d16d3a;
-    --terracota-oscura:#85391f;
-
-    --dorado:#d3a13b;
-    --dorado-2:#e0b657;
-    --dorado-suave:#f0d79a;
-
-    --arena:#e2c990;
-    --arena-clara:#f4e8c5;
-    --arena-suave:#ead9ad;
-
-    --papel:#f1e3bf;
-    --papel-claro:#fff8e8;
-    --papel-oscuro:#dcc596;
-
-    --verde:#2f714c;
-    --verde-claro:#dcebd8;
-
-    --azul:#5366cd;
-    --azul-claro:#dfe5f7;
-
-    --rojo:#b84535;
-    --rojo-claro:#f3d6d0;
-
-    --gris:#8a928d;
-
-    --texto:#213732;
-    --texto-suave:#68746e;
-
-    --borde:#baa676;
-    --borde-suave:#d0c09a;
-
-    --sombra:
-        0 10px 28px rgba(55,43,20,.10),
-        0 3px 8px rgba(55,43,20,.05);
-}
-
-
-*{
-    box-sizing:border-box;
-}
-
-
-html{
-    min-height:100%;
-}
-
-
 body{
-    position:relative;
-
-    min-height:100vh;
-
-    margin:0;
-
-    color:var(--texto);
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
     background:
         radial-gradient(
             circle at 12% 12%,
             rgba(255,255,255,.24),
             transparent 22%
         ),
-
         radial-gradient(
             circle at 88% 15%,
             rgba(33,126,151,.12),
             transparent 28%
         ),
-
         radial-gradient(
             circle at 36% 74%,
             rgba(181,83,45,.06),
             transparent 30%
         ),
-
         linear-gradient(
             180deg,
             #dce8dd 0%,
@@ -101,60 +22,8 @@ body{
             #e8d29f 72%,
             #d7bd82 100%
         );
-}
 
-
-body::before{
-    content:"";
-
-    position:fixed;
-
-    left:-10%;
-    right:-10%;
-    bottom:-95px;
-
-    height:250px;
-
-    z-index:-1;
-
-    opacity:.38;
-
-    border-radius:50%;
-
-    background:
-        repeating-radial-gradient(
-            ellipse at center bottom,
-            transparent 0 28px,
-            rgba(25,126,152,.18) 29px 32px,
-            transparent 33px 56px,
-            rgba(11,117,109,.16) 57px 60px,
-            transparent 61px 86px
-        );
-
-    pointer-events:none;
-}
-
-
-body::after{
-    content:"";
-
-    position:fixed;
-
-    width:300px;
-    height:300px;
-
-    right:-145px;
-    top:145px;
-
-    z-index:-1;
-
-    border:
-        15px double
-        rgba(11,117,109,.055);
-
-    border-radius:50%;
-
-    pointer-events:none;
+    color:#213732;
 }
 
 
@@ -177,27 +46,15 @@ button{
 }
 
 
-/* =========================================
-   APP
-========================================= */
-
-
 .cedula-page{
     width:100%;
     min-height:100vh;
 }
 
 
-/* =========================================
-   TOPBAR
-========================================= */
-
-
 .topbar{
     position:sticky;
-
     top:0;
-
     z-index:60;
 
     min-height:66px;
@@ -205,29 +62,23 @@ button{
     display:flex;
     align-items:center;
     justify-content:space-between;
-
     gap:12px;
 
-    padding:
-        9px
-        13px;
+    padding:9px 13px;
 
-    border-bottom:
-        1px solid
-        #ab9969;
+    border-bottom:1px solid rgba(7,87,79,.18);
 
     background:
         linear-gradient(
             90deg,
-            rgba(244,230,193,.97),
-            rgba(255,247,224,.97)
+            rgba(255,248,232,.97),
+            rgba(241,227,191,.97)
         );
 
-    box-shadow:
-        0 5px 15px
-        rgba(60,46,22,.08);
+    backdrop-filter:blur(12px);
 
-    backdrop-filter:blur(10px);
+    box-shadow:
+        0 5px 18px rgba(55,43,20,.08);
 }
 
 
@@ -235,31 +86,28 @@ button{
     content:"";
 
     position:absolute;
-
-    left:13px;
-    right:13px;
+    left:0;
+    right:0;
     bottom:-1px;
 
-    height:5px;
+    height:3px;
 
-    border-top:
-        3px solid
-        rgba(11,117,109,.72);
+    background:
+        linear-gradient(
+            90deg,
+            #0b756d 0%,
+            #197e98 45%,
+            #d3a13b 72%,
+            #b9542e 100%
+        );
 
-    border-bottom:
-        1px solid
-        rgba(25,126,152,.42);
-
-    border-radius:50%;
-
-    opacity:.68;
+    opacity:.9;
 }
 
 
 .topbar-left{
     display:flex;
     align-items:center;
-
     gap:9px;
 
     min-width:0;
@@ -276,18 +124,17 @@ button{
 
     flex-shrink:0;
 
-    border:
-        1px solid
-        #a99567;
+    border:1px solid rgba(11,117,109,.14);
+    border-radius:11px;
 
-    border-radius:9px;
+    background:#f4e8c5;
+    color:#07574f;
 
-    background:#e8d4a1;
+    font-size:1.1rem;
+    font-weight:800;
 
-    color:var(--tinta);
-
-    font-size:1.08rem;
-    font-weight:900;
+    box-shadow:
+        0 4px 10px rgba(55,43,20,.06);
 }
 
 
@@ -297,21 +144,14 @@ button{
 
     flex-shrink:0;
 
-    padding:2px;
-
     object-fit:contain;
 
-    border:
-        2px solid
-        var(--jade-oscuro);
+    padding:2px;
 
+    border:2px solid rgba(11,117,109,.18);
     border-radius:50%;
 
-    background:#fff5d8;
-
-    box-shadow:
-        0 3px 10px
-        rgba(45,40,24,.12);
+    background:#fff8e8;
 }
 
 
@@ -324,28 +164,21 @@ button{
 
 
 .topbar-titulo span{
-    color:var(--terracota-oscura);
+    color:#68746e;
 
-    font-size:.60rem;
-    font-weight:800;
+    font-size:.61rem;
 }
 
 
 .topbar-titulo strong{
-    color:var(--tinta);
+    color:#102b28;
 
-    font-size:.83rem;
-    font-weight:900;
+    font-size:.84rem;
 
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
 }
-
-
-/* =========================================
-   ESTADO TOP
-========================================= */
 
 
 .estado-top{
@@ -357,53 +190,37 @@ button{
 
     flex-shrink:0;
 
-    padding:
-        5px
-        9px;
+    padding:5px 9px;
 
     border-radius:999px;
 
-    font-size:.57rem;
-    font-weight:900;
+    font-size:.58rem;
+    font-weight:800;
 }
 
 
 .estado-top.pendiente{
-    border:
-        1px solid
-        #c9a34e;
+    background:#f8e8bd;
+    color:#8b6516;
 
-    background:#f2dc9e;
-
-    color:#825a00;
+    border:1px solid rgba(211,161,59,.25);
 }
 
 
 .estado-top.borrador{
-    border:
-        1px solid
-        #9ca8db;
+    background:#dfeef2;
+    color:#176b82;
 
-    background:#dfe5f7;
-
-    color:#36469e;
+    border:1px solid rgba(25,126,152,.2);
 }
 
 
 .estado-top.registrada{
-    border:
-        1px solid
-        #83bba1;
+    background:#dcebd8;
+    color:#2f714c;
 
-    background:#d9eee0;
-
-    color:#176c4a;
+    border:1px solid rgba(47,113,76,.2);
 }
-
-
-/* =========================================
-   CONTENIDO
-========================================= */
 
 
 .contenido{
@@ -412,16 +229,8 @@ button{
 
     margin:0 auto;
 
-    padding:
-        15px
-        13px
-        30px;
+    padding:15px 13px 30px;
 }
-
-
-/* =========================================
-   CARGA / ERROR
-========================================= */
 
 
 .estado-carga,
@@ -432,7 +241,6 @@ button{
     flex-direction:column;
     align-items:center;
     justify-content:center;
-
     gap:10px;
 
     padding:28px;
@@ -445,12 +253,8 @@ button{
     width:36px;
     height:36px;
 
-    border:
-        4px solid
-        #d8c99f;
-
-    border-top-color:var(--jade);
-
+    border:4px solid rgba(11,117,109,.12);
+    border-top-color:#0b756d;
     border-radius:50%;
 
     animation:girar .8s linear infinite;
@@ -465,9 +269,9 @@ button{
 
 
 .estado-carga span{
-    color:#6e6655;
+    color:#68746e;
 
-    font-size:.69rem;
+    font-size:.7rem;
 }
 
 
@@ -479,40 +283,27 @@ button{
     align-items:center;
     justify-content:center;
 
-    border:
-        1px solid
-        #cb8b80;
+    border-radius:17px;
 
-    border-radius:15px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #efd4ca,
-            #e2b5a7
-        );
+    background:#f3d6d0;
 
     font-size:1.4rem;
 }
 
 
 .estado-error h1{
-    margin:0;
+    color:#102b28;
 
-    color:var(--tinta);
-
-    font-size:1.08rem;
+    font-size:1.1rem;
 }
 
 
 .estado-error p{
     max-width:380px;
 
-    margin:0;
+    color:#68746e;
 
-    color:#716955;
-
-    font-size:.69rem;
+    font-size:.7rem;
     line-height:1.45;
 }
 
@@ -525,28 +316,21 @@ button{
     justify-content:center;
 
     margin-top:4px;
+    padding:7px 13px;
 
-    padding:
-        7px
-        13px;
-
-    border:
-        1px solid
-        #075d56;
-
-    border-radius:9px;
+    border-radius:11px;
 
     background:
         linear-gradient(
             135deg,
-            var(--jade),
-            var(--agua)
+            #0b756d,
+            #197e98
         );
 
     color:#ffffff;
 
-    font-size:.65rem;
-    font-weight:900;
+    font-size:.66rem;
+    font-weight:800;
 }
 
 
@@ -555,112 +339,61 @@ button{
 }
 
 
-/* =========================================
-   CONTENIDO CÉDULA
-========================================= */
-
-
 .contenido-cedula{
     display:flex;
     flex-direction:column;
-
     gap:14px;
 }
 
 
-/* =========================================
-   HERO PARTIDO
-========================================= */
-
-
 .partido-hero{
-    position:relative;
-
     overflow:hidden;
 
-    padding:18px;
+    position:relative;
 
-    border:
-        2px solid
-        var(--tinta);
+    padding:16px;
 
-    border-radius:18px;
+    border-radius:20px;
 
     background:
         radial-gradient(
-            circle at 88% 12%,
-            rgba(255,255,255,.08),
-            transparent 25%
+            circle at 15% 20%,
+            rgba(112,194,202,.2),
+            transparent 28%
         ),
-
         linear-gradient(
             145deg,
-            #075e57,
-            #08796f 55%,
-            #17677c
+            #063f3b,
+            #0b756d 55%,
+            #197e98
         );
 
     color:#ffffff;
 
     box-shadow:
-        0 14px 35px
-        rgba(15,76,85,.16);
-}
-
-
-.partido-hero::before{
-    content:"";
-
-    position:absolute;
-
-    left:-8%;
-    right:-8%;
-    bottom:-60px;
-
-    height:125px;
-
-    border-radius:50%;
-
-    border-top:
-        8px double
-        rgba(112,194,202,.20);
-
-    transform:rotate(-2deg);
+        0 14px 35px rgba(15,76,85,.18);
 }
 
 
 .partido-hero::after{
-    content:"⚽";
+    content:"";
 
     position:absolute;
+    right:-35px;
+    bottom:-48px;
 
-    right:-12px;
-    top:-20px;
+    width:150px;
+    height:150px;
 
-    font-size:8rem;
-
-    opacity:.045;
-
-    transform:rotate(-16deg);
+    border:18px solid rgba(255,255,255,.04);
+    border-radius:50%;
 }
-
-
-.partido-hero > *{
-    position:relative;
-    z-index:2;
-}
-
-
-/* =========================================
-   HERO META
-========================================= */
 
 
 .hero-meta{
     display:flex;
     align-items:center;
     justify-content:center;
-
     gap:6px;
 
     margin-bottom:15px;
@@ -673,41 +406,24 @@ button{
 
     min-height:25px;
 
-    padding:
-        4px
-        8px;
-
-    border:
-        1px solid
-        rgba(255,230,165,.20);
+    padding:4px 8px;
 
     border-radius:999px;
 
-    background:
-        rgba(255,247,218,.10);
+    background:rgba(255,255,255,.11);
 
     color:#d8efec;
 
-    font-size:.53rem;
-    font-weight:900;
+    font-size:.54rem;
+    font-weight:800;
 }
-
-
-/* =========================================
-   ENFRENTAMIENTO HERO
-========================================= */
 
 
 .hero-enfrentamiento{
     display:grid;
-
-    grid-template-columns:
-        minmax(0,1fr)
-        auto
-        minmax(0,1fr);
+    grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
 
     align-items:center;
-
     gap:10px;
 }
 
@@ -716,7 +432,6 @@ button{
     display:flex;
     flex-direction:column;
     align-items:center;
-
     gap:7px;
 
     min-width:0;
@@ -726,8 +441,8 @@ button{
 
 
 .hero-logo{
-    width:70px;
-    height:70px;
+    width:68px;
+    height:68px;
 
     display:flex;
     align-items:center;
@@ -735,21 +450,13 @@ button{
 
     overflow:hidden;
 
-    border:
-        1px solid
-        rgba(255,255,255,.42);
+    border:1px solid rgba(255,255,255,.22);
+    border-radius:18px;
 
-    border-radius:15px;
-
-    background:
-        rgba(255,247,218,.14);
+    background:rgba(255,255,255,.12);
 
     font-size:1rem;
     font-weight:900;
-
-    box-shadow:
-        inset 0 0 0 2px
-        rgba(255,255,255,.04);
 }
 
 
@@ -768,8 +475,7 @@ button{
 
     color:#ffffff;
 
-    font-size:.71rem;
-    font-weight:900;
+    font-size:.72rem;
 
     white-space:nowrap;
     overflow:hidden;
@@ -778,9 +484,9 @@ button{
 
 
 .hero-equipo span{
-    color:#f3d677;
+    color:#cdebe7;
 
-    font-size:.49rem;
+    font-size:.5rem;
     font-weight:900;
 
     letter-spacing:.08em;
@@ -791,7 +497,6 @@ button{
     display:flex;
     flex-direction:column;
     align-items:center;
-
     gap:4px;
 
     min-width:78px;
@@ -803,15 +508,14 @@ button{
 .hero-vs small{
     color:#cdebe7;
 
-    font-size:.52rem;
+    font-size:.53rem;
 }
 
 
 .hero-vs strong{
-    color:#ffe09a;
+    color:#ffffff;
 
     font-size:1rem;
-    font-weight:900;
 }
 
 
@@ -819,108 +523,48 @@ button{
     display:flex;
     align-items:center;
     justify-content:center;
-
     gap:7px;
 
     margin-top:15px;
     padding-top:13px;
 
-    border-top:
-        1px solid
-        rgba(255,255,255,.16);
+    border-top:1px solid rgba(255,255,255,.12);
 }
 
 
 .hero-campo strong{
     color:#ffffff;
 
-    font-size:.61rem;
+    font-size:.62rem;
 }
-
-
-/* =========================================
-   BLOQUES GENERALES
-========================================= */
 
 
 .cedula-bloque,
 .resumen-cedula,
 .aviso-envio,
-.acciones-finales{
-    position:relative;
-
+.acciones-finales,
+.certificacion-cedula{
     padding:14px;
 
-    overflow:hidden;
-
-    border:
-        1px solid
-        #a99567;
-
-    border-radius:14px;
+    border:1px solid rgba(11,117,109,.16);
+    border-radius:17px;
 
     background:
         linear-gradient(
-            150deg,
-            rgba(244,227,185,.94),
-            rgba(231,207,153,.94)
+            180deg,
+            rgba(255,248,232,.98),
+            rgba(244,232,197,.94)
         );
 
     box-shadow:
-        0 4px 14px
-        rgba(67,50,22,.06);
+        0 8px 22px rgba(55,43,20,.07);
 }
-
-
-.cedula-bloque:nth-of-type(even){
-    border-color:#87aaa0;
-
-    background:
-        linear-gradient(
-            150deg,
-            rgba(215,234,228,.94),
-            rgba(197,221,213,.94)
-        );
-}
-
-
-.cedula-bloque::before,
-.resumen-cedula::before{
-    content:"";
-
-    position:absolute;
-
-    left:14px;
-    right:14px;
-    top:0;
-
-    height:5px;
-
-    border-top:
-        3px solid
-        rgba(11,117,109,.70);
-
-    border-bottom:
-        1px solid
-        rgba(25,126,152,.34);
-
-    border-radius:50%;
-}
-
-
-/* =========================================
-   HEADER SECCIONES
-========================================= */
 
 
 .seccion-header{
-    position:relative;
-    z-index:2;
-
     display:flex;
     align-items:flex-start;
     justify-content:space-between;
-
     gap:10px;
 
     margin-bottom:11px;
@@ -932,9 +576,9 @@ button{
 
     margin-bottom:2px;
 
-    color:var(--terracota-oscura);
+    color:#0b756d;
 
-    font-size:.53rem;
+    font-size:.54rem;
     font-weight:900;
 
     letter-spacing:.07em;
@@ -942,29 +586,20 @@ button{
 
 
 .seccion-header h2{
-    margin:0;
+    color:#102b28;
 
-    color:var(--tinta);
-
-    font-size:.89rem;
-    font-weight:900;
+    font-size:.9rem;
 }
 
 
 .seccion-header p{
-    margin:
-        3px 0 0;
+    margin-top:3px;
 
-    color:#696252;
+    color:#68746e;
 
-    font-size:.60rem;
+    font-size:.61rem;
     line-height:1.4;
 }
-
-
-/* =========================================
-   BOTONES AGREGAR
-========================================= */
 
 
 .btn-agregar{
@@ -976,91 +611,422 @@ button{
 
     flex-shrink:0;
 
-    padding:
-        6px
-        9px;
+    padding:6px 9px;
 
-    border:
-        1px solid
-        #075d56;
+    border:1px solid rgba(11,117,109,.12);
+    border-radius:9px;
 
-    border-radius:8px;
+    background:#d7ece6;
+    color:#07574f;
 
-    background:
-        linear-gradient(
-            135deg,
-            var(--jade),
-            var(--agua)
-        );
-
-    color:#ffffff;
-
-    font-size:.56rem;
-    font-weight:900;
+    font-size:.57rem;
+    font-weight:800;
 }
 
 
 .btn-agregar.amarilla{
-    border-color:#b99435;
+    background:#f5e7b7;
+    color:#8a6515;
 
-    background:
-        linear-gradient(
-            135deg,
-            #e4bb55,
-            #d1a13c
-        );
-
-    color:#563e00;
+    border-color:rgba(211,161,59,.22);
 }
 
 
 .btn-agregar.roja{
-    border-color:#9d3d30;
+    background:#f3d6d0;
+    color:#9d382a;
+
+    border-color:rgba(184,69,53,.16);
+}
+
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr;
+
+    gap:12px;
+}
+
+
+.form-grupo-completo{
+    grid-column:1 / -1;
+}
+
+
+.form-grupo{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+
+    margin-bottom:15px;
+}
+
+
+.form-grupo:last-child{
+    margin-bottom:0;
+}
+
+
+.form-grupo label{
+    color:#2a403b;
+
+    font-size:.66rem;
+    font-weight:800;
+}
+
+
+.form-grupo input,
+.form-grupo select,
+.form-grupo textarea{
+    width:100%;
+
+    border:1px solid #baa676;
+    border-radius:11px;
+
+    background:#fff8e8;
+    color:#213732;
+
+    font-size:.7rem;
+
+    outline:none;
+
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease,
+        background .18s ease;
+}
+
+
+.form-grupo input,
+.form-grupo select{
+    min-height:43px;
+
+    padding:0 10px;
+}
+
+
+.form-grupo textarea{
+    min-height:85px;
+
+    resize:vertical;
+
+    padding:10px;
+
+    line-height:1.45;
+}
+
+
+.form-grupo input:focus,
+.form-grupo select:focus,
+.form-grupo textarea:focus{
+    border-color:#0b756d;
+
+    background:#fffdf5;
+
+    box-shadow:
+        0 0 0 3px rgba(11,117,109,.1);
+}
+
+
+.form-grupo input[readonly]{
+    background:#e5ece5;
+    color:#49605a;
+
+    cursor:default;
+}
+
+
+.form-grupo input:disabled,
+.form-grupo select:disabled,
+.form-grupo textarea:disabled{
+    opacity:.72;
+
+    background:#ebe4d0;
+
+    cursor:not-allowed;
+}
+
+
+.plantillas-cedula{
+    display:grid;
+    grid-template-columns:1fr;
+
+    gap:12px;
+}
+
+
+.plantilla-equipo{
+    overflow:hidden;
+
+    border:1px solid rgba(11,117,109,.16);
+    border-radius:14px;
+
+    background:#fff8e8;
+}
+
+
+.plantilla-equipo.visitante{
+    border-color:rgba(25,126,152,.18);
+}
+
+
+.plantilla-equipo-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+
+    padding:11px 12px;
 
     background:
         linear-gradient(
             135deg,
-            #cf604e,
-            #b84535
+            rgba(11,117,109,.12),
+            rgba(215,236,230,.65)
         );
 
-    color:#ffffff;
+    border-bottom:1px solid rgba(11,117,109,.12);
 }
 
 
-/* =========================================
-   MARCADOR
-========================================= */
+.plantilla-equipo.visitante .plantilla-equipo-header{
+    background:
+        linear-gradient(
+            135deg,
+            rgba(25,126,152,.12),
+            rgba(112,194,202,.18)
+        );
+
+    border-bottom-color:rgba(25,126,152,.12);
+}
+
+
+.plantilla-equipo-header div{
+    min-width:0;
+}
+
+
+.plantilla-equipo-header span{
+    display:block;
+
+    margin-bottom:2px;
+
+    color:#0b756d;
+
+    font-size:.5rem;
+    font-weight:900;
+
+    letter-spacing:.08em;
+}
+
+
+.plantilla-equipo.visitante .plantilla-equipo-header span{
+    color:#197e98;
+}
+
+
+.plantilla-equipo-header strong{
+    display:block;
+
+    color:#102b28;
+
+    font-size:.7rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+
+.contador-plantilla{
+    min-width:30px;
+    height:30px;
+
+    display:grid !important;
+    place-items:center;
+
+    flex-shrink:0;
+
+    margin:0 !important;
+
+    border-radius:50%;
+
+    background:#0b756d !important;
+    color:#ffffff !important;
+
+    font-size:.62rem !important;
+    font-weight:900;
+}
+
+
+.plantilla-equipo.visitante .contador-plantilla{
+    background:#197e98 !important;
+}
+
+
+.lista-jugadores-cedula{
+    display:flex;
+    flex-direction:column;
+
+    padding:7px;
+}
+
+
+.jugador-cedula-item{
+    display:grid;
+    grid-template-columns:42px minmax(0,1fr);
+
+    align-items:center;
+    gap:8px;
+
+    min-height:37px;
+
+    padding:6px 7px;
+
+    border-bottom:1px solid rgba(186,166,118,.25);
+}
+
+
+.jugador-cedula-item:last-child{
+    border-bottom:0;
+}
+
+
+.jugador-cedula-numero{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    min-height:26px;
+
+    border-radius:8px;
+
+    background:#e4eee8;
+    color:#07574f;
+
+    font-size:.57rem;
+    font-weight:900;
+}
+
+
+.plantilla-equipo.visitante .jugador-cedula-numero{
+    background:#dfeef2;
+    color:#176b82;
+}
+
+
+.jugador-cedula-item strong{
+    min-width:0;
+
+    color:#2a403b;
+
+    font-size:.62rem;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+
+.jugador-cedula-vacio{
+    padding:18px 10px;
+
+    color:#93998f;
+
+    font-size:.6rem;
+
+    text-align:center;
+}
+
+
+.tiempos-grid{
+    display:grid;
+    grid-template-columns:1fr;
+
+    gap:12px;
+}
+
+
+.tiempo-card{
+    padding:12px;
+
+    border:1px solid rgba(25,126,152,.15);
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(223,238,242,.72),
+            rgba(255,248,232,.82)
+        );
+}
+
+
+.tiempo-card-header{
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    margin-bottom:11px;
+}
+
+
+.tiempo-card-header > span{
+    width:28px;
+    height:28px;
+
+    display:grid;
+    place-items:center;
+
+    flex-shrink:0;
+
+    border-radius:9px;
+
+    background:#197e98;
+    color:#ffffff;
+
+    font-size:.63rem;
+    font-weight:900;
+}
+
+
+.tiempo-card-header strong{
+    color:#102b28;
+
+    font-size:.7rem;
+}
+
+
+.tiempo-campos{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+
+    gap:9px;
+}
+
+
+.tiempo-campos .form-grupo{
+    margin-bottom:0;
+}
 
 
 .marcador-editor{
-    position:relative;
-    z-index:2;
-
     display:grid;
-
-    grid-template-columns:
-        1fr
-        auto
-        1fr;
+    grid-template-columns:1fr auto 1fr;
 
     align-items:center;
-
     gap:15px;
 
     padding:16px;
 
-    border:
-        1px solid
-        rgba(20,44,41,.23);
-
-    border-radius:12px;
+    border:1px solid rgba(11,117,109,.1);
+    border-radius:14px;
 
     background:
         linear-gradient(
-            135deg,
-            rgba(215,234,227,.58),
-            rgba(255,247,219,.52)
+            145deg,
+            rgba(215,236,230,.55),
+            rgba(255,248,232,.95)
         );
 }
 
@@ -1069,7 +1035,6 @@ button{
     display:flex;
     flex-direction:column;
     align-items:center;
-
     gap:8px;
 
     min-width:0;
@@ -1081,10 +1046,10 @@ button{
 .marcador-equipo span{
     width:100%;
 
-    color:var(--tinta-2);
+    color:#2a403b;
 
-    font-size:.64rem;
-    font-weight:900;
+    font-size:.65rem;
+    font-weight:800;
 
     white-space:nowrap;
     overflow:hidden;
@@ -1096,16 +1061,11 @@ button{
     width:82px;
     height:64px;
 
-    border:
-        2px solid
-        var(--jade-oscuro);
+    border:1px solid #baa676;
+    border-radius:13px;
 
-    border-radius:11px;
-
-    background:
-        rgba(255,248,227,.88);
-
-    color:var(--tinta);
+    background:#fff8e8;
+    color:#102b28;
 
     font-size:1.45rem;
     font-weight:900;
@@ -1113,76 +1073,214 @@ button{
     text-align:center;
 
     outline:none;
-
-    box-shadow:
-        inset 0 0 0 2px
-        rgba(11,117,109,.06);
 }
 
 
 .marcador-equipo input:focus{
-    border-color:var(--agua);
+    border-color:#0b756d;
 
     box-shadow:
-        0 0 0 3px
-        rgba(25,126,152,.13);
+        0 0 0 3px rgba(11,117,109,.1);
 }
 
 
 .marcador-separador{
-    color:var(--terracota-oscura);
+    color:#93998f;
 
     font-size:1.2rem;
     font-weight:900;
 }
 
 
-/* =========================================
-   EVENTOS
-========================================= */
+.penales-control{
+    margin-top:12px;
+}
 
 
-.lista-eventos{
+.switch-linea{
+    display:flex;
+    align-items:center;
+    gap:11px;
+
+    padding:12px;
+
+    border:1px solid rgba(211,161,59,.2);
+    border-radius:13px;
+
+    background:#fff3d1;
+
+    cursor:pointer;
+}
+
+
+.switch-linea > input{
+    position:absolute;
+
+    opacity:0;
+
+    pointer-events:none;
+}
+
+
+.switch-visual{
     position:relative;
-    z-index:2;
+
+    width:42px;
+    height:23px;
+
+    flex-shrink:0;
+
+    border-radius:999px;
+
+    background:#cfc6af;
+
+    transition:.2s ease;
+}
+
+
+.switch-visual::after{
+    content:"";
+
+    position:absolute;
+    top:3px;
+    left:3px;
+
+    width:17px;
+    height:17px;
+
+    border-radius:50%;
+
+    background:#ffffff;
+
+    box-shadow:
+        0 2px 5px rgba(0,0,0,.16);
+
+    transition:.2s ease;
+}
+
+
+.switch-linea > input:checked + .switch-visual{
+    background:#d3a13b;
+}
+
+
+.switch-linea > input:checked + .switch-visual::after{
+    transform:translateX(19px);
+}
+
+
+.switch-texto{
+    min-width:0;
 
     display:flex;
     flex-direction:column;
+    gap:2px;
+}
 
+
+.switch-texto strong{
+    color:#6f5411;
+
+    font-size:.66rem;
+}
+
+
+.switch-texto small{
+    color:#8a7750;
+
+    font-size:.55rem;
+    line-height:1.35;
+}
+
+
+.bloque-penales{
+    margin-top:11px;
+    padding:12px;
+
+    border:1px solid rgba(211,161,59,.24);
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #f6e8bd,
+            #fff8e8
+        );
+}
+
+
+.bloque-penales-titulo{
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    margin-bottom:10px;
+}
+
+
+.bloque-penales-titulo > span{
+    width:35px;
+    height:35px;
+
+    display:grid;
+    place-items:center;
+
+    flex-shrink:0;
+
+    border-radius:10px;
+
+    background:#e8cd84;
+}
+
+
+.bloque-penales-titulo div{
+    min-width:0;
+
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+}
+
+
+.bloque-penales-titulo strong{
+    color:#6f5411;
+
+    font-size:.67rem;
+}
+
+
+.bloque-penales-titulo small{
+    color:#8a7750;
+
+    font-size:.54rem;
+}
+
+
+.marcador-penales{
+    background:rgba(255,255,255,.38);
+}
+
+
+.lista-eventos{
+    display:flex;
+    flex-direction:column;
     gap:8px;
 }
 
 
 .evento-card{
     display:grid;
-
-    grid-template-columns:
-        auto
-        minmax(0,1fr)
-        auto;
+    grid-template-columns:auto minmax(0,1fr) auto;
 
     align-items:center;
-
     gap:9px;
 
     padding:10px;
 
-    border:
-        1px solid
-        #a99567;
+    border:1px solid rgba(186,166,118,.25);
+    border-radius:12px;
 
-    border-radius:10px;
-
-    background:
-        rgba(255,247,223,.62);
-}
-
-
-.evento-card:nth-child(even){
-    border-color:#87aaa0;
-
-    background:
-        rgba(220,238,232,.64);
+    background:#fff8e8;
 }
 
 
@@ -1196,29 +1294,21 @@ button{
 
     flex-shrink:0;
 
-    border:
-        1px solid
-        #85b1a4;
+    border-radius:10px;
 
-    border-radius:9px;
-
-    background:#d7ebe4;
+    background:#d7ece6;
 
     font-size:.85rem;
 }
 
 
 .evento-icono.amarilla{
-    border-color:#c6a34b;
-
-    background:#f1d991;
+    background:#f5e7b7;
 }
 
 
 .evento-icono.roja{
-    border-color:#ca897d;
-
-    background:#efc9c1;
+    background:#f3d6d0;
 }
 
 
@@ -1232,10 +1322,9 @@ button{
 
     margin-bottom:2px;
 
-    color:var(--tinta);
+    color:#102b28;
 
-    font-size:.62rem;
-    font-weight:900;
+    font-size:.63rem;
 
     white-space:nowrap;
     overflow:hidden;
@@ -1244,9 +1333,23 @@ button{
 
 
 .evento-info span{
-    color:#696353;
+    display:block;
 
-    font-size:.53rem;
+    color:#68746e;
+
+    font-size:.54rem;
+}
+
+
+.evento-info small{
+    display:block;
+
+    margin-top:3px;
+
+    color:#7c6941;
+
+    font-size:.52rem;
+    line-height:1.35;
 }
 
 
@@ -1260,23 +1363,13 @@ button{
 
     flex-shrink:0;
 
-    border:
-        1px solid
-        #c88a80;
+    border-radius:9px;
 
-    border-radius:8px;
+    background:#ead9ad;
+    color:#68746e;
 
-    background:#efd3cd;
-
-    color:#8d3027;
-
-    font-size:.69rem;
+    font-size:.7rem;
 }
-
-
-/* =========================================
-   EVENTOS VACÍOS
-========================================= */
 
 
 .estado-vacio-evento{
@@ -1288,90 +1381,222 @@ button{
 
     padding:12px;
 
-    border:
-        1px dashed
-        #aa9664;
+    border:1px dashed #baa676;
+    border-radius:12px;
 
-    border-radius:10px;
+    background:rgba(255,248,232,.6);
 
-    background:
-        rgba(255,247,223,.40);
+    color:#93998f;
 
-    color:#807765;
-
-    font-size:.60rem;
+    font-size:.61rem;
 
     text-align:center;
 }
 
 
-/* =========================================
-   INCIDENCIAS
-========================================= */
+.cuerpo-tecnico-grid{
+    display:grid;
+    grid-template-columns:1fr;
+
+    gap:12px;
+}
+
+
+.cuerpo-tecnico-equipo{
+    padding:12px;
+
+    border:1px solid rgba(11,117,109,.16);
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(215,236,230,.62),
+            rgba(255,248,232,.8)
+        );
+}
+
+
+.cuerpo-tecnico-equipo.visitante{
+    border-color:rgba(25,126,152,.18);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(223,238,242,.72),
+            rgba(255,248,232,.8)
+        );
+}
+
+
+.cuerpo-tecnico-header{
+    margin-bottom:11px;
+    padding-bottom:9px;
+
+    border-bottom:1px solid rgba(11,117,109,.12);
+}
+
+
+.cuerpo-tecnico-header span{
+    display:block;
+
+    margin-bottom:2px;
+
+    color:#0b756d;
+
+    font-size:.5rem;
+    font-weight:900;
+
+    letter-spacing:.08em;
+}
+
+
+.cuerpo-tecnico-equipo.visitante .cuerpo-tecnico-header span{
+    color:#197e98;
+}
+
+
+.cuerpo-tecnico-header strong{
+    display:block;
+
+    color:#102b28;
+
+    font-size:.69rem;
+}
+
+
+.conducta-grid{
+    display:grid;
+    grid-template-columns:1fr;
+
+    gap:12px;
+}
+
+
+.conducta-card{
+    padding:12px;
+
+    border:1px solid rgba(11,117,109,.16);
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(215,236,230,.58),
+            rgba(255,248,232,.88)
+        );
+}
+
+
+.conducta-card.visitante{
+    border-color:rgba(25,126,152,.18);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(223,238,242,.7),
+            rgba(255,248,232,.88)
+        );
+}
+
+
+.conducta-equipo{
+    display:block;
+
+    margin-bottom:2px;
+
+    color:#0b756d;
+
+    font-size:.5rem;
+    font-weight:900;
+
+    letter-spacing:.08em;
+}
+
+
+.conducta-card.visitante .conducta-equipo{
+    color:#197e98;
+}
+
+
+.conducta-card > strong{
+    display:block;
+
+    margin-bottom:12px;
+
+    color:#102b28;
+
+    font-size:.7rem;
+}
 
 
 .textarea-incidencias{
-    position:relative;
-    z-index:2;
-
     width:100%;
-    min-height:130px;
+    min-height:150px;
 
     resize:vertical;
 
     padding:11px;
 
-    border:
-        1px solid
-        #a99567;
+    border:1px solid #baa676;
+    border-radius:12px;
 
-    border-radius:10px;
+    background:#fff8e8;
+    color:#213732;
 
-    background:
-        rgba(255,247,223,.82);
-
-    color:var(--tinta);
-
-    font-size:.72rem;
-    line-height:1.45;
+    font-size:.73rem;
+    line-height:1.5;
 
     outline:none;
 }
 
 
 .textarea-incidencias:focus{
-    border-color:var(--jade);
+    border-color:#0b756d;
+
+    background:#fffdf5;
 
     box-shadow:
-        0 0 0 3px
-        rgba(11,117,109,.12);
+        0 0 0 3px rgba(11,117,109,.1);
 }
 
 
 .contador-texto{
     margin-top:5px;
 
-    color:#7f755e;
+    color:#93998f;
 
-    font-size:.52rem;
+    font-size:.53rem;
 
     text-align:right;
 }
 
 
-/* =========================================
-   RESUMEN
-========================================= */
+.resumen-cedula{
+    background:
+        linear-gradient(
+            145deg,
+            #063f3b,
+            #0b756d
+        );
+
+    border-color:rgba(6,63,59,.4);
+}
+
+
+.resumen-cedula .seccion-header span{
+    color:#70c2ca;
+}
+
+
+.resumen-cedula .seccion-header h2{
+    color:#ffffff;
+}
 
 
 .resumen-grid{
-    position:relative;
-    z-index:2;
-
     display:grid;
-
-    grid-template-columns:
-        repeat(2,1fr);
+    grid-template-columns:repeat(2,1fr);
 
     gap:8px;
 }
@@ -1382,20 +1607,10 @@ button{
 
     padding:10px;
 
-    border:
-        1px solid
-        rgba(110,87,42,.17);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:11px;
 
-    border-radius:9px;
-
-    background:
-        rgba(255,247,223,.48);
-}
-
-
-.resumen-grid article:nth-child(even){
-    background:
-        rgba(215,234,228,.48);
+    background:rgba(255,255,255,.09);
 }
 
 
@@ -1404,18 +1619,18 @@ button{
 
     margin-bottom:3px;
 
-    color:#847a63;
+    color:#b9d8d4;
 
-    font-size:.51rem;
+    font-size:.52rem;
 }
 
 
 .resumen-grid strong{
     display:block;
 
-    color:var(--tinta-2);
+    color:#ffffff;
 
-    font-size:.64rem;
+    font-size:.65rem;
 
     white-space:nowrap;
     overflow:hidden;
@@ -1423,24 +1638,105 @@ button{
 }
 
 
-/* =========================================
-   AVISO ENVÍO
-========================================= */
+.resumen-penales{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+
+    margin-top:9px;
+    padding:11px;
+
+    border:1px solid rgba(224,182,87,.22);
+    border-radius:11px;
+
+    background:rgba(211,161,59,.15);
+}
+
+
+.resumen-penales span{
+    color:#f0d79a;
+
+    font-size:.58rem;
+    font-weight:800;
+}
+
+
+.resumen-penales strong{
+    color:#ffffff;
+
+    font-size:.82rem;
+    font-weight:900;
+}
+
+
+.certificacion-cedula{
+    border-color:rgba(47,113,76,.2);
+
+    background:
+        linear-gradient(
+            145deg,
+            #dcebd8,
+            #eff3df
+        );
+}
+
+
+.certificacion-check{
+    display:flex;
+    align-items:flex-start;
+    gap:11px;
+
+    cursor:pointer;
+}
+
+
+.certificacion-check input{
+    width:20px;
+    height:20px;
+
+    flex-shrink:0;
+
+    margin-top:1px;
+
+    accent-color:#2f714c;
+}
+
+
+.certificacion-check > span{
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+}
+
+
+.certificacion-check strong{
+    color:#285f40;
+
+    font-size:.68rem;
+}
+
+
+.certificacion-check small{
+    color:#56715e;
+
+    font-size:.56rem;
+    line-height:1.4;
+}
 
 
 .aviso-envio{
     display:flex;
     align-items:flex-start;
-
     gap:10px;
 
-    border-color:#c4a052;
+    border-color:rgba(211,161,59,.28);
 
     background:
         linear-gradient(
             145deg,
-            #f4dfaa,
-            #e9cc88
+            #f6e7b8,
+            #fff3d1
         );
 }
 
@@ -1455,13 +1751,9 @@ button{
 
     flex-shrink:0;
 
-    border:
-        1px solid
-        #9a782f;
+    border-radius:11px;
 
-    border-radius:9px;
-
-    background:#f1d586;
+    background:#e8cd84;
 }
 
 
@@ -1470,43 +1762,32 @@ button{
 
     margin-bottom:3px;
 
-    color:#644a0c;
+    color:#6f5411;
 
-    font-size:.67rem;
+    font-size:.68rem;
 }
 
 
 .aviso-envio p{
-    margin:0;
+    color:#7c6941;
 
-    color:#6e5c38;
-
-    font-size:.58rem;
+    font-size:.59rem;
     line-height:1.4;
 }
 
 
-/* =========================================
-   ACCIONES FINALES
-========================================= */
-
-
 .acciones-finales{
     display:grid;
-
-    grid-template-columns:
-        1fr 1fr;
+    grid-template-columns:1fr 1fr;
 
     gap:8px;
 
     background:
         linear-gradient(
-            145deg,
-            #d7e9e3,
-            #e8d09a
+            180deg,
+            rgba(255,248,232,.98),
+            rgba(241,227,191,.94)
         );
-
-    border-color:#8ca79a;
 }
 
 
@@ -1518,58 +1799,54 @@ button{
     align-items:center;
     justify-content:center;
 
-    border-radius:9px;
+    border:0;
+    border-radius:11px;
 
-    font-size:.64rem;
-    font-weight:900;
+    font-size:.65rem;
+    font-weight:800;
+
+    transition:
+        transform .16s ease,
+        background .16s ease,
+        box-shadow .16s ease;
 }
 
 
 .btn-secundario{
-    border:
-        1px solid
-        #9f8d61;
+    border:1px solid #c7b78e;
 
-    background:#e2cc97;
-
-    color:var(--tinta);
+    background:#ead9ad;
+    color:#2a403b;
 }
 
 
 .btn-principal{
-    border:
-        1px solid
-        #075d56;
-
     background:
         linear-gradient(
             135deg,
-            var(--jade),
-            var(--agua)
+            #0b756d,
+            #197e98
         );
 
     color:#ffffff;
+
+    box-shadow:
+        0 7px 17px rgba(11,117,109,.18);
 }
 
 
 .btn-secundario:disabled,
-.btn-principal:disabled{
+.btn-principal:disabled,
+.btn-agregar:disabled{
     opacity:.5;
 
     cursor:not-allowed;
 }
 
 
-/* =========================================
-   MODAL OVERLAY
-========================================= */
-
-
 .modal-overlay{
     position:fixed;
-
     inset:0;
-
     z-index:150;
 
     display:flex;
@@ -1578,71 +1855,34 @@ button{
 
     padding:14px;
 
-    background:
-        rgba(13,50,47,.74);
+    background:rgba(6,39,36,.68);
 
-    backdrop-filter:blur(6px);
+    backdrop-filter:blur(5px);
 }
-
-
-/* =========================================
-   MODALES
-========================================= */
 
 
 .modal-evento,
 .modal-confirmacion{
-    position:relative;
-
     width:100%;
     max-width:470px;
 
     max-height:92vh;
-
     overflow-y:auto;
 
     padding:19px;
 
-    border:
-        1px solid
-        #9f8b58;
-
-    border-radius:18px;
+    border:1px solid rgba(11,117,109,.14);
+    border-radius:20px;
 
     background:
         linear-gradient(
-            160deg,
-            #f4e2ad,
-            #e8cf98
+            180deg,
+            #fff8e8,
+            #f1e3bf
         );
 
     box-shadow:
-        0 24px 70px
-        rgba(0,0,0,.28);
-}
-
-
-.modal-evento::before,
-.modal-confirmacion::before{
-    content:"";
-
-    position:absolute;
-
-    left:20px;
-    right:20px;
-    top:0;
-
-    height:5px;
-
-    border-top:
-        3px solid
-        var(--jade);
-
-    border-bottom:
-        1px solid
-        var(--agua);
-
-    border-radius:50%;
+        0 24px 70px rgba(0,0,0,.26);
 }
 
 
@@ -1650,7 +1890,6 @@ button{
     display:flex;
     align-items:flex-start;
     justify-content:space-between;
-
     gap:12px;
 
     margin-bottom:16px;
@@ -1662,9 +1901,9 @@ button{
 
     margin-bottom:3px;
 
-    color:var(--terracota-oscura);
+    color:#0b756d;
 
-    font-size:.54rem;
+    font-size:.55rem;
     font-weight:900;
 
     letter-spacing:.07em;
@@ -1672,11 +1911,9 @@ button{
 
 
 .modal-header h2{
-    margin:0;
+    color:#102b28;
 
-    color:var(--tinta);
-
-    font-size:.99rem;
+    font-size:1rem;
 }
 
 
@@ -1690,112 +1927,22 @@ button{
 
     flex-shrink:0;
 
-    border:
-        1px solid
-        #a99567;
-
-    border-radius:9px;
-
-    background:#e5cf98;
-
-    color:var(--tinta);
-
-    font-size:1.18rem;
-}
-
-
-/* =========================================
-   FORM MODAL
-========================================= */
-
-
-.form-grupo{
-    display:flex;
-    flex-direction:column;
-
-    gap:7px;
-
-    margin-bottom:15px;
-}
-
-
-.form-grupo label{
-    color:var(--tinta);
-
-    font-size:.65rem;
-    font-weight:900;
-}
-
-
-.form-grupo input,
-.form-grupo select,
-.form-grupo textarea{
-    width:100%;
-
-    border:
-        1px solid
-        #a99567;
-
+    border:1px solid rgba(186,166,118,.35);
     border-radius:10px;
 
-    background:
-        rgba(255,247,222,.84);
+    background:#ead9ad;
+    color:#2a403b;
 
-    color:var(--tinta);
-
-    font-size:.69rem;
-
-    outline:none;
+    font-size:1.2rem;
 }
-
-
-.form-grupo input,
-.form-grupo select{
-    min-height:43px;
-
-    padding:
-        0 10px;
-}
-
-
-.form-grupo textarea{
-    min-height:85px;
-
-    resize:vertical;
-
-    padding:10px;
-}
-
-
-.form-grupo input:focus,
-.form-grupo select:focus,
-.form-grupo textarea:focus{
-    border-color:var(--jade);
-
-    box-shadow:
-        0 0 0 3px
-        rgba(11,117,109,.12);
-}
-
-
-/* =========================================
-   ACCIONES MODAL
-========================================= */
 
 
 .modal-acciones{
     display:grid;
-
-    grid-template-columns:
-        1fr 1fr;
+    grid-template-columns:1fr 1fr;
 
     gap:8px;
 }
-
-
-/* =========================================
-   CONFIRMACIÓN
-========================================= */
 
 
 .modal-confirmacion{
@@ -1804,53 +1951,36 @@ button{
 
 
 .modal-confirmacion-icono{
-    width:54px;
-    height:54px;
+    width:52px;
+    height:52px;
 
     display:flex;
     align-items:center;
     justify-content:center;
 
-    margin:
-        0 auto
-        10px;
-
-    border:
-        1px solid
-        #79aa94;
+    margin:0 auto 10px;
 
     border-radius:50%;
 
-    background:
-        linear-gradient(
-            145deg,
-            #d2e9dd,
-            #bcd8ca
-        );
-
-    color:var(--jade-oscuro);
+    background:#d7ece6;
 
     font-size:1.05rem;
 }
 
 
 .modal-confirmacion h2{
-    margin:
-        0 0
-        6px;
+    margin-bottom:6px;
 
-    color:var(--tinta);
+    color:#102b28;
 
-    font-size:.97rem;
+    font-size:.98rem;
 }
 
 
 .modal-confirmacion > p{
-    margin:0;
+    color:#68746e;
 
-    color:#6c6554;
-
-    font-size:.62rem;
+    font-size:.63rem;
     line-height:1.4;
 }
 
@@ -1860,80 +1990,57 @@ button{
     flex-direction:column;
     align-items:center;
 
-    margin:
-        14px 0;
-
+    margin:14px 0;
     padding:14px;
 
-    border:
-        1px solid
-        #8ca99d;
-
-    border-radius:10px;
+    border:1px solid rgba(11,117,109,.12);
+    border-radius:12px;
 
     background:
         linear-gradient(
             145deg,
-            #d7e9e3,
-            #e7d29e
+            #d7ece6,
+            #fff8e8
         );
 }
 
 
 .confirmacion-resultado strong{
-    color:var(--tinta);
+    color:#102b28;
 
     font-size:1.35rem;
-    font-weight:900;
 }
 
 
 .confirmacion-resultado span{
     margin-top:2px;
 
-    color:#766f5c;
+    color:#68746e;
 
-    font-size:.52rem;
+    font-size:.53rem;
 }
-
-
-/* =========================================
-   TOAST
-========================================= */
 
 
 .toast{
     position:fixed;
-
     left:14px;
     right:14px;
     bottom:14px;
-
     z-index:200;
 
     display:flex;
     align-items:flex-start;
-
     gap:9px;
 
     padding:11px;
 
-    border:
-        1px solid
-        #86b7a2;
+    border:1px solid #cbe7d5;
+    border-radius:13px;
 
-    border-radius:11px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #dceee3,
-            #c8e1d4
-        );
+    background:#f0faf3;
 
     box-shadow:
-        0 15px 40px
-        rgba(29,56,48,.16);
+        0 15px 40px rgba(15,23,42,.13);
 }
 
 
@@ -1947,15 +2054,10 @@ button{
 
     flex-shrink:0;
 
-    border:
-        1px solid
-        #79aa94;
-
     border-radius:50%;
 
-    background:#c6e6d5;
-
-    color:#176c4a;
+    background:#d9f2e1;
+    color:#18794e;
 
     font-size:.65rem;
     font-weight:900;
@@ -1967,25 +2069,18 @@ button{
 
     margin-bottom:2px;
 
-    color:var(--tinta);
+    color:#182230;
 
-    font-size:.63rem;
+    font-size:.64rem;
 }
 
 
 .toast p{
-    margin:0;
+    color:#667085;
 
-    color:#5d6d65;
-
-    font-size:.55rem;
+    font-size:.56rem;
     line-height:1.35;
 }
-
-
-/* =========================================
-   HOVER
-========================================= */
 
 
 @media (hover:hover) and (pointer:fine){
@@ -1995,59 +2090,82 @@ button{
     .btn-secundario,
     .btn-principal,
     .btn-regresar,
-    .btn-volver,
-    .btn-cerrar-modal{
+    .btn-volver{
         transition:.18s ease;
     }
 
 
-    .btn-agregar:hover,
-    .btn-principal:hover,
-    .btn-regresar:hover{
-        filter:brightness(1.06);
+    .btn-agregar:hover{
+        background:#cde5df;
     }
 
 
     .btn-agregar.amarilla:hover{
-        filter:brightness(1.04);
+        background:#efd996;
     }
 
 
     .btn-agregar.roja:hover{
-        filter:brightness(1.04);
+        background:#edc2b9;
     }
 
 
-    .btn-eliminar-evento:hover{
-        background:#e8bbb2;
-    }
-
-
-    .btn-secundario:hover{
-        background:#d9bf82;
-    }
-
-
-    .btn-volver:hover,
+    .btn-eliminar-evento:hover,
+    .btn-secundario:hover,
     .btn-cerrar-modal:hover{
-        background:#dcc085;
+        background:#ddc894;
+    }
+
+
+    .btn-principal:hover,
+    .btn-regresar:hover{
+        transform:translateY(-1px);
+
+        box-shadow:
+            0 9px 20px rgba(11,117,109,.22);
+    }
+
+
+    .btn-volver:hover{
+        background:#ead9ad;
     }
 
 }
 
 
-/* =========================================
-   TABLET / PC
-========================================= */
+@media (min-width:620px){
+
+    .form-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+
+    .plantillas-cedula{
+        grid-template-columns:1fr 1fr;
+    }
+
+
+    .tiempos-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+
+    .cuerpo-tecnico-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+
+    .conducta-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+}
 
 
 @media (min-width:700px){
 
     .contenido{
-        padding:
-            22px
-            20px
-            38px;
+        padding:22px 20px 38px;
     }
 
 
@@ -2062,9 +2180,17 @@ button{
     }
 
 
+    .cedula-bloque,
+    .resumen-cedula,
+    .aviso-envio,
+    .acciones-finales,
+    .certificacion-cedula{
+        padding:18px;
+    }
+
+
     .resumen-grid{
-        grid-template-columns:
-            repeat(3,1fr);
+        grid-template-columns:repeat(3,1fr);
     }
 
 
@@ -2079,9 +2205,38 @@ button{
 }
 
 
-/* =========================================
-   CELULAR
-========================================= */
+@media (min-width:900px){
+
+    .contenido-cedula{
+        gap:18px;
+    }
+
+
+    .partido-hero{
+        padding:26px;
+    }
+
+
+    .hero-equipo strong{
+        font-size:.82rem;
+    }
+
+
+    .seccion-header h2{
+        font-size:1rem;
+    }
+
+
+    .plantilla-equipo-header{
+        padding:13px 14px;
+    }
+
+
+    .jugador-cedula-item{
+        min-height:40px;
+    }
+
+}
 
 
 @media (max-width:500px){
@@ -2108,79 +2263,35 @@ button{
         grid-template-columns:1fr;
     }
 
+
+    .tiempo-campos{
+        grid-template-columns:1fr;
+    }
+
+
+    .switch-linea{
+        align-items:flex-start;
+    }
+
+
+    .certificacion-check{
+        align-items:flex-start;
+    }
+
 }
-
-
-/* =========================================
-   CELULARES PEQUEÑOS
-========================================= */
 
 
 @media (max-width:430px){
 
-    body::after{
-        display:none;
+    .contenido{
+        padding-left:10px;
+        padding-right:10px;
     }
 
 
     .topbar{
-        padding:
-            8px
-            10px;
-    }
-
-
-    .topbar::after{
-        left:10px;
-        right:10px;
-    }
-
-
-    .btn-volver{
-        width:38px;
-        height:38px;
-    }
-
-
-    .topbar-logo{
-        width:39px;
-        height:39px;
-    }
-
-
-    .topbar-titulo strong{
-        max-width:150px;
-
-        font-size:.77rem;
-    }
-
-
-    .topbar-titulo span{
-        font-size:.55rem;
-    }
-
-
-    .estado-top{
-        padding:
-            4px
-            7px;
-
-        font-size:.52rem;
-    }
-
-
-    .contenido{
-        padding:
-            13px
-            10px
-            25px;
-    }
-
-
-    .partido-hero{
-        padding:15px;
-
-        border-radius:14px;
+        padding-left:10px;
+        padding-right:10px;
     }
 
 
@@ -2196,42 +2307,7 @@ button{
 
 
     .hero-equipo strong{
-        font-size:.63rem;
-    }
-
-
-    .hero-meta{
-        margin-bottom:12px;
-    }
-
-
-    .hero-meta span{
-        font-size:.48rem;
-    }
-
-
-    .cedula-bloque,
-    .resumen-cedula,
-    .aviso-envio,
-    .acciones-finales{
-        padding:12px;
-
-        border-radius:12px;
-    }
-
-
-    .marcador-editor{
-        gap:9px;
-
-        padding:12px;
-    }
-
-
-    .marcador-equipo input{
-        width:62px;
-        height:54px;
-
-        font-size:1.1rem;
+        font-size:.64rem;
     }
 
 
@@ -2251,13 +2327,12 @@ button{
     .modal-confirmacion{
         max-width:none;
 
-        padding:17px;
+        border-radius:20px 20px 13px 13px;
+    }
 
-        border-radius:
-            20px
-            20px
-            13px
-            13px;
+
+    .modal-acciones{
+        grid-template-columns:1fr;
     }
 
 }

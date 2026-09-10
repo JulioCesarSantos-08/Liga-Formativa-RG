@@ -3,7 +3,6 @@ import {
     getDocs,
     addDoc,
     doc,
-    getDoc,
     updateDoc,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
@@ -16,6 +15,11 @@ import {
 import {
     db
 } from "../firebase.js";
+
+import {
+    subirFotoJugador,
+    subirPDFCurp
+} from "../cloudinary.js";
 
 
 const estadoCarga = document.getElementById("estadoCarga");
@@ -55,7 +59,6 @@ const btnCancelarModal = document.getElementById("btnCancelarModal");
 const formJugador = document.getElementById("formJugador");
 
 const fotoJugador = document.getElementById("fotoJugador");
-const previewFoto = document.getElementById("previewFoto");
 const previewInicial = document.getElementById("previewInicial");
 const previewFotoImagen = document.getElementById("previewFotoImagen");
 
@@ -79,6 +82,8 @@ const toastTexto = document.getElementById("toastTexto");
 
 let usuarioActual = null;
 let equipoActual = null;
+
+let equiposAsignados = [];
 let jugadores = [];
 
 let jugadorSeleccionado = null;
@@ -88,6 +93,9 @@ let archivoCurpSeleccionado = null;
 let previewFotoURL = null;
 
 let toastTimer = null;
+
+let selectorEquiposContenedor = null;
+let selectorEquipos = null;
 
 
 const usuario = await protegerPagina([
@@ -136,7 +144,7 @@ function activarEventos() {
             }
 
             window.location.href =
-                `credenciales.html?equipo=${equipoActual.id}`;
+                `credenciales.html?equipo=${encodeURIComponent(equipoActual.id)}`;
 
         }
     );
@@ -151,7 +159,7 @@ function activarEventos() {
             }
 
             window.location.href =
-                `partidos.html?equipo=${equipoActual.id}`;
+                `partidos.html?equipo=${encodeURIComponent(equipoActual.id)}`;
 
         }
     );
@@ -342,7 +350,7 @@ async function iniciarPanel() {
 
     try {
 
-        await cargarEquipoAsignado();
+        await cargarEquiposAsignados();
 
 
         estadoCarga.classList.add(
@@ -352,13 +360,14 @@ async function iniciarPanel() {
 
         if (!equipoActual) {
 
-            sinEquipo.classList.remove(
-                "oculto"
-            );
+            mostrarSinEquipo();
 
             return;
 
         }
+
+
+        crearSelectorEquipos();
 
 
         cargarDatosEquipo();
@@ -389,21 +398,10 @@ async function iniciarPanel() {
         );
 
 
-        sinEquipo.classList.remove(
-            "oculto"
+        mostrarSinEquipo(
+            "No pudimos cargar tus equipos",
+            "Ocurrió un problema al consultar la información en Firebase."
         );
-
-
-        sinEquipo.querySelector(
-            "h1"
-        ).textContent =
-            "No pudimos cargar tu equipo";
-
-
-        sinEquipo.querySelectorAll(
-            "p"
-        )[0].textContent =
-            "Ocurrió un problema al consultar la información en Firebase.";
 
     }
 
@@ -414,7 +412,11 @@ function cargarIdentidadJefe() {
 
     const nombre =
         usuarioActual.nombre?.trim() ||
-        "Jefe de equipo";
+        (
+            usuarioActual.rol === "admin"
+                ? "Administrador"
+                : "Jefe de equipo"
+        );
 
 
     jefeNombre.textContent =
@@ -429,7 +431,7 @@ function cargarIdentidadJefe() {
 }
 
 
-async function cargarEquipoAsignado() {
+async function cargarEquiposAsignados() {
 
     const snapshot =
         await getDocs(
@@ -440,36 +442,108 @@ async function cargarEquipoAsignado() {
         );
 
 
-    const equipos =
-        snapshot.docs.map(
-            documento => ({
-                id: documento.id,
-                ...documento.data()
-            })
+    const todosLosEquipos =
+        snapshot.docs
+            .map(
+                documento => ({
+                    id: documento.id,
+                    ...documento.data()
+                })
+            )
+            .sort(
+                (a, b) =>
+                    (a.nombre || "")
+                        .localeCompare(
+                            b.nombre || "",
+                            "es"
+                        )
+            );
+
+
+    const parametros =
+        new URLSearchParams(
+            window.location.search
         );
+
+
+    const equipoIdURL =
+        parametros.get("equipo");
 
 
     if (
         usuarioActual.rol === "admin"
     ) {
 
-        const parametros =
-            new URLSearchParams(
-                window.location.search
+        if (!equipoIdURL) {
+
+            equipoActual =
+                null;
+
+            equiposAsignados =
+                [];
+
+            return;
+
+        }
+
+
+        const equipoEncontrado =
+            todosLosEquipos.find(
+                equipo =>
+                    equipo.id === equipoIdURL
+            ) || null;
+
+
+        equipoActual =
+            equipoEncontrado;
+
+
+        equiposAsignados =
+            equipoEncontrado
+                ? [equipoEncontrado]
+                : [];
+
+
+        return;
+
+    }
+
+
+    equiposAsignados =
+        todosLosEquipos.filter(
+            equipo =>
+                equipo.responsableId === usuarioActual.uid ||
+                equipo.responsableId === usuarioActual.id
+        );
+
+
+    if (
+        !equiposAsignados.length
+    ) {
+
+        equipoActual =
+            null;
+
+        return;
+
+    }
+
+
+    if (
+        equipoIdURL
+    ) {
+
+        const equipoDeURL =
+            equiposAsignados.find(
+                equipo =>
+                    equipo.id === equipoIdURL
             );
 
 
-        const equipoId =
-            parametros.get("equipo");
-
-
-        if (equipoId) {
+        if (equipoDeURL) {
 
             equipoActual =
-                equipos.find(
-                    equipo =>
-                        equipo.id === equipoId
-                ) || null;
+                equipoDeURL;
 
             return;
 
@@ -479,16 +553,482 @@ async function cargarEquipoAsignado() {
 
 
     equipoActual =
-        equipos.find(
+        equiposAsignados[0];
+
+
+    actualizarEquipoEnURL(
+        equipoActual.id
+    );
+
+}
+
+
+function crearSelectorEquipos() {
+
+    eliminarSelectorEquipos();
+
+
+    if (
+        usuarioActual.rol === "admin" ||
+        equiposAsignados.length <= 1
+    ) {
+
+        return;
+
+    }
+
+
+    agregarEstilosSelectorEquipos();
+
+
+    selectorEquiposContenedor =
+        document.createElement(
+            "section"
+        );
+
+
+    selectorEquiposContenedor.className =
+        "selector-equipos-jefe";
+
+
+    selectorEquiposContenedor.innerHTML = `
+
+        <div class="selector-equipos-jefe-icono">
+            ⚽
+        </div>
+
+        <div class="selector-equipos-jefe-contenido">
+
+            <span class="selector-equipos-jefe-etiqueta">
+                Equipo que estás administrando
+            </span>
+
+            <strong>
+                Tienes ${equiposAsignados.length} equipos asignados
+            </strong>
+
+            <select
+                id="selectorEquipoJefe"
+                aria-label="Seleccionar equipo"
+            >
+            </select>
+
+        </div>
+
+    `;
+
+
+    contenidoEquipo.insertBefore(
+        selectorEquiposContenedor,
+        contenidoEquipo.firstChild
+    );
+
+
+    selectorEquipos =
+        document.getElementById(
+            "selectorEquipoJefe"
+        );
+
+
+    equiposAsignados.forEach(
+        equipo => {
+
+            const opcion =
+                document.createElement(
+                    "option"
+                );
+
+
+            opcion.value =
+                equipo.id;
+
+
+            opcion.textContent =
+                equipo.categoriaNombre
+                    ? `${equipo.nombre || "Equipo"} — ${equipo.categoriaNombre}`
+                    : equipo.nombre || "Equipo";
+
+
+            selectorEquipos.appendChild(
+                opcion
+            );
+
+        }
+    );
+
+
+    selectorEquipos.value =
+        equipoActual.id;
+
+
+    selectorEquipos.addEventListener(
+        "change",
+        cambiarEquipoSeleccionado
+    );
+
+}
+
+
+async function cambiarEquipoSeleccionado() {
+
+    if (!selectorEquipos) {
+        return;
+    }
+
+
+    const equipoId =
+        selectorEquipos.value;
+
+
+    const nuevoEquipo =
+        equiposAsignados.find(
             equipo =>
-                equipo.responsableId === usuarioActual.uid ||
-                equipo.responsableId === usuarioActual.id
-        ) || null;
+                equipo.id === equipoId
+        );
+
+
+    if (!nuevoEquipo) {
+        return;
+    }
+
+
+    if (
+        equipoActual?.id === nuevoEquipo.id
+    ) {
+        return;
+    }
+
+
+    selectorEquipos.disabled =
+        true;
+
+
+    cerrarModalJugador();
+
+
+    equipoActual =
+        nuevoEquipo;
+
+
+    jugadores =
+        [];
+
+
+    buscarJugador.value =
+        "";
+
+
+    actualizarEquipoEnURL(
+        equipoActual.id
+    );
+
+
+    cargarDatosEquipo();
+
+
+    gridJugadores.innerHTML =
+        "";
+
+
+    sinJugadores.classList.add(
+        "oculto"
+    );
+
+
+    totalJugadores.textContent =
+        "0";
+
+    totalActivos.textContent =
+        "0";
+
+    totalSuspendidos.textContent =
+        "0";
+
+    totalCredenciales.textContent =
+        "0";
+
+
+    try {
+
+        await cargarJugadores();
+
+
+        mostrarToast(
+            "exito",
+            "Equipo seleccionado",
+            `Ahora estás administrando ${equipoActual.nombre || "este equipo"}.`
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Error cambiando de equipo:",
+            error
+        );
+
+
+        mostrarToast(
+            "error",
+            "No se pudo cambiar de equipo",
+            "Ocurrió un problema al cargar la plantilla."
+        );
+
+    } finally {
+
+        selectorEquipos.disabled =
+            false;
+
+    }
+
+}
+
+
+function actualizarEquipoEnURL(
+    equipoId
+) {
+
+    if (!equipoId) {
+        return;
+    }
+
+
+    const url =
+        new URL(
+            window.location.href
+        );
+
+
+    url.searchParams.set(
+        "equipo",
+        equipoId
+    );
+
+
+    window.history.replaceState(
+        {},
+        "",
+        url.toString()
+    );
+
+}
+
+
+function eliminarSelectorEquipos() {
+
+    if (
+        selectorEquiposContenedor
+    ) {
+
+        selectorEquiposContenedor.remove();
+
+    }
+
+
+    selectorEquiposContenedor =
+        null;
+
+
+    selectorEquipos =
+        null;
+
+}
+
+
+function agregarEstilosSelectorEquipos() {
+
+    if (
+        document.getElementById(
+            "estilosSelectorEquiposJefe"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    const style =
+        document.createElement(
+            "style"
+        );
+
+
+    style.id =
+        "estilosSelectorEquiposJefe";
+
+
+    style.textContent = `
+
+        .selector-equipos-jefe{
+            width:100%;
+            box-sizing:border-box;
+            display:flex;
+            align-items:center;
+            gap:14px;
+            margin:0 0 22px;
+            padding:16px;
+            border:1px solid rgba(11,117,109,.22);
+            border-radius:18px;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,248,232,.97),
+                    rgba(226,201,144,.88)
+                );
+            box-shadow:
+                0 8px 22px rgba(55,43,20,.08);
+        }
+
+        .selector-equipos-jefe-icono{
+            width:48px;
+            height:48px;
+            flex:0 0 48px;
+            display:grid;
+            place-items:center;
+            border-radius:50%;
+            background:#0b756d;
+            color:#fff;
+            font-size:23px;
+            box-shadow:
+                inset 0 0 0 3px rgba(255,255,255,.18);
+        }
+
+        .selector-equipos-jefe-contenido{
+            width:100%;
+            min-width:0;
+            display:flex;
+            flex-direction:column;
+            gap:4px;
+        }
+
+        .selector-equipos-jefe-etiqueta{
+            color:#68746e;
+            font-size:.76rem;
+            font-weight:700;
+            text-transform:uppercase;
+            letter-spacing:.04em;
+        }
+
+        .selector-equipos-jefe-contenido strong{
+            color:#102b28;
+            font-size:.93rem;
+        }
+
+        #selectorEquipoJefe{
+            width:100%;
+            min-height:44px;
+            box-sizing:border-box;
+            margin-top:5px;
+            padding:9px 38px 9px 12px;
+            border:1px solid #baa676;
+            border-radius:12px;
+            outline:none;
+            background:#fff8e8;
+            color:#213732;
+            font:inherit;
+            font-weight:700;
+            cursor:pointer;
+        }
+
+        #selectorEquipoJefe:focus{
+            border-color:#0b756d;
+            box-shadow:
+                0 0 0 3px rgba(11,117,109,.12);
+        }
+
+        #selectorEquipoJefe:disabled{
+            opacity:.65;
+            cursor:wait;
+        }
+
+        @media (max-width:560px){
+
+            .selector-equipos-jefe{
+                align-items:flex-start;
+                padding:13px;
+            }
+
+            .selector-equipos-jefe-icono{
+                width:42px;
+                height:42px;
+                flex-basis:42px;
+                font-size:20px;
+            }
+
+        }
+
+    `;
+
+
+    document.head.appendChild(
+        style
+    );
+
+}
+
+
+function mostrarSinEquipo(
+    titulo = "",
+    texto = ""
+) {
+
+    contenidoEquipo.classList.add(
+        "oculto"
+    );
+
+
+    navegacionMovil.classList.add(
+        "oculto"
+    );
+
+
+    sinEquipo.classList.remove(
+        "oculto"
+    );
+
+
+    const tituloElemento =
+        sinEquipo.querySelector(
+            "h1"
+        );
+
+
+    const parrafos =
+        sinEquipo.querySelectorAll(
+            "p"
+        );
+
+
+    if (
+        titulo &&
+        tituloElemento
+    ) {
+
+        tituloElemento.textContent =
+            titulo;
+
+    }
+
+
+    if (
+        texto &&
+        parrafos[0]
+    ) {
+
+        parrafos[0].textContent =
+            texto;
+
+    }
 
 }
 
 
 function cargarDatosEquipo() {
+
+    if (!equipoActual) {
+        return;
+    }
+
 
     equipoNombre.textContent =
         equipoActual.nombre ||
@@ -523,6 +1063,11 @@ function cargarDatosEquipo() {
 
 function cargarLogoEquipo() {
 
+    if (!equipoActual) {
+        return;
+    }
+
+
     if (
         equipoActual.logoUrl
     ) {
@@ -539,6 +1084,10 @@ function cargarLogoEquipo() {
     }
 
 
+    equipoLogo.innerHTML =
+        "";
+
+
     equipoLogo.textContent =
         obtenerInicial(
             equipoActual.nombre ||
@@ -549,6 +1098,20 @@ function cargarLogoEquipo() {
 
 
 async function cargarJugadores() {
+
+    if (!equipoActual) {
+
+        jugadores =
+            [];
+
+        actualizarResumen();
+
+        aplicarBusqueda();
+
+        return;
+
+    }
+
 
     const snapshot =
         await getDocs(
@@ -657,7 +1220,9 @@ function aplicarBusqueda() {
 }
 
 
-function renderizarJugadores(lista) {
+function renderizarJugadores(
+    lista
+) {
 
     gridJugadores.innerHTML =
         "";
@@ -696,7 +1261,11 @@ function renderizarJugadores(lista) {
 
 
             card.className =
-                `jugador-card ${suspendido ? "suspendido" : ""}`;
+                `jugador-card ${
+                    suspendido
+                        ? "suspendido"
+                        : ""
+                }`;
 
 
             const foto =
@@ -1052,12 +1621,6 @@ function abrirEditarJugador(
         "";
 
 
-    archivoCurpNombre.textContent =
-        jugador.curpArchivoUrl
-            ? "Documento cargado"
-            : "Seleccionar PDF";
-
-
     fotoSeleccionada =
         null;
 
@@ -1095,6 +1658,12 @@ function abrirEditarJugador(
             );
 
     }
+
+
+    archivoCurpNombre.textContent =
+        jugador.curpArchivoUrl
+            ? "Documento cargado"
+            : "Seleccionar PDF";
 
 
     modalJugador.classList.remove(
@@ -1287,29 +1856,73 @@ async function guardarJugador(
             null;
 
 
+        let fotoPublicId =
+            jugadorSeleccionado?.fotoPublicId ||
+            null;
+
+
         let curpArchivoUrl =
             jugadorSeleccionado?.curpArchivoUrl ||
             null;
 
 
-        if (fotoSeleccionada) {
+        let curpArchivoPublicId =
+            jugadorSeleccionado?.curpArchivoPublicId ||
+            null;
 
-            console.log(
-                "Foto preparada para Cloudinary:",
-                fotoSeleccionada.name
-            );
+
+        if (
+            fotoSeleccionada
+        ) {
+
+            btnGuardarJugador.textContent =
+                "Subiendo fotografía...";
+
+
+            const resultadoFoto =
+                await subirFotoJugador(
+                    fotoSeleccionada
+                );
+
+
+            fotoUrl =
+                resultadoFoto.url;
+
+
+            fotoPublicId =
+                resultadoFoto.publicId;
 
         }
 
 
-        if (archivoCurpSeleccionado) {
+        if (
+            archivoCurpSeleccionado
+        ) {
 
-            console.log(
-                "PDF CURP preparado para Cloudinary:",
-                archivoCurpSeleccionado.name
-            );
+            btnGuardarJugador.textContent =
+                "Subiendo CURP...";
+
+
+            const resultadoCurp =
+                await subirPDFCurp(
+                    archivoCurpSeleccionado
+                );
+
+
+            curpArchivoUrl =
+                resultadoCurp.url;
+
+
+            curpArchivoPublicId =
+                resultadoCurp.publicId;
 
         }
+
+
+        btnGuardarJugador.textContent =
+            jugadorSeleccionado
+                ? "Guardando cambios..."
+                : "Registrando jugador...";
 
 
         const datos = {
@@ -1345,7 +1958,11 @@ async function guardarJugador(
 
             fotoUrl,
 
+            fotoPublicId,
+
             curpArchivoUrl,
+
+            curpArchivoPublicId,
 
             activo:
                 jugadorSeleccionado?.activo !== false,
@@ -1382,7 +1999,9 @@ async function guardarJugador(
         };
 
 
-        if (jugadorSeleccionado) {
+        if (
+            jugadorSeleccionado
+        ) {
 
             await updateDoc(
                 doc(
@@ -1463,6 +2082,7 @@ async function guardarJugador(
         mostrarToast(
             "error",
             "No se pudo guardar",
+            error?.message ||
             "Ocurrió un problema al registrar al jugador."
         );
 
@@ -1483,6 +2103,11 @@ async function guardarJugador(
 
 
 async function actualizarTotalJugadoresEquipo() {
+
+    if (!equipoActual) {
+        return;
+    }
+
 
     const nuevoTotal =
         jugadores.length;
@@ -1506,6 +2131,23 @@ async function actualizarTotalJugadoresEquipo() {
 
     equipoActual.totalJugadores =
         nuevoTotal;
+
+
+    const equipoEnLista =
+        equiposAsignados.find(
+            equipo =>
+                equipo.id === equipoActual.id
+        );
+
+
+    if (
+        equipoEnLista
+    ) {
+
+        equipoEnLista.totalJugadores =
+            nuevoTotal;
+
+    }
 
 }
 
@@ -1703,7 +2345,9 @@ function actualizarInicialPreview() {
             "oculto"
         )
     ) {
+
         return;
+
     }
 
 
@@ -1755,7 +2399,9 @@ function limpiarPreviewFoto() {
 
 function limpiarPreviewTemporal() {
 
-    if (previewFotoURL) {
+    if (
+        previewFotoURL
+    ) {
 
         URL.revokeObjectURL(
             previewFotoURL
@@ -2041,7 +2687,7 @@ function escaparHTML(
 ) {
 
     return String(
-        texto ||
+        texto ??
         ""
     )
         .replaceAll("&", "&amp;")

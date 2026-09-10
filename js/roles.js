@@ -52,6 +52,7 @@ export async function obtenerUsuarioActual() {
 
                     resolve({
                         firebaseUser: usuario,
+                        uid: usuario.uid,
                         ...documento.data()
                     });
 
@@ -78,33 +79,46 @@ export async function protegerPagina(rolesPermitidos = []) {
 
     try {
 
-        const usuario = await obtenerUsuarioActual();
+        const usuario =
+            await obtenerUsuarioActual();
 
         if (!usuario) {
 
-            window.location.href = "login.html";
+            window.location.href =
+                "login.html";
+
             return null;
 
         }
+
 
         if (usuario.activo === false) {
 
             await signOut(auth);
 
-            window.location.href = "login.html";
+            window.location.href =
+                "login.html";
+
             return null;
 
         }
+
 
         if (
             rolesPermitidos.length > 0 &&
-            !rolesPermitidos.includes(usuario.rol)
+            !rolesPermitidos.includes(
+                usuario.rol
+            )
         ) {
 
-            redirigirSegunRol(usuario.rol);
+            redirigirSegunRol(
+                usuario.rol
+            );
+
             return null;
 
         }
+
 
         return usuario;
 
@@ -115,7 +129,8 @@ export async function protegerPagina(rolesPermitidos = []) {
             error
         );
 
-        window.location.href = "login.html";
+        window.location.href =
+            "login.html";
 
         return null;
 
@@ -124,41 +139,146 @@ export async function protegerPagina(rolesPermitidos = []) {
 }
 
 
-export function redirigirSegunRol(rol) {
+export async function protegerPaginaPublica() {
+
+    try {
+
+        const usuario =
+            await obtenerUsuarioActual();
+
+        if (!usuario) {
+
+            window.location.href =
+                "login.html";
+
+            return null;
+
+        }
+
+
+        if (usuario.activo === false) {
+
+            await signOut(auth);
+
+            window.location.href =
+                "login.html";
+
+            return null;
+
+        }
+
+
+        const rolesPermitidos = [
+            "publico",
+            "admin",
+            "arbitro",
+            "jefeEquipo"
+        ];
+
+
+        if (
+            !rolesPermitidos.includes(
+                usuario.rol
+            )
+        ) {
+
+            console.warn(
+                "Rol no reconocido:",
+                usuario.rol
+            );
+
+            await signOut(auth);
+
+            window.location.href =
+                "login.html";
+
+            return null;
+
+        }
+
+
+        return usuario;
+
+    } catch (error) {
+
+        console.error(
+            "Error verificando acceso público:",
+            error
+        );
+
+        window.location.href =
+            "login.html";
+
+        return null;
+
+    }
+
+}
+
+
+export function obtenerPanelSegunRol(rol) {
 
     switch (rol) {
 
         case "admin":
 
-            window.location.href =
-                "admin.html";
+            return {
+                url: "admin.html",
+                texto:
+                    "Volver al panel de administrador",
+                icono: "🛠️"
+            };
 
-            break;
 
         case "arbitro":
 
-            window.location.href =
-                "arbitro.html";
+            return {
+                url: "arbitro.html",
+                texto:
+                    "Volver a mi panel arbitral",
+                icono: "⚽"
+            };
 
-            break;
 
         case "jefeEquipo":
 
-            window.location.href =
-                "jefeEquipo.html";
+            return {
+                url: "jefeEquipo.html",
+                texto:
+                    "Volver a mi panel",
+                icono: "🛡️"
+            };
 
-            break;
 
         case "publico":
 
         default:
 
-            window.location.href =
-                "publico.html";
-
-            break;
+            return null;
 
     }
+
+}
+
+
+export function redirigirSegunRol(rol) {
+
+    const panel =
+        obtenerPanelSegunRol(rol);
+
+
+    if (panel) {
+
+        window.location.href =
+            panel.url;
+
+        return;
+
+    }
+
+
+    window.location.href =
+        "publico.html";
 
 }
 

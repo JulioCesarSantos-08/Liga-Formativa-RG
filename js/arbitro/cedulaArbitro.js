@@ -18,80 +18,325 @@ import {
 } from "../firebase.js";
 
 
-const btnVolverPartido = document.getElementById("btnVolverPartido");
-const estadoCedulaTop = document.getElementById("estadoCedulaTop");
+const btnVolverPartido =
+    document.getElementById("btnVolverPartido");
 
-const estadoCarga = document.getElementById("estadoCarga");
-const estadoError = document.getElementById("estadoError");
-const estadoErrorTexto = document.getElementById("estadoErrorTexto");
-const contenidoCedula = document.getElementById("contenidoCedula");
+const estadoCedulaTop =
+    document.getElementById("estadoCedulaTop");
 
-const heroCategoria = document.getElementById("heroCategoria");
-const heroJornada = document.getElementById("heroJornada");
-const logoLocal = document.getElementById("logoLocal");
-const logoVisitante = document.getElementById("logoVisitante");
-const nombreLocal = document.getElementById("nombreLocal");
-const nombreVisitante = document.getElementById("nombreVisitante");
-const heroFecha = document.getElementById("heroFecha");
-const heroHora = document.getElementById("heroHora");
-const heroCampo = document.getElementById("heroCampo");
+const estadoCarga =
+    document.getElementById("estadoCarga");
 
-const marcadorNombreLocal = document.getElementById("marcadorNombreLocal");
-const marcadorNombreVisitante = document.getElementById("marcadorNombreVisitante");
-const golesLocal = document.getElementById("golesLocal");
-const golesVisitante = document.getElementById("golesVisitante");
+const estadoError =
+    document.getElementById("estadoError");
 
-const btnAgregarGol = document.getElementById("btnAgregarGol");
-const listaGoles = document.getElementById("listaGoles");
-const sinGoles = document.getElementById("sinGoles");
+const estadoErrorTexto =
+    document.getElementById("estadoErrorTexto");
 
-const btnAgregarAmarilla = document.getElementById("btnAgregarAmarilla");
-const listaAmarillas = document.getElementById("listaAmarillas");
-const sinAmarillas = document.getElementById("sinAmarillas");
+const contenidoCedula =
+    document.getElementById("contenidoCedula");
 
-const btnAgregarRoja = document.getElementById("btnAgregarRoja");
-const listaRojas = document.getElementById("listaRojas");
-const sinRojas = document.getElementById("sinRojas");
 
-const incidencias = document.getElementById("incidencias");
-const contadorIncidencias = document.getElementById("contadorIncidencias");
+const heroCategoria =
+    document.getElementById("heroCategoria");
 
-const resumenResultado = document.getElementById("resumenResultado");
-const resumenGoles = document.getElementById("resumenGoles");
-const resumenAmarillas = document.getElementById("resumenAmarillas");
-const resumenRojas = document.getElementById("resumenRojas");
-const resumenJugadores = document.getElementById("resumenJugadores");
-const resumenArbitro = document.getElementById("resumenArbitro");
+const heroJornada =
+    document.getElementById("heroJornada");
 
-const btnGuardarBorrador = document.getElementById("btnGuardarBorrador");
-const btnEnviarCedula = document.getElementById("btnEnviarCedula");
+const logoLocal =
+    document.getElementById("logoLocal");
 
-const modalEvento = document.getElementById("modalEvento");
-const modalEventoMini = document.getElementById("modalEventoMini");
-const modalEventoTitulo = document.getElementById("modalEventoTitulo");
-const btnCerrarEvento = document.getElementById("btnCerrarEvento");
+const logoVisitante =
+    document.getElementById("logoVisitante");
 
-const eventoEquipo = document.getElementById("eventoEquipo");
-const eventoJugador = document.getElementById("eventoJugador");
-const eventoMinuto = document.getElementById("eventoMinuto");
-const eventoTipoRoja = document.getElementById("eventoTipoRoja");
-const eventoMotivo = document.getElementById("eventoMotivo");
+const nombreLocal =
+    document.getElementById("nombreLocal");
 
-const grupoMinuto = document.getElementById("grupoMinuto");
-const grupoTipoRoja = document.getElementById("grupoTipoRoja");
+const nombreVisitante =
+    document.getElementById("nombreVisitante");
 
-const btnCancelarEvento = document.getElementById("btnCancelarEvento");
-const btnGuardarEvento = document.getElementById("btnGuardarEvento");
+const heroFecha =
+    document.getElementById("heroFecha");
 
-const modalConfirmarEnvio = document.getElementById("modalConfirmarEnvio");
-const confirmarResultado = document.getElementById("confirmarResultado");
-const btnCancelarEnvio = document.getElementById("btnCancelarEnvio");
-const btnConfirmarEnvio = document.getElementById("btnConfirmarEnvio");
+const heroHora =
+    document.getElementById("heroHora");
 
-const toast = document.getElementById("toast");
-const toastIcono = document.getElementById("toastIcono");
-const toastTitulo = document.getElementById("toastTitulo");
-const toastTexto = document.getElementById("toastTexto");
+const heroCampo =
+    document.getElementById("heroCampo");
+
+
+const arbitroCentral =
+    document.getElementById("arbitroCentral");
+
+const arbitroAsistente1 =
+    document.getElementById("arbitroAsistente1");
+
+const arbitroAsistente2 =
+    document.getElementById("arbitroAsistente2");
+
+
+const plantillaNombreLocal =
+    document.getElementById("plantillaNombreLocal");
+
+const plantillaNombreVisitante =
+    document.getElementById("plantillaNombreVisitante");
+
+const totalPresentesLocal =
+    document.getElementById("totalPresentesLocal");
+
+const totalPresentesVisitante =
+    document.getElementById("totalPresentesVisitante");
+
+const listaJugadoresLocal =
+    document.getElementById("listaJugadoresLocal");
+
+const listaJugadoresVisitante =
+    document.getElementById("listaJugadoresVisitante");
+
+
+const inicioPrimerTiempo =
+    document.getElementById("inicioPrimerTiempo");
+
+const finPrimerTiempo =
+    document.getElementById("finPrimerTiempo");
+
+const inicioSegundoTiempo =
+    document.getElementById("inicioSegundoTiempo");
+
+const finSegundoTiempo =
+    document.getElementById("finSegundoTiempo");
+
+
+const marcadorNombreLocal =
+    document.getElementById("marcadorNombreLocal");
+
+const marcadorNombreVisitante =
+    document.getElementById("marcadorNombreVisitante");
+
+const golesLocal =
+    document.getElementById("golesLocal");
+
+const golesVisitante =
+    document.getElementById("golesVisitante");
+
+
+const huboPenales =
+    document.getElementById("huboPenales");
+
+const bloquePenales =
+    document.getElementById("bloquePenales");
+
+const penalesNombreLocal =
+    document.getElementById("penalesNombreLocal");
+
+const penalesNombreVisitante =
+    document.getElementById("penalesNombreVisitante");
+
+const penalesLocal =
+    document.getElementById("penalesLocal");
+
+const penalesVisitante =
+    document.getElementById("penalesVisitante");
+
+
+const btnAgregarGol =
+    document.getElementById("btnAgregarGol");
+
+const listaGoles =
+    document.getElementById("listaGoles");
+
+const sinGoles =
+    document.getElementById("sinGoles");
+
+
+const btnAgregarAmarilla =
+    document.getElementById("btnAgregarAmarilla");
+
+const listaAmarillas =
+    document.getElementById("listaAmarillas");
+
+const sinAmarillas =
+    document.getElementById("sinAmarillas");
+
+
+const btnAgregarRoja =
+    document.getElementById("btnAgregarRoja");
+
+const listaRojas =
+    document.getElementById("listaRojas");
+
+const sinRojas =
+    document.getElementById("sinRojas");
+
+
+const entrenadorLocal =
+    document.getElementById("entrenadorLocal");
+
+const medicoLocal =
+    document.getElementById("medicoLocal");
+
+const auxiliarLocal =
+    document.getElementById("auxiliarLocal");
+
+const entrenadorVisitante =
+    document.getElementById("entrenadorVisitante");
+
+const medicoVisitante =
+    document.getElementById("medicoVisitante");
+
+const auxiliarVisitante =
+    document.getElementById("auxiliarVisitante");
+
+const tecnicoNombreLocal =
+    document.getElementById("tecnicoNombreLocal");
+
+const tecnicoNombreVisitante =
+    document.getElementById("tecnicoNombreVisitante");
+
+
+const capitanLocal =
+    document.getElementById("capitanLocal");
+
+const capitanVisitante =
+    document.getElementById("capitanVisitante");
+
+
+const estadoTerreno =
+    document.getElementById("estadoTerreno");
+
+const contadorTerreno =
+    document.getElementById("contadorTerreno");
+
+
+const conductaNombreLocal =
+    document.getElementById("conductaNombreLocal");
+
+const conductaNombreVisitante =
+    document.getElementById("conductaNombreVisitante");
+
+const conductaPublicoLocal =
+    document.getElementById("conductaPublicoLocal");
+
+const conductaPublicoVisitante =
+    document.getElementById("conductaPublicoVisitante");
+
+const observacionPublicoLocal =
+    document.getElementById("observacionPublicoLocal");
+
+const observacionPublicoVisitante =
+    document.getElementById("observacionPublicoVisitante");
+
+
+const incidencias =
+    document.getElementById("incidencias");
+
+const contadorIncidencias =
+    document.getElementById("contadorIncidencias");
+
+
+const resumenResultado =
+    document.getElementById("resumenResultado");
+
+const resumenGoles =
+    document.getElementById("resumenGoles");
+
+const resumenAmarillas =
+    document.getElementById("resumenAmarillas");
+
+const resumenRojas =
+    document.getElementById("resumenRojas");
+
+const resumenJugadores =
+    document.getElementById("resumenJugadores");
+
+const resumenArbitro =
+    document.getElementById("resumenArbitro");
+
+const resumenPenalesContenedor =
+    document.getElementById("resumenPenalesContenedor");
+
+const resumenPenales =
+    document.getElementById("resumenPenales");
+
+
+const confirmarInformacion =
+    document.getElementById("confirmarInformacion");
+
+
+const btnGuardarBorrador =
+    document.getElementById("btnGuardarBorrador");
+
+const btnEnviarCedula =
+    document.getElementById("btnEnviarCedula");
+
+
+const modalEvento =
+    document.getElementById("modalEvento");
+
+const modalEventoMini =
+    document.getElementById("modalEventoMini");
+
+const modalEventoTitulo =
+    document.getElementById("modalEventoTitulo");
+
+const btnCerrarEvento =
+    document.getElementById("btnCerrarEvento");
+
+const eventoEquipo =
+    document.getElementById("eventoEquipo");
+
+const eventoJugador =
+    document.getElementById("eventoJugador");
+
+const eventoMinuto =
+    document.getElementById("eventoMinuto");
+
+const eventoTipoRoja =
+    document.getElementById("eventoTipoRoja");
+
+const eventoMotivo =
+    document.getElementById("eventoMotivo");
+
+const grupoTipoRoja =
+    document.getElementById("grupoTipoRoja");
+
+const btnCancelarEvento =
+    document.getElementById("btnCancelarEvento");
+
+const btnGuardarEvento =
+    document.getElementById("btnGuardarEvento");
+
+
+const modalConfirmarEnvio =
+    document.getElementById("modalConfirmarEnvio");
+
+const confirmarResultado =
+    document.getElementById("confirmarResultado");
+
+const confirmarPenalesContenedor =
+    document.getElementById("confirmarPenalesContenedor");
+
+const confirmarPenales =
+    document.getElementById("confirmarPenales");
+
+const btnCancelarEnvio =
+    document.getElementById("btnCancelarEnvio");
+
+const btnConfirmarEnvio =
+    document.getElementById("btnConfirmarEnvio");
+
+
+const toast =
+    document.getElementById("toast");
+
+const toastIcono =
+    document.getElementById("toastIcono");
+
+const toastTitulo =
+    document.getElementById("toastTitulo");
+
+const toastTexto =
+    document.getElementById("toastTexto");
 
 
 let usuarioActual = null;
@@ -126,7 +371,8 @@ const usuario = await protegerPagina([
 
 if (usuario) {
 
-    usuarioActual = usuario;
+    usuarioActual =
+        usuario;
 
     activarEventos();
 
@@ -165,12 +411,63 @@ function activarEventos() {
     );
 
 
+    penalesLocal.addEventListener(
+        "input",
+        () => {
+
+            normalizarMarcador(
+                penalesLocal
+            );
+
+            actualizarResumen();
+
+        }
+    );
+
+
+    penalesVisitante.addEventListener(
+        "input",
+        () => {
+
+            normalizarMarcador(
+                penalesVisitante
+            );
+
+            actualizarResumen();
+
+        }
+    );
+
+
+    huboPenales.addEventListener(
+        "change",
+        () => {
+
+            actualizarBloquePenales();
+
+            actualizarResumen();
+
+        }
+    );
+
+
     incidencias.addEventListener(
         "input",
         () => {
 
             contadorIncidencias.textContent =
                 incidencias.value.length;
+
+        }
+    );
+
+
+    estadoTerreno.addEventListener(
+        "input",
+        () => {
+
+            contadorTerreno.textContent =
+                estadoTerreno.value.length;
 
         }
     );
@@ -281,7 +578,8 @@ function activarEventos() {
         event => {
 
             if (
-                event.target === modalConfirmarEnvio
+                event.target ===
+                modalConfirmarEnvio
             ) {
 
                 cerrarConfirmacionEnvio();
@@ -299,12 +597,16 @@ function activarEventos() {
             if (
                 event.key !== "Escape"
             ) {
+
                 return;
+
             }
 
 
             if (
-                !modalEvento.classList.contains("oculto")
+                !modalEvento.classList.contains(
+                    "oculto"
+                )
             ) {
 
                 cerrarModalEvento();
@@ -315,7 +617,9 @@ function activarEventos() {
 
 
             if (
-                !modalConfirmarEnvio.classList.contains("oculto")
+                !modalConfirmarEnvio.classList.contains(
+                    "oculto"
+                )
             ) {
 
                 cerrarConfirmacionEnvio();
@@ -352,7 +656,7 @@ async function iniciarCedula() {
 
 
     btnVolverPartido.href =
-        `partidoArbitro.html?id=${partidoId}`;
+        `partidoArbitro.html?id=${encodeURIComponent(partidoId)}`;
 
 
     try {
@@ -367,7 +671,9 @@ async function iniciarCedula() {
             );
 
 
-        if (!snapshotPartido.exists()) {
+        if (
+            !snapshotPartido.exists()
+        ) {
 
             mostrarError(
                 "El partido solicitado no existe."
@@ -379,12 +685,16 @@ async function iniciarCedula() {
 
 
         partido = {
-            id: snapshotPartido.id,
+            id:
+                snapshotPartido.id,
+
             ...snapshotPartido.data()
         };
 
 
-        if (!tienePermisoPartido()) {
+        if (
+            !tienePermisoPartido()
+        ) {
 
             mostrarError(
                 "Este partido no está asignado a tu cuenta."
@@ -415,12 +725,18 @@ async function iniciarCedula() {
         ]);
 
 
+        cargarInformacionPartido();
+
+        cargarPlantillas();
+
+        cargarCapitanes();
+
+
         await cargarCedulaExistente();
 
 
-        cargarInformacionPartido();
-
         renderizarTodo();
+
 
         estadoCarga.classList.add(
             "oculto"
@@ -460,8 +776,10 @@ function tienePermisoPartido() {
 
 
     return (
-        partido.arbitroId === usuarioActual.uid ||
-        partido.arbitroId === usuarioActual.id
+        partido.arbitroId ===
+            usuarioActual.uid ||
+        partido.arbitroId ===
+            usuarioActual.id
     );
 
 }
@@ -479,9 +797,12 @@ async function cargarAsistencia() {
         );
 
 
-    if (!snapshot.exists()) {
+    if (
+        !snapshot.exists()
+    ) {
 
-        asistencia = null;
+        asistencia =
+            null;
 
         return;
 
@@ -489,7 +810,9 @@ async function cargarAsistencia() {
 
 
     asistencia = {
-        id: snapshot.id,
+        id:
+            snapshot.id,
+
         ...snapshot.data()
     };
 
@@ -522,20 +845,28 @@ async function cargarEquipos() {
     ]);
 
 
-    if (snapshotLocal.exists()) {
+    if (
+        snapshotLocal.exists()
+    ) {
 
         equipoLocalData = {
-            id: snapshotLocal.id,
+            id:
+                snapshotLocal.id,
+
             ...snapshotLocal.data()
         };
 
     }
 
 
-    if (snapshotVisitante.exists()) {
+    if (
+        snapshotVisitante.exists()
+    ) {
 
         equipoVisitanteData = {
-            id: snapshotVisitante.id,
+            id:
+                snapshotVisitante.id,
+
             ...snapshotVisitante.data()
         };
 
@@ -558,7 +889,9 @@ async function cargarJugadores() {
     const todos =
         snapshot.docs.map(
             documento => ({
-                id: documento.id,
+                id:
+                    documento.id,
+
                 ...documento.data()
             })
         );
@@ -588,8 +921,11 @@ async function cargarJugadores() {
         todos
             .filter(
                 jugador =>
-                    jugador.equipoId === partido.localId &&
-                    presentesLocal.has(jugador.id)
+                    jugador.equipoId ===
+                        partido.localId &&
+                    presentesLocal.has(
+                        jugador.id
+                    )
             )
             .sort(
                 ordenarJugadores
@@ -600,8 +936,11 @@ async function cargarJugadores() {
         todos
             .filter(
                 jugador =>
-                    jugador.equipoId === partido.visitanteId &&
-                    presentesVisitante.has(jugador.id)
+                    jugador.equipoId ===
+                        partido.visitanteId &&
+                    presentesVisitante.has(
+                        jugador.id
+                    )
             )
             .sort(
                 ordenarJugadores
@@ -612,6 +951,306 @@ async function cargarJugadores() {
         ...jugadoresLocal,
         ...jugadoresVisitante
     ];
+
+}
+
+
+function cargarInformacionPartido() {
+
+    const nombreEquipoLocal =
+        partido.localNombre ||
+        equipoLocalData?.nombre ||
+        "Equipo local";
+
+
+    const nombreEquipoVisitante =
+        partido.visitanteNombre ||
+        equipoVisitanteData?.nombre ||
+        "Equipo visitante";
+
+
+    const nombreArbitro =
+        partido.arbitroNombre ||
+        usuarioActual.nombre ||
+        "Árbitro";
+
+
+    heroCategoria.textContent =
+        partido.categoriaNombre ||
+        "Sin categoría";
+
+
+    heroJornada.textContent =
+        partido.jornadaNombre ||
+        "Sin jornada";
+
+
+    nombreLocal.textContent =
+        nombreEquipoLocal;
+
+
+    nombreVisitante.textContent =
+        nombreEquipoVisitante;
+
+
+    marcadorNombreLocal.textContent =
+        nombreEquipoLocal;
+
+
+    marcadorNombreVisitante.textContent =
+        nombreEquipoVisitante;
+
+
+    penalesNombreLocal.textContent =
+        nombreEquipoLocal;
+
+
+    penalesNombreVisitante.textContent =
+        nombreEquipoVisitante;
+
+
+    plantillaNombreLocal.textContent =
+        nombreEquipoLocal;
+
+
+    plantillaNombreVisitante.textContent =
+        nombreEquipoVisitante;
+
+
+    tecnicoNombreLocal.textContent =
+        nombreEquipoLocal;
+
+
+    tecnicoNombreVisitante.textContent =
+        nombreEquipoVisitante;
+
+
+    conductaNombreLocal.textContent =
+        nombreEquipoLocal;
+
+
+    conductaNombreVisitante.textContent =
+        nombreEquipoVisitante;
+
+
+    heroFecha.textContent =
+        formatearFecha(
+            partido.fecha
+        );
+
+
+    heroHora.textContent =
+        formatearHora(
+            partido.hora
+        );
+
+
+    heroCampo.textContent =
+        partido.campo ||
+        "Campo por definir";
+
+
+    arbitroCentral.value =
+        nombreArbitro;
+
+
+    resumenArbitro.textContent =
+        nombreArbitro;
+
+
+    cargarLogo(
+        logoLocal,
+        equipoLocalData,
+        nombreEquipoLocal,
+        "L"
+    );
+
+
+    cargarLogo(
+        logoVisitante,
+        equipoVisitanteData,
+        nombreEquipoVisitante,
+        "V"
+    );
+
+}
+
+
+function cargarPlantillas() {
+
+    totalPresentesLocal.textContent =
+        jugadoresLocal.length;
+
+
+    totalPresentesVisitante.textContent =
+        jugadoresVisitante.length;
+
+
+    renderizarPlantilla(
+        listaJugadoresLocal,
+        jugadoresLocal
+    );
+
+
+    renderizarPlantilla(
+        listaJugadoresVisitante,
+        jugadoresVisitante
+    );
+
+}
+
+
+function renderizarPlantilla(
+    contenedor,
+    lista
+) {
+
+    contenedor.innerHTML =
+        "";
+
+
+    if (
+        !lista.length
+    ) {
+
+        const vacio =
+            document.createElement(
+                "div"
+            );
+
+
+        vacio.className =
+            "jugador-cedula-vacio";
+
+
+        vacio.textContent =
+            "No hay jugadores registrados como presentes.";
+
+
+        contenedor.appendChild(
+            vacio
+        );
+
+        return;
+
+    }
+
+
+    lista.forEach(
+        jugador => {
+
+            const elemento =
+                document.createElement(
+                    "div"
+                );
+
+
+            elemento.className =
+                "jugador-cedula-item";
+
+
+            const numero =
+                jugador.numero ??
+                jugador.dorsal ??
+                "-";
+
+
+            const nombre =
+                jugador.nombre ||
+                jugador.nombreCompleto ||
+                "Jugador";
+
+
+            elemento.innerHTML = `
+
+                <span class="jugador-cedula-numero">
+                    #${escaparHTML(numero)}
+                </span>
+
+                <strong>
+                    ${escaparHTML(nombre)}
+                </strong>
+
+            `;
+
+
+            contenedor.appendChild(
+                elemento
+            );
+
+        }
+    );
+
+}
+
+
+function cargarCapitanes() {
+
+    llenarSelectJugadores(
+        capitanLocal,
+        jugadoresLocal
+    );
+
+
+    llenarSelectJugadores(
+        capitanVisitante,
+        jugadoresVisitante
+    );
+
+}
+
+
+function llenarSelectJugadores(
+    select,
+    lista
+) {
+
+    select.innerHTML = `
+
+        <option value="">
+            Selecciona al capitán
+        </option>
+
+    `;
+
+
+    lista.forEach(
+        jugador => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                jugador.id;
+
+
+            const numero =
+                jugador.numero ??
+                jugador.dorsal ??
+                "";
+
+
+            const nombre =
+                jugador.nombre ||
+                jugador.nombreCompleto ||
+                "Jugador";
+
+
+            option.textContent =
+                numero !== ""
+                    ? `#${numero} - ${nombre}`
+                    : nombre;
+
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
 
 }
 
@@ -628,7 +1267,9 @@ async function cargarCedulaExistente() {
         );
 
 
-    if (!snapshot.exists()) {
+    if (
+        !snapshot.exists()
+    ) {
 
         estadoCedulaTop.textContent =
             "Pendiente";
@@ -637,6 +1278,10 @@ async function cargarCedulaExistente() {
         estadoCedulaTop.className =
             "estado-top pendiente";
 
+
+        actualizarContadoresTexto();
+
+        actualizarBloquePenales();
 
         return;
 
@@ -659,34 +1304,173 @@ async function cargarCedulaExistente() {
         );
 
 
+    arbitroAsistente1.value =
+        datos.arbitroAsistente1 ||
+        "";
+
+
+    arbitroAsistente2.value =
+        datos.arbitroAsistente2 ||
+        "";
+
+
+    inicioPrimerTiempo.value =
+        datos.inicioPrimerTiempo ||
+        "";
+
+
+    finPrimerTiempo.value =
+        datos.finPrimerTiempo ||
+        "";
+
+
+    inicioSegundoTiempo.value =
+        datos.inicioSegundoTiempo ||
+        "";
+
+
+    finSegundoTiempo.value =
+        datos.finSegundoTiempo ||
+        "";
+
+
+    huboPenales.checked =
+        datos.huboPenales === true;
+
+
+    penalesLocal.value =
+        numeroSeguro(
+            datos.penalesLocal
+        );
+
+
+    penalesVisitante.value =
+        numeroSeguro(
+            datos.penalesVisitante
+        );
+
+
+    entrenadorLocal.value =
+        datos.entrenadorLocal ||
+        "";
+
+
+    medicoLocal.value =
+        datos.medicoLocal ||
+        "";
+
+
+    auxiliarLocal.value =
+        datos.auxiliarLocal ||
+        "";
+
+
+    entrenadorVisitante.value =
+        datos.entrenadorVisitante ||
+        "";
+
+
+    medicoVisitante.value =
+        datos.medicoVisitante ||
+        "";
+
+
+    auxiliarVisitante.value =
+        datos.auxiliarVisitante ||
+        "";
+
+
+    estadoTerreno.value =
+        datos.estadoTerreno ||
+        "";
+
+
+    conductaPublicoLocal.value =
+        datos.conductaPublicoLocal ||
+        "";
+
+
+    conductaPublicoVisitante.value =
+        datos.conductaPublicoVisitante ||
+        "";
+
+
+    observacionPublicoLocal.value =
+        datos.observacionPublicoLocal ||
+        "";
+
+
+    observacionPublicoVisitante.value =
+        datos.observacionPublicoVisitante ||
+        "";
+
+
     incidencias.value =
         datos.incidencias ||
         "";
 
 
     eventosGoles =
-        Array.isArray(datos.goles)
+        Array.isArray(
+            datos.goles
+        )
             ? datos.goles
             : [];
 
 
     eventosAmarillas =
-        Array.isArray(datos.amarillas)
+        Array.isArray(
+            datos.amarillas
+        )
             ? datos.amarillas
             : [];
 
 
     eventosRojas =
-        Array.isArray(datos.rojas)
+        Array.isArray(
+            datos.rojas
+        )
             ? datos.rojas
             : [];
 
 
+    if (
+        datos.capitanLocalId
+    ) {
+
+        capitanLocal.value =
+            datos.capitanLocalId;
+
+    }
+
+
+    if (
+        datos.capitanVisitanteId
+    ) {
+
+        capitanVisitante.value =
+            datos.capitanVisitanteId;
+
+    }
+
+
+    confirmarInformacion.checked =
+        datos.confirmadoPorArbitro === true;
+
+
     cedulaEnviada =
-        datos.estado === "registrada";
+        datos.estado === "registrada" ||
+        datos.estado === "enviada";
 
 
-    if (cedulaEnviada) {
+    actualizarContadoresTexto();
+
+    actualizarBloquePenales();
+
+
+    if (
+        cedulaEnviada
+    ) {
 
         estadoCedulaTop.textContent =
             "Registrada";
@@ -712,86 +1496,47 @@ async function cargarCedulaExistente() {
 }
 
 
-function cargarInformacionPartido() {
-
-    heroCategoria.textContent =
-        partido.categoriaNombre ||
-        "Sin categoría";
-
-
-    heroJornada.textContent =
-        partido.jornadaNombre ||
-        "Sin jornada";
-
-
-    nombreLocal.textContent =
-        partido.localNombre ||
-        "Equipo local";
-
-
-    nombreVisitante.textContent =
-        partido.visitanteNombre ||
-        "Equipo visitante";
-
-
-    marcadorNombreLocal.textContent =
-        partido.localNombre ||
-        "Local";
-
-
-    marcadorNombreVisitante.textContent =
-        partido.visitanteNombre ||
-        "Visitante";
-
-
-    heroFecha.textContent =
-        formatearFecha(
-            partido.fecha
-        );
-
-
-    heroHora.textContent =
-        formatearHora(
-            partido.hora
-        );
-
-
-    heroCampo.textContent =
-        partido.campo ||
-        "Campo por definir";
-
-
-    resumenArbitro.textContent =
-        partido.arbitroNombre ||
-        usuarioActual.nombre ||
-        "Árbitro";
-
-
-    cargarLogo(
-        logoLocal,
-        equipoLocalData,
-        partido.localNombre,
-        "L"
-    );
-
-
-    cargarLogo(
-        logoVisitante,
-        equipoVisitanteData,
-        partido.visitanteNombre,
-        "V"
-    );
-
+function actualizarContadoresTexto() {
 
     contadorIncidencias.textContent =
         incidencias.value.length;
 
+
+    contadorTerreno.textContent =
+        estadoTerreno.value.length;
+
 }
 
 
-function abrirModalEvento(tipo) {
+function actualizarBloquePenales() {
 
-    if (cedulaEnviada) {
+    bloquePenales.classList.toggle(
+        "oculto",
+        !huboPenales.checked
+    );
+
+
+    resumenPenalesContenedor.classList.toggle(
+        "oculto",
+        !huboPenales.checked
+    );
+
+
+    confirmarPenalesContenedor.classList.toggle(
+        "oculto",
+        !huboPenales.checked
+    );
+
+}
+
+
+function abrirModalEvento(
+    tipo
+) {
+
+    if (
+        cedulaEnviada
+    ) {
 
         mostrarToast(
             "error",
@@ -810,6 +1555,10 @@ function abrirModalEvento(tipo) {
 
     eventoEquipo.value =
         "local";
+
+
+    eventoJugador.value =
+        "";
 
 
     eventoMinuto.value =
@@ -910,12 +1659,13 @@ function cargarJugadoresModal() {
             : jugadoresVisitante;
 
 
-    eventoJugador.innerHTML =
-        `
-            <option value="">
-                Selecciona un jugador
-            </option>
-        `;
+    eventoJugador.innerHTML = `
+
+        <option value="">
+            Selecciona un jugador
+        </option>
+
+    `;
 
 
     lista.forEach(
@@ -944,7 +1694,7 @@ function cargarJugadoresModal() {
 
 
             option.textContent =
-                numero
+                numero !== ""
                     ? `#${numero} - ${nombre}`
                     : nombre;
 
@@ -961,8 +1711,12 @@ function cargarJugadoresModal() {
 
 function guardarEventoTemporal() {
 
-    if (!tipoEventoActual) {
+    if (
+        !tipoEventoActual
+    ) {
+
         return;
+
     }
 
 
@@ -970,7 +1724,9 @@ function guardarEventoTemporal() {
         eventoJugador.value;
 
 
-    if (!jugadorId) {
+    if (
+        !jugadorId
+    ) {
 
         mostrarToast(
             "error",
@@ -986,11 +1742,14 @@ function guardarEventoTemporal() {
     const jugador =
         jugadores.find(
             item =>
-                item.id === jugadorId
+                item.id ===
+                jugadorId
         );
 
 
-    if (!jugador) {
+    if (
+        !jugador
+    ) {
 
         mostrarToast(
             "error",
@@ -1036,21 +1795,22 @@ function guardarEventoTemporal() {
                 ? partido.localId
                 : partido.visitanteId,
 
-        equipo:
-            equipo,
+        equipo,
 
         equipoNombre:
             equipo === "local"
                 ? partido.localNombre
                 : partido.visitanteNombre,
 
-        minuto:
-            minuto,
+        minuto,
 
         motivo:
             eventoMotivo.value
                 .trim()
-                .slice(0, 250)
+                .slice(
+                    0,
+                    250
+                )
 
     };
 
@@ -1202,6 +1962,17 @@ function renderizarEventos(
 
 
             if (
+                evento.numero !== null &&
+                evento.numero !== undefined
+            ) {
+
+                detalle +=
+                    ` · #${evento.numero}`;
+
+            }
+
+
+            if (
                 evento.minuto !== null
             ) {
 
@@ -1212,12 +1983,14 @@ function renderizarEventos(
 
 
             if (
-                tipo === "roja" &&
-                evento.tipoRoja === "dobleAmarilla"
+                tipo === "roja"
             ) {
 
                 detalle +=
-                    " · Doble amarilla";
+                    evento.tipoRoja ===
+                    "dobleAmarilla"
+                        ? " · Doble amarilla"
+                        : " · Roja directa";
 
             }
 
@@ -1239,10 +2012,18 @@ function renderizarEventos(
                     </strong>
 
                     <span>
-                        ${escaparHTML(
-                            detalle
-                        )}
+                        ${escaparHTML(detalle)}
                     </span>
+
+                    ${
+                        evento.motivo
+                            ? `
+                                <small>
+                                    ${escaparHTML(evento.motivo)}
+                                </small>
+                            `
+                            : ""
+                    }
 
                 </div>
 
@@ -1265,7 +2046,9 @@ function renderizarEventos(
                 );
 
 
-            if (!cedulaEnviada) {
+            if (
+                !cedulaEnviada
+            ) {
 
                 boton.addEventListener(
                     "click",
@@ -1296,6 +2079,15 @@ function eliminarEvento(
     tipo,
     id
 ) {
+
+    if (
+        cedulaEnviada
+    ) {
+
+        return;
+
+    }
+
 
     if (
         tipo === "gol"
@@ -1359,6 +2151,10 @@ function actualizarResumen() {
         `${local} - ${visitante}`;
 
 
+    confirmarResultado.textContent =
+        `${local} - ${visitante}`;
+
+
     resumenGoles.textContent =
         eventosGoles.length;
 
@@ -1375,6 +2171,35 @@ function actualizarResumen() {
         jugadoresLocal.length +
         jugadoresVisitante.length;
 
+
+    if (
+        huboPenales.checked
+    ) {
+
+        const localPenales =
+            numeroSeguro(
+                penalesLocal.value
+            );
+
+
+        const visitantePenales =
+            numeroSeguro(
+                penalesVisitante.value
+            );
+
+
+        resumenPenales.textContent =
+            `${localPenales} - ${visitantePenales}`;
+
+
+        confirmarPenales.textContent =
+            `${localPenales} - ${visitantePenales}`;
+
+    }
+
+
+    actualizarBloquePenales();
+
 }
 
 
@@ -1384,7 +2209,9 @@ async function guardarBorrador() {
         !partido ||
         cedulaEnviada
     ) {
+
         return;
+
     }
 
 
@@ -1424,7 +2251,7 @@ async function guardarBorrador() {
         mostrarToast(
             "exito",
             "Borrador guardado",
-            "Puedes continuar llenando la cédula más tarde."
+            "Puedes salir y continuar llenando la cédula más tarde."
         );
 
     } catch (error) {
@@ -1460,7 +2287,9 @@ function prepararEnvioCedula() {
     if (
         cedulaEnviada
     ) {
+
         return;
+
     }
 
 
@@ -1468,7 +2297,9 @@ function prepararEnvioCedula() {
         validarCedula();
 
 
-    if (!validacion.ok) {
+    if (
+        !validacion.ok
+    ) {
 
         mostrarToast(
             "error",
@@ -1481,8 +2312,7 @@ function prepararEnvioCedula() {
     }
 
 
-    confirmarResultado.textContent =
-        `${numeroSeguro(golesLocal.value)} - ${numeroSeguro(golesVisitante.value)}`;
+    actualizarResumen();
 
 
     modalConfirmarEnvio.classList.remove(
@@ -1513,23 +2343,28 @@ function validarCedula() {
     const golesEventosLocal =
         eventosGoles.filter(
             evento =>
-                evento.equipo === "local"
+                evento.equipo ===
+                "local"
         ).length;
 
 
     const golesEventosVisitante =
         eventosGoles.filter(
             evento =>
-                evento.equipo === "visitante"
+                evento.equipo ===
+                "visitante"
         ).length;
 
 
     if (
-        marcadorLocal !== golesEventosLocal
+        marcadorLocal !==
+        golesEventosLocal
     ) {
 
         return {
-            ok: false,
+            ok:
+                false,
+
             mensaje:
                 `El marcador indica ${marcadorLocal} goles del local, pero registraste ${golesEventosLocal} anotadores.`
         };
@@ -1538,11 +2373,14 @@ function validarCedula() {
 
 
     if (
-        marcadorVisitante !== golesEventosVisitante
+        marcadorVisitante !==
+        golesEventosVisitante
     ) {
 
         return {
-            ok: false,
+            ok:
+                false,
+
             mensaje:
                 `El marcador indica ${marcadorVisitante} goles del visitante, pero registraste ${golesEventosVisitante} anotadores.`
         };
@@ -1565,9 +2403,11 @@ function validarCedula() {
         ) {
 
             return {
-                ok: false,
+                ok:
+                    false,
+
                 mensaje:
-                    `${roja.jugadorNombre} tiene más de una tarjeta roja registrada.`
+                    `${roja.jugadorNombre} tiene más de una expulsión registrada.`
             };
 
         }
@@ -1580,8 +2420,148 @@ function validarCedula() {
     }
 
 
+    if (
+        !inicioPrimerTiempo.value
+    ) {
+
+        return {
+            ok:
+                false,
+
+            mensaje:
+                "Indica la hora de inicio del primer tiempo."
+        };
+
+    }
+
+
+    if (
+        !finPrimerTiempo.value
+    ) {
+
+        return {
+            ok:
+                false,
+
+            mensaje:
+                "Indica la hora en que terminó el primer tiempo."
+        };
+
+    }
+
+
+    if (
+        !inicioSegundoTiempo.value
+    ) {
+
+        return {
+            ok:
+                false,
+
+            mensaje:
+                "Indica la hora de inicio del segundo tiempo."
+        };
+
+    }
+
+
+    if (
+        !finSegundoTiempo.value
+    ) {
+
+        return {
+            ok:
+                false,
+
+            mensaje:
+                "Indica la hora en que terminó el segundo tiempo."
+        };
+
+    }
+
+
+    if (
+        huboPenales.checked
+    ) {
+
+        const golesPenalesLocal =
+            numeroSeguro(
+                penalesLocal.value
+            );
+
+
+        const golesPenalesVisitante =
+            numeroSeguro(
+                penalesVisitante.value
+            );
+
+
+        if (
+            golesPenalesLocal ===
+            golesPenalesVisitante
+        ) {
+
+            return {
+                ok:
+                    false,
+
+                mensaje:
+                    "Una tanda de penales debe terminar con un ganador."
+            };
+
+        }
+
+    }
+
+
+    if (
+        !capitanLocal.value
+    ) {
+
+        return {
+            ok:
+                false,
+
+            mensaje:
+                "Selecciona al capitán del equipo local."
+        };
+
+    }
+
+
+    if (
+        !capitanVisitante.value
+    ) {
+
+        return {
+            ok:
+                false,
+
+            mensaje:
+                "Selecciona al capitán del equipo visitante."
+        };
+
+    }
+
+
+    if (
+        !confirmarInformacion.checked
+    ) {
+
+        return {
+            ok:
+                false,
+
+            mensaje:
+                "Debes confirmar que la información de la cédula es correcta."
+        };
+
+    }
+
+
     return {
-        ok: true
+        ok:
+            true
     };
 
 }
@@ -1593,7 +2573,9 @@ async function enviarCedulaOficial() {
         !partido ||
         cedulaEnviada
     ) {
+
         return;
+
     }
 
 
@@ -1601,7 +2583,9 @@ async function enviarCedulaOficial() {
         validarCedula();
 
 
-    if (!validacion.ok) {
+    if (
+        !validacion.ok
+    ) {
 
         cerrarConfirmacionEnvio();
 
@@ -1646,41 +2630,63 @@ async function enviarCedulaOficial() {
         );
 
 
+        const datosPartido = {
+
+            golesLocal:
+                numeroSeguro(
+                    golesLocal.value
+                ),
+
+            golesVisitante:
+                numeroSeguro(
+                    golesVisitante.value
+                ),
+
+            huboPenales:
+                huboPenales.checked,
+
+            penalesLocal:
+                huboPenales.checked
+                    ? numeroSeguro(
+                        penalesLocal.value
+                    )
+                    : null,
+
+            penalesVisitante:
+                huboPenales.checked
+                    ? numeroSeguro(
+                        penalesVisitante.value
+                    )
+                    : null,
+
+            estado:
+                "finalizado",
+
+            cedulaCreada:
+                true,
+
+            resultadoRegistrado:
+                true,
+
+            cedulaId:
+                partido.id,
+
+            finalizadoEn:
+                serverTimestamp(),
+
+            cedulaActualizadaEn:
+                serverTimestamp()
+
+        };
+
+
         await updateDoc(
             doc(
                 db,
                 "partidos",
                 partido.id
             ),
-            {
-                golesLocal:
-                    numeroSeguro(
-                        golesLocal.value
-                    ),
-
-                golesVisitante:
-                    numeroSeguro(
-                        golesVisitante.value
-                    ),
-
-                estado:
-                    "finalizado",
-
-                cedulaCreada:
-                    true,
-
-                resultadoRegistrado:
-                    true,
-
-                cedulaId:
-                    partido.id,
-
-                finalizadoEn:
-                    serverTimestamp(),
-
-                cedulaActualizadaEn:
-                    serverTimestamp()
-            }
+            datosPartido
         );
 
 
@@ -1721,7 +2727,7 @@ async function enviarCedulaOficial() {
         mostrarToast(
             "exito",
             "Cédula enviada",
-            "El resultado y los eventos quedaron registrados oficialmente."
+            "El resultado y todos los datos quedaron registrados oficialmente."
         );
 
     } catch (error) {
@@ -1770,10 +2776,14 @@ async function actualizarEstadisticasJugadores() {
             estadisticas.set(
                 jugador.id,
                 {
-                    goles: 0,
-                    amarillas: 0,
-                    rojas: 0,
-                    jugador
+                    goles:
+                        0,
+
+                    amarillas:
+                        0,
+
+                    rojas:
+                        0
                 }
             );
 
@@ -1790,7 +2800,9 @@ async function actualizarEstadisticasJugadores() {
                 );
 
 
-            if (registro) {
+            if (
+                registro
+            ) {
 
                 registro.goles +=
                     1;
@@ -1810,7 +2822,9 @@ async function actualizarEstadisticasJugadores() {
                 );
 
 
-            if (registro) {
+            if (
+                registro
+            ) {
 
                 registro.amarillas +=
                     1;
@@ -1830,7 +2844,9 @@ async function actualizarEstadisticasJugadores() {
                 );
 
 
-            if (registro) {
+            if (
+                registro
+            ) {
 
                 registro.rojas +=
                     1;
@@ -1858,8 +2874,12 @@ async function actualizarEstadisticasJugadores() {
             );
 
 
-        if (!snapshot.exists()) {
+        if (
+            !snapshot.exists()
+        ) {
+
             continue;
+
         }
 
 
@@ -1867,36 +2887,24 @@ async function actualizarEstadisticasJugadores() {
             snapshot.data();
 
 
-        const golesActuales =
-            numeroSeguro(
-                datosActuales.goles
-            );
-
-
-        const amarillasActuales =
-            numeroSeguro(
-                datosActuales.amarillas
-            );
-
-
-        const rojasActuales =
-            numeroSeguro(
-                datosActuales.rojas
-            );
-
-
         const nuevosDatos = {
 
             goles:
-                golesActuales +
+                numeroSeguro(
+                    datosActuales.goles
+                ) +
                 registro.goles,
 
             amarillas:
-                amarillasActuales +
+                numeroSeguro(
+                    datosActuales.amarillas
+                ) +
                 registro.amarillas,
 
             rojas:
-                rojasActuales +
+                numeroSeguro(
+                    datosActuales.rojas
+                ) +
                 registro.rojas,
 
             actualizadoEn:
@@ -1945,6 +2953,22 @@ function construirDatosCedula(
     estado
 ) {
 
+    const jugadorCapitanLocal =
+        jugadoresLocal.find(
+            jugador =>
+                jugador.id ===
+                capitanLocal.value
+        );
+
+
+    const jugadorCapitanVisitante =
+        jugadoresVisitante.find(
+            jugador =>
+                jugador.id ===
+                capitanVisitante.value
+        );
+
+
     return {
 
         partidoId:
@@ -1966,6 +2990,19 @@ function construirDatosCedula(
             partido.jornadaNombre ||
             "",
 
+        fecha:
+            partido.fecha ||
+            "",
+
+        hora:
+            partido.hora ||
+            "",
+
+        campo:
+            partido.campo ||
+            "",
+
+
         localId:
             partido.localId,
 
@@ -1980,6 +3017,7 @@ function construirDatosCedula(
             partido.visitanteNombre ||
             "",
 
+
         arbitroId:
             partido.arbitroId ||
             usuarioActual.uid ||
@@ -1991,6 +3029,40 @@ function construirDatosCedula(
             usuarioActual.nombre ||
             "",
 
+        arbitroAsistente1:
+            arbitroAsistente1.value
+                .trim()
+                .slice(
+                    0,
+                    120
+                ),
+
+        arbitroAsistente2:
+            arbitroAsistente2.value
+                .trim()
+                .slice(
+                    0,
+                    120
+                ),
+
+
+        inicioPrimerTiempo:
+            inicioPrimerTiempo.value ||
+            "",
+
+        finPrimerTiempo:
+            finPrimerTiempo.value ||
+            "",
+
+        inicioSegundoTiempo:
+            inicioSegundoTiempo.value ||
+            "",
+
+        finSegundoTiempo:
+            finSegundoTiempo.value ||
+            "",
+
+
         golesLocal:
             numeroSeguro(
                 golesLocal.value
@@ -2001,6 +3073,25 @@ function construirDatosCedula(
                 golesVisitante.value
             ),
 
+
+        huboPenales:
+            huboPenales.checked,
+
+        penalesLocal:
+            huboPenales.checked
+                ? numeroSeguro(
+                    penalesLocal.value
+                )
+                : null,
+
+        penalesVisitante:
+            huboPenales.checked
+                ? numeroSeguro(
+                    penalesVisitante.value
+                )
+                : null,
+
+
         goles:
             eventosGoles,
 
@@ -2010,10 +3101,6 @@ function construirDatosCedula(
         rojas:
             eventosRojas,
 
-        incidencias:
-            incidencias.value
-                .trim()
-                .slice(0, 1500),
 
         presentesLocal:
             Array.isArray(
@@ -2029,12 +3116,160 @@ function construirDatosCedula(
                 ? asistencia.presentesVisitante
                 : [],
 
+        totalPresentesLocal:
+            jugadoresLocal.length,
+
+        totalPresentesVisitante:
+            jugadoresVisitante.length,
+
         totalPresentes:
             jugadoresLocal.length +
             jugadoresVisitante.length,
 
-        estado:
-            estado,
+
+        entrenadorLocal:
+            entrenadorLocal.value
+                .trim()
+                .slice(
+                    0,
+                    120
+                ),
+
+        medicoLocal:
+            medicoLocal.value
+                .trim()
+                .slice(
+                    0,
+                    120
+                ),
+
+        auxiliarLocal:
+            auxiliarLocal.value
+                .trim()
+                .slice(
+                    0,
+                    120
+                ),
+
+
+        entrenadorVisitante:
+            entrenadorVisitante.value
+                .trim()
+                .slice(
+                    0,
+                    120
+                ),
+
+        medicoVisitante:
+            medicoVisitante.value
+                .trim()
+                .slice(
+                    0,
+                    120
+                ),
+
+        auxiliarVisitante:
+            auxiliarVisitante.value
+                .trim()
+                .slice(
+                    0,
+                    120
+                ),
+
+
+        capitanLocalId:
+            capitanLocal.value ||
+            null,
+
+        capitanLocalNombre:
+            jugadorCapitanLocal
+                ? (
+                    jugadorCapitanLocal.nombre ||
+                    jugadorCapitanLocal.nombreCompleto ||
+                    ""
+                )
+                : "",
+
+        capitanVisitanteId:
+            capitanVisitante.value ||
+            null,
+
+        capitanVisitanteNombre:
+            jugadorCapitanVisitante
+                ? (
+                    jugadorCapitanVisitante.nombre ||
+                    jugadorCapitanVisitante.nombreCompleto ||
+                    ""
+                )
+                : "",
+
+
+        estadoTerreno:
+            estadoTerreno.value
+                .trim()
+                .slice(
+                    0,
+                    500
+                ),
+
+
+        conductaPublicoLocal:
+            conductaPublicoLocal.value ||
+            "",
+
+        observacionPublicoLocal:
+            observacionPublicoLocal.value
+                .trim()
+                .slice(
+                    0,
+                    300
+                ),
+
+        conductaPublicoVisitante:
+            conductaPublicoVisitante.value ||
+            "",
+
+        observacionPublicoVisitante:
+            observacionPublicoVisitante.value
+                .trim()
+                .slice(
+                    0,
+                    300
+                ),
+
+
+        incidencias:
+            incidencias.value
+                .trim()
+                .slice(
+                    0,
+                    2000
+                ),
+
+
+        confirmadoPorArbitro:
+            confirmarInformacion.checked,
+
+        confirmadoPorUid:
+            estado === "registrada"
+                ? (
+                    usuarioActual.uid ||
+                    usuarioActual.id ||
+                    null
+                )
+                : null,
+
+        confirmadoPorNombre:
+            estado === "registrada"
+                ? (
+                    usuarioActual.nombre ||
+                    partido.arbitroNombre ||
+                    ""
+                )
+                : null,
+
+
+        estado,
 
         actualizadoEn:
             serverTimestamp(),
@@ -2051,16 +3286,20 @@ function construirDatosCedula(
 
 function bloquearCedula() {
 
-    golesLocal.disabled =
-        true;
+    const campos =
+        contenidoCedula.querySelectorAll(
+            "input, textarea, select"
+        );
 
 
-    golesVisitante.disabled =
-        true;
+    campos.forEach(
+        campo => {
 
+            campo.disabled =
+                true;
 
-    incidencias.disabled =
-        true;
+        }
+    );
 
 
     btnAgregarGol.disabled =
@@ -2234,7 +3473,8 @@ function crearIdTemporal() {
 
     if (
         window.crypto &&
-        typeof window.crypto.randomUUID === "function"
+        typeof window.crypto.randomUUID ===
+            "function"
     ) {
 
         return window.crypto.randomUUID();
@@ -2242,7 +3482,13 @@ function crearIdTemporal() {
     }
 
 
-    return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    return `${
+        Date.now()
+    }-${
+        Math.random()
+            .toString(36)
+            .slice(2)
+    }`;
 
 }
 
@@ -2269,7 +3515,8 @@ function ordenarJugadores(
 
 
     if (
-        numeroA !== numeroB
+        numeroA !==
+        numeroB
     ) {
 
         return numeroA -
@@ -2304,10 +3551,12 @@ function cargarLogo(
     ) {
 
         contenedor.innerHTML = `
+
             <img
                 src="${escaparHTML(equipo.logoUrl)}"
                 alt="${escaparHTML(nombre || "Equipo")}"
             >
+
         `;
 
         return;
@@ -2328,7 +3577,9 @@ function formatearFecha(
     fecha
 ) {
 
-    if (!fecha) {
+    if (
+        !fecha
+    ) {
 
         return "Sin definir";
 
@@ -2336,32 +3587,47 @@ function formatearFecha(
 
 
     const partes =
-        String(fecha).split("-");
+        String(
+            fecha
+        ).split("-");
 
 
     if (
         partes.length !== 3
     ) {
 
-        return fecha;
+        return String(
+            fecha
+        );
 
     }
 
 
     const objeto =
         new Date(
-            Number(partes[0]),
-            Number(partes[1]) - 1,
-            Number(partes[2])
+            Number(
+                partes[0]
+            ),
+            Number(
+                partes[1]
+            ) - 1,
+            Number(
+                partes[2]
+            )
         );
 
 
     return objeto.toLocaleDateString(
         "es-MX",
         {
-            day: "2-digit",
-            month: "short",
-            year: "numeric"
+            day:
+                "2-digit",
+
+            month:
+                "short",
+
+            year:
+                "numeric"
         }
     );
 
@@ -2372,7 +3638,9 @@ function formatearHora(
     hora
 ) {
 
-    if (!hora) {
+    if (
+        !hora
+    ) {
 
         return "Sin definir";
 
@@ -2380,7 +3648,9 @@ function formatearHora(
 
 
     const partes =
-        String(hora).split(":");
+        String(
+            hora
+        ).split(":");
 
 
     const horas =
@@ -2394,6 +3664,17 @@ function formatearHora(
         "00";
 
 
+    if (
+        !Number.isFinite(horas)
+    ) {
+
+        return String(
+            hora
+        );
+
+    }
+
+
     const periodo =
         horas >= 12
             ? "PM"
@@ -2405,7 +3686,13 @@ function formatearHora(
         12;
 
 
-    return `${hora12}:${minutos} ${periodo}`;
+    return `${
+        hora12
+    }:${
+        minutos
+    } ${
+        periodo
+    }`;
 
 }
 
@@ -2421,7 +3708,9 @@ function obtenerInicial(
         ).trim();
 
 
-    if (!texto) {
+    if (
+        !texto
+    ) {
 
         return "E";
 
@@ -2440,14 +3729,29 @@ function escaparHTML(
 ) {
 
     return String(
-        texto ||
+        texto ??
         ""
     )
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll("\"", "&quot;")
-        .replaceAll("'", "&#039;");
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            "\"",
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
 
 }
 
@@ -2555,7 +3859,7 @@ function mostrarToast(
                 );
 
             },
-            3500
+            4000
         );
 
 }

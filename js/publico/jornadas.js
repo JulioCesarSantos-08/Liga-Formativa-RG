@@ -1,5 +1,5 @@
 import {
-    protegerPagina
+    protegerPaginaPublica
 } from "../roles.js";
 
 
@@ -16,9 +16,8 @@ const listaPartidos = document.getElementById("listaPartidos");
 const botonesJornada = document.querySelectorAll(".jornada-tab");
 
 
-const usuario = await protegerPagina([
-    "publico"
-]);
+const usuario =
+    await protegerPaginaPublica();
 
 
 if (usuario) {

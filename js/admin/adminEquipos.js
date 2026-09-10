@@ -17,6 +17,10 @@ import {
     db
 } from "../firebase.js";
 
+import {
+    subirLogoEquipo
+} from "../cloudinary.js";
+
 
 const adminInicial = document.getElementById("adminInicial");
 
@@ -1324,13 +1328,33 @@ async function guardarEquipo(event) {
             equipoSeleccionado?.logoUrl ||
             null;
 
+        let logoPublicId =
+            equipoSeleccionado?.logoPublicId ||
+            null;
+
 
         if (logoSeleccionado) {
 
-            console.log(
-                "Logo listo para subir a Cloudinary:",
-                logoSeleccionado.name
-            );
+            btnGuardarEquipo.textContent =
+                "Subiendo logo...";
+
+
+            const resultadoLogo =
+                await subirLogoEquipo(
+                    logoSeleccionado
+                );
+
+
+            logoUrl =
+                resultadoLogo.url;
+
+
+            logoPublicId =
+                resultadoLogo.publicId;
+
+
+            btnGuardarEquipo.textContent =
+                "Guardando equipo...";
 
         }
 
@@ -1356,6 +1380,7 @@ async function guardarEquipo(event) {
                     ? motivo
                     : "",
             logoUrl,
+            logoPublicId,
             actualizadoEn:
                 serverTimestamp()
         };
@@ -1386,7 +1411,9 @@ async function guardarEquipo(event) {
             mostrarToast(
                 "exito",
                 "Equipo actualizado",
-                "Los cambios se guardaron correctamente."
+                logoSeleccionado
+                    ? "El equipo y su nuevo logo se guardaron correctamente."
+                    : "Los cambios se guardaron correctamente."
             );
 
         } else {
@@ -1438,7 +1465,9 @@ async function guardarEquipo(event) {
             mostrarToast(
                 "exito",
                 "Equipo creado",
-                "El equipo ya quedó registrado en la liga."
+                logoSeleccionado
+                    ? "El equipo y su logo ya quedaron registrados."
+                    : "El equipo ya quedó registrado en la liga."
             );
 
         }
@@ -1454,6 +1483,10 @@ async function guardarEquipo(event) {
         );
 
 
+        logoSeleccionado =
+            null;
+
+
         actualizarResumen();
         aplicarFiltros();
         cerrarModal();
@@ -1466,10 +1499,24 @@ async function guardarEquipo(event) {
         );
 
 
+        let mensaje =
+            "Ocurrió un problema al guardar el equipo.";
+
+
+        if (
+            error?.message
+        ) {
+
+            mensaje =
+                error.message;
+
+        }
+
+
         mostrarToast(
             "error",
             "No se pudo guardar",
-            "Ocurrió un problema al guardar el equipo."
+            mensaje
         );
 
     } finally {

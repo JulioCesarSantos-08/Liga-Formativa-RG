@@ -208,6 +208,307 @@
                         <div>
 
                             <span>
+                                CUERPO ARBITRAL
+                            </span>
+
+                            <h2>
+                                Oficiales del encuentro
+                            </h2>
+
+                            <p>
+                                Registra a los árbitros participantes en el partido.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-grid">
+
+                        <div class="form-grupo form-grupo-completo">
+
+                            <label for="arbitroCentral">
+                                Árbitro central
+                            </label>
+
+                            <input
+                                type="text"
+                                id="arbitroCentral"
+                                readonly
+                                placeholder="Árbitro asignado"
+                            >
+
+                        </div>
+
+
+                        <div class="form-grupo">
+
+                            <label for="arbitroAsistente1">
+                                Árbitro asistente No. 1
+                            </label>
+
+                            <input
+                                type="text"
+                                id="arbitroAsistente1"
+                                maxlength="120"
+                                placeholder="Nombre completo"
+                            >
+
+                        </div>
+
+
+                        <div class="form-grupo">
+
+                            <label for="arbitroAsistente2">
+                                Árbitro asistente No. 2
+                            </label>
+
+                            <input
+                                type="text"
+                                id="arbitroAsistente2"
+                                maxlength="120"
+                                placeholder="Nombre completo"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <section class="cedula-bloque">
+
+                    <div class="seccion-header">
+
+                        <div>
+
+                            <span>
+                                PLANTILLAS
+                            </span>
+
+                            <h2>
+                                Jugadores presentes
+                            </h2>
+
+                            <p>
+                                Se muestran los jugadores registrados durante el pase de lista.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="plantillas-cedula">
+
+                        <article class="plantilla-equipo">
+
+                            <div class="plantilla-equipo-header">
+
+                                <div>
+
+                                    <span>
+                                        LOCAL
+                                    </span>
+
+                                    <strong id="plantillaNombreLocal">
+                                        Equipo local
+                                    </strong>
+
+                                </div>
+
+                                <span
+                                    id="totalPresentesLocal"
+                                    class="contador-plantilla"
+                                >
+                                    0
+                                </span>
+
+                            </div>
+
+
+                            <div
+                                id="listaJugadoresLocal"
+                                class="lista-jugadores-cedula"
+                            ></div>
+
+                        </article>
+
+
+                        <article class="plantilla-equipo visitante">
+
+                            <div class="plantilla-equipo-header">
+
+                                <div>
+
+                                    <span>
+                                        VISITANTE
+                                    </span>
+
+                                    <strong id="plantillaNombreVisitante">
+                                        Equipo visitante
+                                    </strong>
+
+                                </div>
+
+                                <span
+                                    id="totalPresentesVisitante"
+                                    class="contador-plantilla"
+                                >
+                                    0
+                                </span>
+
+                            </div>
+
+
+                            <div
+                                id="listaJugadoresVisitante"
+                                class="lista-jugadores-cedula"
+                            ></div>
+
+                        </article>
+
+                    </div>
+
+                </section>
+
+
+                <section class="cedula-bloque">
+
+                    <div class="seccion-header">
+
+                        <div>
+
+                            <span>
+                                HORARIOS
+                            </span>
+
+                            <h2>
+                                Tiempos del encuentro
+                            </h2>
+
+                            <p>
+                                Captura los horarios reales de inicio y término.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="tiempos-grid">
+
+                        <article class="tiempo-card">
+
+                            <div class="tiempo-card-header">
+
+                                <span>
+                                    1
+                                </span>
+
+                                <strong>
+                                    Primer tiempo
+                                </strong>
+
+                            </div>
+
+
+                            <div class="tiempo-campos">
+
+                                <div class="form-grupo">
+
+                                    <label for="inicioPrimerTiempo">
+                                        Inició
+                                    </label>
+
+                                    <input
+                                        type="time"
+                                        id="inicioPrimerTiempo"
+                                    >
+
+                                </div>
+
+
+                                <div class="form-grupo">
+
+                                    <label for="finPrimerTiempo">
+                                        Terminó
+                                    </label>
+
+                                    <input
+                                        type="time"
+                                        id="finPrimerTiempo"
+                                    >
+
+                                </div>
+
+                            </div>
+
+                        </article>
+
+
+                        <article class="tiempo-card">
+
+                            <div class="tiempo-card-header">
+
+                                <span>
+                                    2
+                                </span>
+
+                                <strong>
+                                    Segundo tiempo
+                                </strong>
+
+                            </div>
+
+
+                            <div class="tiempo-campos">
+
+                                <div class="form-grupo">
+
+                                    <label for="inicioSegundoTiempo">
+                                        Inició
+                                    </label>
+
+                                    <input
+                                        type="time"
+                                        id="inicioSegundoTiempo"
+                                    >
+
+                                </div>
+
+
+                                <div class="form-grupo">
+
+                                    <label for="finSegundoTiempo">
+                                        Terminó
+                                    </label>
+
+                                    <input
+                                        type="time"
+                                        id="finSegundoTiempo"
+                                    >
+
+                                </div>
+
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                </section>
+
+
+                <section class="cedula-bloque">
+
+                    <div class="seccion-header">
+
+                        <div>
+
+                            <span>
                                 RESULTADO
                             </span>
 
@@ -268,6 +569,107 @@
 
                     </div>
 
+
+                    <div class="penales-control">
+
+                        <label class="switch-linea">
+
+                            <input
+                                type="checkbox"
+                                id="huboPenales"
+                            >
+
+                            <span class="switch-visual"></span>
+
+                            <span class="switch-texto">
+
+                                <strong>
+                                    ¿Hubo tanda de penales?
+                                </strong>
+
+                                <small>
+                                    Actívalo solamente si el partido se decidió desde el punto penal.
+                                </small>
+
+                            </span>
+
+                        </label>
+
+                    </div>
+
+
+                    <div
+                        id="bloquePenales"
+                        class="bloque-penales oculto"
+                    >
+
+                        <div class="bloque-penales-titulo">
+
+                            <span>
+                                🥅
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Resultado de la tanda
+                                </strong>
+
+                                <small>
+                                    No modifica el marcador del tiempo regular.
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="marcador-editor marcador-penales">
+
+                            <div class="marcador-equipo">
+
+                                <span id="penalesNombreLocal">
+                                    Local
+                                </span>
+
+                                <input
+                                    type="number"
+                                    id="penalesLocal"
+                                    min="0"
+                                    max="99"
+                                    inputmode="numeric"
+                                    value="0"
+                                >
+
+                            </div>
+
+
+                            <div class="marcador-separador">
+                                -
+                            </div>
+
+
+                            <div class="marcador-equipo">
+
+                                <span id="penalesNombreVisitante">
+                                    Visitante
+                                </span>
+
+                                <input
+                                    type="number"
+                                    id="penalesVisitante"
+                                    min="0"
+                                    max="99"
+                                    inputmode="numeric"
+                                    value="0"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 </section>
 
 
@@ -286,7 +688,7 @@
                             </h2>
 
                             <p>
-                                Agrega quién anotó cada gol y para qué equipo.
+                                Agrega al jugador que anotó y el minuto del gol.
                             </p>
 
                         </div>
@@ -330,11 +732,11 @@
                             </span>
 
                             <h2>
-                                Tarjetas amarillas
+                                Amonestados
                             </h2>
 
                             <p>
-                                Registra todas las amonestaciones del partido.
+                                Registra las tarjetas amarillas, minuto y motivo.
                             </p>
 
                         </div>
@@ -361,7 +763,7 @@
                         id="sinAmarillas"
                         class="estado-vacio-evento"
                     >
-                        🟨 No hay tarjetas amarillas.
+                        🟨 No hay jugadores amonestados.
                     </div>
 
                 </section>
@@ -378,11 +780,11 @@
                             </span>
 
                             <h2>
-                                Tarjetas rojas
+                                Expulsados
                             </h2>
 
                             <p>
-                                Registra expulsiones directas o por doble amarilla.
+                                Registra expulsiones directas o por doble amonestación.
                             </p>
 
                         </div>
@@ -409,7 +811,7 @@
                         id="sinRojas"
                         class="estado-vacio-evento"
                     >
-                        🟥 No hay tarjetas rojas.
+                        🟥 No hay jugadores expulsados.
                     </div>
 
                 </section>
@@ -422,7 +824,433 @@
                         <div>
 
                             <span>
-                                OBSERVACIONES
+                                CUERPO TÉCNICO
+                            </span>
+
+                            <h2>
+                                Personal de los equipos
+                            </h2>
+
+                            <p>
+                                Registra al personal presente cuando corresponda.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="cuerpo-tecnico-grid">
+
+                        <article class="cuerpo-tecnico-equipo">
+
+                            <div class="cuerpo-tecnico-header">
+
+                                <span>
+                                    LOCAL
+                                </span>
+
+                                <strong id="tecnicoNombreLocal">
+                                    Equipo local
+                                </strong>
+
+                            </div>
+
+
+                            <div class="form-grupo">
+
+                                <label for="entrenadorLocal">
+                                    Entrenador
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="entrenadorLocal"
+                                    maxlength="120"
+                                    placeholder="Nombre del entrenador"
+                                >
+
+                            </div>
+
+
+                            <div class="form-grupo">
+
+                                <label for="medicoLocal">
+                                    Médico
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="medicoLocal"
+                                    maxlength="120"
+                                    placeholder="Nombre del médico"
+                                >
+
+                            </div>
+
+
+                            <div class="form-grupo">
+
+                                <label for="auxiliarLocal">
+                                    Auxiliar
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="auxiliarLocal"
+                                    maxlength="120"
+                                    placeholder="Nombre del auxiliar"
+                                >
+
+                            </div>
+
+                        </article>
+
+
+                        <article class="cuerpo-tecnico-equipo visitante">
+
+                            <div class="cuerpo-tecnico-header">
+
+                                <span>
+                                    VISITANTE
+                                </span>
+
+                                <strong id="tecnicoNombreVisitante">
+                                    Equipo visitante
+                                </strong>
+
+                            </div>
+
+
+                            <div class="form-grupo">
+
+                                <label for="entrenadorVisitante">
+                                    Entrenador
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="entrenadorVisitante"
+                                    maxlength="120"
+                                    placeholder="Nombre del entrenador"
+                                >
+
+                            </div>
+
+
+                            <div class="form-grupo">
+
+                                <label for="medicoVisitante">
+                                    Médico
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="medicoVisitante"
+                                    maxlength="120"
+                                    placeholder="Nombre del médico"
+                                >
+
+                            </div>
+
+
+                            <div class="form-grupo">
+
+                                <label for="auxiliarVisitante">
+                                    Auxiliar
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="auxiliarVisitante"
+                                    maxlength="120"
+                                    placeholder="Nombre del auxiliar"
+                                >
+
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                </section>
+
+
+                <section class="cedula-bloque">
+
+                    <div class="seccion-header">
+
+                        <div>
+
+                            <span>
+                                CAPITANES
+                            </span>
+
+                            <h2>
+                                Representantes de los equipos
+                            </h2>
+
+                            <p>
+                                Selecciona al capitán entre los jugadores presentes.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-grid">
+
+                        <div class="form-grupo">
+
+                            <label for="capitanLocal">
+                                Capitán local
+                            </label>
+
+                            <select id="capitanLocal">
+
+                                <option value="">
+                                    Selecciona al capitán
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-grupo">
+
+                            <label for="capitanVisitante">
+                                Capitán visitante
+                            </label>
+
+                            <select id="capitanVisitante">
+
+                                <option value="">
+                                    Selecciona al capitán
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <section class="cedula-bloque">
+
+                    <div class="seccion-header">
+
+                        <div>
+
+                            <span>
+                                INSTALACIONES
+                            </span>
+
+                            <h2>
+                                Estado del terreno de juego
+                            </h2>
+
+                            <p>
+                                Describe las condiciones del campo y sus instalaciones.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-grupo">
+
+                        <label for="estadoTerreno">
+                            Estado del terreno de juego e instalaciones
+                        </label>
+
+                        <textarea
+                            id="estadoTerreno"
+                            rows="4"
+                            maxlength="500"
+                            placeholder="Ej. Campo marcado correctamente, porterías con redes, vestidores en buenas condiciones..."
+                        ></textarea>
+
+                        <div class="contador-texto">
+
+                            <span id="contadorTerreno">
+                                0
+                            </span>
+
+                            /500
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <section class="cedula-bloque">
+
+                    <div class="seccion-header">
+
+                        <div>
+
+                            <span>
+                                PÚBLICO
+                            </span>
+
+                            <h2>
+                                Conducta de las porras
+                            </h2>
+
+                            <p>
+                                Evalúa el comportamiento del público local y visitante.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="conducta-grid">
+
+                        <article class="conducta-card">
+
+                            <span class="conducta-equipo">
+                                LOCAL
+                            </span>
+
+                            <strong id="conductaNombreLocal">
+                                Equipo local
+                            </strong>
+
+
+                            <div class="form-grupo">
+
+                                <label for="conductaPublicoLocal">
+                                    Conducta
+                                </label>
+
+                                <select id="conductaPublicoLocal">
+
+                                    <option value="">
+                                        Seleccionar
+                                    </option>
+
+                                    <option value="excelente">
+                                        Excelente
+                                    </option>
+
+                                    <option value="buena">
+                                        Buena
+                                    </option>
+
+                                    <option value="regular">
+                                        Regular
+                                    </option>
+
+                                    <option value="mala">
+                                        Mala
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-grupo">
+
+                                <label for="observacionPublicoLocal">
+                                    Observación
+                                </label>
+
+                                <textarea
+                                    id="observacionPublicoLocal"
+                                    rows="3"
+                                    maxlength="300"
+                                    placeholder="Opcional..."
+                                ></textarea>
+
+                            </div>
+
+                        </article>
+
+
+                        <article class="conducta-card visitante">
+
+                            <span class="conducta-equipo">
+                                VISITANTE
+                            </span>
+
+                            <strong id="conductaNombreVisitante">
+                                Equipo visitante
+                            </strong>
+
+
+                            <div class="form-grupo">
+
+                                <label for="conductaPublicoVisitante">
+                                    Conducta
+                                </label>
+
+                                <select id="conductaPublicoVisitante">
+
+                                    <option value="">
+                                        Seleccionar
+                                    </option>
+
+                                    <option value="excelente">
+                                        Excelente
+                                    </option>
+
+                                    <option value="buena">
+                                        Buena
+                                    </option>
+
+                                    <option value="regular">
+                                        Regular
+                                    </option>
+
+                                    <option value="mala">
+                                        Mala
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-grupo">
+
+                                <label for="observacionPublicoVisitante">
+                                    Observación
+                                </label>
+
+                                <textarea
+                                    id="observacionPublicoVisitante"
+                                    rows="3"
+                                    maxlength="300"
+                                    placeholder="Opcional..."
+                                ></textarea>
+
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                </section>
+
+
+                <section class="cedula-bloque">
+
+                    <div class="seccion-header">
+
+                        <div>
+
+                            <span>
+                                INFORME DEL ÁRBITRO
                             </span>
 
                             <h2>
@@ -430,7 +1258,7 @@
                             </h2>
 
                             <p>
-                                Describe cualquier situación relevante.
+                                Describe cualquier situación relevante antes, durante o después del encuentro.
                             </p>
 
                         </div>
@@ -441,17 +1269,20 @@
                     <textarea
                         id="incidencias"
                         class="textarea-incidencias"
-                        rows="6"
-                        maxlength="1500"
-                        placeholder="Ej. retrasos, lesiones, conducta antideportiva, invasión de campo..."
+                        rows="8"
+                        maxlength="2000"
+                        placeholder="Ej. lesiones, retrasos, protestas, invasión de campo, conducta antideportiva, tanda de penales o cualquier situación que deba conocer la liga..."
                     ></textarea>
 
 
                     <div class="contador-texto">
+
                         <span id="contadorIncidencias">
                             0
                         </span>
-                        /1500
+
+                        /2000
+
                     </div>
 
                 </section>
@@ -557,6 +1388,49 @@
 
                     </div>
 
+
+                    <div
+                        id="resumenPenalesContenedor"
+                        class="resumen-penales oculto"
+                    >
+
+                        <span>
+                            Tanda de penales
+                        </span>
+
+                        <strong id="resumenPenales">
+                            0 - 0
+                        </strong>
+
+                    </div>
+
+                </section>
+
+
+                <section class="certificacion-cedula">
+
+                    <label class="certificacion-check">
+
+                        <input
+                            type="checkbox"
+                            id="confirmarInformacion"
+                        >
+
+                        <span>
+
+                            <strong>
+                                Certifico que la información capturada es correcta
+                            </strong>
+
+                            <small>
+                                Al enviar la cédula quedará asociada a tu cuenta arbitral,
+                                con fecha y hora de envío.
+                            </small>
+
+                        </span>
+
+                    </label>
+
                 </section>
 
 
@@ -573,9 +1447,9 @@
                         </strong>
 
                         <p>
-                            Esta cédula actualizará estadísticas, resultados
-                            y sanciones. Cualquier corrección posterior deberá
-                            quedar registrada en el historial del sistema.
+                            Puedes guardar esta cédula como borrador y terminarla
+                            más tarde. Al enviarla oficialmente se actualizarán
+                            resultado, estadísticas y sanciones del encuentro.
                         </p>
 
                     </div>
@@ -642,6 +1516,7 @@
                     type="button"
                     id="btnCerrarEvento"
                     class="btn-cerrar-modal"
+                    aria-label="Cerrar"
                 >
                     ×
                 </button>
@@ -677,9 +1552,11 @@
                 </label>
 
                 <select id="eventoJugador">
+
                     <option value="">
                         Selecciona un jugador
                     </option>
+
                 </select>
 
             </div>
@@ -743,7 +1620,7 @@
                     id="eventoMotivo"
                     rows="3"
                     maxlength="250"
-                    placeholder="Opcional..."
+                    placeholder="Ej. juego brusco, conducta antideportiva, protestar decisiones..."
                 ></textarea>
 
             </div>
@@ -795,8 +1672,9 @@
             </h2>
 
             <p>
-                Una vez enviada, esta información será utilizada para
-                actualizar el resultado, estadísticas y sanciones.
+                Confirma que ya revisaste toda la información.
+                Una vez enviada, el resultado y los eventos
+                serán considerados oficiales por el sistema.
             </p>
 
 
@@ -808,6 +1686,22 @@
 
                 <span>
                     Marcador final
+                </span>
+
+            </div>
+
+
+            <div
+                id="confirmarPenalesContenedor"
+                class="confirmacion-resultado oculto"
+            >
+
+                <strong id="confirmarPenales">
+                    0 - 0
+                </strong>
+
+                <span>
+                    Tanda de penales
                 </span>
 
             </div>

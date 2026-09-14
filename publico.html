@@ -1,883 +1,515 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
+  <head>
+    <meta charset="UTF-8" />
 
-<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>
-        Inicio | Liga Deportiva Río Grande
-    </title>
+    <title>Inicio | Liga Deportiva Río Grande</title>
 
     <meta
-        name="description"
-        content="Plataforma oficial de la Liga Deportiva Río Grande."
-    >
+      name="description"
+      content="Plataforma oficial de la Liga Deportiva Río Grande."
+    />
 
-    <meta
-        name="theme-color"
-        content="#0b756d"
-    >
+    <meta name="theme-color" content="#0b756d" />
 
-    <meta
-        name="mobile-web-app-capable"
-        content="yes"
-    >
+    <meta name="mobile-web-app-capable" content="yes" />
 
-    <meta
-        name="apple-mobile-web-app-capable"
-        content="yes"
-    >
+    <meta name="apple-mobile-web-app-capable" content="yes" />
 
-    <meta
-        name="apple-mobile-web-app-status-bar-style"
-        content="default"
-    >
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
-    <meta
-        name="apple-mobile-web-app-title"
-        content="Liga Río Grande"
-    >
+    <meta name="apple-mobile-web-app-title" content="Liga Río Grande" />
+
+    <link rel="icon" type="image/png" href="imagenes/logo.png" />
 
     <link
-        rel="icon"
-        type="image/png"
-        href="imagenes/logo.png"
-    >
-
-    <link
-        rel="icon"
-        type="image/png"
-        sizes="192x192"
-        href="imagenes/icon-192.png"
-    >
-
-    <link
-        rel="apple-touch-icon"
-        href="imagenes/icon-192.png"
-    >
-
-    <link
-        rel="manifest"
-        href="manifest.json"
-    >
-
-    <link
-        rel="stylesheet"
-        href="css/global.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="css/publico.css"
-    >
-
-</head>
-
-<body>
-
-    <div
-        id="appPublico"
-        class="app-publico"
-    >
-
-        <header class="topbar">
-
-            <div class="topbar-identidad">
-
-                <img
-                    src="imagenes/logo.png"
-                    alt="Liga Deportiva Río Grande"
-                    class="topbar-logo logo-ampliable"
-                    data-logo-ampliable
-                    title="Ver logo"
-                >
-
-                <div class="topbar-texto">
-
-                    <span class="topbar-mini">
-                        Liga Municipal
-                    </span>
-
-                    <strong>
-                        Río Grande
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <button
-                type="button"
-                id="btnPerfil"
-                class="btn-perfil"
-                aria-label="Abrir perfil"
-            >
-
-                <span id="perfilInicial">
-                    U
-                </span>
-
-            </button>
-
-        </header>
-
-
-        <main class="contenido-publico">
-
-            <section class="bienvenida">
-
-                <div>
-
-                    <p class="bienvenida-etiqueta">
-                        Bienvenido
-                    </p>
-
-                    <h1 id="nombreUsuario">
-                        Cargando...
-                    </h1>
-
-                    <p>
-                        Consulta todo lo que está pasando en la liga.
-                    </p>
-
-                </div>
-
-            </section>
-
-
-            <section class="proximo-partido">
-
-                <div class="seccion-cabecera">
-
-                    <div>
-
-                        <span class="seccion-mini">
-                            Próximamente
-                        </span>
-
-                        <h2>
-                            Próximo partido
-                        </h2>
-
-                    </div>
-
-                    <a href="partidos.html">
-                        Ver todos
-                    </a>
-
-                </div>
-
-
-                <div id="contenedorProximoPartido">
-
-                    <article class="partido-destacado">
-
-                        <div
-                            style="
-                                min-height:170px;
-                                display:flex;
-                                align-items:center;
-                                justify-content:center;
-                                text-align:center;
-                                color:#68746e;
-                                font-size:.76rem;
-                            "
-                        >
-                            Cargando próximo partido...
-                        </div>
-
-                    </article>
-
-                </div>
-
-            </section>
-
-
-            <section class="accesos">
-
-                <div class="seccion-cabecera">
-
-                    <div>
-
-                        <span class="seccion-mini">
-                            Explora
-                        </span>
-
-                        <h2>
-                            Liga Río Grande
-                        </h2>
-
-                    </div>
-
-                </div>
-
-
-                <div class="grid-accesos">
-
-                    <a
-                        href="jornadas.html"
-                        class="acceso-card acceso-principal"
-                    >
-
-                        <div class="acceso-icono">
-                            📅
-                        </div>
-
-                        <div>
-
-                            <strong>
-                                Jornadas
-                            </strong>
-
-                            <span>
-                                Calendario y próximos partidos
-                            </span>
-
-                        </div>
-
-                    </a>
-
-
-                    <a
-                        href="tablas.html"
-                        class="acceso-card"
-                    >
-
-                        <div class="acceso-icono">
-                            🏆
-                        </div>
-
-                        <div>
-
-                            <strong>
-                                Tabla general
-                            </strong>
-
-                            <span>
-                                Posiciones por categoría
-                            </span>
-
-                        </div>
-
-                    </a>
-
-
-                    <a
-                        href="equipos.html"
-                        class="acceso-card"
-                    >
-
-                        <div class="acceso-icono">
-                            🛡️
-                        </div>
-
-                        <div>
-
-                            <strong>
-                                Equipos
-                            </strong>
-
-                            <span>
-                                Clubes y plantillas
-                            </span>
-
-                        </div>
-
-                    </a>
-
-
-                    <a
-                        href="jugadores.html"
-                        class="acceso-card"
-                    >
-
-                        <div class="acceso-icono">
-                            ⚽
-                        </div>
-
-                        <div>
-
-                            <strong>
-                                Jugadores
-                            </strong>
-
-                            <span>
-                                Perfiles y estadísticas
-                            </span>
-
-                        </div>
-
-                    </a>
-
-
-                    <a
-                        href="noticias.html"
-                        class="acceso-card"
-                    >
-
-                        <div class="acceso-icono">
-                            📰
-                        </div>
-
-                        <div>
-
-                            <strong>
-                                Noticias
-                            </strong>
-
-                            <span>
-                                Comunicados oficiales
-                            </span>
-
-                        </div>
-
-                    </a>
-
-
-                    <a
-                        href="chat.html"
-                        class="acceso-card"
-                    >
-
-                        <div class="acceso-icono">
-                            💬
-                        </div>
-
-                        <div>
-
-                            <strong>
-                                Comunidad
-                            </strong>
-
-                            <span>
-                                Chat general de la liga
-                            </span>
-
-                        </div>
-
-                    </a>
-
-                </div>
-
-            </section>
-
-
-            <section class="actividad">
-
-                <div class="seccion-cabecera">
-
-                    <div>
-
-                        <span class="seccion-mini">
-                            Actualidad
-                        </span>
-
-                        <h2>
-                            Últimos resultados
-                        </h2>
-
-                    </div>
-
-                </div>
-
-
-                <div
-                    id="listaUltimosResultados"
-                    class="resultados-lista"
-                >
-
-                    <article class="resultado-card">
-
-                        <div
-                            style="
-                                min-height:75px;
-                                display:flex;
-                                align-items:center;
-                                justify-content:center;
-                                text-align:center;
-                                color:#68746e;
-                                font-size:.72rem;
-                            "
-                        >
-                            Cargando últimos resultados...
-                        </div>
-
-                    </article>
-
-                </div>
-
-            </section>
-
-
-            <section class="informacion-publica">
-
-                <div class="seccion-cabecera">
-
-                    <div>
-
-                        <span class="seccion-mini">
-                            Información
-                        </span>
-
-                        <h2>
-                            Liga y comunidad
-                        </h2>
-
-                    </div>
-
-                </div>
-
-
-                <div class="grid-info-publica">
-
-                    <div
-                        class="info-publica-card facebook-proximo"
-                        aria-disabled="true"
-                    >
-
-                        <div class="info-publica-icono">
-                            📘
-                        </div>
-
-                        <div class="info-publica-contenido">
-
-                            <strong>
-                                Facebook
-                            </strong>
-
-                            <span>
-                                Página oficial de la Liga
-                            </span>
-
-                        </div>
-
-                        <small class="info-proximamente">
-                            Próximamente
-                        </small>
-
-                    </div>
-
-
-                    <a
-                        href="terminos.html"
-                        class="info-publica-card"
-                    >
-
-                        <div class="info-publica-icono">
-                            📄
-                        </div>
-
-                        <div class="info-publica-contenido">
-
-                            <strong>
-                                Términos y Condiciones
-                            </strong>
-
-                            <span>
-                                Condiciones de uso de la plataforma
-                            </span>
-
-                        </div>
-
-                        <span class="info-publica-flecha">
-                            ›
-                        </span>
-
-                    </a>
-
-
-                    <a
-                        href="privacidad.html"
-                        class="info-publica-card"
-                    >
-
-                        <div class="info-publica-icono">
-                            🔐
-                        </div>
-
-                        <div class="info-publica-contenido">
-
-                            <strong>
-                                Política de Privacidad
-                            </strong>
-
-                            <span>
-                                Información sobre protección de datos
-                            </span>
-
-                        </div>
-
-                        <span class="info-publica-flecha">
-                            ›
-                        </span>
-
-                    </a>
-
-                </div>
-
-
-                <div class="firma-publica">
-
-                    <img
-                        src="imagenes/logo.png"
-                        alt="Liga Deportiva Río Grande"
-                        class="logo-ampliable"
-                        data-logo-ampliable
-                        title="Ver logo"
-                    >
-
-                    <div>
-
-                        <strong>
-                            Liga Deportiva Río Grande
-                        </strong>
-
-                        <span>
-                            Villa de Tututepec, Oaxaca
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-        </main>
-
-
-        <nav class="bottom-nav">
-
-            <a
-                href="publico.html"
-                class="bottom-item active"
-            >
-
-                <span>
-                    🏠
-                </span>
-
-                <small>
-                    Inicio
-                </small>
-
-            </a>
-
-
-            <a
-                href="jornadas.html"
-                class="bottom-item"
-            >
-
-                <span>
-                    📅
-                </span>
-
-                <small>
-                    Jornadas
-                </small>
-
-            </a>
-
-
-            <a
-                href="tablas.html"
-                class="bottom-item"
-            >
-
-                <span>
-                    🏆
-                </span>
-
-                <small>
-                    Tabla
-                </small>
-
-            </a>
-
-
-            <a
-                href="chat.html"
-                class="bottom-item"
-            >
-
-                <span>
-                    💬
-                </span>
-
-                <small>
-                    Chat
-                </small>
-
-            </a>
-
-
-            <button
-                type="button"
-                id="btnMas"
-                class="bottom-item"
-            >
-
-                <span>
-                    ☰
-                </span>
-
-                <small>
-                    Más
-                </small>
-
-            </button>
-
-        </nav>
-
-
-        <div
-            id="menuMas"
-            class="menu-mas hidden"
-        >
-
-            <div class="menu-mas-card">
-
-                <div class="menu-mas-header">
-
-                    <div>
-
-                        <span class="seccion-mini">
-                            Cuenta
-                        </span>
-
-                        <strong id="menuNombreUsuario">
-                            Usuario
-                        </strong>
-
-                    </div>
-
-                    <button
-                        type="button"
-                        id="btnCerrarMenu"
-                        class="btn-cerrar-menu"
-                        aria-label="Cerrar menú"
-                    >
-                        ×
-                    </button>
-
-                </div>
-
-
-                <a
-                    id="btnVolverPanel"
-                    href="#"
-                    class="btn-volver-panel hidden"
-                >
-
-                    <span id="iconoVolverPanel">
-                        ↩️
-                    </span>
-
-                    <div>
-
-                        <small>
-                            Mi cuenta
-                        </small>
-
-                        <strong id="textoVolverPanel">
-                            Volver a mi panel
-                        </strong>
-
-                    </div>
-
-                    <span class="btn-volver-panel-flecha">
-                        ›
-                    </span>
-
-                </a>
-
-
-                <div class="menu-mas-links">
-
-                    <a href="equipos.html">
-                        🛡️ Equipos
-                    </a>
-
-                    <a href="jugadores.html">
-                        ⚽ Jugadores
-                    </a>
-
-                    <a href="partidos.html">
-                        🗓️ Partidos
-                    </a>
-
-                    <a href="noticias.html">
-                        📰 Noticias
-                    </a>
-
-                </div>
-
-
-                <div class="menu-mas-separador"></div>
-
-
-                <div class="menu-mas-legal">
-
-                    <span class="menu-legal-titulo">
-                        Liga y comunidad
-                    </span>
-
-
-                    <div
-                        class="menu-legal-link facebook-deshabilitado"
-                        aria-disabled="true"
-                    >
-
-                        <span>
-                            📘
-                        </span>
-
-                        <div>
-
-                            <strong>
-                                Facebook
-                            </strong>
-
-                            <small>
-                                Próximamente
-                            </small>
-
-                        </div>
-
-                    </div>
-
-
-                    <a
-                        href="terminos.html"
-                        class="menu-legal-link"
-                    >
-
-                        <span>
-                            📄
-                        </span>
-
-                        <div>
-
-                            <strong>
-                                Términos y Condiciones
-                            </strong>
-
-                            <small>
-                                Condiciones de uso
-                            </small>
-
-                        </div>
-
-                    </a>
-
-
-                    <a
-                        href="privacidad.html"
-                        class="menu-legal-link"
-                    >
-
-                        <span>
-                            🔐
-                        </span>
-
-                        <div>
-
-                            <strong>
-                                Política de Privacidad
-                            </strong>
-
-                            <small>
-                                Protección de datos
-                            </small>
-
-                        </div>
-
-                    </a>
-
-                </div>
-
-
-                <button
-                    type="button"
-                    id="btnCerrarSesion"
-                    class="btn-cerrar-sesion"
-                >
-                    Cerrar sesión
-                </button>
-
-            </div>
-
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="imagenes/icon-192.png"
+    />
+
+    <link rel="apple-touch-icon" href="imagenes/icon-192.png" />
+
+    <link rel="manifest" href="manifest.json" />
+
+    <link rel="stylesheet" href="css/global.css" />
+
+    <link rel="stylesheet" href="css/publico.css" />
+  </head>
+
+  <body>
+    <div id="appPublico" class="app-publico">
+      <header class="topbar">
+        <div class="topbar-identidad">
+          <img
+            src="imagenes/logo.png"
+            alt="Liga Deportiva Río Grande"
+            class="topbar-logo logo-ampliable"
+            data-logo-ampliable
+            title="Ver logo"
+          />
+
+          <div class="topbar-texto">
+            <span class="topbar-mini"> Liga Municipal </span>
+
+            <strong> Río Grande </strong>
+          </div>
         </div>
 
-
-        <div
-            id="modalLogo"
-            class="modal-logo hidden"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Logo de la Liga Deportiva Río Grande"
+        <button
+          type="button"
+          id="btnPerfil"
+          class="btn-perfil"
+          aria-label="Abrir perfil"
         >
+          <span id="perfilInicial"> U </span>
+        </button>
+      </header>
 
-            <div class="modal-logo-contenido">
+      <main class="contenido-publico">
+        <section class="bienvenida">
+          <div>
+            <p class="bienvenida-etiqueta">Bienvenido</p>
 
-                <button
-                    type="button"
-                    id="btnCerrarModalLogo"
-                    class="btn-cerrar-modal-logo"
-                    aria-label="Cerrar"
-                >
-                    ×
-                </button>
+            <h1 id="nombreUsuario">Cargando...</h1>
 
+            <p>Consulta todo lo que está pasando en la liga.</p>
+          </div>
+        </section>
 
-                <span class="modal-logo-mini">
-                    LIGA MUNICIPAL DE FÚTBOL
-                </span>
+        <section class="proximo-partido">
+          <div class="seccion-cabecera">
+            <div>
+              <span class="seccion-mini"> Próximamente </span>
 
-
-                <img
-                    src="imagenes/logo.png"
-                    alt="Logo oficial de la Liga Deportiva Río Grande"
-                    class="logo-modal-grande"
-                >
-
-
-                <div class="modal-logo-texto">
-
-                    <strong>
-                        Liga Deportiva Río Grande
-                    </strong>
-
-                    <span>
-                        Villa de Tututepec, Oaxaca
-                    </span>
-
-                </div>
-
-
-                <p class="modal-logo-ayuda">
-                    Logo oficial de la Liga. Toca fuera de esta ventana para cerrar.
-                </p>
-
+              <h2>Próximo partido</h2>
             </div>
 
-        </div>
+            <a href="partidos.html"> Ver todos </a>
+          </div>
 
+          <div id="contenedorProximoPartido">
+            <article class="partido-destacado">
+              <div
+                style="
+                  min-height: 170px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  text-align: center;
+                  color: #68746e;
+                  font-size: 0.76rem;
+                "
+              >
+                Cargando próximo partido...
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="accesos">
+          <div class="seccion-cabecera">
+            <div>
+              <span class="seccion-mini"> Explora </span>
+
+              <h2>Liga Río Grande</h2>
+            </div>
+          </div>
+
+          <div class="grid-accesos">
+            <a href="jornadas.html" class="acceso-card acceso-principal">
+              <div class="acceso-icono">📅</div>
+
+              <div>
+                <strong> Jornadas </strong>
+
+                <span> Calendario y próximos partidos </span>
+              </div>
+            </a>
+
+            <a href="tablas.html" class="acceso-card">
+              <div class="acceso-icono">🏆</div>
+
+              <div>
+                <strong> Tabla general </strong>
+
+                <span> Posiciones por categoría </span>
+              </div>
+            </a>
+
+            <a href="equipos.html" class="acceso-card">
+              <div class="acceso-icono">🛡️</div>
+
+              <div>
+                <strong> Equipos </strong>
+
+                <span> Clubes y plantillas </span>
+              </div>
+            </a>
+
+            <a href="jugadores.html" class="acceso-card">
+              <div class="acceso-icono">⚽</div>
+
+              <div>
+                <strong> Jugadores </strong>
+
+                <span> Perfiles y estadísticas </span>
+              </div>
+            </a>
+
+            <a href="noticias.html" class="acceso-card">
+              <div class="acceso-icono">📰</div>
+
+              <div>
+                <strong> Noticias </strong>
+
+                <span> Comunicados oficiales </span>
+              </div>
+            </a>
+
+            <a href="chat.html" class="acceso-card">
+              <div class="acceso-icono">💬</div>
+
+              <div>
+                <strong> Comunidad </strong>
+
+                <span> Chat general de la liga </span>
+              </div>
+            </a>
+          </div>
+        </section>
+
+        <section class="actividad">
+          <div class="seccion-cabecera">
+            <div>
+              <span class="seccion-mini"> Actualidad </span>
+
+              <h2>Últimos resultados</h2>
+            </div>
+          </div>
+
+          <div id="listaUltimosResultados" class="resultados-lista">
+            <article class="resultado-card">
+              <div
+                style="
+                  min-height: 75px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  text-align: center;
+                  color: #68746e;
+                  font-size: 0.72rem;
+                "
+              >
+                Cargando últimos resultados...
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="informacion-publica">
+          <div class="seccion-cabecera">
+            <div>
+              <span class="seccion-mini"> Información </span>
+
+              <h2>Liga y comunidad</h2>
+            </div>
+          </div>
+
+          <div class="grid-info-publica">
+            <div
+              class="info-publica-card facebook-proximo"
+              aria-disabled="true"
+            >
+              <div class="info-publica-icono">📘</div>
+
+              <div class="info-publica-contenido">
+                <strong> Facebook </strong>
+
+                <span> Página oficial de la Liga </span>
+              </div>
+
+              <small class="info-proximamente"> Próximamente </small>
+            </div>
+
+            <a href="terminos.html" class="info-publica-card">
+              <div class="info-publica-icono">📄</div>
+
+              <div class="info-publica-contenido">
+                <strong> Términos y Condiciones </strong>
+
+                <span> Condiciones de uso de la plataforma </span>
+              </div>
+
+              <span class="info-publica-flecha"> › </span>
+            </a>
+
+            <a href="privacidad.html" class="info-publica-card">
+              <div class="info-publica-icono">🔐</div>
+
+              <div class="info-publica-contenido">
+                <strong> Política de Privacidad </strong>
+
+                <span> Información sobre protección de datos </span>
+              </div>
+
+              <span class="info-publica-flecha"> › </span>
+            </a>
+          </div>
+
+          <div class="firma-publica">
+            <img
+              src="imagenes/logo.png"
+              alt="Liga Deportiva Río Grande"
+              class="logo-ampliable"
+              data-logo-ampliable
+              title="Ver logo"
+            />
+
+            <div>
+              <strong> Liga Deportiva Río Grande </strong>
+
+              <span> Villa de Tututepec, Oaxaca </span>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <nav class="bottom-nav">
+        <a href="publico.html" class="bottom-item active">
+          <span> 🏠 </span>
+
+          <small> Inicio </small>
+        </a>
+
+        <a href="jornadas.html" class="bottom-item">
+          <span> 📅 </span>
+
+          <small> Jornadas </small>
+        </a>
+
+        <a href="tablas.html" class="bottom-item">
+          <span> 🏆 </span>
+
+          <small> Tabla </small>
+        </a>
+
+        <a href="chat.html" class="bottom-item">
+          <span> 💬 </span>
+
+          <small> Chat </small>
+        </a>
+
+        <button type="button" id="btnMas" class="bottom-item">
+          <span> ☰ </span>
+
+          <small> Más </small>
+        </button>
+      </nav>
+
+      <div id="menuMas" class="menu-mas hidden">
+        <div class="menu-mas-card">
+          <div class="menu-mas-header">
+            <div>
+              <span class="seccion-mini"> Cuenta </span>
+
+              <strong id="menuNombreUsuario"> Usuario </strong>
+            </div>
+
+            <button
+              type="button"
+              id="btnCerrarMenu"
+              class="btn-cerrar-menu"
+              aria-label="Cerrar menú"
+            >
+              ×
+            </button>
+          </div>
+
+          <a id="btnVolverPanel" href="#" class="btn-volver-panel hidden">
+            <span id="iconoVolverPanel"> ↩️ </span>
+
+            <div>
+              <small> Mi cuenta </small>
+
+              <strong id="textoVolverPanel"> Volver a mi panel </strong>
+            </div>
+
+            <span class="btn-volver-panel-flecha"> › </span>
+          </a>
+
+          <div class="menu-mas-links">
+            <a href="equipos.html"> 🛡️ Equipos </a>
+
+            <a href="jugadores.html"> ⚽ Jugadores </a>
+
+            <a href="partidos.html"> 🗓️ Partidos </a>
+
+            <a href="noticias.html"> 📰 Noticias </a>
+          </div>
+
+          <div class="menu-mas-separador"></div>
+
+          <div class="menu-mas-legal">
+            <span class="menu-legal-titulo"> Liga y comunidad </span>
+
+            <div
+              class="menu-legal-link facebook-deshabilitado"
+              aria-disabled="true"
+            >
+              <span> 📘 </span>
+
+              <div>
+                <strong> Facebook </strong>
+
+                <small> Próximamente </small>
+              </div>
+            </div>
+
+            <a href="terminos.html" class="menu-legal-link">
+              <span> 📄 </span>
+
+              <div>
+                <strong> Términos y Condiciones </strong>
+
+                <small> Condiciones de uso </small>
+              </div>
+            </a>
+
+            <a href="privacidad.html" class="menu-legal-link">
+              <span> 🔐 </span>
+
+              <div>
+                <strong> Política de Privacidad </strong>
+
+                <small> Protección de datos </small>
+              </div>
+            </a>
+          </div>
+
+          <button type="button" id="btnCerrarSesion" class="btn-cerrar-sesion">
+            Cerrar sesión
+          </button>
+        </div>
+      </div>
+
+      <div
+        id="avisoActualizacion"
+        class="aviso-actualizacion hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="tituloActualizacion"
+      >
+        <div class="aviso-actualizacion-card">
+          <div class="actualizacion-icono">
+            <div class="actualizacion-icono-halo"></div>
+
+            <img src="imagenes/logo.png" alt="Liga Deportiva Río Grande" />
+
+            <span class="actualizacion-badge"> ↑ </span>
+          </div>
+
+          <div class="actualizacion-texto">
+            <span class="actualizacion-etiqueta"> Nueva versión </span>
+
+            <h2 id="tituloActualizacion">Actualización disponible</h2>
+
+            <p>
+              Hay una nueva versión de Liga Río Grande con mejoras y novedades.
+            </p>
+
+            <div class="actualizacion-versiones">
+              <span>
+                Tu versión
+                <strong id="versionActual"> Anterior </strong>
+              </span>
+
+              <i> → </i>
+
+              <span>
+                Nueva versión
+                <strong id="versionNueva"> Disponible </strong>
+              </span>
+            </div>
+          </div>
+
+          <div class="actualizacion-acciones">
+            <button
+              type="button"
+              id="btnActualizarApp"
+              class="btn-actualizar-app"
+            >
+              <span class="btn-actualizar-icono"> ↻ </span>
+
+              <span class="btn-actualizar-texto">
+                <strong> Actualizar ahora </strong>
+
+                <small> Solo tomará unos segundos </small>
+              </span>
+            </button>
+
+            <button
+              type="button"
+              id="btnPosponerActualizacion"
+              class="btn-posponer-actualizacion"
+            >
+              Ahora no
+            </button>
+          </div>
+
+          <div id="estadoActualizacion" class="estado-actualizacion hidden">
+            <div class="estado-actualizacion-spinner"></div>
+
+            <div>
+              <strong> Actualizando Liga Río Grande </strong>
+
+              <span> Preparando la nueva versión... </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="modalLogo"
+        class="modal-logo hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Logo de la Liga Deportiva Río Grande"
+      >
+        <div class="modal-logo-contenido">
+          <button
+            type="button"
+            id="btnCerrarModalLogo"
+            class="btn-cerrar-modal-logo"
+            aria-label="Cerrar"
+          >
+            ×
+          </button>
+
+          <span class="modal-logo-mini"> LIGA MUNICIPAL DE FÚTBOL </span>
+
+          <img
+            src="imagenes/logo.png"
+            alt="Logo oficial de la Liga Deportiva Río Grande"
+            class="logo-modal-grande"
+          />
+
+          <div class="modal-logo-texto">
+            <strong> Liga Deportiva Río Grande </strong>
+
+            <span> Villa de Tututepec, Oaxaca </span>
+          </div>
+
+          <p class="modal-logo-ayuda">
+            Logo oficial de la Liga. Toca fuera de esta ventana para cerrar.
+          </p>
+        </div>
+      </div>
     </div>
 
-
-    <script
-        type="module"
-        src="js/publico/publico.js"
-    ></script>
-
-</body>
-
+    <script type="module" src="js/publico/publico.js"></script>
+  </body>
 </html>

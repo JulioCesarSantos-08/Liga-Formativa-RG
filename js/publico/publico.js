@@ -1,544 +1,254 @@
 import {
-    collection,
-    getDocs
+  collection,
+  getDocs,
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-import {
-    db
-} from "../firebase.js";
+import { db } from "../firebase.js";
 
 import {
-    protegerPaginaPublica,
-    obtenerPanelSegunRol,
-    cerrarSesion
+  protegerPaginaPublica,
+  obtenerPanelSegunRol,
+  cerrarSesion,
 } from "../roles.js";
 
+const CLAVE_ACTUALIZACION_POSPUESTA = "ligaRioGrande_actualizacion_pospuesta";
 
-if ("serviceWorker" in navigator) {
+let registroServiceWorker = null;
 
-    window.addEventListener(
-        "load",
-        () => {
+let workerEnEspera = null;
 
-            navigator.serviceWorker
-                .register("./service-worker.js")
-                .then(registro => {
+let recargaPorActualizacion = false;
 
-                    console.log(
-                        "Service Worker registrado correctamente:",
-                        registro.scope
-                    );
+const nombreUsuario = document.getElementById("nombreUsuario");
 
-                })
-                .catch(error => {
+const menuNombreUsuario = document.getElementById("menuNombreUsuario");
 
-                    console.error(
-                        "Error registrando Service Worker:",
-                        error
-                    );
+const perfilInicial = document.getElementById("perfilInicial");
 
-                });
+const btnMas = document.getElementById("btnMas");
 
-        }
-    );
+const menuMas = document.getElementById("menuMas");
 
-}
+const btnCerrarMenu = document.getElementById("btnCerrarMenu");
 
+const btnCerrarSesion = document.getElementById("btnCerrarSesion");
 
-const nombreUsuario =
-    document.getElementById(
-        "nombreUsuario"
-    );
+const btnPerfil = document.getElementById("btnPerfil");
 
-const menuNombreUsuario =
-    document.getElementById(
-        "menuNombreUsuario"
-    );
+const btnVolverPanel = document.getElementById("btnVolverPanel");
 
-const perfilInicial =
-    document.getElementById(
-        "perfilInicial"
-    );
+const iconoVolverPanel = document.getElementById("iconoVolverPanel");
 
+const textoVolverPanel = document.getElementById("textoVolverPanel");
 
-const btnMas =
-    document.getElementById(
-        "btnMas"
-    );
+const contenedorProximoPartido = document.getElementById(
+  "contenedorProximoPartido",
+);
 
-const menuMas =
-    document.getElementById(
-        "menuMas"
-    );
+const listaUltimosResultados = document.getElementById(
+  "listaUltimosResultados",
+);
 
-const btnCerrarMenu =
-    document.getElementById(
-        "btnCerrarMenu"
-    );
+const modalLogo = document.getElementById("modalLogo");
 
-const btnCerrarSesion =
-    document.getElementById(
-        "btnCerrarSesion"
-    );
+const btnCerrarModalLogo = document.getElementById("btnCerrarModalLogo");
 
-const btnPerfil =
-    document.getElementById(
-        "btnPerfil"
-    );
+const logosAmpliables = document.querySelectorAll("[data-logo-ampliable]");
 
+const avisoActualizacion = document.getElementById("avisoActualizacion");
 
-const btnVolverPanel =
-    document.getElementById(
-        "btnVolverPanel"
-    );
+const btnActualizarApp = document.getElementById("btnActualizarApp");
 
-const iconoVolverPanel =
-    document.getElementById(
-        "iconoVolverPanel"
-    );
+const btnPosponerActualizacion = document.getElementById(
+  "btnPosponerActualizacion",
+);
 
-const textoVolverPanel =
-    document.getElementById(
-        "textoVolverPanel"
-    );
+const estadoActualizacion = document.getElementById("estadoActualizacion");
 
+const versionActual = document.getElementById("versionActual");
 
-const contenedorProximoPartido =
-    document.getElementById(
-        "contenedorProximoPartido"
-    );
-
-const listaUltimosResultados =
-    document.getElementById(
-        "listaUltimosResultados"
-    );
-
-
-const modalLogo =
-    document.getElementById(
-        "modalLogo"
-    );
-
-const btnCerrarModalLogo =
-    document.getElementById(
-        "btnCerrarModalLogo"
-    );
-
-const logosAmpliables =
-    document.querySelectorAll(
-        "[data-logo-ampliable]"
-    );
-
+const versionNueva = document.getElementById("versionNueva");
 
 let partidos = [];
 
 let equipos = [];
 
+registrarServiceWorker();
 
-const usuario =
-    await protegerPaginaPublica();
+activarSistemaActualizaciones();
 
+const usuario = await protegerPaginaPublica();
 
 if (usuario) {
+  cargarDatosUsuario(usuario);
 
-    cargarDatosUsuario(
-        usuario
-    );
+  configurarPanelUsuario(usuario);
 
-    configurarPanelUsuario(
-        usuario
-    );
+  activarEventos();
 
-    activarEventos();
-
-    await cargarInformacionInicio();
-
+  await cargarInformacionInicio();
 }
 
+function cargarDatosUsuario(usuario) {
+  const nombre =
+    usuario.nombre?.trim() ||
+    usuario.firebaseUser?.displayName?.trim() ||
+    "Usuario";
 
-function cargarDatosUsuario(
-    usuario
-) {
+  nombreUsuario.textContent = nombre;
 
-    const nombre =
-        usuario.nombre?.trim() ||
-        usuario.firebaseUser
-            ?.displayName
-            ?.trim() ||
-        "Usuario";
+  menuNombreUsuario.textContent = nombre;
 
-
-    nombreUsuario.textContent =
-        nombre;
-
-    menuNombreUsuario.textContent =
-        nombre;
-
-    perfilInicial.textContent =
-        obtenerInicial(
-            nombre
-        );
-
+  perfilInicial.textContent = obtenerInicial(nombre);
 }
 
+function configurarPanelUsuario(usuario) {
+  const panel = obtenerPanelSegunRol(usuario.rol);
 
-function configurarPanelUsuario(
-    usuario
-) {
+  if (!panel) {
+    btnVolverPanel.classList.add("hidden");
 
-    const panel =
-        obtenerPanelSegunRol(
-            usuario.rol
-        );
+    btnVolverPanel.removeAttribute("href");
 
+    return;
+  }
 
-    if (!panel) {
+  btnVolverPanel.href = panel.url;
 
-        btnVolverPanel.classList.add(
-            "hidden"
-        );
+  iconoVolverPanel.textContent = panel.icono;
 
-        btnVolverPanel.removeAttribute(
-            "href"
-        );
+  textoVolverPanel.textContent = panel.texto;
 
-        return;
-
-    }
-
-
-    btnVolverPanel.href =
-        panel.url;
-
-    iconoVolverPanel.textContent =
-        panel.icono;
-
-    textoVolverPanel.textContent =
-        panel.texto;
-
-    btnVolverPanel.classList.remove(
-        "hidden"
-    );
-
+  btnVolverPanel.classList.remove("hidden");
 }
 
+function obtenerInicial(nombre) {
+  const nombreLimpio = nombre.trim();
 
-function obtenerInicial(
-    nombre
-) {
+  if (!nombreLimpio) {
+    return "U";
+  }
 
-    const nombreLimpio =
-        nombre.trim();
-
-
-    if (!nombreLimpio) {
-
-        return "U";
-
-    }
-
-
-    return nombreLimpio
-        .charAt(0)
-        .toUpperCase();
-
+  return nombreLimpio.charAt(0).toUpperCase();
 }
-
 
 function activarEventos() {
+  btnMas.addEventListener("click", abrirMenu);
 
-    btnMas.addEventListener(
-        "click",
-        abrirMenu
-    );
+  btnCerrarMenu.addEventListener("click", cerrarMenu);
 
+  menuMas.addEventListener("click", (event) => {
+    if (event.target === menuMas) {
+      cerrarMenu();
+    }
+  });
 
-    btnCerrarMenu.addEventListener(
-        "click",
-        cerrarMenu
-    );
+  btnCerrarSesion.addEventListener("click", cerrarSesionDesdeMenu);
 
+  btnPerfil.addEventListener("click", abrirMenu);
 
-    menuMas.addEventListener(
-        "click",
-        event => {
+  if (btnVolverPanel) {
+    btnVolverPanel.addEventListener("click", () => {
+      cerrarMenu();
+    });
+  }
 
-            if (
-                event.target ===
-                menuMas
-            ) {
+  logosAmpliables.forEach((logo) => {
+    logo.addEventListener("click", abrirModalLogo);
+  });
 
-                cerrarMenu();
+  if (btnCerrarModalLogo) {
+    btnCerrarModalLogo.addEventListener("click", cerrarModalLogo);
+  }
 
-            }
+  if (modalLogo) {
+    modalLogo.addEventListener("click", (event) => {
+      if (event.target === modalLogo) {
+        cerrarModalLogo();
+      }
+    });
+  }
 
-        }
-    );
-
-
-    btnCerrarSesion.addEventListener(
-        "click",
-        cerrarSesionDesdeMenu
-    );
-
-
-    btnPerfil.addEventListener(
-        "click",
-        abrirMenu
-    );
-
-
-    if (btnVolverPanel) {
-
-        btnVolverPanel.addEventListener(
-            "click",
-            () => {
-
-                cerrarMenu();
-
-            }
-        );
-
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") {
+      return;
     }
 
+    if (modalLogo && !modalLogo.classList.contains("hidden")) {
+      cerrarModalLogo();
 
-    logosAmpliables.forEach(
-        logo => {
-
-            logo.addEventListener(
-                "click",
-                abrirModalLogo
-            );
-
-        }
-    );
-
-
-    if (btnCerrarModalLogo) {
-
-        btnCerrarModalLogo.addEventListener(
-            "click",
-            cerrarModalLogo
-        );
-
+      return;
     }
 
-
-    if (modalLogo) {
-
-        modalLogo.addEventListener(
-            "click",
-            event => {
-
-                if (
-                    event.target ===
-                    modalLogo
-                ) {
-
-                    cerrarModalLogo();
-
-                }
-
-            }
-        );
-
+    if (!menuMas.classList.contains("hidden")) {
+      cerrarMenu();
     }
-
-
-    document.addEventListener(
-        "keydown",
-        event => {
-
-            if (
-                event.key !== "Escape"
-            ) {
-
-                return;
-
-            }
-
-
-            if (
-                modalLogo &&
-                !modalLogo.classList.contains(
-                    "hidden"
-                )
-            ) {
-
-                cerrarModalLogo();
-
-                return;
-
-            }
-
-
-            if (
-                !menuMas.classList.contains(
-                    "hidden"
-                )
-            ) {
-
-                cerrarMenu();
-
-            }
-
-        }
-    );
-
+  });
 }
-
 
 async function cargarInformacionInicio() {
+  try {
+    const [snapshotPartidos, snapshotEquipos] = await Promise.all([
+      getDocs(collection(db, "partidos")),
 
-    try {
+      getDocs(collection(db, "equipos")),
+    ]);
 
-        const [
-            snapshotPartidos,
-            snapshotEquipos
-        ] = await Promise.all([
+    partidos = snapshotPartidos.docs.map((documento) => ({
+      id: documento.id,
 
-            getDocs(
-                collection(
-                    db,
-                    "partidos"
-                )
-            ),
+      ...documento.data(),
+    }));
 
-            getDocs(
-                collection(
-                    db,
-                    "equipos"
-                )
-            )
+    equipos = snapshotEquipos.docs.map((documento) => ({
+      id: documento.id,
 
-        ]);
+      ...documento.data(),
+    }));
 
+    renderizarProximoPartido();
 
-        partidos =
-            snapshotPartidos.docs.map(
-                documento => ({
-                    id:
-                        documento.id,
+    renderizarUltimosResultados();
+  } catch (error) {
+    console.error("Error cargando información del inicio:", error);
 
-                    ...documento.data()
-                })
-            );
+    mostrarErrorProximoPartido();
 
-
-        equipos =
-            snapshotEquipos.docs.map(
-                documento => ({
-                    id:
-                        documento.id,
-
-                    ...documento.data()
-                })
-            );
-
-
-        renderizarProximoPartido();
-
-        renderizarUltimosResultados();
-
-    } catch (error) {
-
-        console.error(
-            "Error cargando información del inicio:",
-            error
-        );
-
-
-        mostrarErrorProximoPartido();
-
-        mostrarErrorResultados();
-
-    }
-
+    mostrarErrorResultados();
+  }
 }
 
-
 function renderizarProximoPartido() {
+  const ahora = new Date();
 
-    const ahora =
-        new Date();
+  const proximos = partidos
+    .filter((partido) => {
+      const estado = normalizarEstadoPartido(partido);
 
+      if (estado !== "proximo") {
+        return false;
+      }
 
-    const proximos =
-        partidos
-            .filter(
-                partido => {
+      const fecha = convertirFechaPartido(partido);
 
-                    const estado =
-                        normalizarEstadoPartido(
-                            partido
-                        );
+      if (!fecha) {
+        return false;
+      }
 
+      const fechaCompleta = combinarFechaHora(fecha, partido.hora);
 
-                    if (
-                        estado !== "proximo"
-                    ) {
+      return fechaCompleta.getTime() >= ahora.getTime();
+    })
+    .sort((a, b) => {
+      const fechaA = combinarFechaHora(convertirFechaPartido(a), a.hora);
 
-                        return false;
+      const fechaB = combinarFechaHora(convertirFechaPartido(b), b.hora);
 
-                    }
+      return fechaA.getTime() - fechaB.getTime();
+    });
 
-
-                    const fecha =
-                        convertirFechaPartido(
-                            partido
-                        );
-
-
-                    if (!fecha) {
-
-                        return false;
-
-                    }
-
-
-                    const fechaCompleta =
-                        combinarFechaHora(
-                            fecha,
-                            partido.hora
-                        );
-
-
-                    return (
-                        fechaCompleta.getTime() >=
-                        ahora.getTime()
-                    );
-
-                }
-            )
-            .sort(
-                (a, b) => {
-
-                    const fechaA =
-                        combinarFechaHora(
-                            convertirFechaPartido(a),
-                            a.hora
-                        );
-
-
-                    const fechaB =
-                        combinarFechaHora(
-                            convertirFechaPartido(b),
-                            b.hora
-                        );
-
-
-                    return (
-                        fechaA.getTime() -
-                        fechaB.getTime()
-                    );
-
-                }
-            );
-
-
-    if (!proximos.length) {
-
-        contenedorProximoPartido.innerHTML = `
+  if (!proximos.length) {
+    contenedorProximoPartido.innerHTML = `
 
             <article class="partido-destacado">
 
@@ -587,41 +297,21 @@ function renderizarProximoPartido() {
 
         `;
 
-        return;
+    return;
+  }
 
-    }
+  const partido = proximos[0];
 
+  const local = obtenerEquipo(partido.localId, partido.localNombre);
 
-    const partido =
-        proximos[0];
+  const visitante = obtenerEquipo(partido.visitanteId, partido.visitanteNombre);
 
+  const fecha = convertirFechaPartido(partido);
 
-    const local =
-        obtenerEquipo(
-            partido.localId,
-            partido.localNombre
-        );
-
-
-    const visitante =
-        obtenerEquipo(
-            partido.visitanteId,
-            partido.visitanteNombre
-        );
-
-
-    const fecha =
-        convertirFechaPartido(
-            partido
-        );
-
-
-    contenedorProximoPartido.innerHTML = `
+  contenedorProximoPartido.innerHTML = `
 
         <a
-            href="partido.html?id=${encodeURIComponent(
-                partido.id
-            )}"
+            href="partido.html?id=${encodeURIComponent(partido.id)}"
             class="partido-destacado"
             style="
                 display:block;
@@ -631,10 +321,7 @@ function renderizarProximoPartido() {
             <div class="partido-info-superior">
 
                 <span class="badge-jornada">
-                    ${escaparHTML(
-                        partido.jornadaNombre ||
-                        "Próxima jornada"
-                    )}
+                    ${escaparHTML(partido.jornadaNombre || "Próxima jornada")}
                 </span>
 
                 <span class="badge-proximo">
@@ -649,15 +336,11 @@ function renderizarProximoPartido() {
                 <div class="equipo">
 
                     <div class="escudo-placeholder">
-                        ${obtenerEscudoEquipo(
-                            local
-                        )}
+                        ${obtenerEscudoEquipo(local)}
                     </div>
 
                     <strong>
-                        ${escaparHTML(
-                            local.nombre
-                        )}
+                        ${escaparHTML(local.nombre)}
                     </strong>
 
                 </div>
@@ -666,11 +349,7 @@ function renderizarProximoPartido() {
                 <div class="versus">
 
                     <span class="hora">
-                        ${escaparHTML(
-                            formatearHora(
-                                partido.hora
-                            )
-                        )}
+                        ${escaparHTML(formatearHora(partido.hora))}
                     </span>
 
                     <strong>
@@ -678,11 +357,7 @@ function renderizarProximoPartido() {
                     </strong>
 
                     <span class="fecha">
-                        ${escaparHTML(
-                            formatearFechaCorta(
-                                fecha
-                            )
-                        )}
+                        ${escaparHTML(formatearFechaCorta(fecha))}
                     </span>
 
                 </div>
@@ -691,15 +366,11 @@ function renderizarProximoPartido() {
                 <div class="equipo">
 
                     <div class="escudo-placeholder">
-                        ${obtenerEscudoEquipo(
-                            visitante
-                        )}
+                        ${obtenerEscudoEquipo(visitante)}
                     </div>
 
                     <strong>
-                        ${escaparHTML(
-                            visitante.nombre
-                        )}
+                        ${escaparHTML(visitante.nombre)}
                     </strong>
 
                 </div>
@@ -710,17 +381,11 @@ function renderizarProximoPartido() {
             <div class="partido-footer">
 
                 <span>
-                    ${escaparHTML(
-                        partido.categoriaNombre ||
-                        "Sin categoría"
-                    )}
+                    ${escaparHTML(partido.categoriaNombre || "Sin categoría")}
                 </span>
 
                 <span>
-                    ${escaparHTML(
-                        partido.campo ||
-                        "Campo por definir"
-                    )}
+                    ${escaparHTML(partido.campo || "Campo por definir")}
                 </span>
 
             </div>
@@ -728,56 +393,24 @@ function renderizarProximoPartido() {
         </a>
 
     `;
-
 }
 
-
 function renderizarUltimosResultados() {
+  const finalizados = partidos
+    .filter((partido) => normalizarEstadoPartido(partido) === "finalizado")
+    .sort((a, b) => {
+      const fechaA = convertirFechaPartido(a);
 
-    const finalizados =
-        partidos
-            .filter(
-                partido =>
-                    normalizarEstadoPartido(
-                        partido
-                    ) ===
-                    "finalizado"
-            )
-            .sort(
-                (a, b) => {
+      const fechaB = convertirFechaPartido(b);
 
-                    const fechaA =
-                        convertirFechaPartido(
-                            a
-                        );
+      return (fechaB?.getTime() || 0) - (fechaA?.getTime() || 0);
+    })
+    .slice(0, 5);
 
+  listaUltimosResultados.innerHTML = "";
 
-                    const fechaB =
-                        convertirFechaPartido(
-                            b
-                        );
-
-
-                    return (
-                        (fechaB?.getTime() || 0) -
-                        (fechaA?.getTime() || 0)
-                    );
-
-                }
-            )
-            .slice(
-                0,
-                5
-            );
-
-
-    listaUltimosResultados.innerHTML =
-        "";
-
-
-    if (!finalizados.length) {
-
-        listaUltimosResultados.innerHTML = `
+  if (!finalizados.length) {
+    listaUltimosResultados.innerHTML = `
 
             <article class="resultado-card">
 
@@ -812,69 +445,35 @@ function renderizarUltimosResultados() {
 
         `;
 
-        return;
+    return;
+  }
 
-    }
+  finalizados.forEach((partido) => {
+    const local = obtenerEquipo(partido.localId, partido.localNombre);
 
+    const visitante = obtenerEquipo(
+      partido.visitanteId,
+      partido.visitanteNombre,
+    );
 
-    finalizados.forEach(
-        partido => {
+    const golesLocal = numeroSeguro(partido.golesLocal);
 
-            const local =
-                obtenerEquipo(
-                    partido.localId,
-                    partido.localNombre
-                );
+    const golesVisitante = numeroSeguro(partido.golesVisitante);
 
+    const tarjeta = document.createElement("a");
 
-            const visitante =
-                obtenerEquipo(
-                    partido.visitanteId,
-                    partido.visitanteNombre
-                );
+    tarjeta.href = `partido.html?id=${encodeURIComponent(partido.id)}`;
 
+    tarjeta.className = "resultado-card";
 
-            const golesLocal =
-                numeroSeguro(
-                    partido.golesLocal
-                );
+    tarjeta.style.display = "block";
 
-
-            const golesVisitante =
-                numeroSeguro(
-                    partido.golesVisitante
-                );
-
-
-            const tarjeta =
-                document.createElement(
-                    "a"
-                );
-
-
-            tarjeta.href =
-                `partido.html?id=${encodeURIComponent(
-                    partido.id
-                )}`;
-
-
-            tarjeta.className =
-                "resultado-card";
-
-
-            tarjeta.style.display =
-                "block";
-
-
-            tarjeta.innerHTML = `
+    tarjeta.innerHTML = `
 
                 <div class="resultado-meta">
 
                     <span>
-                        ${escaparHTML(
-                            partido.jornadaNombre ||
-                            "Jornada"
-                        )}
+                        ${escaparHTML(partido.jornadaNombre || "Jornada")}
                     </span>
 
                     <span>
@@ -887,9 +486,7 @@ function renderizarUltimosResultados() {
                 <div class="resultado-equipos">
 
                     <span>
-                        ${escaparHTML(
-                            local.nombre
-                        )}
+                        ${escaparHTML(local.nombre)}
                     </span>
 
                     <strong>
@@ -899,84 +496,42 @@ function renderizarUltimosResultados() {
                     </strong>
 
                     <span>
-                        ${escaparHTML(
-                            visitante.nombre
-                        )}
+                        ${escaparHTML(visitante.nombre)}
                     </span>
 
                 </div>
 
             `;
 
-
-            listaUltimosResultados.appendChild(
-                tarjeta
-            );
-
-        }
-    );
-
+    listaUltimosResultados.appendChild(tarjeta);
+  });
 }
 
+function obtenerEquipo(equipoId, nombreAlternativo) {
+  const equipo = equipos.find((item) => item.id === equipoId);
 
-function obtenerEquipo(
-    equipoId,
-    nombreAlternativo
-) {
+  if (equipo) {
+    return equipo;
+  }
 
-    const equipo =
-        equipos.find(
-            item =>
-                item.id ===
-                equipoId
-        );
+  return {
+    id: equipoId || null,
 
+    nombre: nombreAlternativo || "Equipo",
 
-    if (equipo) {
-
-        return equipo;
-
-    }
-
-
-    return {
-        id:
-            equipoId || null,
-
-        nombre:
-            nombreAlternativo ||
-            "Equipo",
-
-        logoUrl:
-            ""
-    };
-
+    logoUrl: "",
+  };
 }
 
+function obtenerEscudoEquipo(equipo) {
+  const logo =
+    equipo.logoUrl || equipo.escudoUrl || equipo.imagenUrl || equipo.logo || "";
 
-function obtenerEscudoEquipo(
-    equipo
-) {
-
-    const logo =
-        equipo.logoUrl ||
-        equipo.escudoUrl ||
-        equipo.imagenUrl ||
-        equipo.logo ||
-        "";
-
-
-    if (logo) {
-
-        return `
+  if (logo) {
+    return `
             <img
-                src="${escaparAtributo(
-                    logo
-                )}"
-                alt="${escaparAtributo(
-                    equipo.nombre ||
-                    "Equipo"
-                )}"
+                src="${escaparAtributo(logo)}"
+                alt="${escaparAtributo(equipo.nombre || "Equipo")}"
                 loading="lazy"
                 style="
                     width:100%;
@@ -987,502 +542,220 @@ function obtenerEscudoEquipo(
                 "
             >
         `;
+  }
 
-    }
-
-
-    return escaparHTML(
-        obtenerInicial(
-            equipo.nombre ||
-            "E"
-        )
-    );
-
+  return escaparHTML(obtenerInicial(equipo.nombre || "E"));
 }
 
+function normalizarEstadoPartido(partido) {
+  const estado = String(partido.estado || "")
+    .trim()
+    .toLowerCase();
 
-function normalizarEstadoPartido(
-    partido
-) {
+  if (estado === "finalizado" || estado === "terminado" || estado === "final") {
+    return "finalizado";
+  }
 
-    const estado =
-        String(
-            partido.estado ||
-            ""
-        )
-            .trim()
-            .toLowerCase();
+  if (
+    partido.resultadoRegistrado === true &&
+    partido.golesLocal !== undefined &&
+    partido.golesVisitante !== undefined
+  ) {
+    return "finalizado";
+  }
 
+  if (
+    partido.cedulaCreada === true &&
+    partido.golesLocal !== undefined &&
+    partido.golesVisitante !== undefined
+  ) {
+    return "finalizado";
+  }
 
-    if (
-        estado === "finalizado" ||
-        estado === "terminado" ||
-        estado === "final"
-    ) {
+  if (
+    estado === "cancelado" ||
+    estado === "cancelada" ||
+    estado === "suspendido" ||
+    estado === "suspendida"
+  ) {
+    return "cancelado";
+  }
 
-        return "finalizado";
+  if (
+    estado === "en vivo" ||
+    estado === "en-vivo" ||
+    estado === "envivo" ||
+    estado === "jugando"
+  ) {
+    return "en-vivo";
+  }
 
-    }
-
-
-    if (
-        partido.resultadoRegistrado ===
-            true &&
-        partido.golesLocal !==
-            undefined &&
-        partido.golesVisitante !==
-            undefined
-    ) {
-
-        return "finalizado";
-
-    }
-
-
-    if (
-        partido.cedulaCreada ===
-            true &&
-        partido.golesLocal !==
-            undefined &&
-        partido.golesVisitante !==
-            undefined
-    ) {
-
-        return "finalizado";
-
-    }
-
-
-    if (
-        estado === "cancelado" ||
-        estado === "cancelada" ||
-        estado === "suspendido" ||
-        estado === "suspendida"
-    ) {
-
-        return "cancelado";
-
-    }
-
-
-    if (
-        estado === "en vivo" ||
-        estado === "en-vivo" ||
-        estado === "envivo" ||
-        estado === "jugando"
-    ) {
-
-        return "en-vivo";
-
-    }
-
-
-    return "proximo";
-
+  return "proximo";
 }
 
+function convertirFechaPartido(partido) {
+  if (!partido || !partido.fecha) {
+    return null;
+  }
 
-function convertirFechaPartido(
-    partido
-) {
+  const valor = partido.fecha;
 
-    if (
-        !partido ||
-        !partido.fecha
-    ) {
+  if (typeof valor?.toDate === "function") {
+    return valor.toDate();
+  }
 
-        return null;
+  if (valor instanceof Date) {
+    return valor;
+  }
 
+  if (typeof valor === "string") {
+    const coincidencia = valor.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+
+    if (coincidencia) {
+      return new Date(
+        Number(coincidencia[1]),
+        Number(coincidencia[2]) - 1,
+        Number(coincidencia[3]),
+      );
     }
+  }
 
+  const fecha = new Date(valor);
 
-    const valor =
-        partido.fecha;
+  if (Number.isNaN(fecha.getTime())) {
+    return null;
+  }
 
-
-    if (
-        typeof valor?.toDate ===
-        "function"
-    ) {
-
-        return valor.toDate();
-
-    }
-
-
-    if (
-        valor instanceof Date
-    ) {
-
-        return valor;
-
-    }
-
-
-    if (
-        typeof valor ===
-        "string"
-    ) {
-
-        const coincidencia =
-            valor.match(
-                /^(\d{4})-(\d{2})-(\d{2})$/
-            );
-
-
-        if (coincidencia) {
-
-            return new Date(
-                Number(
-                    coincidencia[1]
-                ),
-                Number(
-                    coincidencia[2]
-                ) - 1,
-                Number(
-                    coincidencia[3]
-                )
-            );
-
-        }
-
-    }
-
-
-    const fecha =
-        new Date(
-            valor
-        );
-
-
-    if (
-        Number.isNaN(
-            fecha.getTime()
-        )
-    ) {
-
-        return null;
-
-    }
-
-
-    return fecha;
-
+  return fecha;
 }
 
+function combinarFechaHora(fecha, hora) {
+  if (!fecha) {
+    return new Date(8640000000000000);
+  }
 
-function combinarFechaHora(
-    fecha,
-    hora
-) {
+  const resultado = new Date(fecha);
 
-    if (!fecha) {
-
-        return new Date(
-            8640000000000000
-        );
-
-    }
-
-
-    const resultado =
-        new Date(
-            fecha
-        );
-
-
-    if (!hora) {
-
-        resultado.setHours(
-            23,
-            59,
-            59,
-            999
-        );
-
-        return resultado;
-
-    }
-
-
-    const texto =
-        String(
-            hora
-        )
-            .trim()
-            .toLowerCase();
-
-
-    const coincidencia24 =
-        texto.match(
-            /^(\d{1,2}):(\d{2})$/
-        );
-
-
-    if (coincidencia24) {
-
-        resultado.setHours(
-            Number(
-                coincidencia24[1]
-            ),
-            Number(
-                coincidencia24[2]
-            ),
-            0,
-            0
-        );
-
-        return resultado;
-
-    }
-
-
-    const coincidencia12 =
-        texto.match(
-            /^(\d{1,2}):(\d{2})\s*(am|pm)$/
-        );
-
-
-    if (coincidencia12) {
-
-        let horas =
-            Number(
-                coincidencia12[1]
-            );
-
-
-        const minutos =
-            Number(
-                coincidencia12[2]
-            );
-
-
-        const periodo =
-            coincidencia12[3];
-
-
-        if (
-            periodo === "pm" &&
-            horas !== 12
-        ) {
-
-            horas += 12;
-
-        }
-
-
-        if (
-            periodo === "am" &&
-            horas === 12
-        ) {
-
-            horas = 0;
-
-        }
-
-
-        resultado.setHours(
-            horas,
-            minutos,
-            0,
-            0
-        );
-
-        return resultado;
-
-    }
-
-
-    resultado.setHours(
-        23,
-        59,
-        59,
-        999
-    );
-
+  if (!hora) {
+    resultado.setHours(23, 59, 59, 999);
 
     return resultado;
+  }
 
-}
+  const texto = String(hora).trim().toLowerCase();
 
+  const coincidencia24 = texto.match(/^(\d{1,2}):(\d{2})$/);
 
-function formatearHora(
-    hora
-) {
-
-    if (!hora) {
-
-        return "Por definir";
-
-    }
-
-
-    const texto =
-        String(
-            hora
-        ).trim();
-
-
-    const coincidencia =
-        texto.match(
-            /^(\d{1,2}):(\d{2})$/
-        );
-
-
-    if (!coincidencia) {
-
-        return texto;
-
-    }
-
-
-    const fecha =
-        new Date();
-
-
-    fecha.setHours(
-        Number(
-            coincidencia[1]
-        ),
-        Number(
-            coincidencia[2]
-        ),
-        0,
-        0
+  if (coincidencia24) {
+    resultado.setHours(
+      Number(coincidencia24[1]),
+      Number(coincidencia24[2]),
+      0,
+      0,
     );
 
+    return resultado;
+  }
 
-    return fecha.toLocaleTimeString(
-        "es-MX",
-        {
-            hour:
-                "numeric",
+  const coincidencia12 = texto.match(/^(\d{1,2}):(\d{2})\s*(am|pm)$/);
 
-            minute:
-                "2-digit",
+  if (coincidencia12) {
+    let horas = Number(coincidencia12[1]);
 
-            hour12:
-                true
-        }
-    );
+    const minutos = Number(coincidencia12[2]);
 
-}
+    const periodo = coincidencia12[3];
 
-
-function formatearFechaCorta(
-    fecha
-) {
-
-    if (!fecha) {
-
-        return "Fecha por definir";
-
+    if (periodo === "pm" && horas !== 12) {
+      horas += 12;
     }
 
-
-    const hoy =
-        new Date();
-
-
-    const manana =
-        new Date(
-            hoy
-        );
-
-
-    manana.setDate(
-        hoy.getDate() + 1
-    );
-
-
-    if (
-        mismaFecha(
-            fecha,
-            hoy
-        )
-    ) {
-
-        return "Hoy";
-
+    if (periodo === "am" && horas === 12) {
+      horas = 0;
     }
 
+    resultado.setHours(horas, minutos, 0, 0);
 
-    if (
-        mismaFecha(
-            fecha,
-            manana
-        )
-    ) {
+    return resultado;
+  }
 
-        return "Mañana";
+  resultado.setHours(23, 59, 59, 999);
 
-    }
-
-
-    const texto =
-        fecha.toLocaleDateString(
-            "es-MX",
-            {
-                weekday:
-                    "long"
-            }
-        );
-
-
-    return texto
-        .charAt(0)
-        .toUpperCase() +
-        texto.slice(1);
-
+  return resultado;
 }
 
+function formatearHora(hora) {
+  if (!hora) {
+    return "Por definir";
+  }
 
-function mismaFecha(
-    fechaA,
-    fechaB
-) {
+  const texto = String(hora).trim();
 
-    return (
-        fechaA.getFullYear() ===
-            fechaB.getFullYear() &&
-        fechaA.getMonth() ===
-            fechaB.getMonth() &&
-        fechaA.getDate() ===
-            fechaB.getDate()
-    );
+  const coincidencia = texto.match(/^(\d{1,2}):(\d{2})$/);
 
+  if (!coincidencia) {
+    return texto;
+  }
+
+  const fecha = new Date();
+
+  fecha.setHours(Number(coincidencia[1]), Number(coincidencia[2]), 0, 0);
+
+  return fecha.toLocaleTimeString("es-MX", {
+    hour: "numeric",
+
+    minute: "2-digit",
+
+    hour12: true,
+  });
 }
 
+function formatearFechaCorta(fecha) {
+  if (!fecha) {
+    return "Fecha por definir";
+  }
 
-function numeroSeguro(
-    valor
-) {
+  const hoy = new Date();
 
-    const numero =
-        Number(
-            valor
-        );
+  const manana = new Date(hoy);
 
+  manana.setDate(hoy.getDate() + 1);
 
-    if (
-        !Number.isFinite(
-            numero
-        )
-    ) {
+  if (mismaFecha(fecha, hoy)) {
+    return "Hoy";
+  }
 
-        return 0;
+  if (mismaFecha(fecha, manana)) {
+    return "Mañana";
+  }
 
-    }
+  const texto = fecha.toLocaleDateString("es-MX", {
+    weekday: "long",
+  });
 
-
-    return numero;
-
+  return texto.charAt(0).toUpperCase() + texto.slice(1);
 }
 
+function mismaFecha(fechaA, fechaB) {
+  return (
+    fechaA.getFullYear() === fechaB.getFullYear() &&
+    fechaA.getMonth() === fechaB.getMonth() &&
+    fechaA.getDate() === fechaB.getDate()
+  );
+}
+
+function numeroSeguro(valor) {
+  const numero = Number(valor);
+
+  if (!Number.isFinite(numero)) {
+    return 0;
+  }
+
+  return numero;
+}
 
 function mostrarErrorProximoPartido() {
-
-    contenedorProximoPartido.innerHTML = `
+  contenedorProximoPartido.innerHTML = `
 
         <article class="partido-destacado">
 
@@ -1517,13 +790,10 @@ function mostrarErrorProximoPartido() {
         </article>
 
     `;
-
 }
 
-
 function mostrarErrorResultados() {
-
-    listaUltimosResultados.innerHTML = `
+  listaUltimosResultados.innerHTML = `
 
         <article class="resultado-card">
 
@@ -1544,158 +814,256 @@ function mostrarErrorResultados() {
         </article>
 
     `;
-
 }
-
 
 async function cerrarSesionDesdeMenu() {
+  btnCerrarSesion.disabled = true;
 
-    btnCerrarSesion.disabled =
-        true;
+  btnCerrarSesion.textContent = "Cerrando sesión...";
 
+  try {
+    await cerrarSesion();
+  } catch (error) {
+    console.error("Error cerrando sesión:", error);
 
-    btnCerrarSesion.textContent =
-        "Cerrando sesión...";
+    btnCerrarSesion.disabled = false;
 
-
-    try {
-
-        await cerrarSesion();
-
-    } catch (error) {
-
-        console.error(
-            "Error cerrando sesión:",
-            error
-        );
-
-
-        btnCerrarSesion.disabled =
-            false;
-
-
-        btnCerrarSesion.textContent =
-            "Cerrar sesión";
-
-    }
-
+    btnCerrarSesion.textContent = "Cerrar sesión";
+  }
 }
-
 
 function abrirMenu() {
+  menuMas.classList.remove("hidden");
 
-    menuMas.classList.remove(
-        "hidden"
-    );
-
-
-    document.body.style.overflow =
-        "hidden";
-
+  document.body.style.overflow = "hidden";
 }
-
 
 function cerrarMenu() {
+  menuMas.classList.add("hidden");
 
-    menuMas.classList.add(
-        "hidden"
-    );
-
-
-    document.body.style.overflow =
-        "";
-
+  document.body.style.overflow = "";
 }
-
 
 function abrirModalLogo() {
+  if (!modalLogo) {
+    return;
+  }
 
-    if (!modalLogo) {
+  if (!menuMas.classList.contains("hidden")) {
+    cerrarMenu();
+  }
 
-        return;
+  modalLogo.classList.remove("hidden");
 
-    }
-
-
-    if (
-        !menuMas.classList.contains(
-            "hidden"
-        )
-    ) {
-
-        cerrarMenu();
-
-    }
-
-
-    modalLogo.classList.remove(
-        "hidden"
-    );
-
-
-    document.body.style.overflow =
-        "hidden";
-
+  document.body.style.overflow = "hidden";
 }
-
 
 function cerrarModalLogo() {
+  if (!modalLogo) {
+    return;
+  }
 
-    if (!modalLogo) {
+  modalLogo.classList.add("hidden");
 
-        return;
+  document.body.style.overflow = "";
+}
 
+function escaparHTML(valor) {
+  return String(valor ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function escaparAtributo(valor) {
+  return escaparHTML(valor);
+}
+
+function registrarServiceWorker() {
+  if (!("serviceWorker" in navigator)) {
+    return;
+  }
+
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (!recargaPorActualizacion) {
+      return;
     }
 
+    recargaPorActualizacion = false;
 
-    modalLogo.classList.add(
-        "hidden"
-    );
+    limpiarActualizacionPospuesta();
 
+    window.location.reload();
+  });
 
-    document.body.style.overflow =
-        "";
+  window.addEventListener("load", async () => {
+    try {
+      const registro = await navigator.serviceWorker.register(
+        "./service-worker.js",
+      );
 
+      registroServiceWorker = registro;
+
+      if (registro.waiting && navigator.serviceWorker.controller) {
+        prepararActualizacion(registro.waiting);
+      }
+
+      registro.addEventListener("updatefound", () => {
+        const nuevoWorker = registro.installing;
+
+        if (!nuevoWorker) {
+          return;
+        }
+
+        nuevoWorker.addEventListener("statechange", () => {
+          if (
+            nuevoWorker.state === "installed" &&
+            navigator.serviceWorker.controller
+          ) {
+            prepararActualizacion(nuevoWorker);
+          }
+        });
+      });
+
+      await registro.update();
+    } catch (error) {
+      console.error("Error registrando Service Worker:", error);
+    }
+  });
 }
 
+function activarSistemaActualizaciones() {
+  if (btnActualizarApp) {
+    btnActualizarApp.addEventListener("click", actualizarAplicacion);
+  }
 
-function escaparHTML(
-    valor
-) {
-
-    return String(
-        valor ?? ""
-    )
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
+  if (btnPosponerActualizacion) {
+    btnPosponerActualizacion.addEventListener("click", posponerActualizacion);
+  }
 }
 
+function prepararActualizacion(worker) {
+  workerEnEspera = worker;
 
-function escaparAtributo(
-    valor
-) {
+  if (actualizacionPospuesta()) {
+    return;
+  }
 
-    return escaparHTML(
-        valor
-    );
+  mostrarAvisoActualizacion();
+}
 
+function mostrarAvisoActualizacion() {
+  if (!avisoActualizacion) {
+    return;
+  }
+
+  if (versionActual) {
+    versionActual.textContent = "Instalada";
+  }
+
+  if (versionNueva) {
+    versionNueva.textContent = "Nueva";
+  }
+
+  avisoActualizacion.classList.remove("hidden");
+
+  avisoActualizacion.classList.remove("actualizando");
+
+  if (estadoActualizacion) {
+    estadoActualizacion.classList.add("hidden");
+  }
+
+  if (btnActualizarApp) {
+    btnActualizarApp.disabled = false;
+  }
+
+  if (btnPosponerActualizacion) {
+    btnPosponerActualizacion.disabled = false;
+  }
+
+  document.body.style.overflow = "hidden";
+}
+
+function posponerActualizacion() {
+  guardarActualizacionPospuesta();
+
+  if (avisoActualizacion) {
+    avisoActualizacion.classList.add("hidden");
+  }
+
+  document.body.style.overflow = "";
+}
+
+async function actualizarAplicacion() {
+  const worker = workerEnEspera || registroServiceWorker?.waiting;
+
+  if (!worker) {
+    if (registroServiceWorker) {
+      try {
+        await registroServiceWorker.update();
+      } catch (error) {
+        console.error("Error buscando la actualización:", error);
+      }
+    }
+
+    return;
+  }
+
+  if (avisoActualizacion) {
+    avisoActualizacion.classList.add("actualizando");
+  }
+
+  if (estadoActualizacion) {
+    estadoActualizacion.classList.remove("hidden");
+  }
+
+  if (btnActualizarApp) {
+    btnActualizarApp.disabled = true;
+  }
+
+  if (btnPosponerActualizacion) {
+    btnPosponerActualizacion.disabled = true;
+  }
+
+  recargaPorActualizacion = true;
+
+  limpiarActualizacionPospuesta();
+
+  worker.postMessage({
+    type: "SKIP_WAITING",
+  });
+
+  setTimeout(() => {
+    if (recargaPorActualizacion) {
+      recargaPorActualizacion = false;
+
+      window.location.reload();
+    }
+  }, 8000);
+}
+
+function actualizacionPospuesta() {
+  try {
+    return sessionStorage.getItem(CLAVE_ACTUALIZACION_POSPUESTA) === "true";
+  } catch (error) {
+    return false;
+  }
+}
+
+function guardarActualizacionPospuesta() {
+  try {
+    sessionStorage.setItem(CLAVE_ACTUALIZACION_POSPUESTA, "true");
+  } catch (error) {
+    console.error("No se pudo posponer la actualización:", error);
+  }
+}
+
+function limpiarActualizacionPospuesta() {
+  try {
+    sessionStorage.removeItem(CLAVE_ACTUALIZACION_POSPUESTA);
+  } catch (error) {
+    console.error("No se pudo limpiar el estado de actualización:", error);
+  }
 }

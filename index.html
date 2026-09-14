@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+
+    <title>Liga Deportiva Río Grande</title>
+
+    <meta
+      name="description"
+      content="Plataforma oficial de la Liga Deportiva Río Grande, Villa de Tututepec, Oaxaca."
+    />
+
+    <meta name="theme-color" content="#063f3b" />
+
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+
+    <meta name="apple-mobile-web-app-title" content="Liga Río Grande" />
+
+    <link rel="icon" type="image/png" href="imagenes/logo.png" />
+
+    <link rel="apple-touch-icon" href="imagenes/icon-192.png" />
+
+    <link rel="manifest" href="manifest.json" />
+
+    <link rel="stylesheet" href="css/index.css" />
+  </head>
+
+  <body>
+    <main id="introApp" class="intro-app">
+      <div class="intro-fondo">
+        <div class="intro-luz intro-luz-uno"></div>
+
+        <div class="intro-luz intro-luz-dos"></div>
+
+        <div class="intro-luz intro-luz-tres"></div>
+
+        <div class="intro-textura"></div>
+
+        <div class="intro-particulas">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+
+      <section id="escenaIntro" class="escena-intro">
+        <div class="intro-emblema">
+          <div class="emblema-halo halo-exterior"></div>
+
+          <div class="emblema-halo halo-interior"></div>
+
+          <div class="emblema-destello"></div>
+
+          <div class="emblema-marco">
+            <img
+              src="imagenes/logo.png"
+              alt="Logo oficial de la Liga Deportiva Río Grande"
+              class="intro-logo"
+            />
+          </div>
+        </div>
+
+        <div class="intro-identidad">
+          <span class="intro-superior"> Liga Municipal de Fútbol </span>
+
+          <h1>
+            <span class="titulo-rio"> Río </span>
+
+            <span class="titulo-grande"> Grande </span>
+          </h1>
+
+          <div class="titulo-linea">
+            <span></span>
+
+            <i>⚽</i>
+
+            <span></span>
+          </div>
+
+          <p class="intro-ubicacion">Villa de Tututepec, Oaxaca</p>
+        </div>
+
+        <div class="intro-mensaje">
+          <span> Pasión </span>
+
+          <i></i>
+
+          <span> Comunidad </span>
+
+          <i></i>
+
+          <span> Futuro </span>
+        </div>
+
+        <div class="intro-carga">
+          <div class="intro-carga-linea">
+            <span id="barraCarga"></span>
+          </div>
+
+          <small id="textoCarga"> Preparando la cancha... </small>
+        </div>
+      </section>
+
+      <div class="paisaje-inferior">
+        <div class="ola ola-atras"></div>
+
+        <div class="ola ola-media"></div>
+
+        <div class="ola ola-frente"></div>
+      </div>
+
+      <section id="introFinal" class="intro-final" aria-hidden="true">
+        <div class="intro-final-contenido">
+          <span class="intro-final-mini"> Bienvenido a </span>
+
+          <strong> Liga Deportiva Río Grande </strong>
+
+          <p>Donde cada jornada escribe una nueva historia.</p>
+        </div>
+      </section>
+
+      <div id="pantallaSalida" class="pantalla-salida"></div>
+    </main>
+
+    <noscript>
+      <div class="sin-javascript">
+        <img src="imagenes/logo.png" alt="Liga Deportiva Río Grande" />
+
+        <strong> Liga Deportiva Río Grande </strong>
+
+        <p>Necesitas habilitar JavaScript para utilizar la plataforma.</p>
+
+        <a href="login.html"> Ir al inicio de sesión </a>
+      </div>
+    </noscript>
+
+    <script type="module" src="js/index.js"></script>
+  </body>
+</html>

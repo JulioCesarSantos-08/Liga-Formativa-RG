@@ -2,7 +2,7 @@
   "name": "Liga Deportiva Río Grande",
   "short_name": "Liga Río Grande",
   "description": "Plataforma oficial de la Liga Deportiva Río Grande.",
-  "start_url": "publico.html",
+  "start_url": "index.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#efe3bc",

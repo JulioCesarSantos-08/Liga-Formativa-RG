@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#0b756d">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Liga Río Grande">
+
+    <title>Jugadores | Liga Deportiva Río Grande</title>
+
+    <link rel="icon" href="imagenes/logo.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="imagenes/icon-192.png">
+    <link rel="apple-touch-icon" href="imagenes/icon-192.png">
+    <link rel="manifest" href="manifest.json">
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/adminJugadores.css">
+</head>
+
+<body>
+
+    <div class="admin-jugadores-app">
+
+        <header class="jugadores-topbar">
+
+            <div class="topbar-identidad">
+
+                <a href="admin.html" class="btn-regresar" aria-label="Volver al panel">
+                    ←
+                </a>
+
+                <img
+                    src="imagenes/logo.png"
+                    alt="Liga Deportiva Río Grande"
+                    class="topbar-logo"
+                >
+
+                <div class="topbar-texto">
+                    <span>Administración</span>
+                    <strong>Jugadores</strong>
+                </div>
+
+            </div>
+
+            <a href="admin.html" class="btn-panel">
+                <span>⌂</span>
+                <strong>Panel</strong>
+            </a>
+
+        </header>
+
+
+        <main class="jugadores-contenido">
+
+            <section class="jugadores-hero">
+
+                <div class="hero-texto">
+
+                    <span class="hero-mini">
+                        PERSONAS
+                    </span>
+
+                    <h1>
+                        Gestión de jugadores
+                    </h1>
+
+                    <p>
+                        Consulta los jugadores registrados en todos los equipos de la Liga Deportiva Río Grande.
+                    </p>
+
+                </div>
+
+                <div class="hero-icono">
+                    👕
+                </div>
+
+            </section>
+
+
+            <section class="resumen-jugadores">
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        👥
+                    </div>
+
+                    <div>
+                        <span>Total</span>
+                        <strong id="totalJugadores">0</strong>
+                        <small>Jugadores registrados</small>
+                    </div>
+
+                </article>
+
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        ⚽
+                    </div>
+
+                    <div>
+                        <span>Activos</span>
+                        <strong id="totalActivos">0</strong>
+                        <small>Disponibles para jugar</small>
+                    </div>
+
+                </article>
+
+
+                <article class="resumen-card alerta">
+
+                    <div class="resumen-icono">
+                        ⛔
+                    </div>
+
+                    <div>
+                        <span>Suspendidos</span>
+                        <strong id="totalSuspendidos">0</strong>
+                        <small>Con suspensión vigente</small>
+                    </div>
+
+                </article>
+
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        🛡️
+                    </div>
+
+                    <div>
+                        <span>Equipos</span>
+                        <strong id="totalEquipos">0</strong>
+                        <small>Con jugadores registrados</small>
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <section class="panel-jugadores">
+
+                <div class="panel-jugadores-header">
+
+                    <div>
+
+                        <span class="panel-mini">
+                            REGISTRO GENERAL
+                        </span>
+
+                        <h2>
+                            Jugadores de la liga
+                        </h2>
+
+                    </div>
+
+                    <div class="contador-resultados">
+                        <strong id="contadorResultados">0</strong>
+                        <span>resultados</span>
+                    </div>
+
+                </div>
+
+
+                <div class="herramientas-jugadores">
+
+                    <div class="buscador-jugadores">
+
+                        <span class="buscador-icono">
+                            🔎
+                        </span>
+
+                        <input
+                            type="search"
+                            id="buscarJugador"
+                            placeholder="Buscar jugador por nombre..."
+                            autocomplete="off"
+                        >
+
+                        <button
+                            type="button"
+                            id="btnLimpiarBusqueda"
+                            class="btn-limpiar-busqueda hidden"
+                            aria-label="Limpiar búsqueda"
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+
+                    <div class="filtros-jugadores">
+
+                        <label class="filtro-control">
+
+                            <span>
+                                Categoría
+                            </span>
+
+                            <select id="filtroCategoria">
+                                <option value="">
+                                    Todas las categorías
+                                </option>
+                            </select>
+
+                        </label>
+
+
+                        <label class="filtro-control">
+
+                            <span>
+                                Equipo
+                            </span>
+
+                            <select id="filtroEquipo">
+                                <option value="">
+                                    Todos los equipos
+                                </option>
+                            </select>
+
+                        </label>
+
+
+                        <label class="filtro-control">
+
+                            <span>
+                                Estado
+                            </span>
+
+                            <select id="filtroEstado">
+
+                                <option value="">
+                                    Todos
+                                </option>
+
+                                <option value="activo">
+                                    Activos
+                                </option>
+
+                                <option value="suspendido">
+                                    Suspendidos
+                                </option>
+
+                                <option value="inactivo">
+                                    Inactivos
+                                </option>
+
+                            </select>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div id="estadoCarga" class="estado-carga">
+
+                    <div class="spinner"></div>
+
+                    <strong>
+                        Cargando jugadores
+                    </strong>
+
+                    <span>
+                        Consultando los registros de la liga...
+                    </span>
+
+                </div>
+
+
+                <div id="estadoVacio" class="estado-vacio hidden">
+
+                    <div class="estado-vacio-icono">
+                        👕
+                    </div>
+
+                    <strong>
+                        No hay jugadores para mostrar
+                    </strong>
+
+                    <p>
+                        No encontramos registros que coincidan con los filtros seleccionados.
+                    </p>
+
+                    <button
+                        type="button"
+                        id="btnRestablecerFiltros"
+                        class="btn-restablecer"
+                    >
+                        Restablecer filtros
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="listaJugadores"
+                    class="lista-jugadores hidden"
+                ></div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <div
+        id="modalJugador"
+        class="modal-jugador hidden"
+        aria-hidden="true"
+    >
+
+        <div class="modal-jugador-overlay" data-cerrar-modal></div>
+
+        <section
+            class="modal-jugador-card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modalJugadorNombre"
+        >
+
+            <button
+                type="button"
+                id="btnCerrarModal"
+                class="btn-cerrar-modal"
+                aria-label="Cerrar"
+            >
+                ×
+            </button>
+
+
+            <div class="modal-jugador-cabecera">
+
+                <div class="modal-foto-contenedor">
+
+                    <img
+                        id="modalJugadorFoto"
+                        src="imagenes/logo.png"
+                        alt="Jugador"
+                        class="modal-jugador-foto"
+                    >
+
+                    <span
+                        id="modalJugadorDorsal"
+                        class="modal-dorsal"
+                    >
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="modal-identidad">
+
+                    <span
+                        id="modalJugadorEstado"
+                        class="estado-jugador activo"
+                    >
+                        Activo
+                    </span>
+
+                    <h2 id="modalJugadorNombre">
+                        Jugador
+                    </h2>
+
+                    <p id="modalJugadorEquipo">
+                        Equipo
+                    </p>
+
+                    <span id="modalJugadorCategoria">
+                        Categoría
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-estadisticas">
+
+                <article>
+
+                    <span>
+                        ⚽
+                    </span>
+
+                    <strong id="modalJugadorGoles">
+                        0
+                    </strong>
+
+                    <small>
+                        Goles
+                    </small>
+
+                </article>
+
+
+                <article>
+
+                    <span>
+                        🟨
+                    </span>
+
+                    <strong id="modalJugadorAmarillas">
+                        0
+                    </strong>
+
+                    <small>
+                        Amarillas
+                    </small>
+
+                </article>
+
+
+                <article>
+
+                    <span>
+                        🟥
+                    </span>
+
+                    <strong id="modalJugadorRojas">
+                        0
+                    </strong>
+
+                    <small>
+                        Rojas
+                    </small>
+
+                </article>
+
+
+                <article>
+
+                    <span>
+                        ⛔
+                    </span>
+
+                    <strong id="modalJugadorSuspension">
+                        0
+                    </strong>
+
+                    <small>
+                        Suspensión
+                    </small>
+
+                </article>
+
+            </div>
+
+
+            <div class="modal-informacion">
+
+                <div class="informacion-fila">
+
+                    <span>
+                        Nombre completo
+                    </span>
+
+                    <strong id="modalNombreCompleto">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="informacion-fila">
+
+                    <span>
+                        Fecha de nacimiento
+                    </span>
+
+                    <strong id="modalFechaNacimiento">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="informacion-fila">
+
+                    <span>
+                        Dorsal
+                    </span>
+
+                    <strong id="modalDorsalTexto">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="informacion-fila">
+
+                    <span>
+                        Equipo
+                    </span>
+
+                    <strong id="modalEquipoTexto">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="informacion-fila">
+
+                    <span>
+                        Categoría
+                    </span>
+
+                    <strong id="modalCategoriaTexto">
+                        -
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="bloqueSuspension"
+                class="bloque-suspension hidden"
+            >
+
+                <div class="bloque-suspension-icono">
+                    ⛔
+                </div>
+
+                <div>
+
+                    <span>
+                        Suspensión vigente
+                    </span>
+
+                    <strong id="textoSuspension">
+                        Este jugador se encuentra suspendido.
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="bloqueObservaciones"
+                class="bloque-observaciones hidden"
+            >
+
+                <span>
+                    Observaciones
+                </span>
+
+                <p id="modalObservaciones"></p>
+
+            </div>
+
+
+            <div class="modal-acciones">
+
+                <a
+                    id="btnVerJugadorPublico"
+                    href="#"
+                    class="btn-ver-publico"
+                >
+                    <span>
+                        👁️
+                    </span>
+
+                    Ver perfil público
+                </a>
+
+
+                <button
+                    type="button"
+                    id="btnCerrarDetalle"
+                    class="btn-cerrar-detalle"
+                >
+                    Cerrar
+                </button>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <script
+        type="module"
+        src="js/admin/adminJugadores.js"
+    ></script>
+
+</body>
+</html>

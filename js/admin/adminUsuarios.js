@@ -14,6 +14,10 @@ import {
     db
 } from "../firebase.js";
 
+import {
+    registrarAuditoria
+} from "../auditoria.js";
+
 
 const adminInicial = document.getElementById("adminInicial");
 
@@ -906,6 +910,53 @@ async function guardarCambiosUsuario() {
     }
 
 
+    const rolAnterior =
+        usuarioSeleccionado.rol ||
+        "publico";
+
+
+    const estadoAnterior =
+        usuarioSeleccionado.activo !== false;
+
+
+    const cambios = [];
+
+
+    if (rolAnterior !== nuevoRol) {
+
+        cambios.push(
+            `rol de ${textoRol(rolAnterior)} a ${textoRol(nuevoRol)}`
+        );
+
+    }
+
+
+    if (estadoAnterior !== estadoSeleccionado) {
+
+        cambios.push(
+            estadoSeleccionado
+                ? "cuenta activada"
+                : "cuenta desactivada"
+        );
+
+    }
+
+
+    if (!cambios.length) {
+
+        cerrarModal();
+
+        mostrarToast(
+            "exito",
+            "Sin cambios",
+            "No se realizaron modificaciones al usuario."
+        );
+
+        return;
+
+    }
+
+
     btnGuardarUsuario.disabled =
         true;
 
@@ -933,6 +984,68 @@ async function guardarCambiosUsuario() {
                     serverTimestamp()
             }
         );
+
+
+        let accion =
+            "usuario_actualizado";
+
+
+        if (
+            rolAnterior !== nuevoRol &&
+            estadoAnterior === estadoSeleccionado
+        ) {
+
+            accion =
+                "rol_actualizado";
+
+        }
+
+
+        if (
+            rolAnterior === nuevoRol &&
+            estadoAnterior !== estadoSeleccionado
+        ) {
+
+            accion =
+                estadoSeleccionado
+                    ? "usuario_activado"
+                    : "usuario_desactivado";
+
+        }
+
+
+        await registrarAuditoria({
+            usuarioId:
+                usuarioAdminActual.uid,
+
+            usuarioNombre:
+                usuarioAdminActual.nombre ||
+                usuarioAdminActual.email ||
+                "Administrador",
+
+            usuarioRol:
+                usuarioAdminActual.rol ||
+                "admin",
+
+            modulo:
+                "usuarios",
+
+            accion,
+
+            descripcion:
+                `Se actualizó al usuario ${usuarioSeleccionado.nombre || usuarioSeleccionado.email || "Sin nombre"}. Cambios: ${cambios.join("; ")}.`,
+
+            entidadTipo:
+                "usuario",
+
+            entidadId:
+                usuarioSeleccionado.id,
+
+            entidadNombre:
+                usuarioSeleccionado.nombre ||
+                usuarioSeleccionado.email ||
+                "Usuario"
+        });
 
 
         usuarioSeleccionado.rol =
@@ -979,7 +1092,7 @@ async function guardarCambiosUsuario() {
         btnGuardarUsuario.textContent =
             "Guardar cambios";
 
-    }
+        }
 
 }
 

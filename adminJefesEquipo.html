@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#0b756d">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Liga Río Grande">
+
+    <title>Jefes de equipo | Liga Deportiva Río Grande</title>
+
+    <link rel="icon" href="imagenes/logo.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="imagenes/icon-192.png">
+    <link rel="apple-touch-icon" href="imagenes/icon-192.png">
+    <link rel="manifest" href="manifest.json">
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/adminJefesEquipo.css">
+</head>
+
+<body>
+
+    <div class="admin-jefes-app">
+
+        <header class="jefes-topbar">
+
+            <div class="topbar-identidad">
+
+                <a
+                    href="admin.html"
+                    class="btn-regresar"
+                    aria-label="Volver al panel"
+                >
+                    ←
+                </a>
+
+                <img
+                    src="imagenes/logo.png"
+                    alt="Liga Deportiva Río Grande"
+                    class="topbar-logo"
+                >
+
+                <div class="topbar-texto">
+                    <span>Administración</span>
+                    <strong>Jefes de equipo</strong>
+                </div>
+
+            </div>
+
+            <a href="admin.html" class="btn-panel">
+                <span>⌂</span>
+                <strong>Panel</strong>
+            </a>
+
+        </header>
+
+
+        <main class="jefes-contenido">
+
+            <section class="jefes-hero">
+
+                <div class="hero-texto">
+
+                    <span class="hero-mini">
+                        PERSONAS
+                    </span>
+
+                    <h1>
+                        Jefes de equipo
+                    </h1>
+
+                    <p>
+                        Consulta a los responsables registrados y los equipos que administran dentro de la Liga Deportiva Río Grande.
+                    </p>
+
+                </div>
+
+                <div class="hero-icono">
+                    🧑‍💼
+                </div>
+
+            </section>
+
+
+            <section class="resumen-jefes">
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        🧑‍💼
+                    </div>
+
+                    <div>
+                        <span>Jefes</span>
+                        <strong id="totalJefes">0</strong>
+                        <small>Registrados</small>
+                    </div>
+
+                </article>
+
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        🟢
+                    </div>
+
+                    <div>
+                        <span>Activos</span>
+                        <strong id="totalActivos">0</strong>
+                        <small>Con acceso disponible</small>
+                    </div>
+
+                </article>
+
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        🛡️
+                    </div>
+
+                    <div>
+                        <span>Equipos</span>
+                        <strong id="totalEquipos">0</strong>
+                        <small>Bajo responsabilidad</small>
+                    </div>
+
+                </article>
+
+
+                <article class="resumen-card destacado">
+
+                    <div class="resumen-icono">
+                        👕
+                    </div>
+
+                    <div>
+                        <span>Jugadores</span>
+                        <strong id="totalJugadores">0</strong>
+                        <small>En sus equipos</small>
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <section class="panel-jefes">
+
+                <div class="panel-jefes-header">
+
+                    <div>
+
+                        <span class="panel-mini">
+                            REGISTRO GENERAL
+                        </span>
+
+                        <h2>
+                            Responsables de equipos
+                        </h2>
+
+                    </div>
+
+                    <div class="contador-resultados">
+                        <strong id="contadorResultados">0</strong>
+                        <span>resultados</span>
+                    </div>
+
+                </div>
+
+
+                <div class="herramientas-jefes">
+
+                    <div class="buscador-jefes">
+
+                        <span class="buscador-icono">
+                            🔎
+                        </span>
+
+                        <input
+                            type="search"
+                            id="buscarJefe"
+                            placeholder="Buscar jefe por nombre..."
+                            autocomplete="off"
+                        >
+
+                        <button
+                            type="button"
+                            id="btnLimpiarBusqueda"
+                            class="btn-limpiar-busqueda hidden"
+                            aria-label="Limpiar búsqueda"
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+
+                    <div class="filtros-jefes">
+
+                        <label class="filtro-control">
+
+                            <span>
+                                Estado
+                            </span>
+
+                            <select id="filtroEstado">
+
+                                <option value="">
+                                    Todos los jefes
+                                </option>
+
+                                <option value="activo">
+                                    Activos
+                                </option>
+
+                                <option value="inactivo">
+                                    Inactivos
+                                </option>
+
+                            </select>
+
+                        </label>
+
+
+                        <label class="filtro-control">
+
+                            <span>
+                                Equipos
+                            </span>
+
+                            <select id="filtroEquipos">
+
+                                <option value="">
+                                    Todos
+                                </option>
+
+                                <option value="conEquipos">
+                                    Con equipos asignados
+                                </option>
+
+                                <option value="sinEquipos">
+                                    Sin equipos asignados
+                                </option>
+
+                                <option value="multiples">
+                                    Con varios equipos
+                                </option>
+
+                            </select>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div id="estadoCarga" class="estado-carga">
+
+                    <div class="spinner"></div>
+
+                    <strong>
+                        Cargando jefes de equipo
+                    </strong>
+
+                    <span>
+                        Consultando responsables, equipos y jugadores...
+                    </span>
+
+                </div>
+
+
+                <div id="estadoVacio" class="estado-vacio hidden">
+
+                    <div class="estado-vacio-icono">
+                        🧑‍💼
+                    </div>
+
+                    <strong>
+                        No hay jefes para mostrar
+                    </strong>
+
+                    <p>
+                        No encontramos responsables que coincidan con los filtros seleccionados.
+                    </p>
+
+                    <button
+                        type="button"
+                        id="btnRestablecerFiltros"
+                        class="btn-restablecer"
+                    >
+                        Restablecer filtros
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="listaJefes"
+                    class="lista-jefes hidden"
+                ></div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <div
+        id="modalJefe"
+        class="modal-jefe hidden"
+        aria-hidden="true"
+    >
+
+        <div
+            class="modal-jefe-overlay"
+            data-cerrar-modal
+        ></div>
+
+        <section
+            class="modal-jefe-card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modalJefeNombre"
+        >
+
+            <button
+                type="button"
+                id="btnCerrarModal"
+                class="btn-cerrar-modal"
+                aria-label="Cerrar"
+            >
+                ×
+            </button>
+
+
+            <div class="modal-jefe-cabecera">
+
+                <div class="modal-avatar">
+                    <span id="modalJefeInicial">J</span>
+                </div>
+
+                <div class="modal-identidad">
+
+                    <span
+                        id="modalJefeEstado"
+                        class="estado-jefe activo"
+                    >
+                        Activo
+                    </span>
+
+                    <h2 id="modalJefeNombre">
+                        Jefe de equipo
+                    </h2>
+
+                    <p>
+                        Responsable registrado en la Liga Deportiva Río Grande
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-estadisticas">
+
+                <article>
+
+                    <span>
+                        🛡️
+                    </span>
+
+                    <strong id="modalTotalEquipos">
+                        0
+                    </strong>
+
+                    <small>
+                        Equipos
+                    </small>
+
+                </article>
+
+
+                <article>
+
+                    <span>
+                        👕
+                    </span>
+
+                    <strong id="modalTotalJugadores">
+                        0
+                    </strong>
+
+                    <small>
+                        Jugadores
+                    </small>
+
+                </article>
+
+
+                <article>
+
+                    <span>
+                        🟢
+                    </span>
+
+                    <strong id="modalEquiposActivos">
+                        0
+                    </strong>
+
+                    <small>
+                        Activos
+                    </small>
+
+                </article>
+
+
+                <article>
+
+                    <span>
+                        🚫
+                    </span>
+
+                    <strong id="modalEquiposDescalificados">
+                        0
+                    </strong>
+
+                    <small>
+                        Descalificados
+                    </small>
+
+                </article>
+
+            </div>
+
+
+            <div class="modal-informacion">
+
+                <div class="informacion-fila">
+
+                    <span>
+                        Nombre
+                    </span>
+
+                    <strong id="modalNombreCompleto">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="informacion-fila">
+
+                    <span>
+                        Correo
+                    </span>
+
+                    <strong id="modalCorreo">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="informacion-fila">
+
+                    <span>
+                        Rol
+                    </span>
+
+                    <strong>
+                        Jefe de equipo
+                    </strong>
+
+                </div>
+
+
+                <div class="informacion-fila">
+
+                    <span>
+                        Estado de cuenta
+                    </span>
+
+                    <strong id="modalEstadoCuenta">
+                        -
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <section class="equipos-jefe">
+
+                <div class="equipos-jefe-header">
+
+                    <div>
+
+                        <span>
+                            RESPONSABILIDAD
+                        </span>
+
+                        <h3>
+                            Equipos asignados
+                        </h3>
+
+                    </div>
+
+                    <strong id="contadorEquiposJefe">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div
+                    id="listaEquiposJefe"
+                    class="lista-equipos-jefe"
+                ></div>
+
+
+                <div
+                    id="sinEquiposJefe"
+                    class="sin-equipos-jefe hidden"
+                >
+
+                    <span>
+                        🛡️
+                    </span>
+
+                    <p>
+                        Este jefe todavía no tiene equipos asignados.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <div class="modal-acciones">
+
+                <button
+                    type="button"
+                    id="btnCerrarDetalle"
+                    class="btn-cerrar-detalle"
+                >
+                    Cerrar
+                </button>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <script
+        type="module"
+        src="js/admin/adminJefesEquipo.js"
+    ></script>
+
+</body>
+</html>

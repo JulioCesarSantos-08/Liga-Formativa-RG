@@ -15,6 +15,10 @@ import {
     db
 } from "../firebase.js";
 
+import {
+    registrarAuditoria
+} from "../auditoria.js";
+
 
 const adminInicial = document.getElementById("adminInicial");
 
@@ -105,36 +109,30 @@ function activarEventos() {
         abrirModalNuevaJornada
     );
 
-
     buscarJornada.addEventListener(
         "input",
         aplicarFiltros
     );
-
 
     filtroCategoria.addEventListener(
         "change",
         aplicarFiltros
     );
 
-
     filtroEstado.addEventListener(
         "change",
         aplicarFiltros
     );
-
 
     btnCerrarModal.addEventListener(
         "click",
         cerrarModal
     );
 
-
     btnCancelarModal.addEventListener(
         "click",
         cerrarModal
     );
-
 
     modalJornada.addEventListener(
         "click",
@@ -151,12 +149,10 @@ function activarEventos() {
         }
     );
 
-
     formJornada.addEventListener(
         "submit",
         guardarJornada
     );
-
 
     btnEstadoProxima.addEventListener(
         "click",
@@ -169,7 +165,6 @@ function activarEventos() {
         }
     );
 
-
     btnEstadoEnCurso.addEventListener(
         "click",
         () => {
@@ -180,7 +175,6 @@ function activarEventos() {
 
         }
     );
-
 
     btnEstadoFinalizada.addEventListener(
         "click",
@@ -193,12 +187,10 @@ function activarEventos() {
         }
     );
 
-
     numeroJornada.addEventListener(
         "input",
         actualizarNombreAutomatico
     );
-
 
     document.addEventListener(
         "keydown",
@@ -229,12 +221,10 @@ async function cargarCategorias() {
                 "categorias"
             );
 
-
         const snapshot =
             await getDocs(
                 referencia
             );
-
 
         categorias =
             snapshot.docs
@@ -257,7 +247,6 @@ async function cargarCategorias() {
                             )
                 );
 
-
         llenarSelectCategorias();
 
     } catch (error) {
@@ -266,7 +255,6 @@ async function cargarCategorias() {
             "Error cargando categorías:",
             error
         );
-
 
         mostrarToast(
             "error",
@@ -283,7 +271,6 @@ async function cargarJornadas() {
 
     mostrarCarga();
 
-
     try {
 
         const referencia =
@@ -292,12 +279,10 @@ async function cargarJornadas() {
                 "jornadas"
             );
 
-
         const snapshot =
             await getDocs(
                 referencia
             );
-
 
         jornadas =
             snapshot.docs.map(
@@ -307,11 +292,9 @@ async function cargarJornadas() {
                 })
             );
 
-
         jornadas.sort(
             ordenarJornadas
         );
-
 
         actualizarResumen();
         aplicarFiltros();
@@ -323,27 +306,22 @@ async function cargarJornadas() {
             error
         );
 
-
         estadoCarga.classList.add(
             "oculto"
         );
-
 
         gridJornadas.classList.add(
             "oculto"
         );
 
-
         estadoVacio.classList.remove(
             "oculto"
         );
-
 
         estadoVacio.querySelector(
             "strong"
         ).textContent =
             "No pudimos cargar las jornadas";
-
 
         estadoVacio.querySelector(
             "p"
@@ -363,13 +341,11 @@ function llenarSelectCategorias() {
         </option>
     `;
 
-
     filtroCategoria.innerHTML = `
         <option value="todas">
             Todas las categorías
         </option>
     `;
-
 
     categorias.forEach(
         (categoria) => {
@@ -387,7 +363,6 @@ function llenarSelectCategorias() {
             categoriaJornada.appendChild(
                 optionModal
             );
-
 
             const optionFiltro =
                 document.createElement("option");
@@ -415,11 +390,9 @@ function mostrarCarga() {
         "oculto"
     );
 
-
     estadoVacio.classList.add(
         "oculto"
     );
-
 
     gridJornadas.classList.add(
         "oculto"
@@ -433,20 +406,17 @@ function actualizarResumen() {
     totalJornadas.textContent =
         jornadas.length;
 
-
     totalProximas.textContent =
         jornadas.filter(
             jornada =>
                 jornada.estado === "proxima"
         ).length;
 
-
     totalEnCurso.textContent =
         jornadas.filter(
             jornada =>
                 jornada.estado === "enCurso"
         ).length;
-
 
     totalFinalizadas.textContent =
         jornadas.filter(
@@ -464,14 +434,11 @@ function aplicarFiltros() {
             buscarJornada.value
         );
 
-
     const categoria =
         filtroCategoria.value;
 
-
     const estado =
         filtroEstado.value;
-
 
     const lista =
         jornadas.filter(
@@ -486,16 +453,13 @@ function aplicarFiltros() {
                         jornada.descripcion || ""
                     ).includes(texto);
 
-
                 const coincideCategoria =
                     categoria === "todas" ||
                     jornada.categoriaId === categoria;
 
-
                 const coincideEstado =
                     estado === "todos" ||
                     jornada.estado === estado;
-
 
                 return (
                     coincideTexto &&
@@ -505,7 +469,6 @@ function aplicarFiltros() {
 
             }
         );
-
 
     renderizarJornadas(
         lista
@@ -520,10 +483,8 @@ function renderizarJornadas(lista) {
         "oculto"
     );
 
-
     gridJornadas.innerHTML =
         "";
-
 
     if (!lista.length) {
 
@@ -531,26 +492,21 @@ function renderizarJornadas(lista) {
             "oculto"
         );
 
-
         estadoVacio.classList.remove(
             "oculto"
         );
-
 
         return;
 
     }
 
-
     estadoVacio.classList.add(
         "oculto"
     );
 
-
     gridJornadas.classList.remove(
         "oculto"
     );
-
 
     lista.forEach(
         (jornada) => {
@@ -561,21 +517,17 @@ function renderizarJornadas(lista) {
                         item.id === jornada.categoriaId
                 );
 
-
             const card =
                 document.createElement(
                     "article"
                 );
 
-
             card.className =
                 "jornada-card";
-
 
             const estado =
                 jornada.estado ||
                 "proxima";
-
 
             card.innerHTML = `
 
@@ -585,13 +537,11 @@ function renderizarJornadas(lista) {
                         📅
                     </div>
 
-
                     <span class="jornada-estado ${estado}">
                         ${textoEstado(estado)}
                     </span>
 
                 </div>
-
 
                 <h3>
                     ${escaparHTML(
@@ -599,7 +549,6 @@ function renderizarJornadas(lista) {
                         `Jornada ${jornada.numero || ""}`
                     )}
                 </h3>
-
 
                 <span class="jornada-categoria">
                     ${escaparHTML(
@@ -609,14 +558,12 @@ function renderizarJornadas(lista) {
                     )}
                 </span>
 
-
                 <p class="jornada-descripcion">
                     ${escaparHTML(
                         jornada.descripcion ||
                         "Sin observaciones"
                     )}
                 </p>
-
 
                 <div class="jornada-meta">
 
@@ -634,7 +581,6 @@ function renderizarJornadas(lista) {
 
                     </div>
 
-
                     <div>
 
                         <span>
@@ -651,7 +597,6 @@ function renderizarJornadas(lista) {
 
                 </div>
 
-
                 <div class="jornada-partidos">
 
                     <span>
@@ -666,7 +611,6 @@ function renderizarJornadas(lista) {
 
                 </div>
 
-
                 <div class="jornada-acciones">
 
                     <button
@@ -675,7 +619,6 @@ function renderizarJornadas(lista) {
                     >
                         Editar
                     </button>
-
 
                     <a
                         href="adminPartidos.html?jornada=${jornada.id}"
@@ -687,7 +630,6 @@ function renderizarJornadas(lista) {
                 </div>
 
             `;
-
 
             card.querySelector(
                 ".btn-editar-jornada"
@@ -701,7 +643,6 @@ function renderizarJornadas(lista) {
 
                 }
             );
-
 
             gridJornadas.appendChild(
                 card
@@ -718,21 +659,16 @@ function abrirModalNuevaJornada() {
     jornadaSeleccionada =
         null;
 
-
     formJornada.reset();
-
 
     modalTitulo.textContent =
         "Nueva jornada";
-
 
     seleccionarEstado(
         "proxima"
     );
 
-
     abrirModal();
-
 
     setTimeout(
         () => {
@@ -754,49 +690,38 @@ function abrirModalEditarJornada(id) {
                 item.id === id
         );
 
-
     if (!jornada) {
         return;
     }
 
-
     jornadaSeleccionada =
         jornada;
-
 
     modalTitulo.textContent =
         "Editar jornada";
 
-
     categoriaJornada.value =
         jornada.categoriaId || "";
-
 
     numeroJornada.value =
         jornada.numero ?? "";
 
-
     nombreJornada.value =
         jornada.nombre || "";
-
 
     fechaInicio.value =
         jornada.fechaInicio || "";
 
-
     fechaFin.value =
         jornada.fechaFin || "";
 
-
     descripcionJornada.value =
         jornada.descripcion || "";
-
 
     seleccionarEstado(
         jornada.estado ||
         "proxima"
     );
-
 
     abrirModal();
 
@@ -808,7 +733,6 @@ function abrirModal() {
     modalJornada.classList.remove(
         "oculto"
     );
-
 
     document.body.style.overflow =
         "hidden";
@@ -822,10 +746,8 @@ function cerrarModal() {
         "oculto"
     );
 
-
     document.body.style.overflow =
         "";
-
 
     jornadaSeleccionada =
         null;
@@ -838,18 +760,15 @@ function seleccionarEstado(estado) {
     estadoSeleccionado =
         estado;
 
-
     btnEstadoProxima.classList.toggle(
         "activo",
         estado === "proxima"
     );
 
-
     btnEstadoEnCurso.classList.toggle(
         "activo",
         estado === "enCurso"
     );
-
 
     btnEstadoFinalizada.classList.toggle(
         "activo",
@@ -867,15 +786,12 @@ function actualizarNombreAutomatico() {
         return;
     }
 
-
     const numero =
         numeroJornada.value;
-
 
     if (!numero) {
         return;
     }
-
 
     nombreJornada.value =
         `Jornada ${numero}`;
@@ -887,16 +803,13 @@ async function guardarJornada(event) {
 
     event.preventDefault();
 
-
     const categoriaId =
         categoriaJornada.value;
-
 
     const numero =
         Number(
             numeroJornada.value
         );
-
 
     const nombre =
         (
@@ -905,20 +818,16 @@ async function guardarJornada(event) {
         )
             .replace(/\s+/g, " ");
 
-
     const inicio =
         fechaInicio.value;
 
-
     const fin =
         fechaFin.value;
-
 
     const descripcion =
         descripcionJornada.value
             .trim()
             .replace(/\s+/g, " ");
-
 
     if (!categoriaId) {
 
@@ -931,7 +840,6 @@ async function guardarJornada(event) {
         return;
 
     }
-
 
     if (
         !numero ||
@@ -947,7 +855,6 @@ async function guardarJornada(event) {
         return;
 
     }
-
 
     if (
         inicio &&
@@ -965,7 +872,6 @@ async function guardarJornada(event) {
 
     }
 
-
     const jornadaDuplicada =
         jornadas.some(
             (jornada) => {
@@ -979,7 +885,6 @@ async function guardarJornada(event) {
 
                 }
 
-
                 return (
                     jornada.categoriaId === categoriaId &&
                     Number(
@@ -989,7 +894,6 @@ async function guardarJornada(event) {
 
             }
         );
-
 
     if (jornadaDuplicada) {
 
@@ -1003,18 +907,15 @@ async function guardarJornada(event) {
 
     }
 
-
     const categoria =
         categorias.find(
             item =>
                 item.id === categoriaId
         );
 
-
     bloquearGuardado(
         true
     );
-
 
     try {
 
@@ -1035,28 +936,132 @@ async function guardarJornada(event) {
                 serverTimestamp()
         };
 
-
         if (jornadaSeleccionada) {
+
+            const anterior = {
+                categoriaId:
+                    jornadaSeleccionada.categoriaId || "",
+                categoriaNombre:
+                    jornadaSeleccionada.categoriaNombre || "",
+                numero:
+                    Number(jornadaSeleccionada.numero || 0),
+                nombre:
+                    jornadaSeleccionada.nombre || "",
+                fechaInicio:
+                    jornadaSeleccionada.fechaInicio || "",
+                fechaFin:
+                    jornadaSeleccionada.fechaFin || "",
+                descripcion:
+                    jornadaSeleccionada.descripcion || "",
+                estado:
+                    jornadaSeleccionada.estado || "proxima"
+            };
+
+            const jornadaId =
+                jornadaSeleccionada.id;
 
             const referencia =
                 doc(
                     db,
                     "jornadas",
-                    jornadaSeleccionada.id
+                    jornadaId
                 );
-
 
             await updateDoc(
                 referencia,
                 datos
             );
 
-
             Object.assign(
                 jornadaSeleccionada,
                 datos
             );
 
+            const cambios =
+                obtenerCambiosJornada(
+                    anterior,
+                    {
+                        categoriaId,
+                        categoriaNombre:
+                            categoria?.nombre || "",
+                        numero,
+                        nombre,
+                        fechaInicio:
+                            inicio || "",
+                        fechaFin:
+                            fin || "",
+                        descripcion,
+                        estado:
+                            estadoSeleccionado
+                    }
+                );
+
+            let accion =
+                "jornada_actualizada";
+
+            let descripcionAuditoria =
+                `Se actualizó ${nombre}.`;
+
+            if (
+                anterior.estado !==
+                estadoSeleccionado &&
+                cambios.length === 1
+            ) {
+
+                accion =
+                    obtenerAccionEstado(
+                        estadoSeleccionado
+                    );
+
+                descripcionAuditoria =
+                    `Se cambió el estado de ${nombre} de ${textoEstado(anterior.estado)} a ${textoEstado(estadoSeleccionado)}.`;
+
+            } else if (
+                anterior.estado !==
+                estadoSeleccionado
+            ) {
+
+                accion =
+                    "jornada_actualizada";
+
+                descripcionAuditoria =
+                    `Se actualizó ${nombre}. Cambios: ${cambios.join(", ")}.`;
+
+            } else if (cambios.length) {
+
+                descripcionAuditoria =
+                    `Se actualizó ${nombre}. Cambios: ${cambios.join(", ")}.`;
+
+            } else {
+
+                descripcionAuditoria =
+                    `Se guardó ${nombre} sin cambios en sus datos principales.`;
+
+            }
+
+            await registrarAuditoria({
+                usuarioId:
+                    usuario?.uid || "",
+                usuarioNombre:
+                    usuario?.nombre ||
+                    usuario?.nombreCompleto ||
+                    usuario?.email ||
+                    "Administrador",
+                usuarioRol:
+                    usuario?.rol ||
+                    "admin",
+                modulo:
+                    "jornadas",
+                accion,
+                descripcion:
+                    descripcionAuditoria,
+                entidadTipo:
+                    "jornada",
+                entidadId:
+                    jornadaId,
+                entidadNombre:
+                    nombre
+            });
 
             mostrarToast(
                 "exito",
@@ -1072,7 +1077,6 @@ async function guardarJornada(event) {
                     "jornadas"
                 );
 
-
             const documento =
                 await addDoc(
                     referencia,
@@ -1084,7 +1088,6 @@ async function guardarJornada(event) {
                     }
                 );
 
-
             jornadas.push(
                 {
                     id: documento.id,
@@ -1093,6 +1096,46 @@ async function guardarJornada(event) {
                 }
             );
 
+            let descripcionAuditoria =
+                `Se creó ${nombre} en la categoría ${categoria?.nombre || "Sin categoría"}.`;
+
+            if (
+                inicio ||
+                fin
+            ) {
+
+                descripcionAuditoria +=
+                    ` Fechas: ${formatearRangoFechas(inicio, fin)}.`;
+
+            }
+
+            descripcionAuditoria +=
+                ` Estado: ${textoEstado(estadoSeleccionado)}.`;
+
+            await registrarAuditoria({
+                usuarioId:
+                    usuario?.uid || "",
+                usuarioNombre:
+                    usuario?.nombre ||
+                    usuario?.nombreCompleto ||
+                    usuario?.email ||
+                    "Administrador",
+                usuarioRol:
+                    usuario?.rol ||
+                    "admin",
+                modulo:
+                    "jornadas",
+                accion:
+                    "jornada_creada",
+                descripcion:
+                    descripcionAuditoria,
+                entidadTipo:
+                    "jornada",
+                entidadId:
+                    documento.id,
+                entidadNombre:
+                    nombre
+            });
 
             mostrarToast(
                 "exito",
@@ -1102,11 +1145,9 @@ async function guardarJornada(event) {
 
         }
 
-
         jornadas.sort(
             ordenarJornadas
         );
-
 
         actualizarResumen();
         aplicarFiltros();
@@ -1118,7 +1159,6 @@ async function guardarJornada(event) {
             "Error guardando jornada:",
             error
         );
-
 
         mostrarToast(
             "error",
@@ -1133,6 +1173,145 @@ async function guardarJornada(event) {
         );
 
     }
+
+}
+
+
+function obtenerCambiosJornada(
+    anterior,
+    nuevo
+) {
+
+    const cambios = [];
+
+    if (
+        anterior.categoriaId !==
+        nuevo.categoriaId
+    ) {
+
+        cambios.push(
+            `categoría de "${anterior.categoriaNombre || "Sin categoría"}" a "${nuevo.categoriaNombre || "Sin categoría"}"`
+        );
+
+    }
+
+    if (
+        Number(anterior.numero || 0) !==
+        Number(nuevo.numero || 0)
+    ) {
+
+        cambios.push(
+            `número de jornada de "${anterior.numero || 0}" a "${nuevo.numero || 0}"`
+        );
+
+    }
+
+    if (
+        normalizarTexto(anterior.nombre) !==
+        normalizarTexto(nuevo.nombre)
+    ) {
+
+        cambios.push(
+            `nombre de "${anterior.nombre || "Sin nombre"}" a "${nuevo.nombre || "Sin nombre"}"`
+        );
+
+    }
+
+    if (
+        anterior.fechaInicio !==
+        nuevo.fechaInicio
+    ) {
+
+        cambios.push(
+            `fecha de inicio de "${formatearFecha(anterior.fechaInicio)}" a "${formatearFecha(nuevo.fechaInicio)}"`
+        );
+
+    }
+
+    if (
+        anterior.fechaFin !==
+        nuevo.fechaFin
+    ) {
+
+        cambios.push(
+            `fecha de cierre de "${formatearFecha(anterior.fechaFin)}" a "${formatearFecha(nuevo.fechaFin)}"`
+        );
+
+    }
+
+    if (
+        normalizarTexto(anterior.descripcion) !==
+        normalizarTexto(nuevo.descripcion)
+    ) {
+
+        cambios.push(
+            "descripción"
+        );
+
+    }
+
+    if (
+        anterior.estado !==
+        nuevo.estado
+    ) {
+
+        cambios.push(
+            `estado de "${textoEstado(anterior.estado)}" a "${textoEstado(nuevo.estado)}"`
+        );
+
+    }
+
+    return cambios;
+
+}
+
+
+function obtenerAccionEstado(estado) {
+
+    switch (estado) {
+
+        case "enCurso":
+            return "jornada_iniciada";
+
+        case "finalizada":
+            return "jornada_finalizada";
+
+        case "proxima":
+        default:
+            return "jornada_programada";
+
+    }
+
+}
+
+
+function formatearRangoFechas(
+    inicio,
+    fin
+) {
+
+    if (
+        inicio &&
+        fin
+    ) {
+
+        return `${formatearFecha(inicio)} al ${formatearFecha(fin)}`;
+
+    }
+
+    if (inicio) {
+
+        return `inicio ${formatearFecha(inicio)}`;
+
+    }
+
+    if (fin) {
+
+        return `cierre ${formatearFecha(fin)}`;
+
+    }
+
+    return "sin fechas definidas";
 
 }
 
@@ -1152,7 +1331,6 @@ function ordenarJornadas(a, b) {
 
     }
 
-
     return (
         Number(a.numero || 0) -
         Number(b.numero || 0)
@@ -1167,7 +1345,6 @@ function revisarAccionURL() {
         new URLSearchParams(
             window.location.search
         );
-
 
     if (
         parametros.get("accion") ===
@@ -1206,17 +1383,14 @@ function formatearFecha(fecha) {
         return "Sin definir";
     }
 
-
     const partes =
         String(fecha).split("-");
-
 
     if (
         partes.length !== 3
     ) {
         return fecha;
     }
-
 
     const anio =
         Number(partes[0]);
@@ -1227,14 +1401,12 @@ function formatearFecha(fecha) {
     const dia =
         Number(partes[2]);
 
-
     const objetoFecha =
         new Date(
             anio,
             mes,
             dia
         );
-
 
     return objetoFecha.toLocaleDateString(
         "es-MX",
@@ -1253,7 +1425,6 @@ function bloquearGuardado(bloquear) {
     btnGuardarJornada.disabled =
         bloquear;
 
-
     btnGuardarJornada.textContent =
         bloquear
             ? "Guardando..."
@@ -1268,11 +1439,9 @@ function obtenerInicial(nombre) {
         String(nombre || "")
             .trim();
 
-
     if (!texto) {
         return "A";
     }
-
 
     return texto
         .charAt(0)
@@ -1317,34 +1486,27 @@ function mostrarToast(
         toastTimer
     );
 
-
     toastIcono.textContent =
         tipo === "error"
             ? "!"
             : "✓";
 
-
     toastTitulo.textContent =
         titulo;
 
-
     toastTexto.textContent =
         texto;
-
 
     if (tipo === "error") {
 
         toast.style.background =
             "#fff3f2";
 
-
         toast.style.borderColor =
             "#f1cbc7";
 
-
         toastIcono.style.background =
             "#fee4e2";
-
 
         toastIcono.style.color =
             "#b42318";
@@ -1354,25 +1516,20 @@ function mostrarToast(
         toast.style.background =
             "#f0faf3";
 
-
         toast.style.borderColor =
             "#cbe7d5";
 
-
         toastIcono.style.background =
             "#d9f2e1";
-
 
         toastIcono.style.color =
             "#18794e";
 
     }
 
-
     toast.classList.remove(
         "oculto"
     );
-
 
     toastTimer =
         setTimeout(

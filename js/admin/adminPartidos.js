@@ -17,6 +17,10 @@ import {
     db
 } from "../firebase.js";
 
+import {
+    registrarAuditoria
+} from "../auditoria.js";
+
 
 const adminInicial = document.getElementById("adminInicial");
 
@@ -1835,23 +1839,118 @@ async function guardarPartido(event) {
                 );
 
 
-            await updateDoc(
-                referencia,
-                datos
-            );
+const partidoAnterior = {
+    ...partidoSeleccionado
+};
 
+await updateDoc(
+    referencia,
+    datos
+);
 
-            Object.assign(
-                partidoSeleccionado,
-                datos
-            );
+const cambios = [];
 
+if (partidoAnterior.categoriaId !== categoriaId) {
+    cambios.push(
+        `categoría: ${partidoAnterior.categoriaNombre || "Sin categoría"} → ${categoria.nombre || "Sin categoría"}`
+    );
+}
 
-            mostrarToast(
-                "exito",
-                "Partido actualizado",
-                "Los cambios fueron guardados correctamente."
-            );
+if (partidoAnterior.jornadaId !== jornadaId) {
+    cambios.push(
+        `jornada: ${partidoAnterior.jornadaNombre || "Sin jornada"} → ${jornada.nombre || `Jornada ${jornada.numero || ""}`}`
+    );
+}
+
+if (partidoAnterior.localId !== localId) {
+    cambios.push(
+        `local: ${partidoAnterior.localNombre || "Sin equipo"} → ${local.nombre || "Sin equipo"}`
+    );
+}
+
+if (partidoAnterior.visitanteId !== visitanteId) {
+    cambios.push(
+        `visitante: ${partidoAnterior.visitanteNombre || "Sin equipo"} → ${visitante.nombre || "Sin equipo"}`
+    );
+}
+
+if (partidoAnterior.fecha !== fecha) {
+    cambios.push(
+        `fecha: ${partidoAnterior.fecha || "Sin fecha"} → ${fecha}`
+    );
+}
+
+if (partidoAnterior.hora !== hora) {
+    cambios.push(
+        `hora: ${partidoAnterior.hora || "Sin hora"} → ${hora}`
+    );
+}
+
+if ((partidoAnterior.campo || "") !== campo) {
+    cambios.push(
+        `campo: ${partidoAnterior.campo || "Sin campo"} → ${campo}`
+    );
+}
+
+if (partidoAnterior.arbitroId !== arbitroId) {
+    cambios.push(
+        `árbitro: ${partidoAnterior.arbitroNombre || "Sin árbitro"} → ${arbitro.nombre || arbitro.email || "Sin árbitro"}`
+    );
+}
+
+if ((partidoAnterior.observaciones || "") !== observaciones) {
+    cambios.push("observaciones modificadas");
+}
+
+if ((partidoAnterior.estado || "proximo") !== estadoSeleccionado) {
+    cambios.push(
+        `estado: ${textoEstado(partidoAnterior.estado)} → ${textoEstado(estadoSeleccionado)}`
+    );
+}
+
+const motivoAnterior =
+    partidoAnterior.motivoCancelacion || "";
+
+const motivoNuevo =
+    estadoSeleccionado === "cancelado"
+        ? motivo
+        : "";
+
+if (motivoAnterior !== motivoNuevo) {
+    cambios.push("motivo de cancelación modificado");
+}
+
+Object.assign(
+    partidoSeleccionado,
+    datos
+);
+
+if (cambios.length) {
+    await registrarAuditoria({
+        usuarioId: usuario.uid,
+        usuarioNombre:
+            usuario.nombre ||
+            usuario.email ||
+            "Administrador",
+        usuarioRol:
+            usuario.rol ||
+            "admin",
+        modulo: "partidos",
+        accion: "partido_actualizado",
+        descripcion:
+            `Actualizó el partido ${local.nombre || "Local"} vs ${visitante.nombre || "Visitante"}. Cambios: ${cambios.join("; ")}.`,
+        entidadTipo: "partido",
+        entidadId: partidoSeleccionado.id,
+        entidadNombre:
+            `${local.nombre || "Local"} vs ${visitante.nombre || "Visitante"}`
+    });
+}
+
+mostrarToast(
+    "exito",
+    "Partido actualizado",
+    "Los cambios fueron guardados correctamente."
+);
 
         } else {
 
@@ -1913,6 +2012,24 @@ async function guardarPartido(event) {
 
             await batch.commit();
 
+            await registrarAuditoria({
+    usuarioId: usuario.uid,
+    usuarioNombre:
+        usuario.nombre ||
+        usuario.email ||
+        "Administrador",
+    usuarioRol:
+        usuario.rol ||
+        "admin",
+    modulo: "partidos",
+    accion: "partido_creado",
+    descripcion:
+        `Creó el partido ${local.nombre || "Local"} vs ${visitante.nombre || "Visitante"}, ${jornada.nombre || `Jornada ${jornada.numero || ""}`}, programado para ${fecha} a las ${hora} en ${campo}.`,
+    entidadTipo: "partido",
+    entidadId: referenciaPartido.id,
+    entidadNombre:
+        `${local.nombre || "Local"} vs ${visitante.nombre || "Visitante"}`
+});
 
             partidos.push(
                 {

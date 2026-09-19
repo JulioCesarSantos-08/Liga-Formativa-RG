@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#0b756d">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Liga Río Grande">
+
+    <title>Temporadas | Liga Río Grande</title>
+
+    <link rel="icon" href="imagenes/logo.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="imagenes/icon-192.png">
+    <link rel="apple-touch-icon" href="imagenes/icon-192.png">
+    <link rel="manifest" href="manifest.json">
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/adminTemporadas.css">
+</head>
+
+<body>
+
+    <header class="topbar">
+
+        <a
+            href="admin.html"
+            class="btn-volver"
+            aria-label="Volver al panel"
+        >
+            ←
+        </a>
+
+        <div class="topbar-identidad">
+
+            <img
+                src="imagenes/logo.png"
+                alt="Liga Río Grande"
+                class="topbar-logo"
+            >
+
+            <div>
+                <span class="topbar-seccion">
+                    ADMINISTRACIÓN
+                </span>
+
+                <h1>
+                    Temporadas
+                </h1>
+            </div>
+
+        </div>
+
+        <div class="topbar-acciones">
+
+            <a
+                href="publico.html"
+                class="btn-sitio"
+            >
+                ⚽ Ver sitio
+            </a>
+
+            <div
+                class="admin-avatar"
+                id="adminInicial"
+            >
+                A
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <main class="contenedor">
+
+        <section class="hero-temporadas">
+
+            <div class="hero-contenido">
+
+                <span class="hero-etiqueta">
+                    ORGANIZACIÓN DE LA LIGA
+                </span>
+
+                <h2>
+                    Gestión de temporadas
+                </h2>
+
+                <p>
+                    Organiza los ciclos deportivos de la Liga Río Grande y controla cuál temporada se encuentra actualmente en curso.
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                class="btn-nueva-temporada"
+                id="btnNuevaTemporada"
+            >
+                + Nueva temporada
+            </button>
+
+        </section>
+
+
+        <section class="resumen-temporadas">
+
+            <article class="resumen-card total">
+
+                <div class="resumen-icono">
+                    🗓️
+                </div>
+
+                <div>
+                    <span>
+                        Temporadas
+                    </span>
+
+                    <strong id="totalTemporadas">
+                        0
+                    </strong>
+
+                    <small>
+                        Registradas
+                    </small>
+                </div>
+
+            </article>
+
+
+            <article class="resumen-card activa">
+
+                <div class="resumen-icono">
+                    🏆
+                </div>
+
+                <div>
+                    <span>
+                        Activa
+                    </span>
+
+                    <strong id="totalActivas">
+                        0
+                    </strong>
+
+                    <small>
+                        En curso
+                    </small>
+                </div>
+
+            </article>
+
+
+            <article class="resumen-card proximas">
+
+                <div class="resumen-icono">
+                    ⏳
+                </div>
+
+                <div>
+                    <span>
+                        Próximas
+                    </span>
+
+                    <strong id="totalProximas">
+                        0
+                    </strong>
+
+                    <small>
+                        Por comenzar
+                    </small>
+                </div>
+
+            </article>
+
+
+            <article class="resumen-card finalizadas">
+
+                <div class="resumen-icono">
+                    ✓
+                </div>
+
+                <div>
+                    <span>
+                        Finalizadas
+                    </span>
+
+                    <strong id="totalFinalizadas">
+                        0
+                    </strong>
+
+                    <small>
+                        Ciclos cerrados
+                    </small>
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <section
+            class="temporada-actual oculto"
+            id="bloqueTemporadaActual"
+        >
+
+            <div class="temporada-actual-icono">
+                🏆
+            </div>
+
+            <div class="temporada-actual-info">
+
+                <span>
+                    TEMPORADA ACTUAL
+                </span>
+
+                <h3 id="temporadaActualNombre">
+                    -
+                </h3>
+
+                <p id="temporadaActualFechas">
+                    -
+                </p>
+
+            </div>
+
+            <div class="temporada-actual-estado">
+                EN CURSO
+            </div>
+
+        </section>
+
+
+        <section class="panel-temporadas">
+
+            <div class="filtros">
+
+                <div class="buscador">
+
+                    <span>
+                        🔎
+                    </span>
+
+                    <input
+                        type="search"
+                        id="buscarTemporada"
+                        placeholder="Buscar temporada..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <select id="filtroEstado">
+
+                    <option value="todas">
+                        Todos los estados
+                    </option>
+
+                    <option value="activa">
+                        Activa
+                    </option>
+
+                    <option value="proxima">
+                        Próximas
+                    </option>
+
+                    <option value="finalizada">
+                        Finalizadas
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="cabecera-listado">
+
+                <div>
+
+                    <span class="cabecera-etiqueta">
+                        CICLOS DEPORTIVOS
+                    </span>
+
+                    <h2>
+                        Temporadas registradas
+                    </h2>
+
+                </div>
+
+                <span
+                    class="contador-resultados"
+                    id="contadorResultados"
+                >
+                    0 temporadas
+                </span>
+
+            </div>
+
+
+            <div
+                class="estado-carga"
+                id="estadoCarga"
+            >
+
+                <div class="spinner"></div>
+
+                <p>
+                    Cargando temporadas...
+                </p>
+
+            </div>
+
+
+            <div
+                class="estado-vacio oculto"
+                id="estadoVacio"
+            >
+
+                <div class="estado-vacio-icono">
+                    🗓️
+                </div>
+
+                <strong>
+                    No hay temporadas registradas
+                </strong>
+
+                <p>
+                    Crea la primera temporada para comenzar a organizar los ciclos deportivos de la liga.
+                </p>
+
+                <button
+                    type="button"
+                    id="btnCrearPrimera"
+                >
+                    Crear temporada
+                </button>
+
+            </div>
+
+
+            <div
+                class="lista-temporadas oculto"
+                id="listaTemporadas"
+            ></div>
+
+        </section>
+
+    </main>
+
+
+    <div
+        class="modal oculto"
+        id="modalTemporada"
+    >
+
+        <div class="modal-overlay"></div>
+
+        <section class="modal-contenido">
+
+            <header class="modal-header">
+
+                <div>
+
+                    <span>
+                        ADMINISTRACIÓN
+                    </span>
+
+                    <h2 id="modalTitulo">
+                        Nueva temporada
+                    </h2>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="btn-cerrar-modal"
+                    id="btnCerrarModal"
+                    aria-label="Cerrar"
+                >
+                    ×
+                </button>
+
+            </header>
+
+
+            <form id="formTemporada">
+
+                <div class="modal-body">
+
+                    <div class="campo-form campo-completo">
+
+                        <label for="temporadaNombre">
+                            Nombre de la temporada
+                        </label>
+
+                        <input
+                            type="text"
+                            id="temporadaNombre"
+                            maxlength="80"
+                            placeholder="Ej. Temporada 2026-2027"
+                            required
+                        >
+
+                        <small>
+                            Usa un nombre que permita identificar claramente el ciclo deportivo.
+                        </small>
+
+                    </div>
+
+
+                    <div class="fila-form">
+
+                        <div class="campo-form">
+
+                            <label for="temporadaFechaInicio">
+                                Fecha de inicio
+                            </label>
+
+                            <input
+                                type="date"
+                                id="temporadaFechaInicio"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="campo-form">
+
+                            <label for="temporadaFechaFin">
+                                Fecha de finalización
+                            </label>
+
+                            <input
+                                type="date"
+                                id="temporadaFechaFin"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="campo-form campo-completo">
+
+                        <label for="temporadaDescripcion">
+                            Descripción
+                        </label>
+
+                        <textarea
+                            id="temporadaDescripcion"
+                            maxlength="500"
+                            placeholder="Describe brevemente esta temporada..."
+                        ></textarea>
+
+                        <div class="contador-caracteres">
+                            <span id="contadorDescripcion">
+                                0
+                            </span>
+                            / 500
+                        </div>
+
+                    </div>
+
+
+                    <div class="campo-form campo-completo">
+
+                        <label>
+                            Estado
+                        </label>
+
+                        <div class="selector-estados">
+
+                            <button
+                                type="button"
+                                class="estado-opcion"
+                                data-estado="proxima"
+                            >
+                                <span class="estado-punto proxima"></span>
+
+                                <div>
+                                    <strong>
+                                        Próxima
+                                    </strong>
+
+                                    <small>
+                                        La temporada todavía no comienza
+                                    </small>
+                                </div>
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="estado-opcion"
+                                data-estado="activa"
+                            >
+                                <span class="estado-punto activa"></span>
+
+                                <div>
+                                    <strong>
+                                        Activa
+                                    </strong>
+
+                                    <small>
+                                        Será la temporada vigente
+                                    </small>
+                                </div>
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="estado-opcion"
+                                data-estado="finalizada"
+                            >
+                                <span class="estado-punto finalizada"></span>
+
+                                <div>
+                                    <strong>
+                                        Finalizada
+                                    </strong>
+
+                                    <small>
+                                        El ciclo deportivo ha terminado
+                                    </small>
+                                </div>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="aviso-temporada-activa oculto"
+                        id="avisoTemporadaActiva"
+                    >
+                        <span>
+                            ⚠️
+                        </span>
+
+                        <p>
+                            Al activar esta temporada, cualquier otra temporada actualmente activa pasará automáticamente a estado finalizada.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <footer class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn-cancelar"
+                        id="btnCancelar"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn-guardar"
+                        id="btnGuardar"
+                    >
+                        Guardar temporada
+                    </button>
+
+                </footer>
+
+            </form>
+
+        </section>
+
+    </div>
+
+
+    <div
+        class="modal-confirmacion oculto"
+        id="modalConfirmacion"
+    >
+
+        <div class="modal-overlay"></div>
+
+        <section class="confirmacion-contenido">
+
+            <div class="confirmacion-icono">
+                🏆
+            </div>
+
+            <h2>
+                ¿Activar esta temporada?
+            </h2>
+
+            <p id="textoConfirmacion">
+                Esta temporada se convertirá en el ciclo deportivo vigente.
+            </p>
+
+            <div class="confirmacion-aviso">
+                La temporada activa anterior será marcada como finalizada.
+            </div>
+
+            <div class="confirmacion-acciones">
+
+                <button
+                    type="button"
+                    class="btn-cancelar"
+                    id="btnCancelarConfirmacion"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    type="button"
+                    class="btn-confirmar"
+                    id="btnConfirmarActivacion"
+                >
+                    Activar temporada
+                </button>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <div
+        class="toast oculto"
+        id="toast"
+    >
+
+        <div
+            class="toast-icono"
+            id="toastIcono"
+        >
+            ✓
+        </div>
+
+        <div>
+
+            <strong id="toastTitulo">
+                Listo
+            </strong>
+
+            <p id="toastTexto">
+                Operación realizada correctamente.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <script
+        type="module"
+        src="js/admin/adminTemporadas.js"
+    ></script>
+
+</body>
+</html>

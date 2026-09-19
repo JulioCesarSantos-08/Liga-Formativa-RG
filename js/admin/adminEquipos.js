@@ -18,8 +18,8 @@ import {
 } from "../firebase.js";
 
 import {
-    subirLogoEquipo
-} from "../cloudinary.js";
+    registrarAuditoria
+} from "../auditoria.js";
 
 
 const adminInicial = document.getElementById("adminInicial");
@@ -1193,32 +1193,26 @@ async function guardarEquipo(event) {
 
     event.preventDefault();
 
-
     const nombre =
         nombreEquipo.value
             .trim()
             .replace(/\s+/g, " ");
 
-
     const categoriaId =
         categoriaEquipo.value;
 
-
     const responsableId =
         responsableEquipo.value;
-
 
     const descripcion =
         descripcionEquipo.value
             .trim()
             .replace(/\s+/g, " ");
 
-
     const motivo =
         motivoDescalificacion.value
             .trim()
             .replace(/\s+/g, " ");
-
 
     if (!nombre) {
 
@@ -1232,7 +1226,6 @@ async function guardarEquipo(event) {
 
     }
 
-
     if (!categoriaId) {
 
         mostrarToast(
@@ -1244,7 +1237,6 @@ async function guardarEquipo(event) {
         return;
 
     }
-
 
     if (
         estadoSeleccionado === "descalificado" &&
@@ -1261,7 +1253,6 @@ async function guardarEquipo(event) {
 
     }
 
-
     const nombreDuplicado =
         equipos.some(
             (equipo) => {
@@ -1274,7 +1265,6 @@ async function guardarEquipo(event) {
                     return false;
 
                 }
-
 
                 return (
                     equipo.categoriaId === categoriaId &&
@@ -1289,7 +1279,6 @@ async function guardarEquipo(event) {
             }
         );
 
-
     if (nombreDuplicado) {
 
         mostrarToast(
@@ -1302,13 +1291,11 @@ async function guardarEquipo(event) {
 
     }
 
-
     const categoria =
         categorias.find(
             item =>
                 item.id === categoriaId
         );
-
 
     const responsable =
         responsables.find(
@@ -1316,11 +1303,40 @@ async function guardarEquipo(event) {
                 item.id === responsableId
         );
 
+    const esEdicion =
+        Boolean(equipoSeleccionado);
+
+    const datosAnteriores =
+        equipoSeleccionado
+            ? {
+                id:
+                    equipoSeleccionado.id,
+                nombre:
+                    equipoSeleccionado.nombre || "",
+                categoriaId:
+                    equipoSeleccionado.categoriaId || "",
+                categoriaNombre:
+                    equipoSeleccionado.categoriaNombre || "",
+                responsableId:
+                    equipoSeleccionado.responsableId || "",
+                responsableNombre:
+                    equipoSeleccionado.responsableNombre || "",
+                descripcion:
+                    equipoSeleccionado.descripcion || "",
+                estado:
+                    obtenerEstadoEquipo(
+                        equipoSeleccionado
+                    ),
+                motivoDescalificacion:
+                    equipoSeleccionado.motivoDescalificacion || "",
+                logoUrl:
+                    equipoSeleccionado.logoUrl || null
+            }
+            : null;
 
     bloquearGuardado(
         true
     );
-
 
     try {
 
@@ -1332,32 +1348,29 @@ async function guardarEquipo(event) {
             equipoSeleccionado?.logoPublicId ||
             null;
 
+        const cambioLogo =
+            Boolean(logoSeleccionado);
 
         if (logoSeleccionado) {
 
             btnGuardarEquipo.textContent =
                 "Subiendo logo...";
 
-
             const resultadoLogo =
                 await subirLogoEquipo(
                     logoSeleccionado
                 );
 
-
             logoUrl =
                 resultadoLogo.url;
 
-
             logoPublicId =
                 resultadoLogo.publicId;
-
 
             btnGuardarEquipo.textContent =
                 "Guardando equipo...";
 
         }
-
 
         const datos = {
             nombre,
@@ -1385,8 +1398,12 @@ async function guardarEquipo(event) {
                 serverTimestamp()
         };
 
+        let equipoId = "";
 
         if (equipoSeleccionado) {
+
+            equipoId =
+                equipoSeleccionado.id;
 
             const referencia =
                 doc(
@@ -1395,18 +1412,134 @@ async function guardarEquipo(event) {
                     equipoSeleccionado.id
                 );
 
-
             await updateDoc(
                 referencia,
                 datos
             );
-
 
             Object.assign(
                 equipoSeleccionado,
                 datos
             );
 
+            const cambios =
+                obtenerCambiosAuditoriaEquipo(
+                    datosAnteriores,
+                    datos,
+                    cambioLogo
+                );
+
+            let accion =
+                "equipo_actualizado";
+
+            let descripcionAuditoria =
+                `Se actualizó el equipo ${nombre}.`;
+
+            if (
+                datosAnteriores.estado !==
+                estadoSeleccionado
+            ) {
+
+                if (
+                    estadoSeleccionado ===
+                    "descalificado"
+                ) {
+
+                    accion =
+                        "equipo_descalificado";
+
+                    descripcionAuditoria =
+                        `Se descalificó al equipo ${nombre}. Motivo: ${motivo}`;
+
+                } else if (
+                    datosAnteriores.estado ===
+                    "descalificado"
+                ) {
+
+                    accion =
+                        "equipo_reactivado";
+
+                    descripcionAuditoria =
+                        `El equipo ${nombre} dejó de estar descalificado y cambió a estado ${textoEstado(estadoSeleccionado).toLowerCase()}.`;
+
+                } else {
+
+                    accion =
+                        "estado_equipo_actualizado";
+
+                    descripcionAuditoria =
+                        `El equipo ${nombre} cambió de ${textoEstado(datosAnteriores.estado).toLowerCase()} a ${textoEstado(estadoSeleccionado).toLowerCase()}.`;
+
+                }
+
+            } else if (
+                datosAnteriores.responsableId !==
+                (responsableId || "")
+            ) {
+
+                accion =
+                    "responsable_actualizado";
+
+                const responsableAnterior =
+                    datosAnteriores.responsableNombre ||
+                    "Sin responsable";
+
+                const responsableNuevo =
+                    responsable?.nombre ||
+                    "Sin responsable";
+
+                descripcionAuditoria =
+                    `Se cambió el responsable del equipo ${nombre} de ${responsableAnterior} a ${responsableNuevo}.`;
+
+            } else if (
+                datosAnteriores.categoriaId !==
+                categoriaId
+            ) {
+
+                accion =
+                    "categoria_equipo_actualizada";
+
+                descripcionAuditoria =
+                    `El equipo ${nombre} cambió de categoría de ${datosAnteriores.categoriaNombre || "Sin categoría"} a ${categoria?.nombre || "Sin categoría"}.`;
+
+            } else if (cambioLogo) {
+
+                accion =
+                    "logo_equipo_actualizado";
+
+                descripcionAuditoria =
+                    `Se actualizó el logo del equipo ${nombre}.`;
+
+            } else if (cambios.length) {
+
+                descripcionAuditoria =
+                    `Se actualizó el equipo ${nombre}. Cambios: ${cambios.join(", ")}.`;
+
+            }
+
+            await registrarAuditoria({
+                usuarioId:
+                    usuario?.uid || "",
+                usuarioNombre:
+                    usuario?.nombre ||
+                    usuario?.nombreCompleto ||
+                    usuario?.email ||
+                    "Administrador",
+                usuarioRol:
+                    usuario?.rol ||
+                    "admin",
+                modulo:
+                    "equipos",
+                accion,
+                descripcion:
+                    descripcionAuditoria,
+                entidadTipo:
+                    "equipo",
+                entidadId:
+                    equipoId,
+                entidadNombre:
+                    nombre
+            });
 
             mostrarToast(
                 "exito",
@@ -1423,7 +1556,6 @@ async function guardarEquipo(event) {
                     db,
                     "equipos"
                 );
-
 
             const documento =
                 await addDoc(
@@ -1444,10 +1576,13 @@ async function guardarEquipo(event) {
                     }
                 );
 
+            equipoId =
+                documento.id;
 
             equipos.push(
                 {
-                    id: documento.id,
+                    id:
+                        documento.id,
                     ...datos,
                     totalJugadores: 0,
                     pj: 0,
@@ -1461,6 +1596,50 @@ async function guardarEquipo(event) {
                 }
             );
 
+            let descripcionAuditoria =
+                `Se creó el equipo ${nombre} en la categoría ${categoria?.nombre || "Sin categoría"}.`;
+
+            if (responsable?.nombre) {
+
+                descripcionAuditoria +=
+                    ` Responsable asignado: ${responsable.nombre}.`;
+
+            }
+
+            if (
+                estadoSeleccionado ===
+                "descalificado"
+            ) {
+
+                descripcionAuditoria +=
+                    ` El equipo fue registrado como descalificado. Motivo: ${motivo}.`;
+
+            }
+
+            await registrarAuditoria({
+                usuarioId:
+                    usuario?.uid || "",
+                usuarioNombre:
+                    usuario?.nombre ||
+                    usuario?.nombreCompleto ||
+                    usuario?.email ||
+                    "Administrador",
+                usuarioRol:
+                    usuario?.rol ||
+                    "admin",
+                modulo:
+                    "equipos",
+                accion:
+                    "equipo_creado",
+                descripcion:
+                    descripcionAuditoria,
+                entidadTipo:
+                    "equipo",
+                entidadId:
+                    documento.id,
+                entidadNombre:
+                    nombre
+            });
 
             mostrarToast(
                 "exito",
@@ -1472,7 +1651,6 @@ async function guardarEquipo(event) {
 
         }
 
-
         equipos.sort(
             (a, b) =>
                 (a.nombre || "")
@@ -1482,10 +1660,8 @@ async function guardarEquipo(event) {
                     )
         );
 
-
         logoSeleccionado =
             null;
-
 
         actualizarResumen();
         aplicarFiltros();
@@ -1498,10 +1674,8 @@ async function guardarEquipo(event) {
             error
         );
 
-
         let mensaje =
             "Ocurrió un problema al guardar el equipo.";
-
 
         if (
             error?.message
@@ -1511,7 +1685,6 @@ async function guardarEquipo(event) {
                 error.message;
 
         }
-
 
         mostrarToast(
             "error",
@@ -1526,6 +1699,106 @@ async function guardarEquipo(event) {
         );
 
     }
+
+}
+
+function obtenerCambiosAuditoriaEquipo(
+    anterior,
+    nuevo,
+    cambioLogo
+) {
+
+    if (!anterior) {
+        return [];
+    }
+
+    const cambios = [];
+
+    if (
+        normalizarTexto(anterior.nombre) !==
+        normalizarTexto(nuevo.nombre)
+    ) {
+
+        cambios.push(
+            `nombre de "${anterior.nombre}" a "${nuevo.nombre}"`
+        );
+
+    }
+
+    if (
+        anterior.categoriaId !==
+        nuevo.categoriaId
+    ) {
+
+        cambios.push(
+            `categoría de "${anterior.categoriaNombre || "Sin categoría"}" a "${nuevo.categoriaNombre || "Sin categoría"}"`
+        );
+
+    }
+
+    const responsableAnterior =
+        anterior.responsableId || "";
+
+    const responsableNuevo =
+        nuevo.responsableId || "";
+
+    if (
+        responsableAnterior !==
+        responsableNuevo
+    ) {
+
+        cambios.push(
+            `responsable de "${anterior.responsableNombre || "Sin responsable"}" a "${nuevo.responsableNombre || "Sin responsable"}"`
+        );
+
+    }
+
+    if (
+        normalizarTexto(anterior.descripcion) !==
+        normalizarTexto(nuevo.descripcion)
+    ) {
+
+        cambios.push(
+            "descripción"
+        );
+
+    }
+
+    if (
+        anterior.estado !==
+        nuevo.estado
+    ) {
+
+        cambios.push(
+            `estado de "${textoEstado(anterior.estado)}" a "${textoEstado(nuevo.estado)}"`
+        );
+
+    }
+
+    if (
+        normalizarTexto(
+            anterior.motivoDescalificacion
+        ) !==
+        normalizarTexto(
+            nuevo.motivoDescalificacion
+        )
+    ) {
+
+        cambios.push(
+            "motivo de descalificación"
+        );
+
+    }
+
+    if (cambioLogo) {
+
+        cambios.push(
+            "logo"
+        );
+
+    }
+
+    return cambios;
 
 }
 

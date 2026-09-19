@@ -16,6 +16,10 @@ import {
     protegerPagina
 } from "../roles.js";
 
+import {
+    registrarAuditoria
+} from "../auditoria.js";
+
 
 const btnNuevaNoticia =
     document.getElementById("btnNuevaNoticia");
@@ -1255,27 +1259,186 @@ async function guardarNoticia(
         };
 
 
-        if (
-            noticiaSeleccionada
-        ) {
+if (
+    noticiaSeleccionada
+) {
 
-            await updateDoc(
-                doc(
-                    db,
-                    "noticias",
-                    noticiaSeleccionada.id
-                ),
-                datos
-            );
+    const noticiaAnterior = {
+        ...noticiaSeleccionada
+    };
 
+    const cambios = [];
 
-            mostrarToast(
-                "exito",
-                "Noticia actualizada",
-                "Los cambios fueron guardados correctamente."
-            );
+    if (
+        (noticiaAnterior.titulo || "") !==
+        titulo
+    ) {
+        cambios.push(
+            "título"
+        );
+    }
 
-        } else {
+    if (
+        normalizarTipo(
+            noticiaAnterior.tipo
+        ) !== tipo
+    ) {
+        cambios.push(
+            "tipo"
+        );
+    }
+
+    if (
+        (
+            noticiaAnterior.resumen ||
+            noticiaAnterior.descripcion ||
+            ""
+        ) !== resumen
+    ) {
+        cambios.push(
+            "resumen"
+        );
+    }
+
+    if (
+        (noticiaAnterior.contenido || "") !==
+        contenido
+    ) {
+        cambios.push(
+            "contenido"
+        );
+    }
+
+    if (
+        (noticiaAnterior.imagenUrl || "") !==
+        imagenUrl
+    ) {
+        cambios.push(
+            "imagen"
+        );
+    }
+
+    if (
+        (noticiaAnterior.activa !== false) !==
+        activa
+    ) {
+        cambios.push(
+            activa
+                ? "publicación activada"
+                : "publicación ocultada"
+        );
+    }
+
+    if (
+        (noticiaAnterior.destacada === true) !==
+        destacada
+    ) {
+        cambios.push(
+            destacada
+                ? "marcada como destacada"
+                : "destaque retirado"
+        );
+    }
+
+    if (
+        (noticiaAnterior.textoBoton || "") !==
+        boton
+    ) {
+        cambios.push(
+            "texto del botón"
+        );
+    }
+
+    if (
+        (noticiaAnterior.partidoId || null) !==
+        datosEnlace.partidoId
+    ) {
+        cambios.push(
+            "partido relacionado"
+        );
+    }
+
+    if (
+        (noticiaAnterior.equipoId || null) !==
+        datosEnlace.equipoId
+    ) {
+        cambios.push(
+            "equipo relacionado"
+        );
+    }
+
+    if (
+        (noticiaAnterior.jugadorId || null) !==
+        datosEnlace.jugadorId
+    ) {
+        cambios.push(
+            "jugador relacionado"
+        );
+    }
+
+    if (
+        (noticiaAnterior.enlace || "") !==
+        datosEnlace.enlace
+    ) {
+        cambios.push(
+            "enlace"
+        );
+    }
+
+    await updateDoc(
+        doc(
+            db,
+            "noticias",
+            noticiaSeleccionada.id
+        ),
+        datos
+    );
+
+    if (
+        cambios.length
+    ) {
+
+        await registrarAuditoria({
+            usuarioId:
+                usuario.uid,
+
+            usuarioNombre:
+                usuario.nombre ||
+                usuario.email ||
+                "Administrador",
+
+            usuarioRol:
+                usuario.rol ||
+                "admin",
+
+            modulo:
+                "noticias",
+
+            accion:
+                "noticia_actualizada",
+
+            descripcion:
+                `Se actualizó la noticia "${titulo}". Cambios: ${cambios.join(", ")}.`,
+
+            entidadTipo:
+                "noticia",
+
+            entidadId:
+                noticiaSeleccionada.id,
+
+            entidadNombre:
+                titulo
+        });
+
+    }
+
+    mostrarToast(
+        "exito",
+        "Noticia actualizada",
+        "Los cambios fueron guardados correctamente."
+    );
+
+} else {
 
             await addDoc(
                 collection(

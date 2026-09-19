@@ -17,6 +17,10 @@ import {
     db
 } from "../firebase.js";
 
+import {
+    registrarAuditoria
+} from "../auditoria.js";
+
 
 const adminInicial = document.getElementById("adminInicial");
 
@@ -498,7 +502,6 @@ function renderizarCategorias(lista) {
                         🗂️
                     </div>
 
-
                     <span class="categoria-estado ${
                         activa
                             ? "activa"
@@ -515,7 +518,6 @@ function renderizarCategorias(lista) {
 
                 </div>
 
-
                 <h3>
                     ${escaparHTML(
                         categoria.nombre ||
@@ -523,13 +525,11 @@ function renderizarCategorias(lista) {
                     )}
                 </h3>
 
-
                 <p>
                     ${escaparHTML(
                         descripcion
                     )}
                 </p>
-
 
                 <div class="categoria-meta">
 
@@ -551,7 +551,6 @@ function renderizarCategorias(lista) {
 
                     </div>
 
-
                     <div>
 
                         <span>
@@ -572,7 +571,6 @@ function renderizarCategorias(lista) {
 
                 </div>
 
-
                 <div class="categoria-acciones">
 
                     <button
@@ -582,7 +580,6 @@ function renderizarCategorias(lista) {
                     >
                         Editar
                     </button>
-
 
                     <button
                         type="button"
@@ -876,11 +873,29 @@ async function guardarCategoria(event) {
 
         if (categoriaSeleccionada) {
 
+            const datosAnteriores = {
+                nombre:
+                    categoriaSeleccionada.nombre || "",
+                descripcion:
+                    categoriaSeleccionada.descripcion || "",
+                edadMinima:
+                    categoriaSeleccionada.edadMinima ?? null,
+                edadMaxima:
+                    categoriaSeleccionada.edadMaxima ?? null,
+                activo:
+                    categoriaSeleccionada.activo !== false
+            };
+
+
+            const categoriaId =
+                categoriaSeleccionada.id;
+
+
             const referencia =
                 doc(
                     db,
                     "categorias",
-                    categoriaSeleccionada.id
+                    categoriaId
                 );
 
 
@@ -916,6 +931,76 @@ async function guardarCategoria(event) {
 
             categoriaSeleccionada.activo =
                 estadoSeleccionado;
+
+
+            const cambios =
+                obtenerCambiosCategoria(
+                    datosAnteriores,
+                    {
+                        nombre,
+                        descripcion,
+                        edadMinima: minima,
+                        edadMaxima: maxima,
+                        activo: estadoSeleccionado
+                    }
+                );
+
+
+            let accion =
+                "categoria_actualizada";
+
+
+            let descripcionAuditoria =
+                `Se actualizó la categoría ${nombre}.`;
+
+
+            if (
+                datosAnteriores.activo !==
+                estadoSeleccionado
+            ) {
+
+                accion =
+                    estadoSeleccionado
+                        ? "categoria_activada"
+                        : "categoria_desactivada";
+
+
+                descripcionAuditoria =
+                    estadoSeleccionado
+                        ? `Se activó la categoría ${nombre}.`
+                        : `Se desactivó la categoría ${nombre}.`;
+
+            } else if (cambios.length) {
+
+                descripcionAuditoria =
+                    `Se actualizó la categoría ${nombre}. Cambios: ${cambios.join(", ")}.`;
+
+            }
+
+
+            await registrarAuditoria({
+                usuarioId:
+                    usuario?.uid || "",
+                usuarioNombre:
+                    usuario?.nombre ||
+                    usuario?.nombreCompleto ||
+                    usuario?.email ||
+                    "Administrador",
+                usuarioRol:
+                    usuario?.rol ||
+                    "admin",
+                modulo:
+                    "categorias",
+                accion,
+                descripcion:
+                    descripcionAuditoria,
+                entidadTipo:
+                    "categoria",
+                entidadId:
+                    categoriaId,
+                entidadNombre:
+                    nombre
+            });
 
 
             mostrarToast(
@@ -960,6 +1045,55 @@ async function guardarCategoria(event) {
                     activo: estadoSeleccionado
                 }
             );
+
+
+            let descripcionAuditoria =
+                `Se creó la categoría ${nombre}.`;
+
+
+            if (
+                minima !== null ||
+                maxima !== null
+            ) {
+
+                descripcionAuditoria +=
+                    ` Rango de edad: ${obtenerRangoEdad(minima, maxima)}.`;
+
+            }
+
+
+            if (!estadoSeleccionado) {
+
+                descripcionAuditoria +=
+                    " Fue registrada como inactiva.";
+
+            }
+
+
+            await registrarAuditoria({
+                usuarioId:
+                    usuario?.uid || "",
+                usuarioNombre:
+                    usuario?.nombre ||
+                    usuario?.nombreCompleto ||
+                    usuario?.email ||
+                    "Administrador",
+                usuarioRol:
+                    usuario?.rol ||
+                    "admin",
+                modulo:
+                    "categorias",
+                accion:
+                    "categoria_creada",
+                descripcion:
+                    descripcionAuditoria,
+                entidadTipo:
+                    "categoria",
+                entidadId:
+                    documento.id,
+                entidadNombre:
+                    nombre
+            });
 
 
             mostrarToast(
@@ -1051,6 +1185,36 @@ async function cambiarEstadoRapido(id) {
             nuevoEstado;
 
 
+        await registrarAuditoria({
+            usuarioId:
+                usuario?.uid || "",
+            usuarioNombre:
+                usuario?.nombre ||
+                usuario?.nombreCompleto ||
+                usuario?.email ||
+                "Administrador",
+            usuarioRol:
+                usuario?.rol ||
+                "admin",
+            modulo:
+                "categorias",
+            accion:
+                nuevoEstado
+                    ? "categoria_activada"
+                    : "categoria_desactivada",
+            descripcion:
+                nuevoEstado
+                    ? `Se activó la categoría ${categoria.nombre || "Sin nombre"}.`
+                    : `Se desactivó la categoría ${categoria.nombre || "Sin nombre"}.`,
+            entidadTipo:
+                "categoria",
+            entidadId:
+                categoria.id,
+            entidadNombre:
+                categoria.nombre || "Sin nombre"
+        });
+
+
         actualizarResumen();
 
         aplicarFiltros();
@@ -1081,6 +1245,131 @@ async function cambiarEstadoRapido(id) {
         );
 
     }
+
+}
+
+
+function obtenerCambiosCategoria(
+    anterior,
+    nuevo
+) {
+
+    const cambios = [];
+
+
+    if (
+        normalizarTexto(anterior.nombre) !==
+        normalizarTexto(nuevo.nombre)
+    ) {
+
+        cambios.push(
+            `nombre de "${anterior.nombre || "Sin nombre"}" a "${nuevo.nombre || "Sin nombre"}"`
+        );
+
+    }
+
+
+    if (
+        normalizarTexto(anterior.descripcion) !==
+        normalizarTexto(nuevo.descripcion)
+    ) {
+
+        cambios.push(
+            "descripción"
+        );
+
+    }
+
+
+    if (
+        anterior.edadMinima !==
+        nuevo.edadMinima
+    ) {
+
+        cambios.push(
+            `edad mínima de "${formatearEdad(anterior.edadMinima)}" a "${formatearEdad(nuevo.edadMinima)}"`
+        );
+
+    }
+
+
+    if (
+        anterior.edadMaxima !==
+        nuevo.edadMaxima
+    ) {
+
+        cambios.push(
+            `edad máxima de "${formatearEdad(anterior.edadMaxima)}" a "${formatearEdad(nuevo.edadMaxima)}"`
+        );
+
+    }
+
+
+    if (
+        anterior.activo !==
+        nuevo.activo
+    ) {
+
+        cambios.push(
+            `estado de "${anterior.activo ? "Activa" : "Inactiva"}" a "${nuevo.activo ? "Activa" : "Inactiva"}"`
+        );
+
+    }
+
+
+    return cambios;
+
+}
+
+
+function obtenerRangoEdad(
+    minima,
+    maxima
+) {
+
+    if (
+        minima !== null &&
+        maxima !== null
+    ) {
+
+        return `${minima} a ${maxima} años`;
+
+    }
+
+
+    if (minima !== null) {
+
+        return `desde ${minima} años`;
+
+    }
+
+
+    if (maxima !== null) {
+
+        return `hasta ${maxima} años`;
+
+    }
+
+
+    return "sin límite";
+
+}
+
+
+function formatearEdad(valor) {
+
+    if (
+        valor === null ||
+        valor === undefined ||
+        valor === ""
+    ) {
+
+        return "Sin límite";
+
+    }
+
+
+    return `${valor} años`;
 
 }
 

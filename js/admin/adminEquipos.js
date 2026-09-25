@@ -18,6 +18,10 @@ import {
 } from "../firebase.js";
 
 import {
+    subirLogoEquipo
+} from "../cloudinary.js";
+
+import {
     registrarAuditoria
 } from "../auditoria.js";
 

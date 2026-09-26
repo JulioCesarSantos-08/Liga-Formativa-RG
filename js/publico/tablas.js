@@ -1,16 +1,47 @@
 import {
+    collection,
+    getDocs
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+import {
     protegerPaginaPublica
 } from "../roles.js";
 
+import {
+    db
+} from "../firebase.js";
 
-const perfilInicial = document.getElementById("perfilInicial");
-const btnPerfil = document.getElementById("btnPerfil");
 
-const categoriaSelect = document.getElementById("categoriaSelect");
-const tituloCategoria = document.getElementById("tituloCategoria");
+const perfilInicial =
+    document.getElementById("perfilInicial");
 
-const tablaEquiposDesktop = document.getElementById("tablaEquiposDesktop");
-const tablaEquiposMobile = document.getElementById("tablaEquiposMobile");
+const btnPerfil =
+    document.getElementById("btnPerfil");
+
+const categoriaSelect =
+    document.getElementById("categoriaSelect");
+
+const tituloCategoria =
+    document.getElementById("tituloCategoria");
+
+const tablaEquiposDesktop =
+    document.getElementById("tablaEquiposDesktop");
+
+const tablaEquiposMobile =
+    document.getElementById("tablaEquiposMobile");
+
+const contenedorTablaDesktop =
+    document.getElementById("contenedorTablaDesktop");
+
+const estadoTabla =
+    document.getElementById("estadoTabla");
+
+
+let categorias = [];
+let equipos = [];
+let partidos = [];
+
+let categoriaSeleccionadaId = "";
 
 
 const usuario =
@@ -20,219 +51,20 @@ const usuario =
 if (usuario) {
 
     cargarUsuario(usuario);
+
     activarEventos();
-    cargarCategoriaActual();
+
+    await cargarInformacion();
 
 }
-
-
-const datosCategorias = {
-
-    libre: [
-        {
-            nombre: "Juárez",
-            inicial: "J",
-            pj: 4,
-            pg: 3,
-            pe: 1,
-            pp: 0,
-            gf: 9,
-            gc: 3,
-            pts: 10
-        },
-
-        {
-            nombre: "Santos FC",
-            inicial: "S",
-            pj: 4,
-            pg: 3,
-            pe: 0,
-            pp: 1,
-            gf: 8,
-            gc: 4,
-            pts: 9
-        },
-
-        {
-            nombre: "Chacales",
-            inicial: "C",
-            pj: 4,
-            pg: 2,
-            pe: 1,
-            pp: 1,
-            gf: 7,
-            gc: 5,
-            pts: 7
-        },
-
-        {
-            nombre: "Pumas",
-            inicial: "P",
-            pj: 4,
-            pg: 1,
-            pe: 2,
-            pp: 1,
-            gf: 5,
-            gc: 5,
-            pts: 5
-        },
-
-        {
-            nombre: "La Roma",
-            inicial: "R",
-            pj: 4,
-            pg: 1,
-            pe: 0,
-            pp: 3,
-            gf: 4,
-            gc: 8,
-            pts: 3
-        },
-
-        {
-            nombre: "Atlas",
-            inicial: "A",
-            pj: 4,
-            pg: 0,
-            pe: 0,
-            pp: 4,
-            gf: 2,
-            gc: 10,
-            pts: 0
-        }
-    ],
-
-    juvenil: [
-        {
-            nombre: "Costa Azul",
-            inicial: "C",
-            pj: 3,
-            pg: 3,
-            pe: 0,
-            pp: 0,
-            gf: 10,
-            gc: 2,
-            pts: 9
-        },
-
-        {
-            nombre: "La Soledad",
-            inicial: "S",
-            pj: 3,
-            pg: 2,
-            pe: 1,
-            pp: 0,
-            gf: 7,
-            gc: 3,
-            pts: 7
-        },
-
-        {
-            nombre: "Juárez Juvenil",
-            inicial: "J",
-            pj: 3,
-            pg: 1,
-            pe: 1,
-            pp: 1,
-            gf: 5,
-            gc: 5,
-            pts: 4
-        },
-
-        {
-            nombre: "Pumas Juvenil",
-            inicial: "P",
-            pj: 3,
-            pg: 1,
-            pe: 0,
-            pp: 2,
-            gf: 4,
-            gc: 6,
-            pts: 3
-        },
-
-        {
-            nombre: "Roma Juvenil",
-            inicial: "R",
-            pj: 3,
-            pg: 0,
-            pe: 0,
-            pp: 3,
-            gf: 2,
-            gc: 12,
-            pts: 0
-        }
-    ],
-
-    infantil: [
-        {
-            nombre: "Chacales Infantil",
-            inicial: "C",
-            pj: 2,
-            pg: 2,
-            pe: 0,
-            pp: 0,
-            gf: 8,
-            gc: 1,
-            pts: 6
-        },
-
-        {
-            nombre: "Santos Infantil",
-            inicial: "S",
-            pj: 2,
-            pg: 1,
-            pe: 1,
-            pp: 0,
-            gf: 5,
-            gc: 2,
-            pts: 4
-        },
-
-        {
-            nombre: "Costa Azul Infantil",
-            inicial: "C",
-            pj: 2,
-            pg: 1,
-            pe: 0,
-            pp: 1,
-            gf: 4,
-            gc: 4,
-            pts: 3
-        },
-
-        {
-            nombre: "Juárez Infantil",
-            inicial: "J",
-            pj: 2,
-            pg: 0,
-            pe: 1,
-            pp: 1,
-            gf: 2,
-            gc: 5,
-            pts: 1
-        },
-
-        {
-            nombre: "Pumas Infantil",
-            inicial: "P",
-            pj: 2,
-            pg: 0,
-            pe: 0,
-            pp: 2,
-            gf: 1,
-            gc: 8,
-            pts: 0
-        }
-    ]
-
-};
 
 
 function cargarUsuario(usuario) {
 
     const nombre =
         usuario.nombre?.trim() ||
+        usuario.nombreCompleto?.trim() ||
+        usuario.email?.trim() ||
         "Usuario";
 
     perfilInicial.textContent =
@@ -245,7 +77,14 @@ function activarEventos() {
 
     categoriaSelect.addEventListener(
         "change",
-        cargarCategoriaActual
+        () => {
+
+            categoriaSeleccionadaId =
+                categoriaSelect.value;
+
+            cargarCategoriaActual();
+
+        }
     );
 
 
@@ -262,212 +101,999 @@ function activarEventos() {
 }
 
 
+async function cargarInformacion() {
+
+    mostrarCargando();
+
+    try {
+
+        const resultados =
+            await Promise.all([
+                getDocs(
+                    collection(
+                        db,
+                        "categorias"
+                    )
+                ),
+                getDocs(
+                    collection(
+                        db,
+                        "equipos"
+                    )
+                ),
+                getDocs(
+                    collection(
+                        db,
+                        "partidos"
+                    )
+                )
+            ]);
+
+
+        categorias =
+            resultados[0].docs.map(
+                documento => ({
+                    id: documento.id,
+                    ...documento.data()
+                })
+            );
+
+
+        equipos =
+            resultados[1].docs.map(
+                documento => ({
+                    id: documento.id,
+                    ...documento.data()
+                })
+            );
+
+
+        partidos =
+            resultados[2].docs.map(
+                documento => ({
+                    id: documento.id,
+                    ...documento.data()
+                })
+            );
+
+
+        ordenarDatos();
+
+        renderizarCategorias();
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando tabla:",
+            error
+        );
+
+        mostrarError();
+
+    }
+
+}
+
+
+function ordenarDatos() {
+
+    categorias.sort(
+        (a, b) =>
+            obtenerNombreCategoria(a)
+                .localeCompare(
+                    obtenerNombreCategoria(b),
+                    "es",
+                    {
+                        sensitivity: "base"
+                    }
+                )
+    );
+
+
+    equipos.sort(
+        (a, b) =>
+            obtenerNombreEquipo(a)
+                .localeCompare(
+                    obtenerNombreEquipo(b),
+                    "es",
+                    {
+                        sensitivity: "base"
+                    }
+                )
+    );
+
+}
+
+
+function renderizarCategorias() {
+
+    categoriaSelect.innerHTML = "";
+
+
+    if (!categorias.length) {
+
+        categoriaSelect.innerHTML = `
+            <option value="">
+                No hay categorías registradas
+            </option>
+        `;
+
+        categoriaSelect.disabled = true;
+
+        tituloCategoria.textContent =
+            "Sin categorías";
+
+        mostrarEstado(
+            "⚽",
+            "No hay categorías registradas",
+            "Cuando se creen categorías aparecerán automáticamente aquí."
+        );
+
+        return;
+
+    }
+
+
+    const categoriasConEquipos =
+        categorias.filter(
+            categoria =>
+                obtenerEquiposCategoria(
+                    categoria.id
+                ).length > 0
+        );
+
+
+    const categoriasMostrar =
+        categoriasConEquipos.length
+            ? categoriasConEquipos
+            : categorias;
+
+
+    categoriasMostrar.forEach(
+        categoria => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                categoria.id;
+
+            option.textContent =
+                obtenerNombreCategoria(
+                    categoria
+                );
+
+            categoriaSelect.appendChild(
+                option
+            );
+
+        }
+    );
+
+
+    categoriaSelect.disabled = false;
+
+    categoriaSeleccionadaId =
+        categoriasMostrar[0].id;
+
+    categoriaSelect.value =
+        categoriaSeleccionadaId;
+
+    cargarCategoriaActual();
+
+}
+
+
 function cargarCategoriaActual() {
 
     const categoria =
-        categoriaSelect.value;
+        categorias.find(
+            item =>
+                item.id ===
+                categoriaSeleccionadaId
+        );
 
-    const textoCategoria =
-        categoriaSelect.options[
-            categoriaSelect.selectedIndex
-        ].textContent.trim();
+
+    if (!categoria) {
+
+        tituloCategoria.textContent =
+            "Categoría";
+
+        mostrarEstado(
+            "⚽",
+            "Categoría no disponible",
+            "No pudimos encontrar la categoría seleccionada."
+        );
+
+        return;
+
+    }
+
 
     tituloCategoria.textContent =
-        textoCategoria;
+        obtenerNombreCategoria(
+            categoria
+        );
 
-    const equiposOriginales =
-        datosCategorias[categoria] || [];
 
-    const equipos =
-        prepararTabla(equiposOriginales);
+    const equiposCategoria =
+        obtenerEquiposCategoria(
+            categoria.id
+        );
 
-    renderizarDesktop(equipos);
-    renderizarMobile(equipos);
+
+    const tabla =
+        calcularTabla(
+            equiposCategoria,
+            categoria.id
+        );
+
+
+    renderizarTabla(
+        tabla
+    );
 
 }
 
 
-function prepararTabla(equipos) {
+function obtenerEquiposCategoria(
+    categoriaId
+) {
 
-    return equipos
-        .map((equipo) => {
+    const categoria =
+        categorias.find(
+            item =>
+                item.id ===
+                categoriaId
+        );
 
-            return {
-                ...equipo,
-                dg: equipo.gf - equipo.gc
-            };
 
-        })
-        .sort((a, b) => {
+    const nombreCategoria =
+        categoria
+            ? normalizarTexto(
+                obtenerNombreCategoria(
+                    categoria
+                )
+            )
+            : "";
 
-            if (b.pts !== a.pts) {
-                return b.pts - a.pts;
+
+    return equipos.filter(
+        equipo => {
+
+            const ids = [
+                equipo.categoriaId,
+                equipo.idCategoria,
+                equipo.categoria?.id
+            ];
+
+
+            const id =
+                ids.find(
+                    valor =>
+                        typeof valor ===
+                            "string" &&
+                        valor.trim()
+                );
+
+
+            if (id) {
+
+                return id.trim() ===
+                    categoriaId;
+
             }
 
-            if (b.dg !== a.dg) {
-                return b.dg - a.dg;
+
+            const nombres = [
+                equipo.categoria,
+                equipo.nombreCategoria,
+                equipo.categoriaNombre
+            ];
+
+
+            return nombres.some(
+                valor =>
+                    typeof valor ===
+                        "string" &&
+                    normalizarTexto(
+                        valor
+                    ) ===
+                    nombreCategoria
+            );
+
+        }
+    );
+
+}
+
+
+function calcularTabla(
+    equiposCategoria,
+    categoriaId
+) {
+
+    const tabla =
+        equiposCategoria.map(
+            equipo => ({
+                id: equipo.id,
+                nombre:
+                    obtenerNombreEquipo(
+                        equipo
+                    ),
+                logo:
+                    obtenerLogoEquipo(
+                        equipo
+                    ),
+                pj: 0,
+                pg: 0,
+                pe: 0,
+                pp: 0,
+                gf: 0,
+                gc: 0,
+                dg: 0,
+                pts: 0
+            })
+        );
+
+
+    const mapaEquipos =
+        new Map(
+            tabla.map(
+                equipo => [
+                    equipo.id,
+                    equipo
+                ]
+            )
+        );
+
+
+    const partidosCategoria =
+        partidos.filter(
+            partido =>
+                partidoPerteneceCategoria(
+                    partido,
+                    categoriaId
+                )
+        );
+
+
+    partidosCategoria.forEach(
+        partido => {
+
+            if (
+                !partidoCuentaParaTabla(
+                    partido
+                )
+            ) {
+
+                return;
+
             }
 
-            if (b.gf !== a.gf) {
-                return b.gf - a.gf;
+
+            const localId =
+                obtenerEquipoIdPartido(
+                    partido,
+                    "local"
+                );
+
+
+            const visitanteId =
+                obtenerEquipoIdPartido(
+                    partido,
+                    "visitante"
+                );
+
+
+            const local =
+                mapaEquipos.get(
+                    localId
+                );
+
+
+            const visitante =
+                mapaEquipos.get(
+                    visitanteId
+                );
+
+
+            if (
+                !local ||
+                !visitante
+            ) {
+
+                return;
+
             }
+
+
+            const golesLocal =
+                obtenerGoles(
+                    partido,
+                    "local"
+                );
+
+
+            const golesVisitante =
+                obtenerGoles(
+                    partido,
+                    "visitante"
+                );
+
+
+            if (
+                golesLocal === null ||
+                golesVisitante === null
+            ) {
+
+                return;
+
+            }
+
+
+            local.pj += 1;
+            visitante.pj += 1;
+
+
+            local.gf +=
+                golesLocal;
+
+            local.gc +=
+                golesVisitante;
+
+
+            visitante.gf +=
+                golesVisitante;
+
+            visitante.gc +=
+                golesLocal;
+
+
+            if (
+                golesLocal >
+                golesVisitante
+            ) {
+
+                local.pg += 1;
+                local.pts += 3;
+
+                visitante.pp += 1;
+
+            } else if (
+                golesLocal <
+                golesVisitante
+            ) {
+
+                visitante.pg += 1;
+                visitante.pts += 3;
+
+                local.pp += 1;
+
+            } else {
+
+                local.pe += 1;
+                visitante.pe += 1;
+
+                local.pts += 1;
+                visitante.pts += 1;
+
+            }
+
+        }
+    );
+
+
+    tabla.forEach(
+        equipo => {
+
+            equipo.dg =
+                equipo.gf -
+                equipo.gc;
+
+        }
+    );
+
+
+    tabla.sort(
+        (a, b) => {
+
+            if (
+                b.pts !==
+                a.pts
+            ) {
+
+                return (
+                    b.pts -
+                    a.pts
+                );
+
+            }
+
+
+            if (
+                b.dg !==
+                a.dg
+            ) {
+
+                return (
+                    b.dg -
+                    a.dg
+                );
+
+            }
+
+
+            if (
+                b.gf !==
+                a.gf
+            ) {
+
+                return (
+                    b.gf -
+                    a.gf
+                );
+
+            }
+
+
+            if (
+                b.pg !==
+                a.pg
+            ) {
+
+                return (
+                    b.pg -
+                    a.pg
+                );
+
+            }
+
 
             return a.nombre.localeCompare(
                 b.nombre,
-                "es"
+                "es",
+                {
+                    sensitivity: "base"
+                }
             );
 
-        });
+        }
+    );
+
+
+    return tabla;
 
 }
 
 
-function renderizarDesktop(equipos) {
+function partidoCuentaParaTabla(
+    partido
+) {
 
-    tablaEquiposDesktop.innerHTML = "";
-
-
-    if (!equipos.length) {
-
-        tablaEquiposDesktop.innerHTML = `
-            <tr>
-                <td colspan="10">
-                    No hay equipos registrados en esta categoría.
-                </td>
-            </tr>
-        `;
-
-        return;
-
-    }
-
-
-    equipos.forEach((equipo, index) => {
-
-        const posicion =
-            index + 1;
-
-        const fila =
-            document.createElement("tr");
-
-        fila.innerHTML = `
-
-            <td>
-
-                <span class="posicion ${
-                    posicion <= 2
-                        ? "top"
-                        : ""
-                }">
-                    ${posicion}
-                </span>
-
-            </td>
-
-
-            <td class="equipo-tabla">
-
-                <div class="escudo-mini">
-                    ${equipo.inicial}
-                </div>
-
-                <a href="equipo.html">
-                    ${equipo.nombre}
-                </a>
-
-            </td>
-
-
-            <td>
-                ${equipo.pj}
-            </td>
-
-            <td>
-                ${equipo.pg}
-            </td>
-
-            <td>
-                ${equipo.pe}
-            </td>
-
-            <td>
-                ${equipo.pp}
-            </td>
-
-            <td>
-                ${equipo.gf}
-            </td>
-
-            <td>
-                ${equipo.gc}
-            </td>
-
-            <td class="${claseDiferencia(equipo.dg)}">
-                ${formatearDiferencia(equipo.dg)}
-            </td>
-
-            <td class="puntos">
-                ${equipo.pts}
-            </td>
-
-        `;
-
-
-        tablaEquiposDesktop.appendChild(
-            fila
+    const estado =
+        normalizarTexto(
+            partido.estado ||
+            partido.estatus ||
+            partido.status ||
+            ""
         );
 
-    });
+
+    const estadosFinalizados = [
+        "finalizado",
+        "finalizada",
+        "terminado",
+        "terminada",
+        "jugado",
+        "jugada",
+        "registrado",
+        "registrada"
+    ];
+
+
+    const resultadoRegistrado =
+        partido.resultadoRegistrado ===
+            true ||
+        partido.resultadoRegistrado ===
+            "true";
+
+
+    const golesLocal =
+        obtenerGoles(
+            partido,
+            "local"
+        );
+
+
+    const golesVisitante =
+        obtenerGoles(
+            partido,
+            "visitante"
+        );
+
+
+    const tieneMarcador =
+        golesLocal !== null &&
+        golesVisitante !== null;
+
+
+    if (!tieneMarcador) {
+
+        return false;
+
+    }
+
+
+    if (
+        resultadoRegistrado
+    ) {
+
+        return true;
+
+    }
+
+
+    return estadosFinalizados.includes(
+        estado
+    );
 
 }
 
 
-function renderizarMobile(equipos) {
+function partidoPerteneceCategoria(
+    partido,
+    categoriaId
+) {
 
-    tablaEquiposMobile.innerHTML = "";
+    const ids = [
+        partido.categoriaId,
+        partido.idCategoria,
+        partido.categoria?.id
+    ];
 
 
-    if (!equipos.length) {
+    const id =
+        ids.find(
+            valor =>
+                typeof valor ===
+                    "string" &&
+                valor.trim()
+        );
 
-        tablaEquiposMobile.innerHTML = `
-            <div
-                style="
-                    padding:24px;
-                    text-align:center;
-                    background:#ffffff;
-                    border:1px solid #e4e7ec;
-                    border-radius:18px;
-                    color:#667085;
-                "
-            >
-                No hay equipos registrados en esta categoría.
-            </div>
-        `;
+
+    if (id) {
+
+        return id.trim() ===
+            categoriaId;
+
+    }
+
+
+    const categoria =
+        categorias.find(
+            item =>
+                item.id ===
+                categoriaId
+        );
+
+
+    if (!categoria) {
+
+        return false;
+
+    }
+
+
+    const nombreCategoria =
+        normalizarTexto(
+            obtenerNombreCategoria(
+                categoria
+            )
+        );
+
+
+    const nombres = [
+        partido.categoria,
+        partido.nombreCategoria,
+        partido.categoriaNombre
+    ];
+
+
+    return nombres.some(
+        valor =>
+            typeof valor ===
+                "string" &&
+            normalizarTexto(
+                valor
+            ) ===
+                nombreCategoria
+    );
+
+}
+
+
+function obtenerEquipoIdPartido(
+    partido,
+    tipo
+) {
+
+    const valores =
+        tipo === "local"
+            ? [
+                partido.equipoLocalId,
+                partido.localId,
+                partido.idEquipoLocal,
+                partido.equipoLocal?.id
+            ]
+            : [
+                partido.equipoVisitanteId,
+                partido.visitanteId,
+                partido.idEquipoVisitante,
+                partido.equipoVisitante?.id
+            ];
+
+
+    const id =
+        valores.find(
+            valor =>
+                typeof valor ===
+                    "string" &&
+                valor.trim()
+        );
+
+
+    if (id) {
+
+        return id.trim();
+
+    }
+
+
+    const nombre =
+        obtenerNombreEquipoPartido(
+            partido,
+            tipo
+        );
+
+
+    if (!nombre) {
+
+        return "";
+
+    }
+
+
+    const equipo =
+        equipos.find(
+            item =>
+                normalizarTexto(
+                    obtenerNombreEquipo(
+                        item
+                    )
+                ) ===
+                normalizarTexto(
+                    nombre
+                )
+        );
+
+
+    return equipo?.id || "";
+
+}
+
+
+function obtenerNombreEquipoPartido(
+    partido,
+    tipo
+) {
+
+    const valores =
+        tipo === "local"
+            ? [
+                partido.equipoLocalNombre,
+                partido.nombreLocal,
+                partido.local,
+                partido.equipoLocal?.nombre
+            ]
+            : [
+                partido.equipoVisitanteNombre,
+                partido.nombreVisitante,
+                partido.visitante,
+                partido.equipoVisitante?.nombre
+            ];
+
+
+    const nombre =
+        valores.find(
+            valor =>
+                typeof valor ===
+                    "string" &&
+                valor.trim()
+        );
+
+
+    return nombre?.trim() || "";
+
+}
+
+
+function obtenerGoles(
+    partido,
+    tipo
+) {
+
+    const valores =
+        tipo === "local"
+            ? [
+                partido.golesLocal,
+                partido.marcadorLocal,
+                partido.resultadoLocal,
+                partido.localGoles,
+                partido.golesEquipoLocal
+            ]
+            : [
+                partido.golesVisitante,
+                partido.marcadorVisitante,
+                partido.resultadoVisitante,
+                partido.visitanteGoles,
+                partido.golesEquipoVisitante
+            ];
+
+
+    for (
+        const valor of valores
+    ) {
+
+        if (
+            valor === 0 ||
+            valor === "0"
+        ) {
+
+            return 0;
+
+        }
+
+
+        if (
+            valor !== null &&
+            valor !== undefined &&
+            valor !== ""
+        ) {
+
+            const numero =
+                Number(valor);
+
+
+            if (
+                Number.isFinite(
+                    numero
+                ) &&
+                numero >= 0
+            ) {
+
+                return numero;
+
+            }
+
+        }
+
+    }
+
+
+    const marcador =
+        partido.marcador ||
+        partido.resultado;
+
+
+    if (
+        typeof marcador ===
+            "string"
+    ) {
+
+        const coincidencia =
+            marcador
+                .trim()
+                .match(
+                    /^(\d+)\s*[-–—:]\s*(\d+)$/
+                );
+
+
+        if (coincidencia) {
+
+            return tipo === "local"
+                ? Number(
+                    coincidencia[1]
+                )
+                : Number(
+                    coincidencia[2]
+                );
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+function renderizarTabla(
+    tabla
+) {
+
+    tablaEquiposDesktop.innerHTML =
+        "";
+
+    tablaEquiposMobile.innerHTML =
+        "";
+
+
+    if (!tabla.length) {
+
+        contenedorTablaDesktop.hidden =
+            true;
+
+        tablaEquiposMobile.hidden =
+            true;
+
+        mostrarEstado(
+            "⚽",
+            "No hay equipos registrados",
+            "Todavía no existen equipos en esta categoría."
+        );
 
         return;
 
     }
 
 
-    equipos.forEach((equipo, index) => {
+    estadoTabla.hidden =
+        true;
 
-        const posicion =
-            index + 1;
+    contenedorTablaDesktop.hidden =
+        false;
 
-        const tarjeta =
-            document.createElement("article");
-
-        tarjeta.className =
-            "equipo-posicion-card";
+    tablaEquiposMobile.hidden =
+        false;
 
 
-        tarjeta.innerHTML = `
+    renderizarDesktop(
+        tabla
+    );
 
-            <div class="equipo-posicion-superior">
+    renderizarMobile(
+        tabla
+    );
 
-                <div class="equipo-identidad">
+}
 
-                    <span class="posicion-mobile ${
+
+function renderizarDesktop(
+    tabla
+) {
+
+    tabla.forEach(
+        (equipo, index) => {
+
+            const posicion =
+                index + 1;
+
+
+            const fila =
+                document.createElement(
+                    "tr"
+                );
+
+
+            fila.innerHTML = `
+
+                <td>
+
+                    <span class="posicion ${
                         posicion <= 2
                             ? "top"
                             : ""
@@ -475,25 +1101,150 @@ function renderizarMobile(equipos) {
                         ${posicion}
                     </span>
 
+                </td>
 
-                    <div class="escudo-mobile">
-                        ${equipo.inicial}
+
+                <td class="equipo-tabla">
+
+                    ${crearEscudo(
+                        equipo,
+                        "mini"
+                    )}
+
+                    <a
+                        href="equipo.html?id=${encodeURIComponent(
+                            equipo.id
+                        )}"
+                    >
+                        ${escaparHTML(
+                            equipo.nombre
+                        )}
+                    </a>
+
+                </td>
+
+
+                <td>
+                    ${equipo.pj}
+                </td>
+
+                <td>
+                    ${equipo.pg}
+                </td>
+
+                <td>
+                    ${equipo.pe}
+                </td>
+
+                <td>
+                    ${equipo.pp}
+                </td>
+
+                <td>
+                    ${equipo.gf}
+                </td>
+
+                <td>
+                    ${equipo.gc}
+                </td>
+
+                <td class="${claseDiferencia(
+                    equipo.dg
+                )}">
+                    ${formatearDiferencia(
+                        equipo.dg
+                    )}
+                </td>
+
+                <td class="puntos">
+                    ${equipo.pts}
+                </td>
+
+            `;
+
+
+            tablaEquiposDesktop.appendChild(
+                fila
+            );
+
+        }
+    );
+
+}
+
+
+function renderizarMobile(
+    tabla
+) {
+
+    tabla.forEach(
+        (equipo, index) => {
+
+            const posicion =
+                index + 1;
+
+
+            const tarjeta =
+                document.createElement(
+                    "article"
+                );
+
+
+            tarjeta.className =
+                "equipo-posicion-card";
+
+
+            tarjeta.innerHTML = `
+
+                <div class="equipo-posicion-superior">
+
+                    <div class="equipo-identidad">
+
+                        <span class="posicion-mobile ${
+                            posicion <= 2
+                                ? "top"
+                                : ""
+                        }">
+                            ${posicion}
+                        </span>
+
+
+                        ${crearEscudo(
+                            equipo,
+                            "mobile"
+                        )}
+
+
+                        <div>
+
+                            <strong>
+                                ${escaparHTML(
+                                    equipo.nombre
+                                )}
+                            </strong>
+
+                            <span>
+                                ${equipo.pj}
+                                ${
+                                    equipo.pj === 1
+                                        ? "partido jugado"
+                                        : "partidos jugados"
+                                }
+                            </span>
+
+                        </div>
+
                     </div>
 
 
-                    <div>
+                    <div class="puntos-mobile">
 
                         <strong>
-                            ${equipo.nombre}
+                            ${equipo.pts}
                         </strong>
 
                         <span>
-                            ${equipo.pj}
-                            ${
-                                equipo.pj === 1
-                                    ? "partido jugado"
-                                    : "partidos jugados"
-                            }
+                            PTS
                         </span>
 
                     </div>
@@ -501,104 +1252,371 @@ function renderizarMobile(equipos) {
                 </div>
 
 
-                <div class="puntos-mobile">
+                <div class="estadisticas-mobile">
 
-                    <strong>
-                        ${equipo.pts}
-                    </strong>
+                    <div>
+                        <span>PJ</span>
+                        <strong>
+                            ${equipo.pj}
+                        </strong>
+                    </div>
 
-                    <span>
-                        PTS
-                    </span>
+                    <div>
+                        <span>PG</span>
+                        <strong>
+                            ${equipo.pg}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>PE</span>
+                        <strong>
+                            ${equipo.pe}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>PP</span>
+                        <strong>
+                            ${equipo.pp}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>DG</span>
+
+                        <strong class="${claseDiferencia(
+                            equipo.dg
+                        )}">
+                            ${formatearDiferencia(
+                                equipo.dg
+                            )}
+                        </strong>
+                    </div>
 
                 </div>
+
+
+                <a
+                    href="equipo.html?id=${encodeURIComponent(
+                        equipo.id
+                    )}"
+                    class="btn-ver-equipo"
+                >
+                    Ver equipo
+                </a>
+
+            `;
+
+
+            tablaEquiposMobile.appendChild(
+                tarjeta
+            );
+
+        }
+    );
+
+}
+
+
+function crearEscudo(
+    equipo,
+    tipo
+) {
+
+    const clase =
+        tipo === "mini"
+            ? "escudo-mini"
+            : "escudo-mobile";
+
+
+    if (equipo.logo) {
+
+        return `
+            <div class="${clase} escudo-con-logo">
+
+                <img
+                    src="${escaparHTML(
+                        equipo.logo
+                    )}"
+                    alt="${escaparHTML(
+                        equipo.nombre
+                    )}"
+                    loading="lazy"
+                >
 
             </div>
-
-
-            <div class="estadisticas-mobile">
-
-                <div>
-                    <span>PJ</span>
-                    <strong>
-                        ${equipo.pj}
-                    </strong>
-                </div>
-
-                <div>
-                    <span>PG</span>
-                    <strong>
-                        ${equipo.pg}
-                    </strong>
-                </div>
-
-                <div>
-                    <span>PE</span>
-                    <strong>
-                        ${equipo.pe}
-                    </strong>
-                </div>
-
-                <div>
-                    <span>PP</span>
-                    <strong>
-                        ${equipo.pp}
-                    </strong>
-                </div>
-
-                <div>
-
-                    <span>DG</span>
-
-                    <strong class="${claseDiferencia(equipo.dg)}">
-                        ${formatearDiferencia(equipo.dg)}
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <a
-                href="equipo.html"
-                class="btn-ver-equipo"
-            >
-                Ver equipo
-            </a>
-
         `;
 
+    }
 
-        tablaEquiposMobile.appendChild(
-            tarjeta
-        );
 
-    });
+    const inicial =
+        equipo.nombre
+            ?.trim()
+            ?.charAt(0)
+            ?.toUpperCase() ||
+        "?";
+
+
+    return `
+        <div class="${clase}">
+            ${escaparHTML(
+                inicial
+            )}
+        </div>
+    `;
 
 }
 
 
-function formatearDiferencia(diferencia) {
+function obtenerNombreCategoria(
+    categoria
+) {
+
+    return (
+        categoria?.nombre ||
+        categoria?.nombreCategoria ||
+        categoria?.categoria ||
+        "Categoría"
+    )
+        .toString()
+        .trim();
+
+}
+
+
+function obtenerNombreEquipo(
+    equipo
+) {
+
+    return (
+        equipo?.nombre ||
+        equipo?.nombreEquipo ||
+        equipo?.equipo ||
+        "Equipo"
+    )
+        .toString()
+        .trim();
+
+}
+
+
+function obtenerLogoEquipo(
+    equipo
+) {
+
+    const valores = [
+        equipo?.logo,
+        equipo?.logoUrl,
+        equipo?.logoURL,
+        equipo?.escudo,
+        equipo?.escudoUrl,
+        equipo?.imagen,
+        equipo?.imagenUrl
+    ];
+
+
+    return (
+        valores.find(
+            valor =>
+                typeof valor ===
+                    "string" &&
+                valor.trim()
+        ) || ""
+    ).trim();
+
+}
+
+
+function formatearDiferencia(
+    diferencia
+) {
 
     if (diferencia > 0) {
+
         return `+${diferencia}`;
+
     }
 
-    return String(diferencia);
+
+    return String(
+        diferencia
+    );
 
 }
 
 
-function claseDiferencia(diferencia) {
+function claseDiferencia(
+    diferencia
+) {
 
     if (diferencia > 0) {
+
         return "positivo";
+
     }
+
 
     if (diferencia < 0) {
+
         return "negativo";
+
     }
 
+
     return "";
+
+}
+
+
+function mostrarCargando() {
+
+    categoriaSelect.disabled =
+        true;
+
+    categoriaSelect.innerHTML = `
+        <option value="">
+            Cargando categorías...
+        </option>
+    `;
+
+
+    tituloCategoria.textContent =
+        "Cargando categoría...";
+
+
+    contenedorTablaDesktop.hidden =
+        true;
+
+    tablaEquiposMobile.hidden =
+        true;
+
+
+    mostrarEstado(
+        "⚽",
+        "Cargando clasificación",
+        "Consultando la información oficial de la liga."
+    );
+
+}
+
+
+function mostrarError() {
+
+    categoriaSelect.disabled =
+        true;
+
+    categoriaSelect.innerHTML = `
+        <option value="">
+            No se pudo cargar
+        </option>
+    `;
+
+
+    tituloCategoria.textContent =
+        "Error de conexión";
+
+
+    contenedorTablaDesktop.hidden =
+        true;
+
+    tablaEquiposMobile.hidden =
+        true;
+
+
+    mostrarEstado(
+        "⚠️",
+        "No pudimos cargar la tabla",
+        "Verifica tu conexión e intenta nuevamente."
+    );
+
+}
+
+
+function mostrarEstado(
+    icono,
+    titulo,
+    descripcion
+) {
+
+    estadoTabla.hidden =
+        false;
+
+
+    estadoTabla.innerHTML = `
+
+        <div class="estado-tabla-icono">
+            ${escaparHTML(
+                icono
+            )}
+        </div>
+
+        <div>
+
+            <strong>
+                ${escaparHTML(
+                    titulo
+                )}
+            </strong>
+
+            <span>
+                ${escaparHTML(
+                    descripcion
+                )}
+            </span>
+
+        </div>
+
+    `;
+
+}
+
+
+function normalizarTexto(
+    valor
+) {
+
+    return String(
+        valor || ""
+    )
+        .normalize("NFD")
+        .replace(
+            /[\u0300-\u036f]/g,
+            ""
+        )
+        .toLowerCase()
+        .trim();
+
+}
+
+
+function escaparHTML(
+    valor
+) {
+
+    return String(
+        valor ?? ""
+    )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }

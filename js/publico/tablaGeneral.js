@@ -4,576 +4,339 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 import {
+    protegerPaginaPublica
+} from "../roles.js";
+
+import {
     db
 } from "../firebase.js";
 
 
-const categoriaTabla =
-    document.getElementById("categoriaTabla");
-
 const estadoCarga =
     document.getElementById("estadoCarga");
+
+const contenidoRanking =
+    document.getElementById("contenidoRanking");
 
 const estadoVacio =
     document.getElementById("estadoVacio");
 
-const contenidoTabla =
-    document.getElementById("contenidoTabla");
+const podioGeneral =
+    document.getElementById("podioGeneral");
 
 const totalEquipos =
     document.getElementById("totalEquipos");
 
-const totalJugados =
-    document.getElementById("totalJugados");
+const totalCategorias =
+    document.getElementById("totalCategorias");
+
+const totalPartidos =
+    document.getElementById("totalPartidos");
 
 const totalGoles =
     document.getElementById("totalGoles");
 
-const nombreCategoria =
-    document.getElementById("nombreCategoria");
+const buscarEquipo =
+    document.getElementById("buscarEquipo");
 
-const tablaEquipos =
-    document.getElementById("tablaEquipos");
+const btnLimpiarBusqueda =
+    document.getElementById("btnLimpiarBusqueda");
+
+const resultadoBusqueda =
+    document.getElementById("resultadoBusqueda");
+
+const cantidadRanking =
+    document.getElementById("cantidadRanking");
+
+const rankingDesktop =
+    document.getElementById("rankingDesktop");
+
+const rankingMobile =
+    document.getElementById("rankingMobile");
+
+const sinResultados =
+    document.getElementById("sinResultados");
+
+const textoActualizacion =
+    document.getElementById("textoActualizacion");
 
 
 let categorias = [];
-
 let equipos = [];
-
 let partidos = [];
 
-let categoriaActual = null;
+let rankingGeneral = [];
+let rankingFiltrado = [];
 
 
-activarEventos();
+const usuario =
+    await protegerPaginaPublica();
 
-await iniciar();
+
+if (usuario) {
+
+    activarEventos();
+
+    await cargarInformacion();
+
+}
 
 
 function activarEventos() {
 
-    categoriaTabla.addEventListener(
-        "change",
-        () => {
-
-            const categoriaId =
-                categoriaTabla.value;
+    buscarEquipo.addEventListener(
+        "input",
+        aplicarBusqueda
+    );
 
 
-            categoriaActual =
-                categorias.find(
-                    categoria =>
-                        categoria.id === categoriaId
-                ) || null;
-
-
-            actualizarTabla();
-
-        }
+    btnLimpiarBusqueda.addEventListener(
+        "click",
+        limpiarBusqueda
     );
 
 }
 
 
-async function iniciar() {
+async function cargarInformacion() {
+
+    mostrarCargando();
 
     try {
 
-        await Promise.all([
-            cargarCategorias(),
-            cargarEquipos(),
-            cargarPartidos()
-        ]);
+        const resultados =
+            await Promise.all([
+                getDocs(
+                    collection(
+                        db,
+                        "categorias"
+                    )
+                ),
+                getDocs(
+                    collection(
+                        db,
+                        "equipos"
+                    )
+                ),
+                getDocs(
+                    collection(
+                        db,
+                        "partidos"
+                    )
+                )
+            ]);
 
 
-        llenarSelectorCategorias();
-
-
-        seleccionarCategoriaInicial();
-
-
-        estadoCarga.classList.add(
-            "oculto"
-        );
-
-
-        actualizarTabla();
-
-    } catch (error) {
-
-        console.error(
-            "Error cargando tabla general:",
-            error
-        );
-
-
-        estadoCarga.classList.add(
-            "oculto"
-        );
-
-
-        mostrarVacio();
-
-    }
-
-}
-
-
-async function cargarCategorias() {
-
-    const snapshot =
-        await getDocs(
-            collection(
-                db,
-                "categorias"
-            )
-        );
-
-
-    categorias =
-        snapshot.docs
-            .map(
+        categorias =
+            resultados[0].docs.map(
                 documento => ({
                     id: documento.id,
                     ...documento.data()
                 })
-            )
-            .filter(
+            );
+
+
+        equipos =
+            resultados[1].docs.map(
+                documento => ({
+                    id: documento.id,
+                    ...documento.data()
+                })
+            );
+
+
+        partidos =
+            resultados[2].docs.map(
+                documento => ({
+                    id: documento.id,
+                    ...documento.data()
+                })
+            );
+
+
+        categorias =
+            categorias.filter(
                 categoria =>
                     categoria.activa !== false
-            )
-            .sort(
-                (a, b) => {
-
-                    const ordenA =
-                        Number(
-                            a.orden ?? 999
-                        );
-
-
-                    const ordenB =
-                        Number(
-                            b.orden ?? 999
-                        );
-
-
-                    if (
-                        ordenA !== ordenB
-                    ) {
-
-                        return ordenA - ordenB;
-
-                    }
-
-
-                    return String(
-                        a.nombre || ""
-                    ).localeCompare(
-                        String(
-                            b.nombre || ""
-                        ),
-                        "es"
-                    );
-
-                }
-            );
-
-}
-
-
-async function cargarEquipos() {
-
-    const snapshot =
-        await getDocs(
-            collection(
-                db,
-                "equipos"
-            )
-        );
-
-
-    equipos =
-        snapshot.docs.map(
-            documento => ({
-                id: documento.id,
-                ...documento.data()
-            })
-        );
-
-}
-
-
-async function cargarPartidos() {
-
-    const snapshot =
-        await getDocs(
-            collection(
-                db,
-                "partidos"
-            )
-        );
-
-
-    partidos =
-        snapshot.docs.map(
-            documento => ({
-                id: documento.id,
-                ...documento.data()
-            })
-        );
-
-}
-
-
-function llenarSelectorCategorias() {
-
-    categoriaTabla.innerHTML =
-        `
-            <option value="">
-                Selecciona una categoría
-            </option>
-        `;
-
-
-    categorias.forEach(
-        categoria => {
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-
-            option.value =
-                categoria.id;
-
-
-            option.textContent =
-                categoria.nombre ||
-                "Categoría";
-
-
-            categoriaTabla.appendChild(
-                option
-            );
-
-        }
-    );
-
-}
-
-
-function seleccionarCategoriaInicial() {
-
-    if (!categorias.length) {
-
-        categoriaActual =
-            null;
-
-        return;
-
-    }
-
-
-    const parametros =
-        new URLSearchParams(
-            window.location.search
-        );
-
-
-    const categoriaURL =
-        parametros.get(
-            "categoria"
-        );
-
-
-    if (categoriaURL) {
-
-        const encontrada =
-            categorias.find(
-                categoria =>
-                    categoria.id === categoriaURL
             );
 
 
-        if (encontrada) {
+        equipos =
+            equipos.filter(
+                equipo =>
+                    equipo.activo !== false
+            );
 
-            categoriaActual =
-                encontrada;
 
+        if (!equipos.length) {
 
-            categoriaTabla.value =
-                encontrada.id;
+            mostrarVacio();
 
             return;
 
         }
 
-    }
+
+        rankingGeneral =
+            construirRankingGeneral();
 
 
-    categoriaActual =
-        categorias[0];
+        rankingFiltrado = [
+            ...rankingGeneral
+        ];
 
 
-    categoriaTabla.value =
-        categoriaActual.id;
+        renderizarPagina();
 
-}
+    } catch (error) {
 
-
-function actualizarTabla() {
-
-    if (!categoriaActual) {
-
-        mostrarVacio();
-
-        return;
-
-    }
-
-
-    const equiposCategoria =
-        obtenerEquiposCategoria();
-
-
-    if (!equiposCategoria.length) {
-
-        mostrarVacio();
-
-        return;
-
-    }
-
-
-    const tabla =
-        calcularTabla(
-            equiposCategoria
+        console.error(
+            "Error cargando ranking general:",
+            error
         );
 
+        mostrarError();
 
-    renderizarTabla(
-        tabla
-    );
-
-
-    actualizarResumen(
-        tabla
-    );
-
-
-    nombreCategoria.textContent =
-        categoriaActual.nombre ||
-        "Categoría";
-
-
-    estadoVacio.classList.add(
-        "oculto"
-    );
-
-
-    contenidoTabla.classList.remove(
-        "oculto"
-    );
+    }
 
 }
 
 
-function obtenerEquiposCategoria() {
+function construirRankingGeneral() {
 
-    return equipos
-        .filter(
+    const ranking =
+        equipos.map(
             equipo => {
 
-                if (
-                    equipo.activo === false
-                ) {
-
-                    return false;
-
-                }
-
-
-                if (
-                    equipo.categoriaId
-                ) {
-
-                    return (
-                        equipo.categoriaId ===
-                        categoriaActual.id
+                const categoria =
+                    obtenerCategoriaEquipo(
+                        equipo
                     );
 
-                }
 
-
-                if (
-                    equipo.categoriaNombre &&
-                    categoriaActual.nombre
-                ) {
-
-                    return normalizar(
-                        equipo.categoriaNombre
-                    ) ===
-                    normalizar(
-                        categoriaActual.nombre
-                    );
-
-                }
-
-
-                return false;
-
-            }
-        )
-        .sort(
-            (a, b) =>
-                String(
-                    a.nombre || ""
-                ).localeCompare(
-                    String(
-                        b.nombre || ""
-                    ),
-                    "es"
-                )
-        );
-
-}
-
-
-function calcularTabla(
-    equiposCategoria
-) {
-
-    const mapa =
-        new Map();
-
-
-    equiposCategoria.forEach(
-        equipo => {
-
-            mapa.set(
-                equipo.id,
-                {
+                return {
                     id: equipo.id,
-
                     nombre:
-                        equipo.nombre ||
-                        "Equipo",
-
-                    logoUrl:
-                        equipo.logoUrl ||
-                        null,
-
+                        obtenerNombreEquipo(
+                            equipo
+                        ),
+                    logo:
+                        obtenerLogoEquipo(
+                            equipo
+                        ),
+                    categoriaId:
+                        categoria?.id || "",
+                    categoriaNombre:
+                        categoria
+                            ? obtenerNombreCategoria(
+                                categoria
+                            )
+                            : obtenerNombreCategoriaEquipo(
+                                equipo
+                            ),
                     pj: 0,
                     pg: 0,
                     pe: 0,
                     pp: 0,
-
                     gf: 0,
                     gc: 0,
-
                     dg: 0,
-                    puntos: 0
-                }
-            );
-
-        }
-    );
-
-
-    const partidosValidos =
-        partidos.filter(
-            partido => {
-
-                if (
-                    partido.estado !== "finalizado"
-                ) {
-
-                    return false;
-
-                }
-
-
-                if (
-                    partido.resultadoRegistrado !== true
-                ) {
-
-                    return false;
-
-                }
-
-
-                const perteneceCategoria =
-                    partidoPerteneceCategoria(
-                        partido
-                    );
-
-
-                if (!perteneceCategoria) {
-
-                    return false;
-
-                }
-
-
-                if (
-                    !mapa.has(
-                        partido.localId
-                    )
-                ) {
-
-                    return false;
-
-                }
-
-
-                if (
-                    !mapa.has(
-                        partido.visitanteId
-                    )
-                ) {
-
-                    return false;
-
-                }
-
-
-                return true;
+                    pts: 0,
+                    rendimiento: 0,
+                    posicion: 0
+                };
 
             }
         );
 
 
-    partidosValidos.forEach(
+    const mapaEquipos =
+        new Map(
+            ranking.map(
+                equipo => [
+                    equipo.id,
+                    equipo
+                ]
+            )
+        );
+
+
+    partidos.forEach(
         partido => {
 
+            if (
+                !partidoCuentaParaRanking(
+                    partido
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            const localId =
+                obtenerEquipoIdPartido(
+                    partido,
+                    "local"
+                );
+
+
+            const visitanteId =
+                obtenerEquipoIdPartido(
+                    partido,
+                    "visitante"
+                );
+
+
             const local =
-                mapa.get(
-                    partido.localId
+                mapaEquipos.get(
+                    localId
                 );
 
 
             const visitante =
-                mapa.get(
-                    partido.visitanteId
+                mapaEquipos.get(
+                    visitanteId
                 );
 
 
+            if (
+                !local ||
+                !visitante
+            ) {
+
+                return;
+
+            }
+
+
             const golesLocal =
-                obtenerNumero(
-                    partido.golesLocal
+                obtenerGoles(
+                    partido,
+                    "local"
                 );
 
 
             const golesVisitante =
-                obtenerNumero(
-                    partido.golesVisitante
+                obtenerGoles(
+                    partido,
+                    "visitante"
                 );
 
 
-            local.pj++;
+            if (
+                golesLocal === null ||
+                golesVisitante === null
+            ) {
 
-            visitante.pj++;
+                return;
+
+            }
+
+
+            local.pj += 1;
+            visitante.pj += 1;
 
 
             local.gf +=
@@ -595,35 +358,28 @@ function calcularTabla(
                 golesVisitante
             ) {
 
-                local.pg++;
+                local.pg += 1;
+                local.pts += 3;
 
-                visitante.pp++;
-
-
-                local.puntos += 3;
+                visitante.pp += 1;
 
             } else if (
                 golesLocal <
                 golesVisitante
             ) {
 
-                visitante.pg++;
+                visitante.pg += 1;
+                visitante.pts += 3;
 
-                local.pp++;
-
-
-                visitante.puntos += 3;
+                local.pp += 1;
 
             } else {
 
-                local.pe++;
+                local.pe += 1;
+                visitante.pe += 1;
 
-                visitante.pe++;
-
-
-                local.puntos++;
-
-                visitante.puntos++;
+                local.pts += 1;
+                visitante.pts += 1;
 
             }
 
@@ -631,157 +387,99 @@ function calcularTabla(
     );
 
 
-    const tabla =
-        Array.from(
-            mapa.values()
-        );
-
-
-    tabla.forEach(
+    ranking.forEach(
         equipo => {
 
             equipo.dg =
                 equipo.gf -
                 equipo.gc;
 
+
+            if (
+                equipo.pj > 0
+            ) {
+
+                equipo.rendimiento =
+                    (
+                        equipo.pts /
+                        (
+                            equipo.pj *
+                            3
+                        )
+                    ) *
+                    100;
+
+            } else {
+
+                equipo.rendimiento =
+                    0;
+
+            }
+
         }
     );
 
 
-    tabla.sort(
-        ordenarTabla
+    ranking.sort(
+        compararEquipos
     );
 
 
-    return tabla;
+    ranking.forEach(
+        (equipo, index) => {
 
-}
+            equipo.posicion =
+                index + 1;
 
-
-function partidoPerteneceCategoria(
-    partido
-) {
-
-    if (
-        partido.categoriaId
-    ) {
-
-        return (
-            partido.categoriaId ===
-            categoriaActual.id
-        );
-
-    }
-
-
-    if (
-        partido.categoriaNombre &&
-        categoriaActual.nombre
-    ) {
-
-        return normalizar(
-            partido.categoriaNombre
-        ) ===
-        normalizar(
-            categoriaActual.nombre
-        );
-
-    }
-
-
-    const local =
-        equipos.find(
-            equipo =>
-                equipo.id ===
-                partido.localId
-        );
-
-
-    const visitante =
-        equipos.find(
-            equipo =>
-                equipo.id ===
-                partido.visitanteId
-        );
-
-
-    if (
-        !local ||
-        !visitante
-    ) {
-
-        return false;
-
-    }
-
-
-    return (
-        equipoPerteneceCategoria(
-            local
-        ) &&
-        equipoPerteneceCategoria(
-            visitante
-        )
+        }
     );
 
-}
 
-
-function equipoPerteneceCategoria(
-    equipo
-) {
-
-    if (
-        equipo.categoriaId
-    ) {
-
-        return (
-            equipo.categoriaId ===
-            categoriaActual.id
-        );
-
-    }
-
-
-    if (
-        equipo.categoriaNombre &&
-        categoriaActual.nombre
-    ) {
-
-        return normalizar(
-            equipo.categoriaNombre
-        ) ===
-        normalizar(
-            categoriaActual.nombre
-        );
-
-    }
-
-
-    return false;
+    return ranking;
 
 }
 
 
-function ordenarTabla(
+function compararEquipos(
     a,
     b
 ) {
 
+    const aJugado =
+        a.pj > 0;
+
+    const bJugado =
+        b.pj > 0;
+
+
     if (
-        b.puntos !== a.puntos
+        aJugado !==
+        bJugado
+    ) {
+
+        return aJugado
+            ? -1
+            : 1;
+
+    }
+
+
+    if (
+        b.rendimiento !==
+        a.rendimiento
     ) {
 
         return (
-            b.puntos -
-            a.puntos
+            b.rendimiento -
+            a.rendimiento
         );
 
     }
 
 
     if (
-        b.dg !== a.dg
+        b.dg !==
+        a.dg
     ) {
 
         return (
@@ -793,7 +491,8 @@ function ordenarTabla(
 
 
     if (
-        b.gf !== a.gf
+        b.gf !==
+        a.gf
     ) {
 
         return (
@@ -805,19 +504,8 @@ function ordenarTabla(
 
 
     if (
-        a.gc !== b.gc
-    ) {
-
-        return (
-            a.gc -
-            b.gc
-        );
-
-    }
-
-
-    if (
-        b.pg !== a.pg
+        b.pg !==
+        a.pg
     ) {
 
         return (
@@ -828,197 +516,127 @@ function ordenarTabla(
     }
 
 
-    return String(
-        a.nombre
-    ).localeCompare(
-        String(
-            b.nombre
-        ),
-        "es"
-    );
+    if (
+        b.pts !==
+        a.pts
+    ) {
 
-}
+        return (
+            b.pts -
+            a.pts
+        );
 
-
-function renderizarTabla(
-    tabla
-) {
-
-    tablaEquipos.innerHTML =
-        "";
+    }
 
 
-    tabla.forEach(
-        (equipo, index) => {
-
-            const posicion =
-                index + 1;
-
-
-            const fila =
-                document.createElement(
-                    "tr"
-                );
-
-
-            if (
-                posicion === 1
-            ) {
-
-                fila.classList.add(
-                    "fila-lider"
-                );
-
-            }
-
-
-            const dgClase =
-                equipo.dg > 0
-                    ? "dg-positivo"
-                    : equipo.dg < 0
-                        ? "dg-negativo"
-                        : "";
-
-
-            const dgTexto =
-                equipo.dg > 0
-                    ? `+${equipo.dg}`
-                    : equipo.dg;
-
-
-            fila.innerHTML = `
-
-                <td>
-
-                    <span
-                        class="posicion ${
-                            posicion <= 3
-                                ? `top-${posicion}`
-                                : ""
-                        }"
-                    >
-                        ${posicion}
-                    </span>
-
-                </td>
-
-
-                <td class="col-equipo">
-
-                    <div class="equipo-celda">
-
-                        <div
-                            class="equipo-logo-tabla"
-                        >
-                            ${
-                                obtenerLogoEquipo(
-                                    equipo
-                                )
-                            }
-                        </div>
-
-
-                        <div class="equipo-info">
-
-                            <strong>
-                                ${escaparHTML(
-                                    equipo.nombre
-                                )}
-                            </strong>
-
-                            <span>
-                                ${
-                                    posicion === 1
-                                        ? "Líder"
-                                        : `${equipo.puntos} puntos`
-                                }
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </td>
-
-
-                <td>
-                    ${equipo.pj}
-                </td>
-
-
-                <td>
-                    ${equipo.pg}
-                </td>
-
-
-                <td>
-                    ${equipo.pe}
-                </td>
-
-
-                <td>
-                    ${equipo.pp}
-                </td>
-
-
-                <td>
-                    ${equipo.gf}
-                </td>
-
-
-                <td>
-                    ${equipo.gc}
-                </td>
-
-
-                <td class="${dgClase}">
-                    ${dgTexto}
-                </td>
-
-
-                <td class="puntos">
-                    ${equipo.puntos}
-                </td>
-
-            `;
-
-
-            tablaEquipos.appendChild(
-                fila
-            );
-
+    return a.nombre.localeCompare(
+        b.nombre,
+        "es",
+        {
+            sensitivity: "base"
         }
     );
 
 }
 
 
-function actualizarResumen(
-    tabla
-) {
+function renderizarPagina() {
+
+    estadoCarga.hidden =
+        true;
+
+    estadoVacio.hidden =
+        true;
+
+    contenidoRanking.hidden =
+        false;
+
+
+    actualizarResumen();
+
+    renderizarPodio();
+
+    renderizarRanking(
+        rankingFiltrado
+    );
+
+    actualizarTextoActualizacion();
+
+}
+
+
+function actualizarResumen() {
 
     totalEquipos.textContent =
-        tabla.length;
+        rankingGeneral.length;
 
 
-    const partidosJugados =
-        tabla.reduce(
-            (total, equipo) =>
-                total + equipo.pj,
-            0
-        ) / 2;
-
-
-    const goles =
-        tabla.reduce(
-            (total, equipo) =>
-                total + equipo.gf,
-            0
+    const categoriasUsadas =
+        new Set(
+            rankingGeneral
+                .map(
+                    equipo =>
+                        equipo.categoriaId ||
+                        normalizarTexto(
+                            equipo.categoriaNombre
+                        )
+                )
+                .filter(Boolean)
         );
 
 
-    totalJugados.textContent =
-        partidosJugados;
+    totalCategorias.textContent =
+        categoriasUsadas.size;
+
+
+    const partidosValidos =
+        obtenerPartidosValidos();
+
+
+    totalPartidos.textContent =
+        partidosValidos.length;
+
+
+    const goles =
+        partidosValidos.reduce(
+            (
+                acumulado,
+                partido
+            ) => {
+
+                const golesLocal =
+                    obtenerGoles(
+                        partido,
+                        "local"
+                    );
+
+
+                const golesVisitante =
+                    obtenerGoles(
+                        partido,
+                        "visitante"
+                    );
+
+
+                if (
+                    golesLocal === null ||
+                    golesVisitante === null
+                ) {
+
+                    return acumulado;
+
+                }
+
+
+                return (
+                    acumulado +
+                    golesLocal +
+                    golesVisitante
+                );
+
+            },
+            0
+        );
 
 
     totalGoles.textContent =
@@ -1027,49 +645,1396 @@ function actualizarResumen(
 }
 
 
+function obtenerPartidosValidos() {
+
+    return partidos.filter(
+        partido => {
+
+            if (
+                !partidoCuentaParaRanking(
+                    partido
+                )
+            ) {
+
+                return false;
+
+            }
+
+
+            const localId =
+                obtenerEquipoIdPartido(
+                    partido,
+                    "local"
+                );
+
+
+            const visitanteId =
+                obtenerEquipoIdPartido(
+                    partido,
+                    "visitante"
+                );
+
+
+            if (
+                !localId ||
+                !visitanteId
+            ) {
+
+                return false;
+
+            }
+
+
+            const golesLocal =
+                obtenerGoles(
+                    partido,
+                    "local"
+                );
+
+
+            const golesVisitante =
+                obtenerGoles(
+                    partido,
+                    "visitante"
+                );
+
+
+            return (
+                golesLocal !== null &&
+                golesVisitante !== null
+            );
+
+        }
+    );
+
+}
+
+
+function renderizarPodio() {
+
+    podioGeneral.innerHTML =
+        "";
+
+
+    const equiposConPartidos =
+        rankingGeneral.filter(
+            equipo =>
+                equipo.pj > 0
+        );
+
+
+    const mejores =
+        equiposConPartidos.slice(
+            0,
+            3
+        );
+
+
+    if (!mejores.length) {
+
+        podioGeneral.innerHTML = `
+            <div class="podio-vacio">
+
+                <span>
+                    🏆
+                </span>
+
+                <strong>
+                    El podio está esperando resultados
+                </strong>
+
+                <p>
+                    Los primeros lugares aparecerán cuando
+                    comiencen a registrarse partidos oficiales.
+                </p>
+
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    const posicionesVisuales = [
+        {
+            indice: 1,
+            clase: "segundo",
+            medalla: "🥈"
+        },
+        {
+            indice: 0,
+            clase: "primero",
+            medalla: "🥇"
+        },
+        {
+            indice: 2,
+            clase: "tercero",
+            medalla: "🥉"
+        }
+    ];
+
+
+    posicionesVisuales.forEach(
+        configuracion => {
+
+            const equipo =
+                mejores[
+                    configuracion.indice
+                ];
+
+
+            if (!equipo) {
+
+                return;
+
+            }
+
+
+            const tarjeta =
+                document.createElement(
+                    "article"
+                );
+
+
+            tarjeta.className =
+                `podio-card ${configuracion.clase}`;
+
+
+            tarjeta.innerHTML = `
+
+                <span class="podio-medalla">
+                    ${configuracion.medalla}
+                </span>
+
+
+                <div class="podio-escudo">
+
+                    ${crearContenidoLogo(
+                        equipo
+                    )}
+
+                </div>
+
+
+                <span class="podio-posicion">
+                    #${equipo.posicion}
+                </span>
+
+
+                <strong class="podio-nombre">
+                    ${escaparHTML(
+                        equipo.nombre
+                    )}
+                </strong>
+
+
+                <span class="podio-categoria">
+                    ${escaparHTML(
+                        equipo.categoriaNombre ||
+                        "Sin categoría"
+                    )}
+                </span>
+
+
+                <div class="podio-rendimiento">
+
+                    <strong>
+                        ${formatearRendimiento(
+                            equipo.rendimiento
+                        )}
+                    </strong>
+
+                    <span>
+                        rendimiento
+                    </span>
+
+                </div>
+
+
+                <div class="podio-datos">
+
+                    <span>
+                        ${equipo.pj} PJ
+                    </span>
+
+                    <span>
+                        ${equipo.pts} PTS
+                    </span>
+
+                    <span>
+                        ${formatearDiferencia(
+                            equipo.dg
+                        )} DG
+                    </span>
+
+                </div>
+
+
+                <a
+                    href="equipo.html?id=${encodeURIComponent(
+                        equipo.id
+                    )}"
+                    class="podio-ver-equipo"
+                >
+                    Ver equipo
+                </a>
+
+            `;
+
+
+            podioGeneral.appendChild(
+                tarjeta
+            );
+
+        }
+    );
+
+}
+
+
+function renderizarRanking(
+    ranking
+) {
+
+    rankingDesktop.innerHTML =
+        "";
+
+    rankingMobile.innerHTML =
+        "";
+
+
+    cantidadRanking.textContent =
+        ranking.length;
+
+
+    if (!ranking.length) {
+
+        sinResultados.hidden =
+            false;
+
+        return;
+
+    }
+
+
+    sinResultados.hidden =
+        true;
+
+
+    ranking.forEach(
+        equipo => {
+
+            renderizarFilaDesktop(
+                equipo
+            );
+
+            renderizarTarjetaMobile(
+                equipo
+            );
+
+        }
+    );
+
+}
+
+
+function renderizarFilaDesktop(
+    equipo
+) {
+
+    const fila =
+        document.createElement(
+            "tr"
+        );
+
+
+    fila.innerHTML = `
+
+        <td>
+
+            ${crearPosicion(
+                equipo.posicion,
+                "desktop"
+            )}
+
+        </td>
+
+
+        <td class="equipo-ranking">
+
+            <div class="equipo-ranking-logo">
+
+                ${crearContenidoLogo(
+                    equipo
+                )}
+
+            </div>
+
+            <div class="equipo-ranking-info">
+
+                <a
+                    href="equipo.html?id=${encodeURIComponent(
+                        equipo.id
+                    )}"
+                >
+                    ${escaparHTML(
+                        equipo.nombre
+                    )}
+                </a>
+
+                <span>
+                    #${equipo.posicion} de
+                    ${rankingGeneral.length}
+                </span>
+
+            </div>
+
+        </td>
+
+
+        <td class="categoria-ranking">
+
+            <span>
+                ${escaparHTML(
+                    equipo.categoriaNombre ||
+                    "Sin categoría"
+                )}
+            </span>
+
+        </td>
+
+
+        <td>
+            ${equipo.pj}
+        </td>
+
+        <td>
+            ${equipo.pg}
+        </td>
+
+        <td>
+            ${equipo.pe}
+        </td>
+
+        <td>
+            ${equipo.pp}
+        </td>
+
+        <td>
+            ${equipo.gf}
+        </td>
+
+        <td>
+            ${equipo.gc}
+        </td>
+
+        <td class="${claseDiferencia(
+            equipo.dg
+        )}">
+            ${formatearDiferencia(
+                equipo.dg
+            )}
+        </td>
+
+        <td class="puntos-ranking">
+            ${equipo.pts}
+        </td>
+
+        <td>
+
+            ${crearRendimiento(
+                equipo
+            )}
+
+        </td>
+
+    `;
+
+
+    rankingDesktop.appendChild(
+        fila
+    );
+
+}
+
+
+function renderizarTarjetaMobile(
+    equipo
+) {
+
+    const tarjeta =
+        document.createElement(
+            "article"
+        );
+
+
+    tarjeta.className =
+        "ranking-card";
+
+
+    tarjeta.innerHTML = `
+
+        <div class="ranking-card-superior">
+
+            <div class="ranking-card-identidad">
+
+                ${crearPosicion(
+                    equipo.posicion,
+                    "mobile"
+                )}
+
+
+                <div class="ranking-card-logo">
+
+                    ${crearContenidoLogo(
+                        equipo
+                    )}
+
+                </div>
+
+
+                <div class="ranking-card-nombre">
+
+                    <strong>
+                        ${escaparHTML(
+                            equipo.nombre
+                        )}
+                    </strong>
+
+                    <span>
+                        ${escaparHTML(
+                            equipo.categoriaNombre ||
+                            "Sin categoría"
+                        )}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="ranking-card-rendimiento">
+
+                <strong>
+                    ${formatearRendimiento(
+                        equipo.rendimiento
+                    )}
+                </strong>
+
+                <span>
+                    REND.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="ranking-card-barra">
+
+            <div
+                class="ranking-card-barra-progreso"
+                style="width:${limitarPorcentaje(
+                    equipo.rendimiento
+                )}%"
+            >
+            </div>
+
+        </div>
+
+
+        <div class="ranking-card-estadisticas">
+
+            <div>
+                <span>PJ</span>
+                <strong>
+                    ${equipo.pj}
+                </strong>
+            </div>
+
+            <div>
+                <span>PG</span>
+                <strong>
+                    ${equipo.pg}
+                </strong>
+            </div>
+
+            <div>
+                <span>DG</span>
+                <strong class="${claseDiferencia(
+                    equipo.dg
+                )}">
+                    ${formatearDiferencia(
+                        equipo.dg
+                    )}
+                </strong>
+            </div>
+
+            <div>
+                <span>PTS</span>
+                <strong>
+                    ${equipo.pts}
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="ranking-card-inferior">
+
+            <span>
+                Posición
+                <strong>
+                    #${equipo.posicion}
+                </strong>
+                de
+                ${rankingGeneral.length}
+            </span>
+
+            <a
+                href="equipo.html?id=${encodeURIComponent(
+                    equipo.id
+                )}"
+            >
+                Ver equipo →
+            </a>
+
+        </div>
+
+    `;
+
+
+    rankingMobile.appendChild(
+        tarjeta
+    );
+
+}
+
+
+function crearPosicion(
+    posicion,
+    tipo
+) {
+
+    let clase =
+        tipo === "desktop"
+            ? "ranking-posicion"
+            : "ranking-posicion-mobile";
+
+
+    let contenido =
+        `#${posicion}`;
+
+
+    if (posicion === 1) {
+
+        clase +=
+            " posicion-oro";
+
+        contenido =
+            "🥇";
+
+    } else if (
+        posicion === 2
+    ) {
+
+        clase +=
+            " posicion-plata";
+
+        contenido =
+            "🥈";
+
+    } else if (
+        posicion === 3
+    ) {
+
+        clase +=
+            " posicion-bronce";
+
+        contenido =
+            "🥉";
+
+    }
+
+
+    return `
+        <span class="${clase}">
+            ${contenido}
+        </span>
+    `;
+
+}
+
+
+function crearRendimiento(
+    equipo
+) {
+
+    const porcentaje =
+        limitarPorcentaje(
+            equipo.rendimiento
+        );
+
+
+    return `
+        <div class="rendimiento-tabla">
+
+            <strong>
+                ${formatearRendimiento(
+                    equipo.rendimiento
+                )}
+            </strong>
+
+            <div class="rendimiento-barra">
+
+                <span
+                    style="width:${porcentaje}%"
+                >
+                </span>
+
+            </div>
+
+        </div>
+    `;
+
+}
+
+
+function aplicarBusqueda() {
+
+    const texto =
+        normalizarTexto(
+            buscarEquipo.value
+        );
+
+
+    btnLimpiarBusqueda.hidden =
+        !texto;
+
+
+    if (!texto) {
+
+        rankingFiltrado = [
+            ...rankingGeneral
+        ];
+
+        resultadoBusqueda.hidden =
+            true;
+
+        renderizarRanking(
+            rankingFiltrado
+        );
+
+        return;
+
+    }
+
+
+    rankingFiltrado =
+        rankingGeneral.filter(
+            equipo => {
+
+                const nombre =
+                    normalizarTexto(
+                        equipo.nombre
+                    );
+
+
+                const categoria =
+                    normalizarTexto(
+                        equipo.categoriaNombre
+                    );
+
+
+                return (
+                    nombre.includes(
+                        texto
+                    ) ||
+                    categoria.includes(
+                        texto
+                    )
+                );
+
+            }
+        );
+
+
+    actualizarResultadoBusqueda(
+        texto
+    );
+
+
+    renderizarRanking(
+        rankingFiltrado
+    );
+
+}
+
+
+function actualizarResultadoBusqueda(
+    texto
+) {
+
+    resultadoBusqueda.hidden =
+        false;
+
+
+    if (
+        rankingFiltrado.length === 1
+    ) {
+
+        const equipo =
+            rankingFiltrado[0];
+
+
+        resultadoBusqueda.innerHTML = `
+
+            <span>
+                Resultado encontrado
+            </span>
+
+            <strong>
+                ${escaparHTML(
+                    equipo.nombre
+                )}
+                ocupa la posición
+                #${equipo.posicion}
+                de
+                ${rankingGeneral.length}
+            </strong>
+
+            <small>
+                ${formatearRendimiento(
+                    equipo.rendimiento
+                )}
+                de rendimiento
+            </small>
+
+        `;
+
+        return;
+
+    }
+
+
+    if (
+        rankingFiltrado.length > 1
+    ) {
+
+        resultadoBusqueda.innerHTML = `
+
+            <span>
+                Búsqueda
+            </span>
+
+            <strong>
+                ${rankingFiltrado.length}
+                equipos encontrados
+            </strong>
+
+            <small>
+                Resultados para
+                "${escaparHTML(
+                    buscarEquipo.value.trim()
+                )}"
+            </small>
+
+        `;
+
+        return;
+
+    }
+
+
+    resultadoBusqueda.innerHTML = `
+
+        <span>
+            Sin coincidencias
+        </span>
+
+        <strong>
+            No encontramos equipos
+        </strong>
+
+        <small>
+            No hay resultados para
+            "${escaparHTML(
+                buscarEquipo.value.trim()
+            )}"
+        </small>
+
+    `;
+
+}
+
+
+function limpiarBusqueda() {
+
+    buscarEquipo.value =
+        "";
+
+    btnLimpiarBusqueda.hidden =
+        true;
+
+    resultadoBusqueda.hidden =
+        true;
+
+    rankingFiltrado = [
+        ...rankingGeneral
+    ];
+
+
+    renderizarRanking(
+        rankingFiltrado
+    );
+
+
+    buscarEquipo.focus();
+
+}
+
+
+function partidoCuentaParaRanking(
+    partido
+) {
+
+    const golesLocal =
+        obtenerGoles(
+            partido,
+            "local"
+        );
+
+
+    const golesVisitante =
+        obtenerGoles(
+            partido,
+            "visitante"
+        );
+
+
+    if (
+        golesLocal === null ||
+        golesVisitante === null
+    ) {
+
+        return false;
+
+    }
+
+
+    const resultadoRegistrado =
+        partido.resultadoRegistrado ===
+            true ||
+        partido.resultadoRegistrado ===
+            "true";
+
+
+    if (resultadoRegistrado) {
+
+        return true;
+
+    }
+
+
+    const estado =
+        normalizarTexto(
+            partido.estado ||
+            partido.estatus ||
+            partido.status ||
+            ""
+        );
+
+
+    const estadosFinalizados = [
+        "finalizado",
+        "finalizada",
+        "terminado",
+        "terminada",
+        "jugado",
+        "jugada",
+        "registrado",
+        "registrada"
+    ];
+
+
+    return estadosFinalizados.includes(
+        estado
+    );
+
+}
+
+
+function obtenerEquipoIdPartido(
+    partido,
+    tipo
+) {
+
+    const valores =
+        tipo === "local"
+            ? [
+                partido.equipoLocalId,
+                partido.localId,
+                partido.idEquipoLocal,
+                partido.equipoLocal?.id
+            ]
+            : [
+                partido.equipoVisitanteId,
+                partido.visitanteId,
+                partido.idEquipoVisitante,
+                partido.equipoVisitante?.id
+            ];
+
+
+    const id =
+        valores.find(
+            valor =>
+                typeof valor ===
+                    "string" &&
+                valor.trim()
+        );
+
+
+    if (id) {
+
+        return id.trim();
+
+    }
+
+
+    const nombre =
+        obtenerNombreEquipoPartido(
+            partido,
+            tipo
+        );
+
+
+    if (!nombre) {
+
+        return "";
+
+    }
+
+
+    const equipo =
+        equipos.find(
+            item =>
+                normalizarTexto(
+                    obtenerNombreEquipo(
+                        item
+                    )
+                ) ===
+                normalizarTexto(
+                    nombre
+                )
+        );
+
+
+    return equipo?.id || "";
+
+}
+
+
+function obtenerNombreEquipoPartido(
+    partido,
+    tipo
+) {
+
+    const valores =
+        tipo === "local"
+            ? [
+                partido.equipoLocalNombre,
+                partido.nombreLocal,
+                partido.local,
+                partido.equipoLocal?.nombre
+            ]
+            : [
+                partido.equipoVisitanteNombre,
+                partido.nombreVisitante,
+                partido.visitante,
+                partido.equipoVisitante?.nombre
+            ];
+
+
+    const nombre =
+        valores.find(
+            valor =>
+                typeof valor ===
+                    "string" &&
+                valor.trim()
+        );
+
+
+    return nombre?.trim() || "";
+
+}
+
+
+function obtenerGoles(
+    partido,
+    tipo
+) {
+
+    const valores =
+        tipo === "local"
+            ? [
+                partido.golesLocal,
+                partido.marcadorLocal,
+                partido.resultadoLocal,
+                partido.localGoles,
+                partido.golesEquipoLocal
+            ]
+            : [
+                partido.golesVisitante,
+                partido.marcadorVisitante,
+                partido.resultadoVisitante,
+                partido.visitanteGoles,
+                partido.golesEquipoVisitante
+            ];
+
+
+    for (
+        const valor of valores
+    ) {
+
+        if (
+            valor === 0 ||
+            valor === "0"
+        ) {
+
+            return 0;
+
+        }
+
+
+        if (
+            valor !== null &&
+            valor !== undefined &&
+            valor !== ""
+        ) {
+
+            const numero =
+                Number(valor);
+
+
+            if (
+                Number.isFinite(
+                    numero
+                ) &&
+                numero >= 0
+            ) {
+
+                return numero;
+
+            }
+
+        }
+
+    }
+
+
+    const marcador =
+        partido.marcador ||
+        partido.resultado;
+
+
+    if (
+        typeof marcador ===
+            "string"
+    ) {
+
+        const coincidencia =
+            marcador
+                .trim()
+                .match(
+                    /^(\d+)\s*[-–—:]\s*(\d+)$/
+                );
+
+
+        if (coincidencia) {
+
+            return tipo === "local"
+                ? Number(
+                    coincidencia[1]
+                )
+                : Number(
+                    coincidencia[2]
+                );
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+function obtenerCategoriaEquipo(
+    equipo
+) {
+
+    const categoriaId =
+        obtenerCategoriaIdEquipo(
+            equipo
+        );
+
+
+    if (categoriaId) {
+
+        const categoria =
+            categorias.find(
+                item =>
+                    item.id ===
+                    categoriaId
+            );
+
+
+        if (categoria) {
+
+            return categoria;
+
+        }
+
+    }
+
+
+    const nombre =
+        obtenerNombreCategoriaEquipo(
+            equipo
+        );
+
+
+    if (!nombre) {
+
+        return null;
+
+    }
+
+
+    return (
+        categorias.find(
+            categoria =>
+                normalizarTexto(
+                    obtenerNombreCategoria(
+                        categoria
+                    )
+                ) ===
+                normalizarTexto(
+                    nombre
+                )
+        ) ||
+        null
+    );
+
+}
+
+
+function obtenerCategoriaIdEquipo(
+    equipo
+) {
+
+    const valores = [
+        equipo.categoriaId,
+        equipo.idCategoria,
+        equipo.categoria?.id
+    ];
+
+
+    const id =
+        valores.find(
+            valor =>
+                typeof valor ===
+                    "string" &&
+                valor.trim()
+        );
+
+
+    return id?.trim() || "";
+
+}
+
+
+function obtenerNombreCategoriaEquipo(
+    equipo
+) {
+
+    const valores = [
+        typeof equipo.categoria ===
+            "string"
+            ? equipo.categoria
+            : "",
+        equipo.categoriaNombre,
+        equipo.nombreCategoria,
+        equipo.categoria?.nombre
+    ];
+
+
+    const nombre =
+        valores.find(
+            valor =>
+                typeof valor ===
+                    "string" &&
+                valor.trim()
+        );
+
+
+    return nombre?.trim() ||
+        "Sin categoría";
+
+}
+
+
+function obtenerNombreCategoria(
+    categoria
+) {
+
+    return (
+        categoria?.nombre ||
+        categoria?.nombreCategoria ||
+        categoria?.categoria ||
+        "Categoría"
+    )
+        .toString()
+        .trim();
+
+}
+
+
+function obtenerNombreEquipo(
+    equipo
+) {
+
+    return (
+        equipo?.nombre ||
+        equipo?.nombreEquipo ||
+        equipo?.equipo ||
+        "Equipo"
+    )
+        .toString()
+        .trim();
+
+}
+
+
 function obtenerLogoEquipo(
     equipo
 ) {
 
-    if (
-        equipo.logoUrl
-    ) {
+    const valores = [
+        equipo?.logo,
+        equipo?.logoUrl,
+        equipo?.logoURL,
+        equipo?.escudo,
+        equipo?.escudoUrl,
+        equipo?.imagen,
+        equipo?.imagenUrl
+    ];
+
+
+    return (
+        valores.find(
+            valor =>
+                typeof valor ===
+                    "string" &&
+                valor.trim()
+        ) || ""
+    ).trim();
+
+}
+
+
+function crearContenidoLogo(
+    equipo
+) {
+
+    if (equipo.logo) {
 
         return `
             <img
                 src="${escaparHTML(
-                    equipo.logoUrl
+                    equipo.logo
                 )}"
                 alt="${escaparHTML(
                     equipo.nombre
                 )}"
+                loading="lazy"
             >
         `;
 
     }
 
 
-    return escaparHTML(
-        obtenerInicial(
-            equipo.nombre
-        )
-    );
+    const inicial =
+        equipo.nombre
+            ?.trim()
+            ?.charAt(0)
+            ?.toUpperCase() ||
+        "?";
+
+
+    return `
+        <span>
+            ${escaparHTML(
+                inicial
+            )}
+        </span>
+    `;
 
 }
 
 
-function obtenerNumero(
-    valor
+function formatearRendimiento(
+    rendimiento
 ) {
 
-    const numero =
-        Number(
-            valor
-        );
+    if (
+        !Number.isFinite(
+            rendimiento
+        )
+    ) {
+
+        return "0%";
+
+    }
 
 
     if (
-        !Number.isFinite(numero)
+        rendimiento === 0
+    ) {
+
+        return "0%";
+
+    }
+
+
+    if (
+        Number.isInteger(
+            rendimiento
+        )
+    ) {
+
+        return `${rendimiento}%`;
+
+    }
+
+
+    return `${rendimiento.toFixed(
+        1
+    )}%`;
+
+}
+
+
+function limitarPorcentaje(
+    porcentaje
+) {
+
+    if (
+        !Number.isFinite(
+            porcentaje
+        )
     ) {
 
         return 0;
@@ -1079,82 +2044,186 @@ function obtenerNumero(
 
     return Math.max(
         0,
-        numero
+        Math.min(
+            100,
+            porcentaje
+        )
     );
 
 }
 
 
-function obtenerInicial(
-    texto
+function formatearDiferencia(
+    diferencia
 ) {
 
-    const valor =
-        String(
-            texto ||
-            ""
-        ).trim();
+    if (diferencia > 0) {
 
-
-    if (!valor) {
-
-        return "E";
+        return `+${diferencia}`;
 
     }
 
 
-    return valor
-        .charAt(0)
-        .toUpperCase();
+    return String(
+        diferencia
+    );
 
 }
 
 
-function normalizar(
-    texto
+function claseDiferencia(
+    diferencia
 ) {
 
-    return String(
-        texto ||
-        ""
-    )
-        .normalize("NFD")
-        .replace(
-            /[\u0300-\u036f]/g,
-            ""
-        )
-        .trim()
-        .toLowerCase();
+    if (diferencia > 0) {
+
+        return "positivo";
+
+    }
+
+
+    if (diferencia < 0) {
+
+        return "negativo";
+
+    }
+
+
+    return "";
 
 }
 
 
-function escaparHTML(
-    texto
-) {
+function actualizarTextoActualizacion() {
 
-    return String(
-        texto ??
-        ""
-    )
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll("\"", "&quot;")
-        .replaceAll("'", "&#039;");
+    const ahora =
+        new Date();
+
+
+    const texto =
+        ahora.toLocaleDateString(
+            "es-MX",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            }
+        );
+
+
+    textoActualizacion.textContent =
+        `Actualizado ${texto}`;
+
+}
+
+
+function mostrarCargando() {
+
+    estadoCarga.hidden =
+        false;
+
+    contenidoRanking.hidden =
+        true;
+
+    estadoVacio.hidden =
+        true;
 
 }
 
 
 function mostrarVacio() {
 
-    contenidoTabla.classList.add(
-        "oculto"
-    );
+    estadoCarga.hidden =
+        true;
+
+    contenidoRanking.hidden =
+        true;
+
+    estadoVacio.hidden =
+        false;
+
+}
 
 
-    estadoVacio.classList.remove(
-        "oculto"
-    );
+function mostrarError() {
+
+    estadoCarga.hidden =
+        false;
+
+    contenidoRanking.hidden =
+        true;
+
+    estadoVacio.hidden =
+        true;
+
+
+    estadoCarga.innerHTML = `
+
+        <div class="estado-carga-icono">
+            ⚠️
+        </div>
+
+        <div>
+
+            <strong>
+                No pudimos cargar el ranking
+            </strong>
+
+            <span>
+                Verifica tu conexión e intenta nuevamente.
+            </span>
+
+        </div>
+
+    `;
+
+}
+
+
+function normalizarTexto(
+    valor
+) {
+
+    return String(
+        valor || ""
+    )
+        .normalize("NFD")
+        .replace(
+            /[\u0300-\u036f]/g,
+            ""
+        )
+        .toLowerCase()
+        .trim();
+
+}
+
+
+function escaparHTML(
+    valor
+) {
+
+    return String(
+        valor ?? ""
+    )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }

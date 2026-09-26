@@ -77,59 +77,25 @@
                     Categoría
                 </label>
 
-                <select id="categoriaSelect">
-
-                    <option value="libre">
-                        Categoría Libre
+                <select
+                    id="categoriaSelect"
+                    disabled
+                >
+                    <option value="">
+                        Cargando categorías...
                     </option>
-
-                    <option value="juvenil">
-                        Juvenil
-                    </option>
-
-                    <option value="infantil">
-                        Infantil
-                    </option>
-
                 </select>
 
             </section>
 
 
-            <section class="selector-jornadas">
-
-                <button
-                    type="button"
-                    class="jornada-tab active"
-                    data-jornada="1"
-                >
-                    Jornada 1
-                </button>
-
-                <button
-                    type="button"
-                    class="jornada-tab"
-                    data-jornada="2"
-                >
-                    Jornada 2
-                </button>
-
-                <button
-                    type="button"
-                    class="jornada-tab"
-                    data-jornada="3"
-                >
-                    Jornada 3
-                </button>
-
-                <button
-                    type="button"
-                    class="jornada-tab"
-                    data-jornada="4"
-                >
-                    Jornada 4
-                </button>
-
+            <section
+                id="selectorJornadas"
+                class="selector-jornadas"
+            >
+                <span class="jornadas-cargando">
+                    Cargando jornadas...
+                </span>
             </section>
 
 
@@ -137,12 +103,15 @@
 
                 <div>
 
-                    <span class="seccion-mini">
-                        Categoría Libre
+                    <span
+                        id="categoriaActual"
+                        class="seccion-mini"
+                    >
+                        Selecciona una categoría
                     </span>
 
                     <h2 id="tituloJornada">
-                        Jornada 1
+                        Jornadas
                     </h2>
 
                 </div>
@@ -151,7 +120,7 @@
                     id="estadoJornada"
                     class="badge-jornada"
                 >
-                    En curso
+                    Cargando
                 </span>
 
             </section>
@@ -162,222 +131,21 @@
                 class="lista-partidos"
             >
 
+                <div class="estado-carga">
 
-                <article class="partido-card">
-
-                    <div class="partido-superior">
-
-                        <span>
-                            Sábado 29 de agosto
-                        </span>
-
-                        <span class="estado-partido proximo">
-                            Próximo
-                        </span>
-
+                    <div class="estado-carga-icono">
+                        ⚽
                     </div>
 
-
-                    <div class="partido-principal">
-
-                        <div class="equipo">
-
-                            <div class="escudo">
-                                J
-                            </div>
-
-                            <strong>
-                                Juárez
-                            </strong>
-
-                        </div>
-
-
-                        <div class="partido-centro">
-
-                            <span class="hora">
-                                3:00 PM
-                            </span>
-
-                            <strong>
-                                VS
-                            </strong>
-
-                            <span>
-                                Campo Municipal
-                            </span>
-
-                        </div>
-
-
-                        <div class="equipo">
-
-                            <div class="escudo">
-                                C
-                            </div>
-
-                            <strong>
-                                Chacales
-                            </strong>
-
-                        </div>
-
-                    </div>
-
-
-                    <a
-                        href="partido.html"
-                        class="btn-detalle"
-                    >
-                        Ver partido
-                    </a>
-
-                </article>
-
-
-                <article class="partido-card">
-
-                    <div class="partido-superior">
-
-                        <span>
-                            Sábado 29 de agosto
-                        </span>
-
-                        <span class="estado-partido finalizado">
-                            Finalizado
-                        </span>
-
-                    </div>
-
-
-                    <div class="partido-principal">
-
-                        <div class="equipo">
-
-                            <div class="escudo">
-                                S
-                            </div>
-
-                            <strong>
-                                Santos FC
-                            </strong>
-
-                        </div>
-
-
-                        <div class="partido-centro">
-
-                            <span class="hora">
-                                5:00 PM
-                            </span>
-
-                            <strong class="resultado">
-                                2 - 1
-                            </strong>
-
-                            <span>
-                                Campo Principal
-                            </span>
-
-                        </div>
-
-
-                        <div class="equipo">
-
-                            <div class="escudo">
-                                R
-                            </div>
-
-                            <strong>
-                                La Roma
-                            </strong>
-
-                        </div>
-
-                    </div>
-
-
-                    <a
-                        href="partido.html"
-                        class="btn-detalle"
-                    >
-                        Ver resultado
-                    </a>
-
-                </article>
-
-
-                <article class="partido-card">
-
-                    <div class="partido-superior">
-
-                        <span>
-                            Domingo 30 de agosto
-                        </span>
-
-                        <span class="estado-partido proximo">
-                            Próximo
-                        </span>
-
-                    </div>
-
-
-                    <div class="partido-principal">
-
-                        <div class="equipo">
-
-                            <div class="escudo">
-                                P
-                            </div>
-
-                            <strong>
-                                Pumas
-                            </strong>
-
-                        </div>
-
-
-                        <div class="partido-centro">
-
-                            <span class="hora">
-                                11:00 AM
-                            </span>
-
-                            <strong>
-                                VS
-                            </strong>
-
-                            <span>
-                                Unidad Deportiva
-                            </span>
-
-                        </div>
-
-
-                        <div class="equipo">
-
-                            <div class="escudo">
-                                A
-                            </div>
-
-                            <strong>
-                                Atlas
-                            </strong>
-
-                        </div>
-
-                    </div>
-
-
-                    <a
-                        href="partido.html"
-                        class="btn-detalle"
-                    >
-                        Ver partido
-                    </a>
-
-                </article>
-
+                    <strong>
+                        Cargando calendario
+                    </strong>
+
+                    <span>
+                        Estamos consultando las jornadas oficiales.
+                    </span>
+
+                </div>
 
             </section>
 

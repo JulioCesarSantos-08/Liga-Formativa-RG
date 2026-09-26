@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Tabla General | Liga Deportiva Río Grande</title>
+    <title>Tabla de Posiciones | Liga Deportiva Río Grande</title>
 
     <link rel="icon" href="imagenes/logo.png">
     <link rel="stylesheet" href="css/global.css">
@@ -40,13 +40,12 @@
                     </span>
 
                     <strong>
-                        Tabla General
+                        Tabla de Posiciones
                     </strong>
 
                 </div>
 
             </div>
-
 
             <button
                 type="button"
@@ -71,15 +70,43 @@
                 </span>
 
                 <h1>
-                    Tabla General
+                    Tabla de Posiciones
                 </h1>
 
                 <p>
-                    Consulta posiciones, puntos y estadísticas
-                    de los equipos por categoría.
+                    Consulta las posiciones, puntos y estadísticas
+                    de los equipos de cada categoría.
                 </p>
 
             </section>
+
+
+            <a
+                href="tablaGeneral.html"
+                class="btn-tabla-general"
+            >
+
+                <span class="btn-tabla-general-icono">
+                    🏆
+                </span>
+
+                <div class="btn-tabla-general-texto">
+
+                    <strong>
+                        Tabla General Oficial
+                    </strong>
+
+                    <small>
+                        Consulta la clasificación general completa
+                    </small>
+
+                </div>
+
+                <span class="btn-tabla-general-flecha">
+                    →
+                </span>
+
+            </a>
 
 
             <section class="selector-categoria">
@@ -88,20 +115,13 @@
                     Categoría
                 </label>
 
-                <select id="categoriaSelect">
-
-                    <option value="libre">
-                        Categoría Libre
+                <select
+                    id="categoriaSelect"
+                    disabled
+                >
+                    <option value="">
+                        Cargando categorías...
                     </option>
-
-                    <option value="juvenil">
-                        Juvenil
-                    </option>
-
-                    <option value="infantil">
-                        Infantil
-                    </option>
-
                 </select>
 
             </section>
@@ -112,11 +132,11 @@
                 <div>
 
                     <span class="seccion-mini">
-                        Temporada actual
+                        Clasificación
                     </span>
 
                     <h2 id="tituloCategoria">
-                        Categoría Libre
+                        Cargando categoría...
                     </h2>
 
                 </div>
@@ -137,7 +157,31 @@
             </section>
 
 
-            <section class="tabla-desktop">
+            <section
+                id="estadoTabla"
+                class="estado-tabla"
+            >
+                <div class="estado-tabla-icono">
+                    ⚽
+                </div>
+
+                <div>
+                    <strong>
+                        Cargando clasificación
+                    </strong>
+
+                    <span>
+                        Consultando la información oficial de la liga.
+                    </span>
+                </div>
+            </section>
+
+
+            <section
+                id="contenedorTablaDesktop"
+                class="tabla-desktop"
+                hidden
+            >
 
                 <div class="tabla-wrapper">
 
@@ -147,7 +191,9 @@
 
                             <tr>
                                 <th>Pos</th>
-                                <th class="equipo-columna">Equipo</th>
+                                <th class="equipo-columna">
+                                    Equipo
+                                </th>
                                 <th>PJ</th>
                                 <th>PG</th>
                                 <th>PE</th>
@@ -161,230 +207,6 @@
                         </thead>
 
                         <tbody id="tablaEquiposDesktop">
-
-                            <tr>
-
-                                <td>
-                                    <span class="posicion top">
-                                        1
-                                    </span>
-                                </td>
-
-                                <td class="equipo-tabla">
-
-                                    <div class="escudo-mini">
-                                        J
-                                    </div>
-
-                                    <a href="equipo.html">
-                                        Juárez
-                                    </a>
-
-                                </td>
-
-                                <td>4</td>
-                                <td>3</td>
-                                <td>1</td>
-                                <td>0</td>
-                                <td>9</td>
-                                <td>3</td>
-                                <td class="positivo">
-                                    +6
-                                </td>
-
-                                <td class="puntos">
-                                    10
-                                </td>
-
-                            </tr>
-
-
-                            <tr>
-
-                                <td>
-                                    <span class="posicion top">
-                                        2
-                                    </span>
-                                </td>
-
-                                <td class="equipo-tabla">
-
-                                    <div class="escudo-mini">
-                                        S
-                                    </div>
-
-                                    <a href="equipo.html">
-                                        Santos FC
-                                    </a>
-
-                                </td>
-
-                                <td>4</td>
-                                <td>3</td>
-                                <td>0</td>
-                                <td>1</td>
-                                <td>8</td>
-                                <td>4</td>
-                                <td class="positivo">
-                                    +4
-                                </td>
-
-                                <td class="puntos">
-                                    9
-                                </td>
-
-                            </tr>
-
-
-                            <tr>
-
-                                <td>
-                                    <span class="posicion">
-                                        3
-                                    </span>
-                                </td>
-
-                                <td class="equipo-tabla">
-
-                                    <div class="escudo-mini">
-                                        C
-                                    </div>
-
-                                    <a href="equipo.html">
-                                        Chacales
-                                    </a>
-
-                                </td>
-
-                                <td>4</td>
-                                <td>2</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>7</td>
-                                <td>5</td>
-                                <td class="positivo">
-                                    +2
-                                </td>
-
-                                <td class="puntos">
-                                    7
-                                </td>
-
-                            </tr>
-
-
-                            <tr>
-
-                                <td>
-                                    <span class="posicion">
-                                        4
-                                    </span>
-                                </td>
-
-                                <td class="equipo-tabla">
-
-                                    <div class="escudo-mini">
-                                        P
-                                    </div>
-
-                                    <a href="equipo.html">
-                                        Pumas
-                                    </a>
-
-                                </td>
-
-                                <td>4</td>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>1</td>
-                                <td>5</td>
-                                <td>5</td>
-                                <td>
-                                    0
-                                </td>
-
-                                <td class="puntos">
-                                    5
-                                </td>
-
-                            </tr>
-
-
-                            <tr>
-
-                                <td>
-                                    <span class="posicion">
-                                        5
-                                    </span>
-                                </td>
-
-                                <td class="equipo-tabla">
-
-                                    <div class="escudo-mini">
-                                        R
-                                    </div>
-
-                                    <a href="equipo.html">
-                                        La Roma
-                                    </a>
-
-                                </td>
-
-                                <td>4</td>
-                                <td>1</td>
-                                <td>0</td>
-                                <td>3</td>
-                                <td>4</td>
-                                <td>8</td>
-
-                                <td class="negativo">
-                                    -4
-                                </td>
-
-                                <td class="puntos">
-                                    3
-                                </td>
-
-                            </tr>
-
-
-                            <tr>
-
-                                <td>
-                                    <span class="posicion">
-                                        6
-                                    </span>
-                                </td>
-
-                                <td class="equipo-tabla">
-
-                                    <div class="escudo-mini">
-                                        A
-                                    </div>
-
-                                    <a href="equipo.html">
-                                        Atlas
-                                    </a>
-
-                                </td>
-
-                                <td>4</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>4</td>
-                                <td>2</td>
-                                <td>10</td>
-
-                                <td class="negativo">
-                                    -8
-                                </td>
-
-                                <td class="puntos">
-                                    0
-                                </td>
-
-                            </tr>
-
                         </tbody>
 
                     </table>
@@ -397,523 +219,8 @@
             <section
                 id="tablaEquiposMobile"
                 class="tabla-mobile"
+                hidden
             >
-
-                <article class="equipo-posicion-card">
-
-                    <div class="equipo-posicion-superior">
-
-                        <div class="equipo-identidad">
-
-                            <span class="posicion-mobile top">
-                                1
-                            </span>
-
-                            <div class="escudo-mobile">
-                                J
-                            </div>
-
-                            <div>
-
-                                <strong>
-                                    Juárez
-                                </strong>
-
-                                <span>
-                                    4 partidos jugados
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="puntos-mobile">
-
-                            <strong>
-                                10
-                            </strong>
-
-                            <span>
-                                PTS
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="estadisticas-mobile">
-
-                        <div>
-                            <span>PJ</span>
-                            <strong>4</strong>
-                        </div>
-
-                        <div>
-                            <span>PG</span>
-                            <strong>3</strong>
-                        </div>
-
-                        <div>
-                            <span>PE</span>
-                            <strong>1</strong>
-                        </div>
-
-                        <div>
-                            <span>PP</span>
-                            <strong>0</strong>
-                        </div>
-
-                        <div>
-                            <span>DG</span>
-                            <strong class="positivo">
-                                +6
-                            </strong>
-                        </div>
-
-                    </div>
-
-
-                    <a
-                        href="equipo.html"
-                        class="btn-ver-equipo"
-                    >
-                        Ver equipo
-                    </a>
-
-                </article>
-
-
-                <article class="equipo-posicion-card">
-
-                    <div class="equipo-posicion-superior">
-
-                        <div class="equipo-identidad">
-
-                            <span class="posicion-mobile top">
-                                2
-                            </span>
-
-                            <div class="escudo-mobile">
-                                S
-                            </div>
-
-                            <div>
-
-                                <strong>
-                                    Santos FC
-                                </strong>
-
-                                <span>
-                                    4 partidos jugados
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="puntos-mobile">
-
-                            <strong>
-                                9
-                            </strong>
-
-                            <span>
-                                PTS
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="estadisticas-mobile">
-
-                        <div>
-                            <span>PJ</span>
-                            <strong>4</strong>
-                        </div>
-
-                        <div>
-                            <span>PG</span>
-                            <strong>3</strong>
-                        </div>
-
-                        <div>
-                            <span>PE</span>
-                            <strong>0</strong>
-                        </div>
-
-                        <div>
-                            <span>PP</span>
-                            <strong>1</strong>
-                        </div>
-
-                        <div>
-                            <span>DG</span>
-                            <strong class="positivo">
-                                +4
-                            </strong>
-                        </div>
-
-                    </div>
-
-
-                    <a
-                        href="equipo.html"
-                        class="btn-ver-equipo"
-                    >
-                        Ver equipo
-                    </a>
-
-                </article>
-
-
-                <article class="equipo-posicion-card">
-
-                    <div class="equipo-posicion-superior">
-
-                        <div class="equipo-identidad">
-
-                            <span class="posicion-mobile">
-                                3
-                            </span>
-
-                            <div class="escudo-mobile">
-                                C
-                            </div>
-
-                            <div>
-
-                                <strong>
-                                    Chacales
-                                </strong>
-
-                                <span>
-                                    4 partidos jugados
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="puntos-mobile">
-
-                            <strong>
-                                7
-                            </strong>
-
-                            <span>
-                                PTS
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="estadisticas-mobile">
-
-                        <div>
-                            <span>PJ</span>
-                            <strong>4</strong>
-                        </div>
-
-                        <div>
-                            <span>PG</span>
-                            <strong>2</strong>
-                        </div>
-
-                        <div>
-                            <span>PE</span>
-                            <strong>1</strong>
-                        </div>
-
-                        <div>
-                            <span>PP</span>
-                            <strong>1</strong>
-                        </div>
-
-                        <div>
-                            <span>DG</span>
-                            <strong class="positivo">
-                                +2
-                            </strong>
-                        </div>
-
-                    </div>
-
-
-                    <a
-                        href="equipo.html"
-                        class="btn-ver-equipo"
-                    >
-                        Ver equipo
-                    </a>
-
-                </article>
-
-
-                <article class="equipo-posicion-card">
-
-                    <div class="equipo-posicion-superior">
-
-                        <div class="equipo-identidad">
-
-                            <span class="posicion-mobile">
-                                4
-                            </span>
-
-                            <div class="escudo-mobile">
-                                P
-                            </div>
-
-                            <div>
-
-                                <strong>
-                                    Pumas
-                                </strong>
-
-                                <span>
-                                    4 partidos jugados
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="puntos-mobile">
-
-                            <strong>
-                                5
-                            </strong>
-
-                            <span>
-                                PTS
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="estadisticas-mobile">
-
-                        <div>
-                            <span>PJ</span>
-                            <strong>4</strong>
-                        </div>
-
-                        <div>
-                            <span>PG</span>
-                            <strong>1</strong>
-                        </div>
-
-                        <div>
-                            <span>PE</span>
-                            <strong>2</strong>
-                        </div>
-
-                        <div>
-                            <span>PP</span>
-                            <strong>1</strong>
-                        </div>
-
-                        <div>
-                            <span>DG</span>
-                            <strong>
-                                0
-                            </strong>
-                        </div>
-
-                    </div>
-
-
-                    <a
-                        href="equipo.html"
-                        class="btn-ver-equipo"
-                    >
-                        Ver equipo
-                    </a>
-
-                </article>
-
-
-                <article class="equipo-posicion-card">
-
-                    <div class="equipo-posicion-superior">
-
-                        <div class="equipo-identidad">
-
-                            <span class="posicion-mobile">
-                                5
-                            </span>
-
-                            <div class="escudo-mobile">
-                                R
-                            </div>
-
-                            <div>
-
-                                <strong>
-                                    La Roma
-                                </strong>
-
-                                <span>
-                                    4 partidos jugados
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="puntos-mobile">
-
-                            <strong>
-                                3
-                            </strong>
-
-                            <span>
-                                PTS
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="estadisticas-mobile">
-
-                        <div>
-                            <span>PJ</span>
-                            <strong>4</strong>
-                        </div>
-
-                        <div>
-                            <span>PG</span>
-                            <strong>1</strong>
-                        </div>
-
-                        <div>
-                            <span>PE</span>
-                            <strong>0</strong>
-                        </div>
-
-                        <div>
-                            <span>PP</span>
-                            <strong>3</strong>
-                        </div>
-
-                        <div>
-                            <span>DG</span>
-                            <strong class="negativo">
-                                -4
-                            </strong>
-                        </div>
-
-                    </div>
-
-
-                    <a
-                        href="equipo.html"
-                        class="btn-ver-equipo"
-                    >
-                        Ver equipo
-                    </a>
-
-                </article>
-
-
-                <article class="equipo-posicion-card">
-
-                    <div class="equipo-posicion-superior">
-
-                        <div class="equipo-identidad">
-
-                            <span class="posicion-mobile">
-                                6
-                            </span>
-
-                            <div class="escudo-mobile">
-                                A
-                            </div>
-
-                            <div>
-
-                                <strong>
-                                    Atlas
-                                </strong>
-
-                                <span>
-                                    4 partidos jugados
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="puntos-mobile">
-
-                            <strong>
-                                0
-                            </strong>
-
-                            <span>
-                                PTS
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="estadisticas-mobile">
-
-                        <div>
-                            <span>PJ</span>
-                            <strong>4</strong>
-                        </div>
-
-                        <div>
-                            <span>PG</span>
-                            <strong>0</strong>
-                        </div>
-
-                        <div>
-                            <span>PE</span>
-                            <strong>0</strong>
-                        </div>
-
-                        <div>
-                            <span>PP</span>
-                            <strong>4</strong>
-                        </div>
-
-                        <div>
-                            <span>DG</span>
-                            <strong class="negativo">
-                                -8
-                            </strong>
-                        </div>
-
-                    </div>
-
-
-                    <a
-                        href="equipo.html"
-                        class="btn-ver-equipo"
-                    >
-                        Ver equipo
-                    </a>
-
-                </article>
-
             </section>
 
 
@@ -924,9 +231,9 @@
                 </strong>
 
                 <p>
-                    La clasificación se actualizará automáticamente
-                    con los resultados oficiales registrados en las
-                    cédulas arbitrales.
+                    La clasificación se actualiza automáticamente
+                    con los resultados oficiales registrados en
+                    los partidos de la liga.
                 </p>
 
             </section>

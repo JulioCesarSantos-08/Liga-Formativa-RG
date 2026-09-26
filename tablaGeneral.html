@@ -4,28 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="theme-color" content="#0f766e">
-
-    <title>Tabla General | Liga Deportiva Río Grande</title>
+    <title>Ranking General | Liga Deportiva Río Grande</title>
 
     <link rel="icon" href="imagenes/logo.png">
-
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/tablaGeneral.css">
 </head>
 
 <body>
 
-    <div class="tabla-page">
+    <div class="app-ranking">
 
         <header class="topbar">
 
-            <div class="topbar-left">
+            <div class="topbar-identidad">
 
                 <a
-                    href="publico.html"
+                    href="tablas.html"
                     class="btn-volver"
-                    aria-label="Volver"
+                    aria-label="Volver a tablas"
                 >
                     ←
                 </a>
@@ -36,71 +33,60 @@
                     class="topbar-logo"
                 >
 
-                <div class="topbar-titulo">
+                <div class="topbar-texto">
 
                     <span>
-                        Liga Deportiva
+                        Liga Municipal
                     </span>
 
                     <strong>
-                        Tabla General
+                        Ranking General
                     </strong>
 
                 </div>
 
             </div>
 
-
             <a
-                href="partidos.html"
-                class="btn-partidos"
+                href="tablas.html"
+                class="btn-clasificacion"
             >
-                ⚽
-                <span>
-                    Partidos
-                </span>
+                Ver por categoría
             </a>
 
         </header>
 
 
-        <main class="contenido">
+        <main class="contenido-ranking">
 
-            <section class="encabezado-pagina">
+            <section class="hero-ranking">
 
-                <div>
+                <div class="hero-contenido">
 
-                    <span class="encabezado-mini">
-                        COMPETENCIA
+                    <span class="hero-mini">
+                        Toda la liga en un solo ranking
                     </span>
 
                     <h1>
-                        Tabla general
+                        Ranking General
                     </h1>
 
                     <p>
-                        Consulta las posiciones oficiales de cada categoría
-                        de acuerdo con los resultados registrados.
+                        Compara el rendimiento de todos los equipos
+                        registrados en la Liga Municipal de Fútbol
+                        de Río Grande.
                     </p>
 
                 </div>
 
-            </section>
+                <div class="hero-emblema">
 
+                    <img
+                        src="imagenes/logo.png"
+                        alt="Liga Municipal de Fútbol Río Grande"
+                    >
 
-            <section class="selector-categoria">
-
-                <label for="categoriaTabla">
-                    Categoría
-                </label>
-
-                <select id="categoriaTabla">
-
-                    <option value="">
-                        Selecciona una categoría
-                    </option>
-
-                </select>
+                </div>
 
             </section>
 
@@ -110,18 +96,363 @@
                 class="estado-carga"
             >
 
-                <div class="spinner"></div>
+                <div class="estado-carga-icono">
+                    ⚽
+                </div>
 
-                <span>
-                    Calculando posiciones...
-                </span>
+                <div>
+
+                    <strong>
+                        Preparando ranking
+                    </strong>
+
+                    <span>
+                        Analizando equipos y resultados oficiales...
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <section
+                id="contenidoRanking"
+                class="contenido-dinamico"
+                hidden
+            >
+
+                <section class="podio-seccion">
+
+                    <div class="titulo-seccion">
+
+                        <div>
+
+                            <span class="seccion-mini">
+                                Los mejores de la liga
+                            </span>
+
+                            <h2>
+                                Podio General
+                            </h2>
+
+                        </div>
+
+                        <span
+                            id="textoActualizacion"
+                            class="texto-actualizacion"
+                        >
+                            Ranking actualizado
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        id="podioGeneral"
+                        class="podio-general"
+                    >
+                    </div>
+
+                </section>
+
+
+                <section class="resumen-general">
+
+                    <article class="resumen-card">
+
+                        <span class="resumen-icono">
+                            🛡️
+                        </span>
+
+                        <div>
+
+                            <strong id="totalEquipos">
+                                0
+                            </strong>
+
+                            <span>
+                                Equipos
+                            </span>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="resumen-card">
+
+                        <span class="resumen-icono">
+                            🏷️
+                        </span>
+
+                        <div>
+
+                            <strong id="totalCategorias">
+                                0
+                            </strong>
+
+                            <span>
+                                Categorías
+                            </span>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="resumen-card">
+
+                        <span class="resumen-icono">
+                            ⚽
+                        </span>
+
+                        <div>
+
+                            <strong id="totalPartidos">
+                                0
+                            </strong>
+
+                            <span>
+                                Partidos
+                            </span>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="resumen-card">
+
+                        <span class="resumen-icono">
+                            🥅
+                        </span>
+
+                        <div>
+
+                            <strong id="totalGoles">
+                                0
+                            </strong>
+
+                            <span>
+                                Goles
+                            </span>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+                <section class="buscador-seccion">
+
+                    <label for="buscarEquipo">
+                        Buscar dentro del ranking
+                    </label>
+
+                    <div class="buscador-ranking">
+
+                        <span class="buscador-icono">
+                            🔎
+                        </span>
+
+                        <input
+                            type="search"
+                            id="buscarEquipo"
+                            placeholder="Escribe el nombre de un equipo..."
+                            autocomplete="off"
+                        >
+
+                        <button
+                            type="button"
+                            id="btnLimpiarBusqueda"
+                            class="btn-limpiar"
+                            aria-label="Limpiar búsqueda"
+                            hidden
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+                    <div
+                        id="resultadoBusqueda"
+                        class="resultado-busqueda"
+                        hidden
+                    >
+                    </div>
+
+                </section>
+
+
+                <section class="ranking-seccion">
+
+                    <div class="ranking-encabezado">
+
+                        <div>
+
+                            <span class="seccion-mini">
+                                Clasificación global
+                            </span>
+
+                            <h2>
+                                Todos los equipos
+                            </h2>
+
+                        </div>
+
+                        <div class="ranking-contador">
+
+                            <strong id="cantidadRanking">
+                                0
+                            </strong>
+
+                            <span>
+                                equipos
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="ranking-leyenda">
+
+                        <span>
+                            PJ = Partidos jugados
+                        </span>
+
+                        <span>
+                            DG = Diferencia de goles
+                        </span>
+
+                        <span>
+                            PTS = Puntos
+                        </span>
+
+                        <span>
+                            REND. = Rendimiento
+                        </span>
+
+                    </div>
+
+
+                    <div class="ranking-desktop">
+
+                        <div class="tabla-ranking-wrapper">
+
+                            <table class="tabla-ranking">
+
+                                <thead>
+
+                                    <tr>
+                                        <th>Pos</th>
+
+                                        <th class="columna-equipo">
+                                            Equipo
+                                        </th>
+
+                                        <th class="columna-categoria">
+                                            Categoría
+                                        </th>
+
+                                        <th>PJ</th>
+                                        <th>PG</th>
+                                        <th>PE</th>
+                                        <th>PP</th>
+                                        <th>GF</th>
+                                        <th>GC</th>
+                                        <th>DG</th>
+                                        <th>PTS</th>
+                                        <th>Rend.</th>
+                                    </tr>
+
+                                </thead>
+
+                                <tbody id="rankingDesktop">
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="rankingMobile"
+                        class="ranking-mobile"
+                    >
+                    </div>
+
+
+                    <div
+                        id="sinResultados"
+                        class="sin-resultados"
+                        hidden
+                    >
+
+                        <span>
+                            🔎
+                        </span>
+
+                        <strong>
+                            No encontramos ese equipo
+                        </strong>
+
+                        <p>
+                            Intenta buscar con otro nombre.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <section class="explicacion-ranking">
+
+                    <div class="explicacion-icono">
+                        %
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            ¿Cómo funciona este ranking?
+                        </strong>
+
+                        <p>
+                            El Ranking General compara a todos los
+                            equipos de la liga mediante su porcentaje
+                            de rendimiento. Así pueden compararse
+                            equipos de distintas categorías aunque
+                            hayan disputado diferente cantidad de
+                            partidos.
+                        </p>
+
+                        <div class="formula-ranking">
+
+                            <span>
+                                Rendimiento
+                            </span>
+
+                            <strong>
+                                PTS ÷ (PJ × 3) × 100
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </section>
 
             </section>
 
 
             <section
                 id="estadoVacio"
-                class="estado-vacio oculto"
+                class="estado-vacio"
+                hidden
             >
 
                 <div class="estado-vacio-icono">
@@ -129,217 +460,66 @@
                 </div>
 
                 <strong>
-                    No hay información disponible
+                    El ranking todavía no está disponible
                 </strong>
 
                 <p>
-                    Esta categoría todavía no tiene equipos o resultados oficiales.
+                    Cuando existan equipos registrados aparecerán
+                    automáticamente en esta sección.
                 </p>
 
-            </section>
-
-
-            <section
-                id="contenidoTabla"
-                class="contenido-tabla oculto"
-            >
-
-                <div class="tabla-resumen">
-
-                    <article>
-
-                        <span>
-                            Equipos
-                        </span>
-
-                        <strong id="totalEquipos">
-                            0
-                        </strong>
-
-                    </article>
-
-
-                    <article>
-
-                        <span>
-                            Partidos jugados
-                        </span>
-
-                        <strong id="totalJugados">
-                            0
-                        </strong>
-
-                    </article>
-
-
-                    <article>
-
-                        <span>
-                            Goles
-                        </span>
-
-                        <strong id="totalGoles">
-                            0
-                        </strong>
-
-                    </article>
-
-                </div>
-
-
-                <section class="tabla-panel">
-
-                    <div class="tabla-header">
-
-                        <div>
-
-                            <span>
-                                POSICIONES
-                            </span>
-
-                            <h2 id="nombreCategoria">
-                                Categoría
-                            </h2>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="tabla-scroll">
-
-                        <table>
-
-                            <thead>
-
-                                <tr>
-
-                                    <th class="col-pos">
-                                        #
-                                    </th>
-
-                                    <th class="col-equipo">
-                                        Equipo
-                                    </th>
-
-                                    <th>
-                                        PJ
-                                    </th>
-
-                                    <th>
-                                        PG
-                                    </th>
-
-                                    <th>
-                                        PE
-                                    </th>
-
-                                    <th>
-                                        PP
-                                    </th>
-
-                                    <th>
-                                        GF
-                                    </th>
-
-                                    <th>
-                                        GC
-                                    </th>
-
-                                    <th>
-                                        DG
-                                    </th>
-
-                                    <th class="col-puntos">
-                                        PTS
-                                    </th>
-
-                                </tr>
-
-                            </thead>
-
-
-                            <tbody id="tablaEquipos">
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-                </section>
-
-
-                <section class="leyenda">
-
-                    <div>
-
-                        <span>
-                            PJ
-                        </span>
-
-                        <p>
-                            Partidos jugados
-                        </p>
-
-                    </div>
-
-
-                    <div>
-
-                        <span>
-                            PG
-                        </span>
-
-                        <p>
-                            Partidos ganados
-                        </p>
-
-                    </div>
-
-
-                    <div>
-
-                        <span>
-                            PE
-                        </span>
-
-                        <p>
-                            Empates
-                        </p>
-
-                    </div>
-
-
-                    <div>
-
-                        <span>
-                            PP
-                        </span>
-
-                        <p>
-                            Partidos perdidos
-                        </p>
-
-                    </div>
-
-
-                    <div>
-
-                        <span>
-                            DG
-                        </span>
-
-                        <p>
-                            Diferencia de goles
-                        </p>
-
-                    </div>
-
-                </section>
+                <a href="tablas.html">
+                    Ver tablas por categoría
+                </a>
 
             </section>
 
         </main>
+
+
+        <nav class="bottom-nav">
+
+            <a
+                href="publico.html"
+                class="bottom-item"
+            >
+                <span>🏠</span>
+                <small>Inicio</small>
+            </a>
+
+            <a
+                href="jornadas.html"
+                class="bottom-item"
+            >
+                <span>📅</span>
+                <small>Jornadas</small>
+            </a>
+
+            <a
+                href="tablas.html"
+                class="bottom-item active"
+            >
+                <span>🏆</span>
+                <small>Tablas</small>
+            </a>
+
+            <a
+                href="chat.html"
+                class="bottom-item"
+            >
+                <span>💬</span>
+                <small>Chat</small>
+            </a>
+
+            <a
+                href="publico.html"
+                class="bottom-item"
+            >
+                <span>☰</span>
+                <small>Más</small>
+            </a>
+
+        </nav>
 
     </div>
 

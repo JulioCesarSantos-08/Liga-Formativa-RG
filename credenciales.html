@@ -1,17 +1,39 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="theme-color" content="#0f766e">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <title>Credenciales | Liga Deportiva Río Grande</title>
+    <meta
+        name="theme-color"
+        content="#0b756d"
+    >
 
-    <link rel="icon" href="imagenes/logo.png">
+    <title>
+        Credenciales | Liga Municipal de Fútbol Río Grande
+    </title>
 
-    <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/credenciales.css">
+    <link
+        rel="icon"
+        href="imagenes/logo.png"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/global.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/credenciales.css"
+    >
+
 </head>
 
 <body>
@@ -26,14 +48,14 @@
                     href="jefeEquipo.html"
                     id="btnVolver"
                     class="btn-volver"
-                    aria-label="Volver al equipo"
+                    aria-label="Volver"
                 >
                     ←
                 </a>
 
                 <img
                     src="imagenes/logo.png"
-                    alt="Liga Deportiva Río Grande"
+                    alt="Liga Municipal de Fútbol Río Grande"
                     class="topbar-logo"
                 >
 
@@ -51,16 +73,12 @@
 
             </div>
 
-
             <button
                 type="button"
                 id="btnImprimirTop"
                 class="btn-imprimir-top"
             >
-                🖨️
-                <span>
-                    Imprimir
-                </span>
+                Imprimir
             </button>
 
         </header>
@@ -88,7 +106,7 @@
             >
 
                 <div class="estado-error-icono">
-                    ⚠️
+                    !
                 </div>
 
                 <h1>
@@ -119,7 +137,7 @@
                     <div>
 
                         <span class="encabezado-mini">
-                            DOCUMENTOS
+                            DOCUMENTOS OFICIALES
                         </span>
 
                         <h1>
@@ -127,8 +145,7 @@
                         </h1>
 
                         <p>
-                            Genera e imprime las identificaciones oficiales
-                            de los jugadores registrados en tu plantilla.
+                            Identificaciones oficiales de los jugadores registrados en la Liga Municipal de Fútbol Río Grande.
                         </p>
 
                     </div>
@@ -164,27 +181,20 @@
 
                     <div class="configuracion-info">
 
-                        <div class="configuracion-icono">
-                            🪪
-                        </div>
+                        <span>
+                            CREDENCIALES DISPONIBLES
+                        </span>
 
-                        <div>
+                        <strong>
+                            <b id="totalCredenciales">
+                                0
+                            </b>
+                            jugadores
+                        </strong>
 
-                            <span>
-                                CREDENCIALES DISPONIBLES
-                            </span>
-
-                            <strong>
-                                <span id="totalCredenciales">0</span>
-                                jugadores
-                            </strong>
-
-                            <p>
-                                Se acomodarán automáticamente varias
-                                credenciales por hoja para impresión.
-                            </p>
-
-                        </div>
+                        <p>
+                            Cada identificación incluye un código QR individual de verificación.
+                        </p>
 
                     </div>
 
@@ -195,6 +205,7 @@
                             id="filtroJugadores"
                             class="select-filtro"
                         >
+
                             <option value="todos">
                                 Todos los jugadores
                             </option>
@@ -206,6 +217,7 @@
                             <option value="sinCredencial">
                                 Sin credencial generada
                             </option>
+
                         </select>
 
 
@@ -214,25 +226,10 @@
                             id="btnImprimir"
                             class="btn-principal"
                         >
-                            🖨️ Imprimir / Guardar PDF
+                            Imprimir / Guardar PDF
                         </button>
 
                     </div>
-
-                </section>
-
-
-                <section class="aviso-impresion">
-
-                    <span>
-                        ℹ️
-                    </span>
-
-                    <p>
-                        Al imprimir, selecciona tamaño de papel A4 o Carta
-                        y utiliza escala al 100%. Las credenciales están
-                        diseñadas para recortarse después de la impresión.
-                    </p>
 
                 </section>
 
@@ -242,17 +239,12 @@
                     class="sin-jugadores oculto"
                 >
 
-                    <div class="sin-jugadores-icono">
-                        🪪
-                    </div>
-
                     <strong>
                         No hay credenciales para generar
                     </strong>
 
                     <p>
-                        Registra jugadores en tu plantilla para poder
-                        crear sus identificaciones.
+                        Registra jugadores en tu plantilla para crear sus identificaciones.
                     </p>
 
                 </section>
@@ -279,181 +271,424 @@
 
             <div class="credencial-frente">
 
-                <div class="credencial-header">
+                <div class="credencial-carcasa">
 
-                    <img
-                        src="imagenes/logo.png"
-                        alt="Liga Deportiva Río Grande"
-                        class="credencial-logo-liga"
-                    >
+                    <div class="marco-exterior">
 
-                    <div class="credencial-liga">
+                        <div class="esquina-ornamental esquina-superior-izquierda">
+                            <span></span>
+                        </div>
 
-                        <span>
-                            LIGA DEPORTIVA
-                        </span>
+                        <div class="esquina-ornamental esquina-superior-derecha">
+                            <span></span>
+                        </div>
 
-                        <strong>
-                            RÍO GRANDE
-                        </strong>
+                        <div class="esquina-ornamental esquina-inferior-izquierda">
+                            <span></span>
+                        </div>
 
-                        <small>
-                            CREDENCIAL DE JUGADOR
-                        </small>
-
-                    </div>
+                        <div class="esquina-ornamental esquina-inferior-derecha">
+                            <span></span>
+                        </div>
 
 
-                    <div class="credencial-temporada">
-                        OFICIAL
-                    </div>
+                        <div class="greca greca-superior">
 
-                </div>
-
-
-                <div class="credencial-contenido">
-
-                    <div class="credencial-foto">
-                        <img
-                            class="credencial-foto-img oculto"
-                            alt="Jugador"
-                        >
-
-                        <span class="credencial-foto-inicial">
-                            J
-                        </span>
-                    </div>
-
-
-                    <div class="credencial-datos">
-
-                        <span class="credencial-etiqueta">
-                            JUGADOR
-                        </span>
-
-                        <h2 class="credencial-nombre">
-                            Nombre del jugador
-                        </h2>
-
-
-                        <div class="credencial-datos-grid">
-
-                            <div>
-
-                                <span>
-                                    EQUIPO
-                                </span>
-
-                                <strong class="credencial-equipo">
-                                    Equipo
-                                </strong>
-
-                            </div>
-
-
-                            <div>
-
-                                <span>
-                                    CATEGORÍA
-                                </span>
-
-                                <strong class="credencial-categoria">
-                                    Categoría
-                                </strong>
-
-                            </div>
-
-
-                            <div>
-
-                                <span>
-                                    DORSAL
-                                </span>
-
-                                <strong class="credencial-dorsal">
-                                    -
-                                </strong>
-
-                            </div>
-
-
-                            <div>
-
-                                <span>
-                                    EDAD
-                                </span>
-
-                                <strong class="credencial-edad">
-                                    -
-                                </strong>
-
-                            </div>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
 
                         </div>
 
-                    </div>
 
-                </div>
+                        <div class="greca-lateral greca-lateral-izquierda"></div>
 
-
-                <div class="credencial-curp">
-
-                    <span>
-                        CURP
-                    </span>
-
-                    <strong class="credencial-curp-texto">
-                        -
-                    </strong>
-
-                </div>
+                        <div class="greca-lateral greca-lateral-derecha"></div>
 
 
-                <div class="credencial-footer">
+                        <div class="marco-interior">
 
-                    <div class="credencial-equipo-logo">
-                        <span class="credencial-equipo-inicial">
-                            E
-                        </span>
-
-                        <img
-                            class="credencial-equipo-img oculto"
-                            alt="Escudo del equipo"
-                        >
-                    </div>
+                            <div class="textura-credencial"></div>
 
 
-                    <div class="credencial-firma">
+                            <div class="marca-agua-credencial">
 
-                        <div class="firma-contenedor">
+                                <img
+                                    src="imagenes/credencial.png"
+                                    alt=""
+                                >
 
-                            <img
-                                class="firma-img oculto"
-                                alt="Firma autorizada"
-                            >
+                            </div>
 
-                            <span class="firma-placeholder">
-                                FIRMA ELECTRÓNICA
-                            </span>
+
+                            <section class="credencial-encabezado">
+
+                                <div class="credencial-logo-bloque">
+
+                                    <img
+                                        src="imagenes/credencial.png"
+                                        alt="Liga Municipal de Fútbol Río Grande"
+                                        class="credencial-logo-liga"
+                                    >
+
+                                </div>
+
+
+                                <div class="credencial-titulos">
+
+                                    <h2>
+                                        LIGA MUNICIPAL
+                                        <br>
+                                        DE FÚTBOL
+                                    </h2>
+
+                                    <h3>
+                                        INFANTIL Y JUVENIL FORMATIVA
+                                    </h3>
+
+
+                                    <div class="separador-prehispanico">
+
+                                        <span class="separador-linea separador-linea-verde"></span>
+
+                                        <span class="separador-flor">
+                                            <i></i>
+                                        </span>
+
+                                        <span class="separador-linea separador-linea-roja"></span>
+
+                                    </div>
+
+
+                                    <div class="temporada">
+
+                                        <span>
+                                            TEMPORADA
+                                        </span>
+
+                                        <strong class="credencial-temporada">
+                                            2026 - 2027
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </section>
+
+
+                            <section class="credencial-identificacion">
+
+                                <div class="credencial-foto-columna">
+
+                                    <div class="foto-marco-ornamental">
+
+                                        <div class="foto-borde foto-borde-superior"></div>
+
+                                        <div class="foto-borde foto-borde-derecho"></div>
+
+                                        <div class="foto-borde foto-borde-inferior"></div>
+
+                                        <div class="foto-borde foto-borde-izquierdo"></div>
+
+
+                                        <div class="credencial-foto">
+
+                                            <img
+                                                class="credencial-foto-img oculto"
+                                                alt="Fotografía del jugador"
+                                            >
+
+                                            <span class="credencial-foto-inicial">
+                                                J
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="credencial-datos">
+
+                                    <div class="dato-jugador dato-nombre">
+
+                                        <div class="dato-icono icono-agua">
+                                            <span></span>
+                                        </div>
+
+
+                                        <div class="dato-contenido">
+
+                                            <span>
+                                                NOMBRE:
+                                            </span>
+
+                                            <strong class="credencial-nombre">
+                                                NOMBRE DEL JUGADOR
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="dato-jugador">
+
+                                        <div class="dato-icono icono-terracota">
+                                            <span></span>
+                                        </div>
+
+
+                                        <div class="dato-contenido">
+
+                                            <span>
+                                                Nº:
+                                            </span>
+
+                                            <strong class="credencial-dorsal">
+                                                -
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="dato-jugador">
+
+                                        <div class="dato-icono icono-verde">
+                                            <span></span>
+                                        </div>
+
+
+                                        <div class="dato-contenido">
+
+                                            <span>
+                                                EQUIPO:
+                                            </span>
+
+                                            <strong class="credencial-equipo">
+                                                EQUIPO
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="dato-jugador">
+
+                                        <div class="dato-icono icono-ocre">
+                                            <span></span>
+                                        </div>
+
+
+                                        <div class="dato-contenido">
+
+                                            <span>
+                                                CATEGORÍA:
+                                            </span>
+
+                                            <strong class="credencial-categoria">
+                                                CATEGORÍA
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </section>
+
+
+                            <section class="frase-formativa">
+
+                                <div class="frase-figura frase-figura-izquierda">
+
+                                    <div class="figura-cabeza">
+                                        <span></span>
+                                    </div>
+
+                                </div>
+
+
+                                <p>
+                                    LA FORMACIÓN DE UN NIÑO SURGE
+                                    <br>
+                                    SOBRE LOS HOMBROS DE UN
+                                    <br>
+                                    GIGANTE: SU ENTRENADOR
+                                </p>
+
+
+                                <div class="frase-figura frase-figura-derecha">
+
+                                    <div class="figura-cabeza">
+                                        <span></span>
+                                    </div>
+
+                                </div>
+
+                            </section>
+
+
+                            <section class="credencial-validacion">
+
+                                <div class="qr-area">
+
+                                    <div class="qr-marco">
+
+                                        <canvas
+                                            class="credencial-qr-canvas"
+                                            width="220"
+                                            height="220"
+                                        ></canvas>
+
+                                    </div>
+
+                                    <span>
+                                        ESCANEA PARA VERIFICAR
+                                    </span>
+
+                                </div>
+
+
+                                <div class="firma-area">
+
+                                    <div class="firma-sello">
+
+                                        <img
+                                            src="imagenes/sello.png"
+                                            alt="Sello oficial"
+                                            class="credencial-sello"
+                                        >
+
+                                        <img
+                                            src="imagenes/firma.png"
+                                            alt="Firma del presidente"
+                                            class="firma-img"
+                                        >
+
+                                    </div>
+
+                                    <div class="firma-linea"></div>
+
+                                    <strong>
+                                        PRESIDENTE DE LA LIGA
+                                    </strong>
+
+                                    <span>
+                                        FIRMA Y SELLO OFICIAL
+                                    </span>
+
+                                </div>
+
+
+                                <div class="identidad-liga-inferior">
+
+                                    <img
+                                        src="imagenes/credencial.png"
+                                        alt="Liga Municipal de Fútbol Río Grande"
+                                    >
+
+                                    <strong>
+                                        RÍO GRANDE
+                                    </strong>
+
+                                    <span>
+                                        VILLA DE TUTUTEPEC, OAX.
+                                    </span>
+
+                                </div>
+
+                            </section>
+
+
+                            <section class="credencial-control">
+
+                                <div class="credencial-folio">
+
+                                    <span>
+                                        FOLIO
+                                    </span>
+
+                                    <strong class="credencial-folio-texto">
+                                        -
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="credencial-oficial">
+
+                                    <span></span>
+
+                                    <strong>
+                                        CREDENCIAL OFICIAL
+                                    </strong>
+
+                                </div>
+
+                            </section>
+
+
+                            <footer class="credencial-pie">
+
+                                <div class="pie-flor">
+                                    <span></span>
+                                </div>
+
+                                <strong>
+                                    DISCIPLINA
+                                </strong>
+
+                                <i></i>
+
+                                <strong>
+                                    AMISTAD
+                                </strong>
+
+                                <i></i>
+
+                                <strong>
+                                    FORMACIÓN
+                                </strong>
+
+                                <i></i>
+
+                                <strong>
+                                    GRANDES SUEÑOS
+                                </strong>
+
+                                <div class="pie-flor">
+                                    <span></span>
+                                </div>
+
+                            </footer>
 
                         </div>
 
-                        <span>
-                            AUTORIZACIÓN DE LA LIGA
-                        </span>
 
-                    </div>
+                        <div class="greca greca-inferior">
 
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
 
-                    <div class="credencial-folio">
-
-                        <span>
-                            FOLIO
-                        </span>
-
-                        <strong class="credencial-folio-texto">
-                            -
-                        </strong>
+                        </div>
 
                     </div>
 
@@ -490,10 +725,11 @@
     </div>
 
 
-    <script
+       <script
         type="module"
         src="js/jefeEquipo/credenciales.js"
     ></script>
 
 </body>
+
 </html>

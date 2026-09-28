@@ -4,6 +4,7 @@ import {
     doc,
     getDoc,
     updateDoc,
+    setDoc,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
@@ -80,12 +81,17 @@ let equipoActual = null;
 
 let jugadores = [];
 
-let firmaLigaUrl = null;
+let temporadaActual = null;
 
 let toastTimer = null;
 
+let promesaLibreriaQr = null;
 
-const CREDENCIALES_POR_HOJA = 10;
+
+const CREDENCIALES_POR_HOJA = 9;
+
+const URL_BASE =
+    "https://liga-formativa-rg.vercel.app";
 
 
 const usuario =
@@ -97,7 +103,8 @@ const usuario =
 
 if (usuario) {
 
-    usuarioActual = usuario;
+    usuarioActual =
+        usuario;
 
     activarEventos();
 
@@ -164,8 +171,12 @@ async function iniciar() {
 
         await Promise.all([
             cargarJugadores(),
-            cargarConfiguracionLiga()
+            cargarTemporadaActual(),
+            cargarLibreriaQr()
         ]);
+
+
+        await prepararCredencialesPublicas();
 
 
         configurarBotonVolver();
@@ -190,6 +201,48 @@ async function iniciar() {
             "Error cargando credenciales:",
             error
         );
+
+
+        if (
+            error &&
+            error.message &&
+            error.message.includes("QR")
+        ) {
+
+            try {
+
+                configurarBotonVolver();
+
+                cargarDatosEquipo();
+
+                renderizarCredenciales();
+
+                estadoCarga.classList.add(
+                    "oculto"
+                );
+
+                contenidoCredenciales.classList.remove(
+                    "oculto"
+                );
+
+                mostrarToast(
+                    "error",
+                    "QR no disponible",
+                    "Las credenciales se cargaron, pero el generador QR no pudo iniciarse."
+                );
+
+                return;
+
+            } catch (errorSecundario) {
+
+                console.error(
+                    "Error cargando la interfaz:",
+                    errorSecundario
+                );
+
+            }
+
+        }
 
 
         mostrarError(
@@ -237,7 +290,8 @@ async function cargarEquipo(
 
     if (!snapshot.exists()) {
 
-        equipoActual = null;
+        equipoActual =
+            null;
 
         return;
 
@@ -317,71 +371,54 @@ async function cargarJugadores() {
 }
 
 
-async function cargarConfiguracionLiga() {
+async function cargarTemporadaActual() {
 
-    firmaLigaUrl =
+    temporadaActual =
         null;
 
 
-    const rutasPosibles = [
-        ["configuracion", "liga"],
-        ["configuracion", "general"],
-        ["ajustes", "liga"]
-    ];
+    try {
 
-
-    for (
-        const [coleccion, documento]
-        of rutasPosibles
-    ) {
-
-        try {
-
-            const snapshot =
-                await getDoc(
-                    doc(
-                        db,
-                        coleccion,
-                        documento
-                    )
-                );
-
-
-            if (!snapshot.exists()) {
-
-                continue;
-
-            }
-
-
-            const datos =
-                snapshot.data();
-
-
-            const firma =
-                datos.firmaUrl ||
-                datos.firmaElectronicaUrl ||
-                datos.firmaPresidenteUrl ||
-                null;
-
-
-            if (firma) {
-
-                firmaLigaUrl =
-                    firma;
-
-                break;
-
-            }
-
-        } catch (error) {
-
-            console.warn(
-                `No se pudo consultar ${coleccion}/${documento}:`,
-                error
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "temporadas"
+                )
             );
 
-        }
+
+        const temporadas =
+            snapshot.docs.map(
+                documento => ({
+                    id: documento.id,
+                    ...documento.data()
+                })
+            );
+
+
+        temporadaActual =
+            temporadas.find(
+                temporada =>
+                    temporada.activa === true ||
+                    normalizarTexto(
+                        temporada.estado
+                    ) === "activa"
+            ) ||
+            temporadas.find(
+                temporada =>
+                    normalizarTexto(
+                        temporada.estado
+                    ) === "proxima"
+            ) ||
+            null;
+
+    } catch (error) {
+
+        console.warn(
+            "No se pudo obtener la temporada actual:",
+            error
+        );
 
     }
 
@@ -422,11 +459,14 @@ function cargarDatosEquipo() {
         "Sin categoría";
 
 
-    if (
-        equipoActual.logoUrl
-    ) {
+    const logo =
+        obtenerLogoEquipo();
 
-        equipoLogo.innerHTML = "";
+
+    if (logo) {
+
+        equipoLogo.innerHTML =
+            "";
 
 
         const imagen =
@@ -436,7 +476,7 @@ function cargarDatosEquipo() {
 
 
         imagen.src =
-            equipoActual.logoUrl;
+            logo;
 
 
         imagen.alt =
@@ -631,9 +671,9 @@ function crearCredencial(
 
 
     const nombre =
-        jugador.nombre ||
-        jugador.nombreCompleto ||
-        "Jugador";
+        obtenerNombreJugador(
+            jugador
+        );
 
 
     const numero =
@@ -642,10 +682,10 @@ function crearCredencial(
         "-";
 
 
-    const edad =
-        calcularEdad(
-            jugador.fechaNacimiento
-        );
+    const categoria =
+        equipoActual.categoriaNombre ||
+        jugador.categoriaNombre ||
+        "Sin categoría";
 
 
     const folio =
@@ -654,52 +694,97 @@ function crearCredencial(
         );
 
 
-    credencial.querySelector(
-        ".credencial-nombre"
-    ).textContent =
-        nombre;
+    const temporada =
+        obtenerNombreTemporada();
 
 
-    credencial.querySelector(
-        ".credencial-equipo"
-    ).textContent =
-        equipoActual.nombre ||
-        "Equipo";
+    credencial.dataset.jugadorId =
+        jugador.id;
 
 
-    credencial.querySelector(
-        ".credencial-categoria"
-    ).textContent =
-        equipoActual.categoriaNombre ||
-        jugador.categoriaNombre ||
-        "Sin categoría";
+    const nombreElemento =
+        credencial.querySelector(
+            ".credencial-nombre"
+        );
 
 
-    credencial.querySelector(
-        ".credencial-dorsal"
-    ).textContent =
-        numero;
+    const equipoElemento =
+        credencial.querySelector(
+            ".credencial-equipo"
+        );
 
 
-    credencial.querySelector(
-        ".credencial-edad"
-    ).textContent =
-        edad !== null
-            ? `${edad} años`
-            : "-";
+    const categoriaElemento =
+        credencial.querySelector(
+            ".credencial-categoria"
+        );
 
 
-    credencial.querySelector(
-        ".credencial-curp-texto"
-    ).textContent =
-        jugador.curp ||
-        "SIN CURP";
+    const dorsalElemento =
+        credencial.querySelector(
+            ".credencial-dorsal"
+        );
 
 
-    credencial.querySelector(
-        ".credencial-folio-texto"
-    ).textContent =
-        folio;
+    const folioElemento =
+        credencial.querySelector(
+            ".credencial-folio-texto"
+        );
+
+
+    const temporadaElemento =
+        credencial.querySelector(
+            ".credencial-temporada"
+        );
+
+
+    if (nombreElemento) {
+
+        nombreElemento.textContent =
+            nombre;
+
+    }
+
+
+    if (equipoElemento) {
+
+        equipoElemento.textContent =
+            equipoActual.nombre ||
+            "Equipo";
+
+    }
+
+
+    if (categoriaElemento) {
+
+        categoriaElemento.textContent =
+            categoria;
+
+    }
+
+
+    if (dorsalElemento) {
+
+        dorsalElemento.textContent =
+            numero;
+
+    }
+
+
+    if (folioElemento) {
+
+        folioElemento.textContent =
+            folio;
+
+    }
+
+
+    if (temporadaElemento) {
+
+        temporadaElemento.textContent =
+            temporada;
+
+    }
 
 
     cargarFotoJugador(
@@ -709,13 +794,9 @@ function crearCredencial(
     );
 
 
-    cargarEscudoEquipo(
-        credencial
-    );
-
-
-    cargarFirmaLiga(
-        credencial
+    generarQrJugador(
+        credencial,
+        jugador
     );
 
 
@@ -743,8 +824,25 @@ function cargarFotoJugador(
 
 
     if (
-        !jugador.fotoUrl
+        !imagen ||
+        !inicial
     ) {
+
+        return;
+
+    }
+
+
+    const foto =
+        jugador.fotoUrl ||
+        jugador.fotoURL ||
+        jugador.foto ||
+        jugador.imagenUrl ||
+        jugador.imagen ||
+        "";
+
+
+    if (!foto) {
 
         inicial.textContent =
             obtenerInicial(
@@ -757,7 +855,7 @@ function cargarFotoJugador(
 
 
     imagen.src =
-        jugador.fotoUrl;
+        foto;
 
 
     imagen.alt =
@@ -799,138 +897,628 @@ function cargarFotoJugador(
 }
 
 
-function cargarEscudoEquipo(
-    credencial
+async function generarQrJugador(
+    credencial,
+    jugador
 ) {
 
-    const imagen =
+    const canvas =
         credencial.querySelector(
-            ".credencial-equipo-img"
+            ".credencial-qr-canvas"
         );
 
 
-    const inicial =
-        credencial.querySelector(
-            ".credencial-equipo-inicial"
-        );
-
-
-    if (
-        !equipoActual.logoUrl
-    ) {
-
-        inicial.textContent =
-            obtenerInicial(
-                equipoActual.nombre ||
-                "E"
-            );
+    if (!canvas) {
 
         return;
 
     }
 
 
-    imagen.src =
-        equipoActual.logoUrl;
+    const url =
+        obtenerUrlVerificacion(
+            jugador
+        );
 
 
-    imagen.alt =
-        equipoActual.nombre ||
-        "Equipo";
+    try {
+
+        await cargarLibreriaQr();
 
 
-    imagen.classList.remove(
-        "oculto"
-    );
+        if (
+            !window.QRCode ||
+            typeof window.QRCode.toCanvas !== "function"
+        ) {
 
-
-    inicial.classList.add(
-        "oculto"
-    );
-
-
-    imagen.addEventListener(
-        "error",
-        () => {
-
-            imagen.classList.add(
-                "oculto"
+            throw new Error(
+                "El generador QR no está disponible."
             );
 
-
-            inicial.classList.remove(
-                "oculto"
-            );
+        }
 
 
-            inicial.textContent =
-                obtenerInicial(
-                    equipoActual.nombre ||
-                    "E"
+        await new Promise(
+            (resolve, reject) => {
+
+                window.QRCode.toCanvas(
+                    canvas,
+                    url,
+                    {
+                        width: 220,
+                        margin: 2,
+                        errorCorrectionLevel: "H",
+                        color: {
+                            dark: "#000000",
+                            light: "#ffffff"
+                        }
+                    },
+                    error => {
+
+                        if (error) {
+
+                            reject(
+                                error
+                            );
+
+                            return;
+
+                        }
+
+
+                        canvas.dataset.qrListo =
+                            "true";
+
+
+                        resolve();
+
+                    }
                 );
 
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Error generando QR del jugador:",
+            jugador.id,
+            error
+        );
+
+
+        canvas.dataset.qrError =
+            "true";
+
+
+        mostrarQrNoDisponible(
+            canvas
+        );
+
+    }
+
+}
+
+
+function cargarLibreriaQr() {
+
+    if (
+        window.QRCode &&
+        typeof window.QRCode.toCanvas === "function"
+    ) {
+
+        return Promise.resolve();
+
+    }
+
+
+    if (promesaLibreriaQr) {
+
+        return promesaLibreriaQr;
+
+    }
+
+
+    promesaLibreriaQr =
+        new Promise(
+            (resolve, reject) => {
+
+                const scriptExistente =
+                    document.querySelector(
+                        'script[data-libreria-qr="true"]'
+                    );
+
+
+                if (scriptExistente) {
+
+                    const comprobar =
+                        () => {
+
+                            if (
+                                window.QRCode &&
+                                typeof window.QRCode.toCanvas === "function"
+                            ) {
+
+                                resolve();
+
+                            } else {
+
+                                reject(
+                                    new Error(
+                                        "La librería QR cargó pero el generador no está disponible."
+                                    )
+                                );
+
+                            }
+
+                        };
+
+
+                    if (
+                        scriptExistente.dataset.cargado ===
+                        "true"
+                    ) {
+
+                        comprobar();
+
+                        return;
+
+                    }
+
+
+                    scriptExistente.addEventListener(
+                        "load",
+                        comprobar,
+                        {
+                            once: true
+                        }
+                    );
+
+
+                    scriptExistente.addEventListener(
+                        "error",
+                        () => {
+
+                            reject(
+                                new Error(
+                                    "No fue posible cargar la librería QR."
+                                )
+                            );
+
+                        },
+                        {
+                            once: true
+                        }
+                    );
+
+
+                    return;
+
+                }
+
+
+                const script =
+                    document.createElement(
+                        "script"
+                    );
+
+
+                script.src =
+                    "/js/libs/qrcode.min.js";
+
+
+                script.async =
+                    true;
+
+
+                script.dataset.libreriaQr =
+                    "true";
+
+
+                script.onload =
+                    () => {
+
+                        script.dataset.cargado =
+                            "true";
+
+
+                        if (
+                            window.QRCode &&
+                            typeof window.QRCode.toCanvas === "function"
+                        ) {
+
+                            resolve();
+
+                        } else {
+
+                            reject(
+                                new Error(
+                                    "La librería QR no expuso el generador esperado."
+                                )
+                            );
+
+                        }
+
+                    };
+
+
+                script.onerror =
+                    () => {
+
+                        promesaLibreriaQr =
+                            null;
+
+
+                        reject(
+                            new Error(
+                                "No fue posible cargar la librería QR."
+                            )
+                        );
+
+                    };
+
+
+                document.head.appendChild(
+                    script
+                );
+
+            }
+        );
+
+
+    return promesaLibreriaQr;
+
+}
+
+
+function mostrarQrNoDisponible(
+    canvas
+) {
+
+    const contexto =
+        canvas.getContext(
+            "2d"
+        );
+
+
+    if (!contexto) {
+
+        return;
+
+    }
+
+
+    canvas.width =
+        220;
+
+
+    canvas.height =
+        220;
+
+
+    contexto.fillStyle =
+        "#ffffff";
+
+
+    contexto.fillRect(
+        0,
+        0,
+        220,
+        220
+    );
+
+
+    contexto.strokeStyle =
+        "#102b28";
+
+
+    contexto.lineWidth =
+        5;
+
+
+    contexto.strokeRect(
+        8,
+        8,
+        204,
+        204
+    );
+
+
+    contexto.fillStyle =
+        "#102b28";
+
+
+    contexto.font =
+        "bold 18px Arial";
+
+
+    contexto.textAlign =
+        "center";
+
+
+    contexto.textBaseline =
+        "middle";
+
+
+    contexto.fillText(
+        "QR NO",
+        110,
+        96
+    );
+
+
+    contexto.fillText(
+        "DISPONIBLE",
+        110,
+        124
+    );
+
+}
+
+
+async function prepararCredencialesPublicas() {
+
+    for (const jugador of jugadores) {
+
+        let token =
+            String(
+                jugador.credencialToken ||
+                ""
+            ).trim();
+
+
+        if (!token) {
+
+            token =
+                generarTokenCredencial();
+
+
+            await updateDoc(
+                doc(
+                    db,
+                    "jugadores",
+                    jugador.id
+                ),
+                {
+                    credencialToken: token,
+                    credencialTokenCreadoEn: serverTimestamp()
+                }
+            );
+
+
+            jugador.credencialToken =
+                token;
+
+        }
+
+
+        await publicarCredencialJugador(
+            jugador
+        );
+
+    }
+
+}
+
+
+async function publicarCredencialJugador(
+    jugador
+) {
+
+    const token =
+        String(
+            jugador.credencialToken ||
+            ""
+        ).trim();
+
+
+    if (!token) {
+
+        throw new Error(
+            "No fue posible crear el código de verificación de la credencial."
+        );
+
+    }
+
+
+    const nombre =
+        obtenerNombreJugador(
+            jugador
+        );
+
+
+    const numero =
+        jugador.numero ??
+        jugador.dorsal ??
+        jugador.numeroJugador ??
+        "";
+
+
+    const fotoUrl =
+        jugador.fotoUrl ||
+        jugador.fotoURL ||
+        jugador.foto ||
+        jugador.imagenUrl ||
+        jugador.imagen ||
+        "";
+
+
+    const suspendido =
+        jugador.suspendido === true ||
+        Number(
+            jugador.partidosSuspensionPendientes ||
+            0
+        ) > 0;
+
+
+    const activo =
+        jugador.activo !== false;
+
+
+    await setDoc(
+        doc(
+            db,
+            "credencialesPublicas",
+            token
+        ),
+        {
+            nombre,
+            numero,
+            equipoNombre:
+                equipoActual.nombre ||
+                "Equipo",
+            categoriaNombre:
+                equipoActual.categoriaNombre ||
+                jugador.categoriaNombre ||
+                "Sin categoría",
+            fotoUrl,
+            temporada:
+                obtenerNombreTemporada(),
+            folio:
+                obtenerFolioJugador(
+                    jugador
+                ),
+            activa:
+                activo,
+            suspendido,
+            vigente:
+                activo &&
+                !suspendido,
+            actualizadoEn:
+                serverTimestamp()
+        },
+        {
+            merge: true
         }
     );
 
 }
 
 
-function cargarFirmaLiga(
-    credencial
+function generarTokenCredencial() {
+
+    const bytes =
+        new Uint8Array(
+            24
+        );
+
+
+    crypto.getRandomValues(
+        bytes
+    );
+
+
+    return Array.from(
+        bytes,
+        byte =>
+            byte
+                .toString(16)
+                .padStart(2, "0")
+    ).join(
+        ""
+    );
+
+}
+
+
+function obtenerUrlVerificacion(
+    jugador
 ) {
 
-    const imagen =
-        credencial.querySelector(
-            ".firma-img"
+    const token =
+        String(
+            jugador.credencialToken ||
+            ""
+        ).trim();
+
+
+    const url =
+        new URL(
+            "/verificarJugador.html",
+            URL_BASE
         );
 
 
-    const placeholder =
-        credencial.querySelector(
-            ".firma-placeholder"
-        );
+    url.searchParams.set(
+        "v",
+        token
+    );
 
 
-    if (!firmaLigaUrl) {
+    return url.toString();
 
-        placeholder.classList.remove(
-            "oculto"
-        );
+}
 
-        return;
+
+function obtenerNombreTemporada() {
+
+    if (!temporadaActual) {
+
+        return "TEMPORADA ACTUAL";
 
     }
 
 
-    imagen.src =
-        firmaLigaUrl;
+    return temporadaActual.nombre ||
+        temporadaActual.temporada ||
+        temporadaActual.titulo ||
+        "TEMPORADA ACTUAL";
+
+}
 
 
-    imagen.classList.remove(
-        "oculto"
-    );
+function obtenerNombreJugador(
+    jugador
+) {
+
+    if (
+        jugador.nombreCompleto
+    ) {
+
+        return jugador.nombreCompleto;
+
+    }
 
 
-    placeholder.classList.add(
-        "oculto"
-    );
+    const partes = [
+        jugador.nombre,
+        jugador.apellidoPaterno,
+        jugador.apellidoMaterno
+    ]
+        .filter(Boolean)
+        .map(
+            valor =>
+                String(valor).trim()
+        )
+        .filter(Boolean);
 
 
-    imagen.addEventListener(
-        "error",
-        () => {
+    if (partes.length) {
 
-            imagen.classList.add(
-                "oculto"
-            );
+        return partes.join(
+            " "
+        );
+
+    }
 
 
-            placeholder.classList.remove(
-                "oculto"
-            );
+    return jugador.nombre ||
+        "Jugador";
 
-        }
-    );
+}
+
+
+function obtenerLogoEquipo() {
+
+    return equipoActual.logoUrl ||
+        equipoActual.logoURL ||
+        equipoActual.logo ||
+        equipoActual.escudoUrl ||
+        equipoActual.escudoURL ||
+        equipoActual.escudo ||
+        equipoActual.imagenUrl ||
+        equipoActual.imagen ||
+        "";
 
 }
 
@@ -975,13 +1563,31 @@ async function imprimirCredenciales() {
         await esperarImagenes();
 
 
+        await esperarQr();
+
+
+        const qrConError =
+            hojasCredenciales.querySelector(
+                '.credencial-qr-canvas[data-qr-error="true"]'
+            );
+
+
+        if (qrConError) {
+
+            throw new Error(
+                "Uno o más códigos QR no pudieron generarse."
+            );
+
+        }
+
+
         setTimeout(
             () => {
 
                 window.print();
 
             },
-            150
+            180
         );
 
 
@@ -1000,6 +1606,7 @@ async function imprimirCredenciales() {
         mostrarToast(
             "error",
             "No se pudo imprimir",
+            error.message ||
             "Ocurrió un problema al preparar las credenciales."
         );
 
@@ -1026,28 +1633,28 @@ async function marcarCredencialesGeneradas(
 ) {
 
     const actualizaciones =
-        lista
-            .filter(
-                jugador =>
-                    jugador.credencialGenerada !== true
-            )
-            .map(
-                jugador =>
-                    updateDoc(
-                        doc(
-                            db,
-                            "jugadores",
-                            jugador.id
-                        ),
-                        {
-                            credencialGenerada:
-                                true,
+        lista.map(
+            jugador =>
+                updateDoc(
+                    doc(
+                        db,
+                        "jugadores",
+                        jugador.id
+                    ),
+                    {
+                        credencialGenerada:
+                            true,
 
-                            credencialGeneradaEn:
-                                serverTimestamp()
-                        }
-                    )
-            );
+                        credencialGeneradaEn:
+                            serverTimestamp(),
+
+                        credencialUrlVerificacion:
+                            obtenerUrlVerificacion(
+                                jugador
+                            )
+                    }
+                )
+        );
 
 
     if (!actualizaciones.length) {
@@ -1149,6 +1756,67 @@ async function esperarImagenes() {
 }
 
 
+async function esperarQr() {
+
+    const canvases =
+        Array.from(
+            hojasCredenciales.querySelectorAll(
+                ".credencial-qr-canvas"
+            )
+        );
+
+
+    if (!canvases.length) {
+
+        return;
+
+    }
+
+
+    const inicio =
+        Date.now();
+
+
+    while (
+        Date.now() - inicio <
+        6000
+    ) {
+
+        const terminados =
+            canvases.every(
+                canvas =>
+                    canvas.dataset.qrListo ===
+                        "true" ||
+                    canvas.dataset.qrError ===
+                        "true"
+            );
+
+
+        if (terminados) {
+
+            return;
+
+        }
+
+
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    80
+                )
+        );
+
+    }
+
+
+    throw new Error(
+        "Los códigos QR tardaron demasiado en generarse."
+    );
+
+}
+
+
 function obtenerFolioJugador(
     jugador
 ) {
@@ -1198,70 +1866,6 @@ function obtenerFolioJugador(
 }
 
 
-function calcularEdad(
-    fecha
-) {
-
-    if (!fecha) {
-
-        return null;
-
-    }
-
-
-    const nacimiento =
-        new Date(
-            `${fecha}T00:00:00`
-        );
-
-
-    if (
-        Number.isNaN(
-            nacimiento.getTime()
-        )
-    ) {
-
-        return null;
-
-    }
-
-
-    const hoy =
-        new Date();
-
-
-    let edad =
-        hoy.getFullYear() -
-        nacimiento.getFullYear();
-
-
-    const diferenciaMes =
-        hoy.getMonth() -
-        nacimiento.getMonth();
-
-
-    if (
-        diferenciaMes < 0 ||
-        (
-            diferenciaMes === 0 &&
-            hoy.getDate() <
-            nacimiento.getDate()
-        )
-    ) {
-
-        edad--;
-
-    }
-
-
-    return Math.max(
-        edad,
-        0
-    );
-
-}
-
-
 function ordenarJugadores(
     a,
     b
@@ -1290,15 +1894,15 @@ function ordenarJugadores(
 
 
     const nombreA =
-        a.nombre ||
-        a.nombreCompleto ||
-        "";
+        obtenerNombreJugador(
+            a
+        );
 
 
     const nombreB =
-        b.nombre ||
-        b.nombreCompleto ||
-        "";
+        obtenerNombreJugador(
+            b
+        );
 
 
     return nombreA.localeCompare(
@@ -1395,6 +1999,27 @@ function obtenerInicial(
     return valor
         .charAt(0)
         .toUpperCase();
+
+}
+
+
+function normalizarTexto(
+    valor
+) {
+
+    return String(
+        valor ||
+        ""
+    )
+        .trim()
+        .toLowerCase()
+        .normalize(
+            "NFD"
+        )
+        .replace(
+            /[\u0300-\u036f]/g,
+            ""
+        );
 
 }
 

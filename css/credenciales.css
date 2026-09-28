@@ -1,436 +1,176 @@
 :root{
     --tinta:#102b28;
-    --tinta-2:#2a403b;
-
-    --jade:#0b756d;
-    --jade-2:#12877d;
-    --jade-oscuro:#07574f;
-    --jade-profundo:#063f3b;
-    --jade-claro:#d7ece6;
-
-    --agua:#197e98;
-    --agua-2:#2a96aa;
-    --agua-clara:#70c2ca;
-
-    --terracota:#b9542e;
-    --terracota-2:#d16d3a;
-    --terracota-oscura:#85391f;
-
-    --dorado:#d3a13b;
-    --dorado-2:#e0b657;
-    --dorado-suave:#f0d79a;
-
-    --arena:#e2c990;
-    --arena-clara:#f4e8c5;
-    --arena-suave:#ead9ad;
-
-    --papel:#f1e3bf;
-    --papel-claro:#fff8e8;
-    --papel-oscuro:#dcc596;
-
-    --verde:#2f714c;
-    --verde-claro:#dcebd8;
-
-    --rojo:#b84535;
-    --rojo-claro:#f3d6d0;
-
-    --texto:#213732;
-    --texto-suave:#68746e;
-
-    --borde:#baa676;
-    --borde-suave:#d0c09a;
-
-    --sombra:
-        0 10px 28px rgba(55,43,20,.10),
-        0 3px 8px rgba(55,43,20,.05);
+    --negro:#15150f;
+    --jade:#08756d;
+    --jade-oscuro:#045954;
+    --jade-profundo:#033f3c;
+    --turquesa:#14959a;
+    --azul:#176f91;
+    --terracota:#bd4a24;
+    --rojo:#962d1d;
+    --naranja:#d66b20;
+    --verde:#4f7e2d;
+    --dorado:#d49a26;
+    --dorado-claro:#efc65a;
+    --ocre:#c27a1d;
+    --pergamino:#efd18a;
+    --pergamino-claro:#f8e5ac;
+    --pergamino-oscuro:#d6a958;
 }
-
 
 *{
     box-sizing:border-box;
 }
 
-
 html{
     min-height:100%;
 }
 
-
 body{
-    position:relative;
-
     min-height:100vh;
-
     margin:0;
-
-    color:var(--texto);
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
+    color:var(--tinta);
+    font-family:Arial,Helvetica,sans-serif;
     background:
-        radial-gradient(
-            circle at 12% 12%,
-            rgba(255,255,255,.24),
-            transparent 22%
-        ),
-
-        radial-gradient(
-            circle at 88% 15%,
-            rgba(33,126,151,.12),
-            transparent 28%
-        ),
-
-        radial-gradient(
-            circle at 36% 74%,
-            rgba(181,83,45,.06),
-            transparent 30%
-        ),
-
-        linear-gradient(
-            180deg,
-            #dce8dd 0%,
-            #efe3bc 34%,
-            #e8d29f 72%,
-            #d7bd82 100%
-        );
+        radial-gradient(circle at 12% 12%,rgba(255,255,255,.24),transparent 22%),
+        radial-gradient(circle at 88% 15%,rgba(33,126,151,.12),transparent 28%),
+        radial-gradient(circle at 36% 74%,rgba(181,83,45,.06),transparent 30%),
+        linear-gradient(180deg,#dce8dd 0%,#efe3bc 34%,#e8d29f 72%,#d7bd82 100%);
 }
-
-
-body::before{
-    content:"";
-
-    position:fixed;
-
-    left:-10%;
-    right:-10%;
-    bottom:-95px;
-
-    height:250px;
-
-    z-index:-1;
-
-    opacity:.38;
-
-    border-radius:50%;
-
-    background:
-        repeating-radial-gradient(
-            ellipse at center bottom,
-
-            transparent 0 28px,
-
-            rgba(25,126,152,.18) 29px 32px,
-
-            transparent 33px 56px,
-
-            rgba(11,117,109,.16) 57px 60px,
-
-            transparent 61px 86px
-        );
-
-    pointer-events:none;
-}
-
-
-body::after{
-    content:"";
-
-    position:fixed;
-
-    width:300px;
-    height:300px;
-
-    right:-145px;
-    top:145px;
-
-    z-index:-1;
-
-    border:
-        15px double
-        rgba(11,117,109,.055);
-
-    border-radius:50%;
-
-    pointer-events:none;
-}
-
 
 a{
     color:inherit;
     text-decoration:none;
 }
 
-
 button,
 select{
     font:inherit;
 }
 
-
 button{
     cursor:pointer;
 }
 
-
-/* =========================================
-   APP
-========================================= */
-
+.oculto{
+    display:none !important;
+}
 
 .credenciales-page{
     width:100%;
     min-height:100vh;
 }
 
-
-/* =========================================
-   TOPBAR
-========================================= */
-
-
 .topbar{
     position:sticky;
-
     top:0;
-
-    z-index:60;
-
+    z-index:50;
     min-height:68px;
-
     display:flex;
     align-items:center;
     justify-content:space-between;
-
     gap:12px;
-
-    padding:
-        9px
-        13px;
-
-    border-bottom:
-        1px solid
-        #ab9969;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(244,230,193,.97),
-            rgba(255,247,224,.97)
-        );
-
-    box-shadow:
-        0 5px 15px
-        rgba(60,46,22,.08);
-
+    padding:9px 14px;
+    border-bottom:1px solid #a99360;
+    background:rgba(250,238,201,.96);
+    box-shadow:0 4px 14px rgba(55,43,20,.08);
     backdrop-filter:blur(10px);
 }
-
-
-.topbar::after{
-    content:"";
-
-    position:absolute;
-
-    left:13px;
-    right:13px;
-    bottom:-1px;
-
-    height:5px;
-
-    border-top:
-        3px solid
-        rgba(11,117,109,.72);
-
-    border-bottom:
-        1px solid
-        rgba(25,126,152,.42);
-
-    border-radius:50%;
-
-    opacity:.68;
-}
-
 
 .topbar-left{
     display:flex;
     align-items:center;
-
     gap:9px;
-
     min-width:0;
 }
-
 
 .btn-volver{
     width:40px;
     height:40px;
-
     display:flex;
     align-items:center;
     justify-content:center;
-
     flex-shrink:0;
-
-    border:
-        1px solid
-        #a99567;
-
+    border:1px solid #a48d59;
     border-radius:9px;
-
-    background:#e8d4a1;
-
+    background:#ead5a0;
     color:var(--tinta);
-
-    font-size:1.08rem;
     font-weight:900;
 }
-
 
 .topbar-logo{
     width:42px;
     height:42px;
-
     flex-shrink:0;
-
-    padding:2px;
-
     object-fit:contain;
-
-    border:
-        2px solid
-        var(--jade-oscuro);
-
-    border-radius:50%;
-
-    background:#fff5d8;
-
-    box-shadow:
-        0 3px 10px
-        rgba(45,40,24,.12);
 }
-
 
 .topbar-titulo{
     display:flex;
     flex-direction:column;
-
     min-width:0;
 }
 
-
 .topbar-titulo span{
-    color:var(--terracota-oscura);
-
-    font-size:.60rem;
-    font-weight:800;
+    color:#8a3b20;
+    font-size:.59rem;
+    font-weight:900;
 }
-
 
 .topbar-titulo strong{
     color:var(--tinta);
-
     font-size:.83rem;
     font-weight:900;
-
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
 }
 
-
-.btn-imprimir-top{
+.btn-imprimir-top,
+.btn-principal,
+.btn-regresar{
     min-height:40px;
-
     display:flex;
     align-items:center;
     justify-content:center;
-
-    gap:6px;
-
-    flex-shrink:0;
-
-    padding:
-        7px
-        11px;
-
-    border:
-        1px solid
-        #075d56;
-
+    padding:8px 13px;
+    border:1px solid #075c55;
     border-radius:9px;
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--jade),
-            var(--agua)
-        );
-
-    color:#ffffff;
-
-    font-size:.61rem;
+    background:linear-gradient(135deg,var(--jade),#177b8c);
+    color:#fff;
+    font-size:.62rem;
     font-weight:900;
 }
 
-
-/* =========================================
-   CONTENIDO
-========================================= */
-
+.btn-imprimir-top:disabled,
+.btn-principal:disabled{
+    cursor:not-allowed;
+    opacity:.5;
+}
 
 .contenido{
     width:100%;
-    max-width:1120px;
-
+    max-width:1180px;
     margin:0 auto;
-
-    padding:
-        16px
-        13px
-        35px;
+    padding:18px 13px 40px;
 }
-
-
-/* =========================================
-   CARGA / ERROR
-========================================= */
-
 
 .estado-carga,
 .estado-error{
     min-height:65vh;
-
     display:flex;
     flex-direction:column;
     align-items:center;
     justify-content:center;
-
     gap:10px;
-
-    padding:28px;
-
     text-align:center;
 }
 
-
 .spinner{
-    width:36px;
-    height:36px;
-
-    border:
-        4px solid
-        #d8c99f;
-
+    width:38px;
+    height:38px;
+    border:4px solid #d4c18d;
     border-top-color:var(--jade);
-
     border-radius:50%;
-
     animation:girar .8s linear infinite;
 }
-
 
 @keyframes girar{
     to{
@@ -438,1546 +178,1296 @@ button{
     }
 }
 
-
 .estado-carga span{
-    color:#6e6655;
-
-    font-size:.69rem;
+    color:#6d6350;
+    font-size:.7rem;
 }
-
 
 .estado-error-icono{
-    width:58px;
-    height:58px;
-
+    width:50px;
+    height:50px;
     display:flex;
     align-items:center;
     justify-content:center;
-
-    border:
-        1px solid
-        #cb8b80;
-
-    border-radius:15px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #efd4ca,
-            #e2b5a7
-        );
-
-    font-size:1.4rem;
-}
-
-
-.estado-error h1{
-    margin:0;
-
-    color:var(--tinta);
-
-    font-size:1.07rem;
-}
-
-
-.estado-error p{
-    max-width:400px;
-
-    margin:0;
-
-    color:#716955;
-
-    font-size:.67rem;
-    line-height:1.45;
-}
-
-
-.btn-regresar{
-    min-height:42px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    margin-top:4px;
-
-    padding:
-        7px
-        13px;
-
-    border:
-        1px solid
-        #075d56;
-
-    border-radius:9px;
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--jade),
-            var(--agua)
-        );
-
-    color:#ffffff;
-
-    font-size:.63rem;
+    border-radius:50%;
+    background:#ecd0c7;
+    color:#9a3325;
     font-weight:900;
 }
 
-
-.oculto{
-    display:none !important;
+.estado-error h1{
+    margin:0;
+    font-size:1rem;
 }
 
-
-/* =========================================
-   CONTENIDO CREDENCIALES
-========================================= */
-
+.estado-error p{
+    max-width:400px;
+    margin:0;
+    color:#6d6350;
+    font-size:.65rem;
+}
 
 .contenido-credenciales{
     display:flex;
     flex-direction:column;
-
     gap:14px;
 }
 
-
-/* =========================================
-   ENCABEZADO
-========================================= */
-
-
 .encabezado-pagina{
-    position:relative;
-
     display:flex;
     flex-direction:column;
-
-    gap:15px;
-
+    gap:14px;
     padding:18px;
-
-    overflow:hidden;
-
-    border:
-        2px solid
-        var(--tinta);
-
-    border-radius:18px;
-
+    border:2px solid #07564f;
+    border-radius:16px;
     background:
-        radial-gradient(
-            circle at 88% 12%,
-            rgba(255,255,255,.08),
-            transparent 25%
-        ),
-
-        linear-gradient(
-            145deg,
-            #075e57,
-            #08796f 55%,
-            #17677c
-        );
-
-    color:#ffffff;
-
-    box-shadow:
-        0 14px 35px
-        rgba(15,76,85,.16);
+        radial-gradient(circle at 90% 15%,rgba(255,255,255,.09),transparent 24%),
+        linear-gradient(140deg,#064d48,#08736a 55%,#176b80);
+    color:#fff;
+    box-shadow:0 12px 28px rgba(26,66,65,.14);
 }
-
-
-.encabezado-pagina::before{
-    content:"";
-
-    position:absolute;
-
-    left:-8%;
-    right:-8%;
-    bottom:-60px;
-
-    height:125px;
-
-    border-radius:50%;
-
-    border-top:
-        8px double
-        rgba(112,194,202,.20);
-
-    transform:rotate(-2deg);
-}
-
-
-.encabezado-pagina::after{
-    content:"🪪";
-
-    position:absolute;
-
-    right:-3px;
-    top:-12px;
-
-    font-size:7.5rem;
-
-    opacity:.045;
-
-    transform:rotate(-10deg);
-}
-
-
-.encabezado-pagina > *{
-    position:relative;
-    z-index:2;
-}
-
 
 .encabezado-mini{
     display:block;
-
     margin-bottom:3px;
-
-    color:#f3d677;
-
-    font-size:.53rem;
+    color:#f1cf70;
+    font-size:.52rem;
     font-weight:900;
-
     letter-spacing:.08em;
 }
 
-
 .encabezado-pagina h1{
-    margin:
-        0 0
-        5px;
-
-    color:#ffffff;
-
-    font-size:1.14rem;
-    font-weight:900;
+    margin:0 0 5px;
+    font-size:1.12rem;
 }
-
 
 .encabezado-pagina p{
-    max-width:520px;
-
+    max-width:540px;
     margin:0;
-
-    color:#d8efec;
-
-    font-size:.62rem;
+    color:#d9eeeb;
+    font-size:.61rem;
     line-height:1.45;
 }
-
-
-/* =========================================
-   EQUIPO RESUMEN
-========================================= */
-
 
 .equipo-resumen{
     display:flex;
     align-items:center;
-
     gap:9px;
-
-    padding:10px;
-
-    border:
-        1px solid
-        rgba(255,230,165,.26);
-
-    border-radius:11px;
-
-    background:
-        rgba(255,247,218,.10);
+    padding:9px;
+    border:1px solid rgba(255,230,166,.30);
+    border-radius:10px;
+    background:rgba(255,248,222,.10);
 }
 
-
 .equipo-logo{
-    width:50px;
-    height:50px;
-
+    width:48px;
+    height:48px;
     display:flex;
     align-items:center;
     justify-content:center;
-
     flex-shrink:0;
-
     overflow:hidden;
-
-    border:
-        1px solid
-        rgba(255,255,255,.42);
-
-    border-radius:11px;
-
-    background:
-        rgba(255,247,218,.14);
-
-    font-size:.75rem;
+    border-radius:9px;
+    background:#f3dfaa;
+    color:var(--tinta);
     font-weight:900;
 }
-
 
 .equipo-logo img{
     width:100%;
     height:100%;
-
-    display:block;
-
-    object-fit:cover;
+    object-fit:contain;
 }
-
-
-.equipo-resumen > div:last-child{
-    min-width:0;
-}
-
 
 .equipo-resumen span{
     display:block;
-
-    margin-bottom:2px;
-
-    color:#f3d677;
-
+    color:#f2d270;
     font-size:.51rem;
     font-weight:800;
 }
 
-
 .equipo-resumen strong{
     display:block;
-
-    color:#ffffff;
-
+    margin-top:2px;
     font-size:.67rem;
-    font-weight:900;
-
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
 }
-
-
-/* =========================================
-   PANEL CONFIGURACIÓN
-========================================= */
-
 
 .panel-configuracion{
-    position:relative;
-
     display:flex;
     flex-direction:column;
-
     gap:12px;
-
     padding:14px;
-
-    overflow:hidden;
-
-    border:
-        1px solid
-        #a99567;
-
-    border-radius:14px;
-
-    background:
-        linear-gradient(
-            150deg,
-            #f1dfae,
-            #e6cd95
-        );
-
-    box-shadow:
-        0 4px 14px
-        rgba(67,50,22,.06);
+    border:1px solid #a88e55;
+    border-radius:13px;
+    background:linear-gradient(145deg,#f2dfab,#e4c786);
 }
-
-
-.panel-configuracion::before{
-    content:"";
-
-    position:absolute;
-
-    left:14px;
-    right:14px;
-    top:0;
-
-    height:5px;
-
-    border-top:
-        3px solid
-        var(--jade);
-
-    border-bottom:
-        1px solid
-        var(--agua);
-
-    border-radius:50%;
-}
-
-
-.configuracion-info{
-    position:relative;
-    z-index:2;
-
-    display:flex;
-    align-items:center;
-
-    gap:10px;
-}
-
-
-.configuracion-icono{
-    width:45px;
-    height:45px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    flex-shrink:0;
-
-    border:
-        1px solid
-        #789f95;
-
-    border-radius:10px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #cfe5de,
-            #b9d7ce
-        );
-
-    font-size:1rem;
-}
-
-
-.configuracion-info > div:last-child{
-    min-width:0;
-}
-
 
 .configuracion-info span{
     display:block;
-
-    margin-bottom:2px;
-
-    color:var(--terracota-oscura);
-
-    font-size:.50rem;
+    color:#8a3a20;
+    font-size:.5rem;
     font-weight:900;
-
     letter-spacing:.06em;
 }
 
-
 .configuracion-info strong{
     display:block;
-
-    margin-bottom:2px;
-
-    color:var(--tinta);
-
-    font-size:.71rem;
-    font-weight:900;
+    margin:2px 0;
+    font-size:.72rem;
 }
 
+.configuracion-info strong b{
+    font:inherit;
+}
 
 .configuracion-info p{
     margin:0;
-
-    color:#686150;
-
-    font-size:.54rem;
-    line-height:1.35;
+    color:#6c604a;
+    font-size:.55rem;
 }
-
 
 .configuracion-acciones{
-    position:relative;
-    z-index:2;
-
     display:grid;
-
     grid-template-columns:1fr;
-
     gap:8px;
 }
-
-
-/* =========================================
-   SELECT
-========================================= */
-
 
 .select-filtro{
+    min-height:42px;
     width:100%;
-    min-height:42px;
-
-    padding:
-        0 10px;
-
-    border:
-        1px solid
-        #a99567;
-
-    border-radius:9px;
-
-    background:
-        rgba(255,247,223,.84);
-
+    padding:0 10px;
+    border:1px solid #a88e55;
+    border-radius:8px;
+    background:#fff2ce;
     color:var(--tinta);
-
-    font-size:.62rem;
-
-    outline:none;
-}
-
-
-.select-filtro:focus{
-    border-color:var(--jade);
-
-    box-shadow:
-        0 0 0 3px
-        rgba(11,117,109,.12);
-}
-
-
-/* =========================================
-   BOTÓN PRINCIPAL
-========================================= */
-
-
-.btn-principal{
-    min-height:42px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    gap:6px;
-
-    padding:
-        7px
-        11px;
-
-    border:
-        1px solid
-        #075d56;
-
-    border-radius:9px;
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--jade),
-            var(--agua)
-        );
-
-    color:#ffffff;
-
     font-size:.61rem;
-    font-weight:900;
 }
-
-
-/* =========================================
-   AVISO IMPRESIÓN
-========================================= */
-
-
-.aviso-impresion{
-    display:flex;
-    align-items:flex-start;
-
-    gap:8px;
-
-    padding:
-        10px
-        12px;
-
-    border:
-        1px solid
-        #84aa9e;
-
-    border-radius:10px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #d7eae3,
-            #c4ddd4
-        );
-}
-
-
-.aviso-impresion > span{
-    flex-shrink:0;
-}
-
-
-.aviso-impresion p{
-    margin:0;
-
-    color:#50645e;
-
-    font-size:.55rem;
-    line-height:1.4;
-}
-
-
-/* =========================================
-   SIN JUGADORES
-========================================= */
-
 
 .sin-jugadores{
-    min-height:230px;
-
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-
-    gap:8px;
-
-    padding:25px;
-
-    border:
-        1px solid
-        #a99567;
-
+    padding:35px 20px;
+    border:1px solid #aa915a;
     border-radius:14px;
-
-    background:
-        linear-gradient(
-            150deg,
-            #f1dfae,
-            #e6cd95
-        );
-
+    background:#edd6a0;
     text-align:center;
 }
 
-
-.sin-jugadores-icono{
-    width:54px;
-    height:54px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    border:
-        1px solid
-        #789f95;
-
-    border-radius:13px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #cfe5de,
-            #b9d7ce
-        );
-
-    font-size:1.25rem;
-}
-
-
 .sin-jugadores strong{
-    color:var(--tinta);
-
-    font-size:.74rem;
+    display:block;
+    font-size:.75rem;
 }
-
 
 .sin-jugadores p{
-    max-width:340px;
-
-    margin:0;
-
-    color:#696252;
-
-    font-size:.60rem;
-    line-height:1.4;
+    margin:5px 0 0;
+    color:#6c604a;
+    font-size:.6rem;
 }
-
-
-/* =========================================
-   HOJAS
-========================================= */
-
 
 .hojas-credenciales{
     display:flex;
     flex-direction:column;
     align-items:center;
-
-    gap:18px;
+    gap:24px;
 }
-
 
 .hoja-credenciales{
     width:100%;
-    max-width:900px;
-
     display:grid;
-
     grid-template-columns:1fr;
-
-    gap:12px;
-
-    padding:12px;
-
-    border:
-        1px solid
-        #9f8b58;
-
+    justify-items:center;
+    gap:28px;
+    padding:20px 10px;
+    border:1px solid #a58a50;
     border-radius:16px;
-
     background:
-        linear-gradient(
-            150deg,
-            #ead8aa,
-            #dfc58e
-        );
-
-    box-shadow:
-        0 8px 28px
-        rgba(65,48,21,.08);
+        radial-gradient(circle at 15% 20%,rgba(255,255,255,.14),transparent 25%),
+        linear-gradient(145deg,#ead39c,#dec083);
 }
-
-
-/* =========================================
-   CREDENCIAL
-========================================= */
-
 
 .credencial{
     width:100%;
-
-    overflow:hidden;
-
-    border-radius:13px;
-
-    background:#fff5d8;
-
-    box-shadow:
-        0 5px 18px
-        rgba(39,42,31,.13);
+    max-width:410px;
 }
-
-
-/* =========================================
-   CREDENCIAL FRENTE
-========================================= */
-
 
 .credencial-frente{
-    position:relative;
-
     width:100%;
-    aspect-ratio:85.6 / 54;
+    aspect-ratio:2 / 3;
+    position:relative;
+}
 
-    display:flex;
-    flex-direction:column;
-
+.credencial-carcasa{
+    position:absolute;
+    inset:0;
+    padding:8px;
     overflow:hidden;
-
-    border:
-        1px solid
-        #8b7b4f;
-
-    border-radius:13px;
-
+    border:1px solid #b9b9b5;
+    border-radius:28px;
     background:
-        radial-gradient(
-            circle at 94% 10%,
-            rgba(25,126,152,.10),
-            transparent 25%
-        ),
-
-        radial-gradient(
-            circle at 7% 90%,
-            rgba(185,84,46,.07),
-            transparent 24%
-        ),
-
         linear-gradient(
             145deg,
-            #fff3ca 0%,
-            #f2dfaa 62%,
-            #dce7d7 100%
+            #fafaf7 0%,
+            #e4e4df 30%,
+            #fafaf8 52%,
+            #d3d3cf 100%
         );
-
-    color:var(--tinta);
+    box-shadow:
+        0 15px 32px rgba(51,42,24,.22),
+        inset 0 0 0 2px rgba(255,255,255,.9),
+        inset 0 0 12px rgba(92,92,82,.16);
 }
 
-
-/* motivo tipo códice */
-
-.credencial-frente::before{
-    content:"";
-
-    position:absolute;
-
-    right:-34px;
-    top:-38px;
-
-    width:120px;
-    height:120px;
-
-    border:
-        14px double
-        rgba(11,117,109,.055);
-
-    border-radius:50%;
-
-    pointer-events:none;
-}
-
-
-.credencial-frente::after{
-    content:"";
-
-    position:absolute;
-
-    left:-8%;
-    right:-8%;
-    bottom:-50px;
-
-    height:82px;
-
-    border-radius:50%;
-
-    border-top:
-        7px double
-        rgba(25,126,152,.08);
-
-    pointer-events:none;
-}
-
-
-/* =========================================
-   HEADER CREDENCIAL
-========================================= */
-
-
-.credencial-header{
+.marco-exterior{
     position:relative;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    border:5px solid #171711;
+    border-radius:21px;
+    background:#11140f;
+    box-shadow:
+        inset 0 0 0 3px #a92f1f,
+        inset 0 0 0 6px #d69a28;
+}
+
+.marco-exterior::before{
+    content:"";
+    position:absolute;
+    z-index:5;
+    inset:9px;
+    pointer-events:none;
+    border:2px solid #0b7874;
+    border-radius:11px;
+}
+
+.marco-exterior::after{
+    content:"";
+    position:absolute;
+    z-index:5;
+    inset:13px;
+    pointer-events:none;
+    border:1px solid #151711;
+    border-radius:8px;
+}
+
+.marco-interior{
+    position:absolute;
     z-index:2;
-
-    min-height:24%;
-
+    top:24px;
+    right:18px;
+    bottom:25px;
+    left:18px;
     display:grid;
-
-    grid-template-columns:
-        auto
-        minmax(0,1fr)
-        auto;
-
-    align-items:center;
-
-    gap:6px;
-
-    padding:
-        3.5%
-        4%;
-
-    border-bottom:
-        1px solid
-        rgba(243,210,125,.26);
-
+    grid-template-rows:
+        30.5%
+        29%
+        12%
+        20%
+        2.5%
+        6%;
+    overflow:hidden;
+    border:2px solid #292015;
     background:
+        radial-gradient(circle at 14% 12%,rgba(255,255,255,.30),transparent 21%),
+        radial-gradient(circle at 78% 34%,rgba(128,79,24,.06),transparent 30%),
+        repeating-linear-gradient(
+            0deg,
+            rgba(105,74,29,.018) 0,
+            rgba(105,74,29,.018) 1px,
+            transparent 1px,
+            transparent 4px
+        ),
         linear-gradient(
             135deg,
-            #075e57,
-            #08796f 58%,
-            #17677c
+            #f7e2a8 0%,
+            #efd18b 42%,
+            #f4d99b 72%,
+            #ebc779 100%
         );
-
-    color:#ffffff;
 }
 
-
-.credencial-header::after{
-    content:"";
-
+.textura-credencial{
     position:absolute;
-
-    left:0;
-    right:0;
-    bottom:-1px;
-
-    height:3px;
-
+    z-index:0;
+    inset:0;
+    pointer-events:none;
+    opacity:.18;
     background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(224,182,87,.85),
-            rgba(112,194,202,.65),
-            transparent
-        );
+        radial-gradient(circle at 20% 18%,#9b6b2a 0 1px,transparent 1.4px),
+        radial-gradient(circle at 74% 40%,#9b6b2a 0 1px,transparent 1.4px),
+        radial-gradient(circle at 40% 72%,#9b6b2a 0 1px,transparent 1.4px);
+    background-size:15px 15px,19px 19px,23px 23px;
 }
 
-
-.credencial-logo-liga{
-    width:34px;
-    height:34px;
-
-    object-fit:contain;
-
-    filter:
-        drop-shadow(
-            0 2px 3px
-            rgba(0,0,0,.16)
-        );
+.marca-agua-credencial{
+    position:absolute;
+    z-index:0;
+    right:-7%;
+    top:31%;
+    width:54%;
+    opacity:.055;
+    pointer-events:none;
+    filter:sepia(1) grayscale(1);
 }
 
+.marca-agua-credencial img{
+    width:100%;
+    display:block;
+}
 
-.credencial-liga{
+.greca{
+    position:absolute;
+    z-index:8;
+    left:16px;
+    right:16px;
+    height:16px;
     display:flex;
-    flex-direction:column;
-
-    min-width:0;
-}
-
-
-.credencial-liga span{
-    color:#f2d677;
-
-    font-size:.39rem;
-    font-weight:900;
-
-    letter-spacing:.08em;
-}
-
-
-.credencial-liga strong{
-    color:#ffffff;
-
-    font-size:.65rem;
-    line-height:1.05;
-
-    font-weight:900;
-
-    white-space:nowrap;
+    align-items:center;
+    justify-content:space-evenly;
     overflow:hidden;
-    text-overflow:ellipsis;
+    border:2px solid #12140f;
+    background:#0b6e70;
 }
 
-
-.credencial-liga small{
-    margin-top:2px;
-
-    color:#d8efec;
-
-    font-size:.31rem;
-    font-weight:700;
-
-    letter-spacing:.05em;
+.greca-superior{
+    top:10px;
+    border-radius:7px 7px 2px 2px;
 }
 
+.greca-inferior{
+    bottom:10px;
+    border-radius:2px 2px 7px 7px;
+}
 
-.credencial-temporada{
-    align-self:start;
+.greca > span{
+    width:10%;
+    height:100%;
+    position:relative;
+    border-right:2px solid #171711;
+    background:#cf8421;
+}
 
-    padding:
-        3px
-        5px;
+.greca > span:nth-child(2n){
+    background:#b93d22;
+}
 
-    border:
-        1px solid
-        rgba(255,227,151,.46);
+.greca > span:nth-child(3n){
+    background:#137c8b;
+}
 
-    border-radius:999px;
+.greca > span:nth-child(4n){
+    background:#54822d;
+}
 
+.greca > span::before{
+    content:"";
+    position:absolute;
+    width:45%;
+    height:45%;
+    left:50%;
+    top:50%;
+    border:2px solid #171711;
+    transform:translate(-50%,-50%);
+}
+
+.greca-lateral{
+    position:absolute;
+    z-index:7;
+    top:28px;
+    bottom:29px;
+    width:10px;
+    border:2px solid #141610;
     background:
-        rgba(255,241,195,.12);
-
-    color:#ffe39a;
-
-    font-size:.3rem;
-    font-weight:900;
-
-    letter-spacing:.05em;
+        repeating-linear-gradient(
+            180deg,
+            #0d7b77 0 13px,
+            #d19225 13px 25px,
+            #b94022 25px 37px,
+            #176f91 37px 49px
+        );
 }
 
+.greca-lateral-izquierda{
+    left:9px;
+}
 
-/* =========================================
-   CONTENIDO CREDENCIAL
-========================================= */
+.greca-lateral-derecha{
+    right:9px;
+}
 
+.esquina-ornamental{
+    position:absolute;
+    z-index:10;
+    width:30px;
+    height:30px;
+    border:3px solid #151610;
+    background:#ce7d20;
+}
 
-.credencial-contenido{
+.esquina-ornamental::before{
+    content:"";
+    position:absolute;
+    inset:4px;
+    border:3px solid #141610;
+    background:#117a83;
+}
+
+.esquina-ornamental span{
+    position:absolute;
+    z-index:2;
+    width:7px;
+    height:7px;
+    left:50%;
+    top:50%;
+    border:2px solid #151610;
+    background:#b83e22;
+    transform:translate(-50%,-50%);
+}
+
+.esquina-superior-izquierda{
+    top:6px;
+    left:6px;
+    border-radius:8px 2px 2px 2px;
+}
+
+.esquina-superior-derecha{
+    top:6px;
+    right:6px;
+    border-radius:2px 8px 2px 2px;
+}
+
+.esquina-inferior-izquierda{
+    bottom:6px;
+    left:6px;
+    border-radius:2px 2px 2px 8px;
+}
+
+.esquina-inferior-derecha{
+    right:6px;
+    bottom:6px;
+    border-radius:2px 2px 8px 2px;
+}
+
+.credencial-encabezado{
     position:relative;
     z-index:2;
-
-    flex:1;
-
     display:grid;
-
-    grid-template-columns:
-        29%
-        minmax(0,1fr);
-
-    gap:4%;
-
-    padding:
-        4%
-        4%
-        2.5%;
+    grid-template-columns:49% 51%;
+    align-items:center;
+    padding:5% 5% 0;
+    min-height:0;
 }
 
-
-/* =========================================
-   FOTO
-========================================= */
-
-
-.credencial-foto{
+.credencial-logo-bloque{
     width:100%;
-    aspect-ratio:3 / 3.6;
-
+    height:100%;
     display:flex;
     align-items:center;
     justify-content:center;
-
-    align-self:start;
-
-    overflow:hidden;
-
-    border:
-        2px solid
-        #fff3ce;
-
-    border-radius:8px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #d8e9e2,
-            #c4ddd4
-        );
-
-    box-shadow:
-        0 0 0 1px
-        #7d9d91,
-        0 4px 10px
-        rgba(34,55,46,.10);
-
-    color:var(--jade-oscuro);
-
-    font-size:1rem;
-    font-weight:900;
+    min-width:0;
+    padding:0 2% 0 0;
 }
 
-
-.credencial-foto img{
+.credencial-logo-liga{
+    display:block;
     width:100%;
-    height:100%;
-
-    display:block;
-
-    object-fit:cover;
+    max-width:175px;
+    max-height:175px;
+    object-fit:contain;
+    filter:drop-shadow(0 2px 1px rgba(62,42,17,.12));
 }
 
-
-/* =========================================
-   DATOS
-========================================= */
-
-
-.credencial-datos{
+.credencial-titulos{
     min-width:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:0 2%;
 }
 
-
-.credencial-etiqueta{
-    display:block;
-
-    margin-bottom:1px;
-
-    color:var(--terracota-oscura);
-
-    font-size:.32rem;
-    font-weight:900;
-
-    letter-spacing:.08em;
+.credencial-titulos h2{
+    margin:0;
+    color:#11242b;
+    font-size:1.43rem;
+    line-height:.91;
+    font-weight:1000;
+    letter-spacing:-.045em;
 }
 
-
-.credencial-nombre{
-    margin:
-        0 0
-        4%;
-
-    color:var(--tinta);
-
-    font-size:.66rem;
-    line-height:1.05;
-
-    font-weight:900;
-
-    text-transform:uppercase;
-
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
+.credencial-titulos h3{
+    margin:7px 0 0;
+    color:#182827;
+    font-size:.54rem;
+    line-height:1.08;
+    font-weight:1000;
 }
 
-
-.credencial-datos-grid{
-    display:grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    gap:
-        5px
-        7px;
-}
-
-
-.credencial-datos-grid > div{
-    min-width:0;
-}
-
-
-.credencial-datos-grid span{
-    display:block;
-
-    margin-bottom:1px;
-
-    color:#857a60;
-
-    font-size:.27rem;
-    font-weight:900;
-
-    letter-spacing:.04em;
-}
-
-
-.credencial-datos-grid strong{
-    display:block;
-
-    color:var(--tinta-2);
-
-    font-size:.38rem;
-    font-weight:800;
-
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-}
-
-
-/* =========================================
-   CURP
-========================================= */
-
-
-.credencial-curp{
-    position:relative;
-    z-index:2;
-
+.separador-prehispanico{
+    width:90%;
     display:flex;
     align-items:center;
-
-    gap:5px;
-
-    margin:
-        0 4%
-        2.5%;
-
-    padding:
-        2.2%
-        3%;
-
-    border:
-        1px solid
-        rgba(11,117,109,.18);
-
-    border-radius:6px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #d6e7e0,
-            #ead8aa
-        );
+    justify-content:center;
+    gap:6px;
+    margin:10px 0 8px;
 }
 
-
-.credencial-curp span{
-    color:var(--jade-oscuro);
-
-    font-size:.29rem;
-    font-weight:900;
-
-    letter-spacing:.06em;
+.separador-linea{
+    height:5px;
+    flex:1;
+    border:1px solid #1c2119;
+    border-radius:10px;
 }
 
+.separador-linea-verde{
+    background:linear-gradient(90deg,#0b746d,#d49b25);
+}
 
-.credencial-curp strong{
-    color:var(--tinta-2);
+.separador-linea-roja{
+    background:linear-gradient(90deg,#bd4323,#d39c27);
+}
 
-    font-size:.38rem;
+.separador-flor{
+    position:relative;
+    width:17px;
+    height:17px;
+    flex-shrink:0;
+}
 
+.separador-flor::before,
+.separador-flor::after{
+    content:"";
+    position:absolute;
+    inset:3px;
+    border:2px solid #151812;
+    border-radius:50% 20% 50% 20%;
+    background:#d16b20;
+    transform:rotate(45deg);
+}
+
+.separador-flor::after{
+    transform:rotate(90deg);
+}
+
+.separador-flor i{
+    position:absolute;
+    z-index:2;
+    width:6px;
+    height:6px;
+    left:50%;
+    top:50%;
+    border:1px solid #161711;
+    border-radius:50%;
+    background:#d8a126;
+    transform:translate(-50%,-50%);
+}
+
+.temporada{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+}
+
+.temporada span{
+    color:#8e2d1e;
+    font-size:.58rem;
+    line-height:1;
+    font-weight:1000;
     letter-spacing:.025em;
 }
 
-
-/* =========================================
-   FOOTER CREDENCIAL
-========================================= */
-
-
-.credencial-footer{
-    position:relative;
-    z-index:2;
-
-    min-height:21%;
-
-    display:grid;
-
-    grid-template-columns:
-        auto
-        minmax(0,1fr)
-        auto;
-
-    align-items:center;
-
-    gap:5px;
-
-    padding:
-        2% 4%
-        3%;
-
-    border-top:
-        1px solid
-        rgba(113,92,48,.24);
-
-    background:
-        rgba(255,240,196,.34);
+.temporada strong{
+    margin-top:2px;
+    color:#92251a;
+    font-size:1.12rem;
+    line-height:.92;
+    font-weight:1000;
 }
 
+.credencial-identificacion{
+    position:relative;
+    z-index:2;
+    display:grid;
+    grid-template-columns:43% 57%;
+    min-height:0;
+    padding:0 5%;
+}
 
-.credencial-equipo-logo{
-    width:28px;
-    height:28px;
-
+.credencial-foto-columna{
+    min-width:0;
+    height:100%;
     display:flex;
     align-items:center;
     justify-content:center;
-
-    overflow:hidden;
-
-    border:
-        1px solid
-        rgba(11,117,109,.32);
-
-    border-radius:7px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #d8e9e2,
-            #c5ddd4
-        );
-
-    color:var(--jade-oscuro);
-
-    font-size:.5rem;
-    font-weight:900;
+    padding:2% 7% 2% 0;
 }
 
+.foto-marco-ornamental{
+    position:relative;
+    width:100%;
+    max-height:100%;
+    padding:7px;
+    border:3px solid #171812;
+    border-radius:9px;
+    background:#d09125;
+    box-shadow:
+        0 4px 10px rgba(65,44,18,.15),
+        inset 0 0 0 2px #e9b943;
+}
 
-.credencial-equipo-logo img{
+.foto-marco-ornamental::before{
+    content:"";
+    position:absolute;
+    z-index:3;
+    inset:3px;
+    pointer-events:none;
+    border:2px solid #151710;
+    border-radius:5px;
+}
+
+.foto-borde{
+    position:absolute;
+    z-index:4;
+    pointer-events:none;
+}
+
+.foto-borde-superior,
+.foto-borde-inferior{
+    left:8px;
+    right:8px;
+    height:5px;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #0b7b78 0 7px,
+            #c84522 7px 14px,
+            #d99e27 14px 21px,
+            #1b7191 21px 28px
+        );
+}
+
+.foto-borde-superior{
+    top:1px;
+}
+
+.foto-borde-inferior{
+    bottom:1px;
+}
+
+.foto-borde-derecho,
+.foto-borde-izquierdo{
+    top:8px;
+    bottom:8px;
+    width:5px;
+    background:
+        repeating-linear-gradient(
+            180deg,
+            #0b7b78 0 7px,
+            #c84522 7px 14px,
+            #d99e27 14px 21px,
+            #1b7191 21px 28px
+        );
+}
+
+.foto-borde-izquierdo{
+    left:1px;
+}
+
+.foto-borde-derecho{
+    right:1px;
+}
+
+.credencial-foto{
+    position:relative;
+    z-index:2;
+    width:100%;
+    aspect-ratio:4 / 4.65;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    border:2px solid #181913;
+    border-radius:3px;
+    background:
+        linear-gradient(145deg,#f1f1ed,#d8d8d2);
+    color:var(--jade);
+    font-size:2.4rem;
+    font-weight:1000;
+}
+
+.credencial-foto-img{
     width:100%;
     height:100%;
-
     display:block;
-
-    object-fit:contain;
+    object-fit:cover;
+    object-position:center;
 }
 
+.credencial-datos{
+    min-width:0;
+    height:100%;
+    display:grid;
+    grid-template-rows:repeat(4,1fr);
+    align-items:stretch;
+    padding:1% 0;
+}
 
-/* =========================================
-   FIRMA
-========================================= */
+.dato-jugador{
+    min-width:0;
+    display:grid;
+    grid-template-columns:38px minmax(0,1fr);
+    gap:7px;
+    align-items:center;
+    border-bottom:2px solid rgba(69,53,27,.52);
+}
 
+.dato-jugador:last-child{
+    border-bottom:0;
+}
 
-.credencial-firma{
+.dato-icono{
+    position:relative;
+    width:31px;
+    height:31px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:2px solid #171a13;
+    border-radius:7px;
+    box-shadow:inset 0 0 0 2px rgba(255,255,255,.12);
+}
+
+.dato-icono::before{
+    content:"";
+    position:absolute;
+    width:14px;
+    height:14px;
+    border:3px solid #172018;
+    border-radius:3px;
+}
+
+.dato-icono::after{
+    content:"";
+    position:absolute;
+    width:6px;
+    height:22px;
+    border-left:3px solid #172018;
+    border-right:3px solid #172018;
+}
+
+.dato-icono span{
+    position:absolute;
+    width:22px;
+    height:6px;
+    border-top:3px solid #172018;
+    border-bottom:3px solid #172018;
+}
+
+.icono-agua{
+    background:#16939a;
+}
+
+.icono-terracota{
+    background:#d25b22;
+}
+
+.icono-verde{
+    background:#5c8d2f;
+}
+
+.icono-ocre{
+    background:#d78c20;
+}
+
+.dato-contenido{
+    min-width:0;
+    padding:4px 0;
+}
+
+.dato-contenido span{
+    display:block;
+    margin-bottom:2px;
+    font-size:.49rem;
+    line-height:1;
+    font-weight:1000;
+}
+
+.icono-agua + .dato-contenido span{
+    color:#146b70;
+}
+
+.icono-terracota + .dato-contenido span{
+    color:#912e1e;
+}
+
+.icono-verde + .dato-contenido span{
+    color:#426f2b;
+}
+
+.icono-ocre + .dato-contenido span{
+    color:#9a561b;
+}
+
+.dato-contenido strong{
+    display:block;
+    width:100%;
+    color:#171b17;
+    font-size:.75rem;
+    line-height:1.05;
+    font-weight:1000;
+    text-transform:uppercase;
+    overflow-wrap:anywhere;
+}
+
+.dato-nombre .dato-contenido strong{
+    font-size:.78rem;
+}
+
+.frase-formativa{
+    position:relative;
+    z-index:2;
+    min-height:0;
+    display:grid;
+    grid-template-columns:55px 1fr 55px;
+    align-items:center;
+    gap:5px;
+    margin:2% 5% 1%;
+    padding:5px 7px;
+    overflow:hidden;
+    border:3px solid #151711;
+    border-radius:9px;
+    background:
+        radial-gradient(circle at 25% 30%,rgba(255,255,255,.08),transparent 30%),
+        repeating-linear-gradient(
+            45deg,
+            rgba(2,54,54,.13) 0 4px,
+            transparent 4px 11px
+        ),
+        linear-gradient(135deg,#086b6a,#087d7a 52%,#08666d);
+    box-shadow:
+        inset 0 0 0 2px #c78324,
+        0 2px 4px rgba(59,39,15,.10);
+}
+
+.frase-formativa p{
+    position:relative;
+    z-index:3;
+    margin:0;
+    color:#f7e3aa;
+    font-size:.59rem;
+    line-height:1.18;
+    font-weight:1000;
+    text-align:center;
+}
+
+.frase-figura{
+    position:relative;
+    width:47px;
+    height:40px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.figura-cabeza{
+    position:relative;
+    width:38px;
+    height:28px;
+    border:3px solid #171911;
+    border-radius:45% 40% 48% 35%;
+    background:#d05822;
+}
+
+.figura-cabeza::before{
+    content:"";
+    position:absolute;
+    width:15px;
+    height:15px;
+    left:7px;
+    top:4px;
+    border:3px solid #171911;
+    border-radius:50%;
+    background:#dba127;
+}
+
+.figura-cabeza::after{
+    content:"";
+    position:absolute;
+    width:13px;
+    height:8px;
+    right:-8px;
+    top:8px;
+    border:3px solid #171911;
+    border-left:0;
+    background:#0e7773;
+    transform:skewX(-18deg);
+}
+
+.figura-cabeza span{
+    position:absolute;
+    z-index:2;
+    width:5px;
+    height:5px;
+    left:12px;
+    top:9px;
+    border-radius:50%;
+    background:#151711;
+}
+
+.frase-figura-derecha{
+    transform:scaleX(-1);
+}
+
+.credencial-validacion{
+    position:relative;
+    z-index:2;
+    min-height:0;
+    display:grid;
+    grid-template-columns:28% 44% 28%;
+    align-items:center;
+    padding:2% 5% 0;
+}
+
+.qr-area{
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+}
+
+.qr-marco{
+    width:100%;
+    max-width:90px;
+    aspect-ratio:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    padding:5px;
+    border:2px solid #181913;
+    border-radius:4px;
+    background:#fff;
+}
+
+.qr-marco canvas,
+.qr-marco img{
+    width:100% !important;
+    height:100% !important;
+    display:block;
+}
+
+.qr-area > span{
+    margin-top:3px;
+    color:#0b6b61;
+    font-size:.27rem;
+    line-height:1;
+    font-weight:1000;
+    text-align:center;
+}
+
+.firma-area{
+    height:100%;
+    min-width:0;
     display:flex;
     flex-direction:column;
     align-items:center;
     justify-content:flex-end;
-
-    min-width:0;
-
+    padding:0 5px 6%;
     text-align:center;
 }
 
-
-.firma-contenedor{
-    width:74%;
-    height:20px;
-
-    display:flex;
-    align-items:flex-end;
-    justify-content:center;
-
-    overflow:hidden;
-
-    border-bottom:
-        1px solid
-        #625f50;
+.firma-sello{
+    position:relative;
+    width:100%;
+    height:78px;
 }
 
+.credencial-sello{
+    position:absolute;
+    z-index:1;
+    width:67px;
+    height:67px;
+    left:50%;
+    bottom:0;
+    object-fit:contain;
+    opacity:.42;
+    transform:translateX(-50%) rotate(-9deg);
+}
 
 .firma-img{
-    width:auto;
-    max-width:90%;
+    position:absolute;
+    z-index:2;
+    width:125px;
+    max-width:100%;
+    height:70px;
+    left:50%;
+    bottom:-1px;
+    object-fit:contain;
+    transform:translateX(-50%);
+}
 
-    height:19px;
+.firma-linea{
+    width:92%;
+    height:1px;
+    background:#29251b;
+}
 
+.firma-area > strong{
+    margin-top:4px;
+    color:#17221d;
+    font-size:.32rem;
+    line-height:1;
+    font-weight:1000;
+}
+
+.firma-area > span{
+    margin-top:2px;
+    color:#78694b;
+    font-size:.23rem;
+    line-height:1;
+    font-weight:900;
+}
+
+.identidad-liga-inferior{
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+}
+
+.identidad-liga-inferior img{
+    width:66px;
+    height:66px;
+    display:block;
     object-fit:contain;
 }
 
-
-.firma-placeholder{
-    padding-bottom:2px;
-
-    color:#897e62;
-
-    font-size:.24rem;
-    font-weight:800;
-
-    letter-spacing:.04em;
+.identidad-liga-inferior strong{
+    margin-top:1px;
+    color:#087065;
+    font-size:.43rem;
+    line-height:1;
+    font-weight:1000;
 }
 
-
-.credencial-firma > span{
+.identidad-liga-inferior span{
+    max-width:85px;
     margin-top:2px;
-
-    color:#81775e;
-
-    font-size:.23rem;
-    font-weight:800;
+    color:#444d3e;
+    font-size:.22rem;
+    line-height:1.1;
+    font-weight:900;
 }
 
-
-/* =========================================
-   FOLIO
-========================================= */
-
+.credencial-control{
+    position:relative;
+    z-index:2;
+    min-height:0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:0 5%;
+}
 
 .credencial-folio{
+    min-width:0;
     display:flex;
-    flex-direction:column;
-    align-items:flex-end;
-
-    min-width:45px;
+    align-items:center;
+    gap:4px;
 }
-
 
 .credencial-folio span{
-    color:#857a60;
-
-    font-size:.25rem;
-    font-weight:800;
+    color:#8c642c;
+    font-size:.24rem;
+    font-weight:1000;
 }
 
-
-.credencial-folio strong{
-    max-width:65px;
-
-    color:var(--terracota-oscura);
-
-    font-size:.31rem;
-    font-weight:900;
-
+.credencial-folio-texto{
+    max-width:120px;
+    color:#7e2c1d;
+    font-size:.26rem;
+    font-weight:1000;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
 }
 
-
-/* =========================================
-   TOAST
-========================================= */
-
-
-.toast{
-    position:fixed;
-
-    left:14px;
-    right:14px;
-    bottom:14px;
-
-    z-index:200;
-
+.credencial-oficial{
     display:flex;
-    align-items:flex-start;
-
-    gap:9px;
-
-    padding:11px;
-
-    border:
-        1px solid
-        #86b7a2;
-
-    border-radius:11px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #dceee3,
-            #c8e1d4
-        );
-
-    box-shadow:
-        0 15px 40px
-        rgba(29,56,48,.16);
+    align-items:center;
+    gap:4px;
 }
 
+.credencial-oficial > span{
+    width:6px;
+    height:6px;
+    flex-shrink:0;
+    border-radius:50%;
+    background:#2f814f;
+}
 
-.toast > span{
-    width:30px;
-    height:30px;
+.credencial-oficial strong{
+    color:#236341;
+    font-size:.23rem;
+    font-weight:1000;
+}
 
+.credencial-pie{
+    position:relative;
+    z-index:2;
+    min-height:0;
     display:flex;
     align-items:center;
     justify-content:center;
+    gap:5px;
+    padding:7px 4px 5px;
+    overflow:hidden;
+    border-top:3px solid #151711;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            rgba(255,255,255,.04) 0 8px,
+            transparent 8px 16px
+        ),
+        linear-gradient(90deg,#075c5b,#087d78 48%,#075d63);
+    color:#f5dda0;
+}
 
+.credencial-pie::before{
+    content:"";
+    position:absolute;
+    top:2px;
+    left:0;
+    right:0;
+    height:2px;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #cf8c24 0 8px,
+            #b94323 8px 16px,
+            #14778b 16px 24px,
+            #54802e 24px 32px
+        );
+}
+
+.credencial-pie strong{
+    font-size:.27rem;
+    line-height:1;
+    font-weight:1000;
+    white-space:nowrap;
+}
+
+.credencial-pie > i{
+    width:3px;
+    height:3px;
     flex-shrink:0;
-
-    border:
-        1px solid
-        #79aa94;
-
     border-radius:50%;
+    background:#f2d695;
+}
 
-    background:#c6e6d5;
+.pie-flor{
+    position:relative;
+    width:16px;
+    height:16px;
+    flex-shrink:0;
+}
 
-    color:#176c4a;
+.pie-flor::before,
+.pie-flor::after{
+    content:"";
+    position:absolute;
+    inset:3px;
+    border:2px solid #161811;
+    border-radius:50% 20%;
+    background:#d19425;
+    transform:rotate(45deg);
+}
 
+.pie-flor::after{
+    background:#168b8b;
+    transform:rotate(90deg);
+}
+
+.pie-flor span{
+    position:absolute;
+    z-index:3;
+    width:5px;
+    height:5px;
+    left:50%;
+    top:50%;
+    border-radius:50%;
+    background:#b74423;
+    transform:translate(-50%,-50%);
+}
+
+.toast{
+    position:fixed;
+    z-index:200;
+    left:14px;
+    right:14px;
+    bottom:14px;
+    display:flex;
+    gap:9px;
+    padding:11px;
+    border:1px solid #8eb19e;
+    border-radius:10px;
+    background:#edf7ef;
+    box-shadow:0 12px 35px rgba(30,50,40,.15);
+}
+
+.toast > span{
+    width:29px;
+    height:29px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    border-radius:50%;
+    background:#cde8d7;
+    color:#176b48;
     font-size:.65rem;
     font-weight:900;
 }
 
-
 .toast strong{
     display:block;
-
-    margin-bottom:2px;
-
-    color:var(--tinta);
-
-    font-size:.63rem;
+    font-size:.62rem;
 }
-
 
 .toast p{
-    margin:0;
-
-    color:#5d6d65;
-
-    font-size:.55rem;
-    line-height:1.35;
+    margin:2px 0 0;
+    color:#5d6b63;
+    font-size:.54rem;
 }
-
-
-/* =========================================
-   HOVER
-========================================= */
-
-
-@media (hover:hover) and (pointer:fine){
-
-    .btn-imprimir-top,
-    .btn-principal,
-    .btn-regresar,
-    .btn-volver{
-        transition:.18s ease;
-    }
-
-
-    .btn-imprimir-top:hover,
-    .btn-principal:hover,
-    .btn-regresar:hover{
-        filter:brightness(1.06);
-    }
-
-
-    .btn-volver:hover{
-        background:#dcc085;
-    }
-
-}
-
-
-/* =========================================
-   DESDE 620PX
-========================================= */
-
 
 @media (min-width:620px){
 
     .hoja-credenciales{
-        grid-template-columns:
-            repeat(2,minmax(0,1fr));
+        grid-template-columns:repeat(2,minmax(0,410px));
+        justify-content:center;
     }
 
-
     .configuracion-acciones{
-        grid-template-columns:
-            minmax(190px,1fr)
-            auto;
+        grid-template-columns:minmax(190px,1fr) auto;
     }
 
 }
 
-
-/* =========================================
-   DESDE 700PX
-========================================= */
-
-
-@media (min-width:700px){
-
-    .contenido{
-        padding:
-            22px
-            20px
-            40px;
-    }
-
+@media (min-width:760px){
 
     .encabezado-pagina{
         flex-direction:row;
         align-items:center;
         justify-content:space-between;
-
-        padding:21px;
     }
-
 
     .equipo-resumen{
         width:250px;
-
-        flex-shrink:0;
     }
-
 
     .panel-configuracion{
         flex-direction:row;
@@ -1985,185 +1475,221 @@ button{
         justify-content:space-between;
     }
 
-
     .configuracion-acciones{
         min-width:430px;
     }
 
-
     .toast{
         left:auto;
         right:20px;
-        bottom:20px;
-
         width:350px;
     }
 
 }
 
-
-/* =========================================
-   DESDE 960PX
-========================================= */
-
-
-@media (min-width:960px){
+@media (min-width:1000px){
 
     .hoja-credenciales{
-        grid-template-columns:
-            repeat(2,minmax(0,1fr));
-
-        padding:18px;
-
-        gap:18px;
+        grid-template-columns:repeat(2,410px);
+        gap:35px;
     }
 
 }
-
-
-/* =========================================
-   CELULAR PEQUEÑO
-========================================= */
-
 
 @media (max-width:430px){
 
-    body::after{
-        display:none;
-    }
-
-
     .topbar{
-        padding:
-            8px
-            10px;
+        padding:8px 10px;
     }
-
-
-    .topbar::after{
-        left:10px;
-        right:10px;
-    }
-
-
-    .btn-volver{
-        width:38px;
-        height:38px;
-    }
-
-
-    .topbar-logo{
-        width:39px;
-        height:39px;
-    }
-
-
-    .topbar-titulo strong{
-        max-width:150px;
-
-        font-size:.76rem;
-    }
-
-
-    .topbar-titulo span{
-        font-size:.54rem;
-    }
-
-
-    .btn-imprimir-top span{
-        display:none;
-    }
-
 
     .btn-imprimir-top{
-        width:40px;
-        height:40px;
-
-        padding:0;
+        padding:7px 10px;
     }
-
 
     .contenido{
-        padding:
-            13px
-            10px
-            28px;
+        padding:13px 9px 30px;
     }
-
-
-    .encabezado-pagina{
-        padding:15px;
-
-        border-radius:14px;
-    }
-
-
-    .panel-configuracion,
-    .sin-jugadores{
-        border-radius:12px;
-    }
-
 
     .hoja-credenciales{
-        padding:10px;
-
-        border-radius:13px;
+        padding:15px 7px;
     }
-
 
     .credencial{
-        border-radius:11px;
+        max-width:360px;
     }
 
+    .credencial-carcasa{
+        padding:6px;
+        border-radius:23px;
+    }
 
-    .credencial-frente{
-        border-radius:11px;
+    .marco-exterior{
+        border-width:4px;
+        border-radius:18px;
+    }
+
+    .marco-interior{
+        top:22px;
+        right:16px;
+        bottom:23px;
+        left:16px;
+    }
+
+    .greca{
+        left:14px;
+        right:14px;
+        height:14px;
+    }
+
+    .greca-lateral{
+        width:8px;
+    }
+
+    .esquina-ornamental{
+        width:26px;
+        height:26px;
+    }
+
+    .credencial-logo-liga{
+        max-width:150px;
+        max-height:150px;
+    }
+
+    .credencial-titulos h2{
+        font-size:1.18rem;
+    }
+
+    .credencial-titulos h3{
+        font-size:.45rem;
+    }
+
+    .temporada span{
+        font-size:.48rem;
+    }
+
+    .temporada strong{
+        font-size:.92rem;
+    }
+
+    .dato-jugador{
+        grid-template-columns:31px minmax(0,1fr);
+        gap:5px;
+    }
+
+    .dato-icono{
+        width:27px;
+        height:27px;
+    }
+
+    .dato-icono::before{
+        width:12px;
+        height:12px;
+    }
+
+    .dato-icono::after{
+        width:5px;
+        height:19px;
+    }
+
+    .dato-icono span{
+        width:19px;
+        height:5px;
+    }
+
+    .dato-contenido span{
+        font-size:.40rem;
+    }
+
+    .dato-contenido strong{
+        font-size:.62rem;
+    }
+
+    .dato-nombre .dato-contenido strong{
+        font-size:.64rem;
+    }
+
+    .frase-formativa{
+        grid-template-columns:45px 1fr 45px;
+    }
+
+    .frase-formativa p{
+        font-size:.49rem;
+    }
+
+    .frase-figura{
+        width:39px;
+    }
+
+    .figura-cabeza{
+        width:32px;
+        height:25px;
+    }
+
+    .qr-marco{
+        max-width:75px;
+    }
+
+    .firma-sello{
+        height:64px;
+    }
+
+    .firma-img{
+        width:105px;
+        height:58px;
+    }
+
+    .credencial-sello{
+        width:56px;
+        height:56px;
+    }
+
+    .identidad-liga-inferior img{
+        width:55px;
+        height:55px;
     }
 
 }
 
+@media (max-width:360px){
 
-/* =========================================
-   IMPRESIÓN
-========================================= */
+    .credencial{
+        max-width:330px;
+    }
 
+    .credencial-titulos h2{
+        font-size:1.05rem;
+    }
+
+    .credencial-logo-liga{
+        max-width:135px;
+        max-height:135px;
+    }
+
+    .frase-formativa p{
+        font-size:.43rem;
+    }
+
+}
 
 @page{
     size:A4 portrait;
-
-    margin:8mm;
+    margin:7mm;
 }
-
 
 @media print{
 
     html,
     body{
-        width:100%;
-
         margin:0 !important;
         padding:0 !important;
-
-        background:#ffffff !important;
-
-        -webkit-print-color-adjust:
-            exact !important;
-
-        print-color-adjust:
-            exact !important;
+        background:#fff !important;
+        -webkit-print-color-adjust:exact !important;
+        print-color-adjust:exact !important;
     }
-
-
-    body::before,
-    body::after{
-        display:none !important;
-    }
-
 
     .topbar,
     .encabezado-pagina,
     .panel-configuracion,
-    .aviso-impresion,
     .sin-jugadores,
     .estado-carga,
     .estado-error,
@@ -2171,219 +1697,326 @@ button{
         display:none !important;
     }
 
-
     .credenciales-page,
     .contenido,
-    .contenido-credenciales{
+    .contenido-credenciales,
+    .hojas-credenciales{
         width:100% !important;
         max-width:none !important;
-
         margin:0 !important;
         padding:0 !important;
-
         display:block !important;
     }
-
-
-    .hojas-credenciales{
-        display:block !important;
-
-        width:100% !important;
-    }
-
 
     .hoja-credenciales{
-        width:194mm !important;
-        max-width:none !important;
-
-        min-height:281mm !important;
-
+        width:196mm !important;
+        min-height:283mm !important;
         display:grid !important;
-
-        grid-template-columns:
-            85.6mm
-            85.6mm !important;
-
-        grid-auto-rows:
-            54mm !important;
-
-        justify-content:center;
-        align-content:start;
-
-        gap:
-            8mm
-            8mm !important;
-
-        margin:
-            0 auto !important;
-
-        padding:
-            7mm
-            0 !important;
-
+        grid-template-columns:repeat(3,54mm) !important;
+        grid-auto-rows:81mm !important;
+        justify-content:center !important;
+        align-content:start !important;
+        gap:5mm !important;
+        margin:0 auto !important;
+        padding:7mm 0 !important;
         border:0 !important;
         border-radius:0 !important;
-
-        background:#ffffff !important;
-
-        box-shadow:none !important;
-
-        break-after:page;
-
-        page-break-after:always;
+        background:#fff !important;
+        break-after:page !important;
+        page-break-after:always !important;
     }
-
 
     .hoja-credenciales:last-child{
-        break-after:auto;
-
-        page-break-after:auto;
+        break-after:auto !important;
+        page-break-after:auto !important;
     }
-
 
     .credencial{
-        width:85.6mm !important;
-        height:54mm !important;
-
+        width:54mm !important;
+        height:81mm !important;
+        max-width:none !important;
         margin:0 !important;
-
-        overflow:hidden !important;
-
-        border-radius:
-            3mm !important;
-
-        background:#ffffff !important;
-
-        box-shadow:none !important;
-
         break-inside:avoid !important;
-
-        page-break-inside:
-            avoid !important;
+        page-break-inside:avoid !important;
     }
-
 
     .credencial-frente{
-        width:85.6mm !important;
-        height:54mm !important;
-
-        aspect-ratio:
-            auto !important;
-
-        border:
-            .25mm solid
-            #8b7b4f !important;
-
-        border-radius:
-            3mm !important;
+        width:54mm !important;
+        height:81mm !important;
+        aspect-ratio:auto !important;
     }
 
+    .credencial-carcasa{
+        padding:1mm !important;
+        border-radius:3.5mm !important;
+        box-shadow:none !important;
+    }
+
+    .marco-exterior{
+        border-width:.7mm !important;
+        border-radius:2.8mm !important;
+    }
+
+    .marco-exterior::before{
+        inset:1.3mm !important;
+        border-width:.3mm !important;
+    }
+
+    .marco-exterior::after{
+        inset:2mm !important;
+        border-width:.2mm !important;
+    }
+
+    .marco-interior{
+        top:4mm !important;
+        right:3mm !important;
+        bottom:4.1mm !important;
+        left:3mm !important;
+        border-width:.3mm !important;
+    }
+
+    .greca{
+        left:2.5mm !important;
+        right:2.5mm !important;
+        height:2.6mm !important;
+        border-width:.3mm !important;
+    }
+
+    .greca-superior{
+        top:1.6mm !important;
+    }
+
+    .greca-inferior{
+        bottom:1.6mm !important;
+    }
+
+    .greca-lateral{
+        top:4mm !important;
+        bottom:4mm !important;
+        width:1.5mm !important;
+        border-width:.25mm !important;
+    }
+
+    .greca-lateral-izquierda{
+        left:1.3mm !important;
+    }
+
+    .greca-lateral-derecha{
+        right:1.3mm !important;
+    }
+
+    .esquina-ornamental{
+        width:4.5mm !important;
+        height:4.5mm !important;
+        border-width:.4mm !important;
+    }
 
     .credencial-logo-liga{
+        max-width:21mm !important;
+        max-height:21mm !important;
+    }
+
+    .credencial-titulos h2{
+        font-size:7pt !important;
+    }
+
+    .credencial-titulos h3{
+        font-size:2.8pt !important;
+    }
+
+    .separador-prehispanico{
+        margin:1mm 0 .8mm !important;
+        gap:.8mm !important;
+    }
+
+    .separador-linea{
+        height:.7mm !important;
+    }
+
+    .separador-flor{
+        width:2.7mm !important;
+        height:2.7mm !important;
+    }
+
+    .temporada span{
+        font-size:2.9pt !important;
+    }
+
+    .temporada strong{
+        font-size:5.5pt !important;
+    }
+
+    .foto-marco-ornamental{
+        padding:1mm !important;
+        border-width:.4mm !important;
+        border-radius:1.2mm !important;
+    }
+
+    .credencial-foto{
+        border-width:.3mm !important;
+        border-radius:.5mm !important;
+    }
+
+    .dato-jugador{
+        grid-template-columns:4.5mm minmax(0,1fr) !important;
+        gap:.8mm !important;
+        border-bottom-width:.25mm !important;
+    }
+
+    .dato-icono{
+        width:4mm !important;
+        height:4mm !important;
+        border-width:.3mm !important;
+        border-radius:.8mm !important;
+    }
+
+    .dato-icono::before{
+        width:1.6mm !important;
+        height:1.6mm !important;
+        border-width:.35mm !important;
+    }
+
+    .dato-icono::after{
+        width:.8mm !important;
+        height:2.8mm !important;
+        border-left-width:.35mm !important;
+        border-right-width:.35mm !important;
+    }
+
+    .dato-icono span{
+        width:2.8mm !important;
+        height:.8mm !important;
+        border-top-width:.35mm !important;
+        border-bottom-width:.35mm !important;
+    }
+
+    .dato-contenido{
+        padding:.4mm 0 !important;
+    }
+
+    .dato-contenido span{
+        font-size:2.3pt !important;
+    }
+
+    .dato-contenido strong{
+        font-size:3.5pt !important;
+    }
+
+    .dato-nombre .dato-contenido strong{
+        font-size:3.7pt !important;
+    }
+
+    .frase-formativa{
+        grid-template-columns:7mm 1fr 7mm !important;
+        gap:.5mm !important;
+        margin:.5mm 2.5mm .3mm !important;
+        padding:.6mm .7mm !important;
+        border-width:.4mm !important;
+        border-radius:1mm !important;
+    }
+
+    .frase-formativa p{
+        font-size:2.7pt !important;
+    }
+
+    .frase-figura{
+        width:6mm !important;
+        height:5mm !important;
+    }
+
+    .figura-cabeza{
+        width:5mm !important;
+        height:4mm !important;
+        border-width:.35mm !important;
+    }
+
+    .qr-marco{
+        max-width:11.5mm !important;
+        padding:.5mm !important;
+        border-width:.3mm !important;
+    }
+
+    .qr-area > span{
+        margin-top:.4mm !important;
+        font-size:1.5pt !important;
+    }
+
+    .firma-sello{
+        height:10mm !important;
+    }
+
+    .firma-img{
+        width:18mm !important;
+        height:9mm !important;
+    }
+
+    .credencial-sello{
         width:9mm !important;
         height:9mm !important;
     }
 
-
-    .credencial-liga span{
-        font-size:
-            5.5pt !important;
+    .firma-linea{
+        height:.2mm !important;
     }
 
-
-    .credencial-liga strong{
-        font-size:
-            8.5pt !important;
+    .firma-area > strong{
+        margin-top:.5mm !important;
+        font-size:1.9pt !important;
     }
 
-
-    .credencial-liga small{
-        font-size:
-            4.4pt !important;
+    .firma-area > span{
+        font-size:1.4pt !important;
     }
 
-
-    .credencial-temporada{
-        font-size:
-            4.4pt !important;
-    }
-
-
-    .credencial-etiqueta{
-        font-size:
-            4.4pt !important;
-    }
-
-
-    .credencial-nombre{
-        font-size:
-            8.2pt !important;
-    }
-
-
-    .credencial-datos-grid span{
-        font-size:
-            4pt !important;
-    }
-
-
-    .credencial-datos-grid strong{
-        font-size:
-            5.2pt !important;
-    }
-
-
-    .credencial-curp span{
-        font-size:
-            4.2pt !important;
-    }
-
-
-    .credencial-curp strong{
-        font-size:
-            5.2pt !important;
-    }
-
-
-    .credencial-equipo-logo{
+    .identidad-liga-inferior img{
         width:8mm !important;
         height:8mm !important;
     }
 
-
-    .firma-contenedor{
-        height:
-            6mm !important;
+    .identidad-liga-inferior strong{
+        font-size:2.2pt !important;
     }
 
-
-    .firma-img{
-        height:
-            5.7mm !important;
+    .identidad-liga-inferior span{
+        font-size:1.3pt !important;
     }
-
-
-    .firma-placeholder{
-        font-size:
-            3.5pt !important;
-    }
-
-
-    .credencial-firma > span{
-        font-size:
-            3.2pt !important;
-    }
-
 
     .credencial-folio span{
-        font-size:
-            3.5pt !important;
+        font-size:1.4pt !important;
     }
 
+    .credencial-folio-texto{
+        max-width:17mm !important;
+        font-size:1.6pt !important;
+    }
 
-    .credencial-folio strong{
-        font-size:
-            4.3pt !important;
+    .credencial-oficial > span{
+        width:1mm !important;
+        height:1mm !important;
+    }
+
+    .credencial-oficial strong{
+        font-size:1.4pt !important;
+    }
+
+    .credencial-pie{
+        padding:1mm .5mm .6mm !important;
+        gap:.7mm !important;
+        border-top-width:.4mm !important;
+    }
+
+    .credencial-pie strong{
+        font-size:1.65pt !important;
+    }
+
+    .credencial-pie > i{
+        width:.5mm !important;
+        height:.5mm !important;
+    }
+
+    .pie-flor{
+        width:2.4mm !important;
+        height:2.4mm !important;
     }
 
 }

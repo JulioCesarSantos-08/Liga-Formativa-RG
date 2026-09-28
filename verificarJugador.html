@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#0b756d"
+    >
+
+    <meta
+        name="description"
+        content="Verificación oficial de credenciales de la Liga Municipal de Fútbol Río Grande."
+    >
+
+    <title>
+        Verificar credencial | Liga Municipal de Fútbol Río Grande
+    </title>
+
+    <link
+        rel="icon"
+        href="imagenes/logo.png"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/global.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/verificarJugador.css"
+    >
+
+</head>
+
+<body>
+
+    <main class="verificacion-page">
+
+        <section class="verificacion-contenedor">
+
+            <header class="verificacion-encabezado">
+
+                <div class="encabezado-decoracion"></div>
+
+                <img
+                    src="imagenes/credencial.png"
+                    alt="Liga Municipal de Fútbol Río Grande"
+                    class="verificacion-logo"
+                >
+
+                <span class="verificacion-organizacion">
+                    LIGA MUNICIPAL DE FÚTBOL
+                </span>
+
+                <h1>
+                    Verificación de credencial
+                </h1>
+
+                <p>
+                    Río Grande · Villa de Tututepec, Oaxaca
+                </p>
+
+            </header>
+
+
+            <section
+                id="estadoCarga"
+                class="estado-verificacion estado-carga"
+            >
+
+                <div class="escudo-carga">
+
+                    <div class="spinner"></div>
+
+                </div>
+
+                <h2>
+                    Verificando credencial
+                </h2>
+
+                <p>
+                    Consultando el registro oficial de la liga...
+                </p>
+
+            </section>
+
+
+            <section
+                id="estadoValido"
+                class="estado-verificacion resultado-verificacion resultado-valido oculto"
+            >
+
+                <div class="resultado-icono resultado-icono-valido">
+                    ✓
+                </div>
+
+                <span class="resultado-etiqueta resultado-etiqueta-valido">
+                    REGISTRO LOCALIZADO
+                </span>
+
+                <h2>
+                    Credencial verificada
+                </h2>
+
+                <p class="resultado-descripcion">
+                    Esta credencial corresponde a un jugador registrado en la Liga Municipal de Fútbol Río Grande.
+                </p>
+
+
+                <div class="jugador-verificado">
+
+                    <div class="jugador-foto-marco">
+
+                        <img
+                            id="jugadorFoto"
+                            class="jugador-foto oculto"
+                            alt="Fotografía del jugador"
+                        >
+
+                        <span
+                            id="jugadorInicial"
+                            class="jugador-inicial"
+                        >
+                            J
+                        </span>
+
+                        <span class="foto-verificada">
+                            ✓
+                        </span>
+
+                    </div>
+
+
+                    <div class="jugador-identidad">
+
+                        <span>
+                            JUGADOR REGISTRADO
+                        </span>
+
+                        <h3 id="jugadorNombre">
+                            Jugador
+                        </h3>
+
+                        <div class="jugador-folio">
+
+                            <span>
+                                FOLIO
+                            </span>
+
+                            <strong id="jugadorFolio">
+                                -
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="datos-verificacion">
+
+                    <div class="dato-verificacion">
+
+                        <span>
+                            EQUIPO
+                        </span>
+
+                        <strong id="jugadorEquipo">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div class="dato-verificacion">
+
+                        <span>
+                            CATEGORÍA
+                        </span>
+
+                        <strong id="jugadorCategoria">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div class="dato-verificacion">
+
+                        <span>
+                            NÚMERO
+                        </span>
+
+                        <strong id="jugadorNumero">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div class="dato-verificacion">
+
+                        <span>
+                            TEMPORADA
+                        </span>
+
+                        <strong id="jugadorTemporada">
+                            -
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="estadoJugador"
+                    class="estado-jugador estado-jugador-activo"
+                >
+
+                    <span class="estado-punto"></span>
+
+                    <div>
+
+                        <small>
+                            ESTADO DEL REGISTRO
+                        </small>
+
+                        <strong id="estadoJugadorTexto">
+                            CREDENCIAL VIGENTE
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="aviso-oficial">
+
+                    <strong>
+                        VERIFICACIÓN OFICIAL
+                    </strong>
+
+                    <p>
+                        La información mostrada corresponde únicamente a los datos necesarios para comprobar la autenticidad de esta credencial.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <section
+                id="estadoNoEncontrado"
+                class="estado-verificacion resultado-verificacion resultado-no-encontrado oculto"
+            >
+
+                <div class="resultado-icono resultado-icono-error">
+                    !
+                </div>
+
+                <span class="resultado-etiqueta resultado-etiqueta-error">
+                    REGISTRO NO LOCALIZADO
+                </span>
+
+                <h2>
+                    Credencial no encontrada
+                </h2>
+
+                <p class="resultado-descripcion">
+                    No encontramos un jugador asociado con esta credencial en el registro de verificación.
+                </p>
+
+
+                <div class="alerta-verificacion">
+
+                    <strong>
+                        No fue posible verificar esta credencial
+                    </strong>
+
+                    <p>
+                        La credencial probablemente es falsa o existe algún error. Por favor, verifica que el código QR corresponda a una credencial oficial emitida por la liga.
+                    </p>
+
+                </div>
+
+
+                <div class="recomendacion-verificacion">
+
+                    <span>
+                        ¿Qué debo hacer?
+                    </span>
+
+                    <p>
+                        Si consideras que esta credencial es legítima, comunícate con la administración de la Liga Municipal de Fútbol Río Grande para revisar el registro.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <section
+                id="estadoError"
+                class="estado-verificacion resultado-verificacion resultado-error-conexion oculto"
+            >
+
+                <div class="resultado-icono resultado-icono-conexion">
+                    !
+                </div>
+
+                <span class="resultado-etiqueta resultado-etiqueta-conexion">
+                    SERVICIO TEMPORALMENTE NO DISPONIBLE
+                </span>
+
+                <h2>
+                    No pudimos verificarla
+                </h2>
+
+                <p class="resultado-descripcion">
+                    Ocurrió un problema de conexión mientras intentábamos consultar el registro oficial.
+                </p>
+
+
+                <div class="alerta-conexion">
+
+                    <strong>
+                        Esto no significa que la credencial sea falsa
+                    </strong>
+
+                    <p>
+                        Revisa tu conexión a Internet e intenta nuevamente. Si el problema continúa, vuelve a realizar la verificación más tarde.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="btnReintentar"
+                    class="btn-reintentar"
+                >
+                    Intentar nuevamente
+                </button>
+
+            </section>
+
+
+            <section
+                id="estadoEnlaceInvalido"
+                class="estado-verificacion resultado-verificacion resultado-no-encontrado oculto"
+            >
+
+                <div class="resultado-icono resultado-icono-error">
+                    !
+                </div>
+
+                <span class="resultado-etiqueta resultado-etiqueta-error">
+                    CÓDIGO NO VÁLIDO
+                </span>
+
+                <h2>
+                    Enlace de verificación inválido
+                </h2>
+
+                <p class="resultado-descripcion">
+                    Este enlace no contiene la información necesaria para verificar una credencial.
+                </p>
+
+
+                <div class="alerta-verificacion">
+
+                    <strong>
+                        Escanea nuevamente el código QR
+                    </strong>
+
+                    <p>
+                        Utiliza el código QR impreso directamente en la credencial oficial del jugador.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <footer class="verificacion-footer">
+
+                <div class="footer-linea">
+
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </div>
+
+                <img
+                    src="imagenes/credencial.png"
+                    alt=""
+                >
+
+                <div>
+
+                    <strong>
+                        Liga Municipal de Fútbol Río Grande
+                    </strong>
+
+                    <span>
+                        Infantil y Juvenil Formativa
+                    </span>
+
+                    <small>
+                        Villa de Tututepec, Oaxaca
+                    </small>
+
+                </div>
+
+            </footer>
+
+        </section>
+
+    </main>
+
+
+    <script
+        type="module"
+        src="js/publico/verificarJugador.js"
+    ></script>
+
+</body>
+
+</html>

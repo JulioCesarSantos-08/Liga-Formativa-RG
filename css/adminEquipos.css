@@ -2481,3 +2481,93 @@ button{
     }
 
 }
+
+.aviso-club{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    margin-top:3px;
+    padding:11px 12px;
+    border:1px solid rgba(25,126,152,.28);
+    border-radius:11px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(215,236,230,.82),
+            rgba(112,194,202,.16)
+        );
+}
+
+.aviso-club-icono{
+    width:30px;
+    height:30px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    border-radius:9px;
+    background:
+        linear-gradient(
+            135deg,
+            var(--jade),
+            var(--agua)
+        );
+    color:#ffffff;
+    font-size:.78rem;
+    font-weight:900;
+}
+
+.aviso-club > div{
+    min-width:0;
+}
+
+.aviso-club strong{
+    display:block;
+    margin-bottom:3px;
+    color:var(--tinta);
+    font-size:.62rem;
+    font-weight:900;
+}
+
+.aviso-club p{
+    margin:0;
+    color:#536861;
+    font-size:.57rem;
+    line-height:1.45;
+}
+
+#clubEquipo{
+    text-transform:uppercase;
+}
+
+#clubEquipo::placeholder{
+    text-transform:none;
+}
+
+#clubEquipo:focus{
+    border-color:var(--jade);
+    box-shadow:
+        0 0 0 3px rgba(11,117,109,.10);
+}
+
+@media (max-width:600px){
+
+    .aviso-club{
+        padding:10px;
+        gap:9px;
+    }
+
+    .aviso-club-icono{
+        width:28px;
+        height:28px;
+    }
+
+    .aviso-club strong{
+        font-size:.60rem;
+    }
+
+    .aviso-club p{
+        font-size:.55rem;
+    }
+
+}

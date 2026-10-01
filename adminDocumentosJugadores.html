@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Documentos de jugadores | Liga Deportiva Río Grande
+    </title>
+
+    <link
+        rel="icon"
+        href="imagenes/logo.png"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/adminDocumentosJugadores.css"
+    >
+</head>
+
+<body>
+
+    <header class="topbar">
+        <div class="topbar-left">
+            <a
+                href="admin.html"
+                class="btn-volver"
+                aria-label="Volver al panel"
+            >
+                ←
+            </a>
+
+            <img
+                src="imagenes/logo.png"
+                alt="Liga Deportiva Río Grande"
+                class="logo-topbar"
+            >
+
+            <div class="topbar-titulo">
+                <span>
+                    ADMINISTRACIÓN
+                </span>
+
+                <strong>
+                    Documentos de jugadores
+                </strong>
+            </div>
+        </div>
+
+        <a
+            href="admin.html"
+            class="btn-panel"
+        >
+            Panel
+        </a>
+    </header>
+
+    <main class="contenido">
+
+        <section class="hero">
+            <div class="hero-contenido">
+                <span class="hero-etiqueta">
+                    CONTROL DOCUMENTAL
+                </span>
+
+                <h1>
+                    CURP de jugadores
+                </h1>
+
+                <p>
+                    Consulta los documentos registrados por los equipos y detecta posibles registros duplicados.
+                </p>
+            </div>
+
+            <div class="hero-icono">
+                📄
+            </div>
+        </section>
+
+        <section class="resumen">
+            <article class="resumen-card">
+                <div class="resumen-icono">
+                    👥
+                </div>
+
+                <div>
+                    <span>
+                        Jugadores
+                    </span>
+
+                    <strong id="totalJugadores">
+                        0
+                    </strong>
+
+                    <small>
+                        Registros encontrados
+                    </small>
+                </div>
+            </article>
+
+            <article class="resumen-card resumen-card-verde">
+                <div class="resumen-icono">
+                    ✓
+                </div>
+
+                <div>
+                    <span>
+                        Con documento
+                    </span>
+
+                    <strong id="totalConDocumento">
+                        0
+                    </strong>
+
+                    <small>
+                        CURP disponible
+                    </small>
+                </div>
+            </article>
+
+            <article class="resumen-card resumen-card-rojo">
+                <div class="resumen-icono">
+                    !
+                </div>
+
+                <div>
+                    <span>
+                        Sin documento
+                    </span>
+
+                    <strong id="totalSinDocumento">
+                        0
+                    </strong>
+
+                    <small>
+                        Requieren revisión
+                    </small>
+                </div>
+            </article>
+
+            <article class="resumen-card resumen-card-dorado">
+                <div class="resumen-icono">
+                    ⚠
+                </div>
+
+                <div>
+                    <span>
+                        CURP duplicadas
+                    </span>
+
+                    <strong id="totalDuplicados">
+                        0
+                    </strong>
+
+                    <small>
+                        Registros sospechosos
+                    </small>
+                </div>
+            </article>
+        </section>
+
+        <section class="panel-control">
+
+            <div class="panel-control-titulo">
+                <div>
+                    <span>
+                        EXPEDIENTES
+                    </span>
+
+                    <h2>
+                        Documentos registrados
+                    </h2>
+                </div>
+
+                <div
+                    id="contadorResultados"
+                    class="contador-resultados"
+                >
+                    0 resultados
+                </div>
+            </div>
+
+            <div class="filtros">
+
+                <div class="buscador">
+                    <span>
+                        🔎
+                    </span>
+
+                    <input
+                        type="search"
+                        id="buscarJugador"
+                        placeholder="Buscar por nombre o CURP..."
+                        autocomplete="off"
+                    >
+                </div>
+
+                <select id="filtroEquipo">
+                    <option value="">
+                        Todos los equipos
+                    </option>
+                </select>
+
+                <select id="filtroDocumento">
+                    <option value="">
+                        Todos los documentos
+                    </option>
+
+                    <option value="con">
+                        Con documento
+                    </option>
+
+                    <option value="sin">
+                        Sin documento
+                    </option>
+
+                    <option value="duplicado">
+                        CURP duplicada
+                    </option>
+                </select>
+
+            </div>
+
+            <div
+                id="alertaDuplicados"
+                class="alerta-duplicados oculto"
+            >
+                <div class="alerta-icono">
+                    ⚠
+                </div>
+
+                <div>
+                    <strong>
+                        Se detectaron CURP duplicadas
+                    </strong>
+
+                    <p>
+                        Hay jugadores registrados más de una vez con la misma CURP. Revisa los documentos antes de realizar cualquier eliminación.
+                    </p>
+                </div>
+            </div>
+
+            <div
+                id="estadoCarga"
+                class="estado-carga"
+            >
+                <div class="spinner"></div>
+
+                <strong>
+                    Cargando documentos...
+                </strong>
+
+                <span>
+                    Consultando los registros de jugadores.
+                </span>
+            </div>
+
+            <div
+                id="listaDocumentos"
+                class="lista-documentos oculto"
+            ></div>
+
+            <div
+                id="sinResultados"
+                class="sin-resultados oculto"
+            >
+                <div>
+                    📄
+                </div>
+
+                <strong>
+                    No encontramos jugadores
+                </strong>
+
+                <p>
+                    Prueba modificando los filtros o el texto de búsqueda.
+                </p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <div
+        id="modalDocumento"
+        class="modal-overlay oculto"
+    >
+        <div class="modal-documento">
+
+            <div class="modal-header">
+                <div>
+                    <span>
+                        DOCUMENTO CURP
+                    </span>
+
+                    <h2 id="modalNombreJugador">
+                        Jugador
+                    </h2>
+                </div>
+
+                <button
+                    type="button"
+                    id="btnCerrarDocumento"
+                    class="btn-cerrar"
+                    aria-label="Cerrar"
+                >
+                    ×
+                </button>
+            </div>
+
+            <div class="modal-datos">
+                <div>
+                    <span>
+                        CURP
+                    </span>
+
+                    <strong id="modalCurpJugador">
+                        -
+                    </strong>
+                </div>
+
+                <div>
+                    <span>
+                        Equipo
+                    </span>
+
+                    <strong id="modalEquipoJugador">
+                        -
+                    </strong>
+                </div>
+            </div>
+
+            <div
+                id="modalAlertaDuplicado"
+                class="modal-alerta-duplicado oculto"
+            >
+                <span>
+                    ⚠
+                </span>
+
+                <div>
+                    <strong>
+                        CURP duplicada
+                    </strong>
+
+                    <p>
+                        Esta CURP aparece en más de un registro de jugadores.
+                    </p>
+                </div>
+            </div>
+
+            <div
+                id="visorDocumento"
+                class="visor-documento"
+            >
+                <div
+                    id="cargandoDocumento"
+                    class="cargando-documento"
+                >
+                    <div class="spinner"></div>
+
+                    <span>
+                        Preparando documento...
+                    </span>
+                </div>
+
+                <iframe
+                    id="iframeDocumento"
+                    title="Documento CURP del jugador"
+                    class="iframe-documento oculto"
+                ></iframe>
+
+                <div
+                    id="documentoNoDisponible"
+                    class="documento-no-disponible oculto"
+                >
+                    <div>
+                        📄
+                    </div>
+
+                    <strong>
+                        Documento no disponible
+                    </strong>
+
+                    <p>
+                        Este jugador no tiene un archivo de CURP registrado.
+                    </p>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <a
+                    id="btnAbrirDocumento"
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn-abrir-documento oculto"
+                >
+                    Abrir documento
+                </a>
+
+                <button
+                    type="button"
+                    id="btnCerrarDocumentoFooter"
+                    class="btn-secundario"
+                >
+                    Cerrar
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <div
+        id="toast"
+        class="toast oculto"
+    >
+        <div
+            id="toastIcono"
+            class="toast-icono"
+        >
+            ✓
+        </div>
+
+        <div>
+            <strong id="toastTitulo">
+                Listo
+            </strong>
+
+            <span id="toastMensaje">
+                Operación realizada.
+            </span>
+        </div>
+    </div>
+
+    <script
+        type="module"
+        src="js/admin/adminDocumentosJugadores.js"
+    ></script>
+
+</body>
+</html>

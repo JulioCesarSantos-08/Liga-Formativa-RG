@@ -25,7 +25,6 @@ import {
     registrarAuditoria
 } from "../auditoria.js";
 
-
 const adminInicial = document.getElementById("adminInicial");
 
 const totalEquipos = document.getElementById("totalEquipos");
@@ -54,11 +53,11 @@ const formEquipo = document.getElementById("formEquipo");
 
 const nombreEquipo = document.getElementById("nombreEquipo");
 const categoriaEquipo = document.getElementById("categoriaEquipo");
+const clubEquipo = document.getElementById("clubEquipo");
 const responsableEquipo = document.getElementById("responsableEquipo");
 const descripcionEquipo = document.getElementById("descripcionEquipo");
 
 const logoEquipo = document.getElementById("logoEquipo");
-const previewLogo = document.getElementById("previewLogo");
 const previewInicial = document.getElementById("previewInicial");
 const previewLogoImagen = document.getElementById("previewLogoImagen");
 
@@ -74,7 +73,6 @@ const toastIcono = document.getElementById("toastIcono");
 const toastTitulo = document.getElementById("toastTitulo");
 const toastTexto = document.getElementById("toastTexto");
 
-
 let equipos = [];
 let categorias = [];
 let responsables = [];
@@ -87,14 +85,11 @@ let previewLogoURL = null;
 
 let toastTimer = null;
 
-
 const usuario = await protegerPagina([
     "admin"
 ]);
 
-
 if (usuario) {
-
     cargarAdministrador(usuario);
     activarEventos();
 
@@ -106,165 +101,142 @@ if (usuario) {
     await cargarEquipos();
 
     revisarAccionURL();
-
 }
 
-
-function cargarAdministrador(usuario) {
-
+function cargarAdministrador(usuarioActual) {
     const nombre =
-        usuario.nombre?.trim() ||
+        usuarioActual.nombre?.trim() ||
+        usuarioActual.nombreCompleto?.trim() ||
         "Administrador";
 
     adminInicial.textContent =
         obtenerInicial(nombre);
-
 }
 
-
 function activarEventos() {
-
     btnNuevoEquipo.addEventListener(
         "click",
         abrirModalNuevoEquipo
     );
-
 
     buscarEquipo.addEventListener(
         "input",
         aplicarFiltros
     );
 
-
     filtroCategoria.addEventListener(
         "change",
         aplicarFiltros
     );
-
 
     filtroEstado.addEventListener(
         "change",
         aplicarFiltros
     );
 
-
     btnCerrarModal.addEventListener(
         "click",
         cerrarModal
     );
-
 
     btnCancelarModal.addEventListener(
         "click",
         cerrarModal
     );
 
-
     modalEquipo.addEventListener(
         "click",
         (event) => {
-
-            if (
-                event.target === modalEquipo
-            ) {
-
+            if (event.target === modalEquipo) {
                 cerrarModal();
-
             }
-
         }
     );
-
 
     formEquipo.addEventListener(
         "submit",
         guardarEquipo
     );
 
-
     btnEstadoActivo.addEventListener(
         "click",
         () => {
-
-            seleccionarEstado(
-                "activo"
-            );
-
+            seleccionarEstado("activo");
         }
     );
-
 
     btnEstadoInactivo.addEventListener(
         "click",
         () => {
-
-            seleccionarEstado(
-                "inactivo"
-            );
-
+            seleccionarEstado("inactivo");
         }
     );
-
 
     btnEstadoDescalificado.addEventListener(
         "click",
         () => {
-
-            seleccionarEstado(
-                "descalificado"
-            );
-
+            seleccionarEstado("descalificado");
         }
     );
-
 
     logoEquipo.addEventListener(
         "change",
         manejarSeleccionLogo
     );
 
-
     nombreEquipo.addEventListener(
         "input",
         actualizarInicialPreview
     );
 
+    clubEquipo.addEventListener(
+        "input",
+        () => {
+            const posicion =
+                clubEquipo.selectionStart;
+
+            clubEquipo.value =
+                normalizarNombreClubVisual(
+                    clubEquipo.value
+                );
+
+            if (posicion !== null) {
+                try {
+                    clubEquipo.setSelectionRange(
+                        posicion,
+                        posicion
+                    );
+                } catch (error) {
+                }
+            }
+        }
+    );
 
     document.addEventListener(
         "keydown",
         (event) => {
-
             if (
                 event.key === "Escape" &&
                 !modalEquipo.classList.contains("oculto")
             ) {
-
                 cerrarModal();
-
             }
-
         }
     );
-
 }
 
-
 async function cargarCategorias() {
-
     try {
-
         const referencia =
             collection(
                 db,
                 "categorias"
             );
 
-
         const snapshot =
             await getDocs(
                 referencia
             );
-
 
         categorias =
             snapshot.docs
@@ -287,11 +259,9 @@ async function cargarCategorias() {
                             )
                 );
 
-
         llenarSelectCategorias();
 
     } catch (error) {
-
         console.error(
             "Error cargando categorías:",
             error
@@ -302,22 +272,16 @@ async function cargarCategorias() {
             "No se cargaron las categorías",
             "Revisa Firestore e intenta nuevamente."
         );
-
     }
-
 }
 
-
 async function cargarResponsables() {
-
     try {
-
         const referencia =
             collection(
                 db,
                 "usuarios"
             );
-
 
         const consulta =
             query(
@@ -329,12 +293,10 @@ async function cargarResponsables() {
                 )
             );
 
-
         const snapshot =
             await getDocs(
                 consulta
             );
-
 
         responsables =
             snapshot.docs
@@ -345,52 +307,49 @@ async function cargarResponsables() {
                     })
                 )
                 .filter(
-                    usuario =>
-                        usuario.activo !== false
+                    usuarioItem =>
+                        usuarioItem.activo !== false
                 )
                 .sort(
                     (a, b) =>
-                        (a.nombre || "")
-                            .localeCompare(
-                                b.nombre || "",
-                                "es"
-                            )
+                        (
+                            a.nombre ||
+                            a.nombreCompleto ||
+                            a.email ||
+                            ""
+                        ).localeCompare(
+                            b.nombre ||
+                            b.nombreCompleto ||
+                            b.email ||
+                            "",
+                            "es"
+                        )
                 );
-
 
         llenarSelectResponsables();
 
     } catch (error) {
-
         console.error(
             "Error cargando responsables:",
             error
         );
-
     }
-
 }
 
-
 async function cargarEquipos() {
-
     mostrarCarga();
 
-
     try {
-
         const referencia =
             collection(
                 db,
                 "equipos"
             );
 
-
         const snapshot =
             await getDocs(
                 referencia
             );
-
 
         equipos =
             snapshot.docs.map(
@@ -399,7 +358,6 @@ async function cargarEquipos() {
                     ...documento.data()
                 })
             );
-
 
         equipos.sort(
             (a, b) =>
@@ -410,57 +368,45 @@ async function cargarEquipos() {
                     )
         );
 
-
         actualizarResumen();
         aplicarFiltros();
 
     } catch (error) {
-
         console.error(
             "Error cargando equipos:",
             error
         );
 
-
         estadoCarga.classList.add(
             "oculto"
         );
-
 
         gridEquipos.classList.add(
             "oculto"
         );
 
-
         estadoVacio.classList.remove(
             "oculto"
         );
-
 
         estadoVacio.querySelector(
             "strong"
         ).textContent =
             "No pudimos cargar los equipos";
 
-
         estadoVacio.querySelector(
             "p"
         ).textContent =
             "Revisa la conexión con Firebase e intenta nuevamente.";
-
     }
-
 }
 
-
 function llenarSelectCategorias() {
-
     categoriaEquipo.innerHTML = `
         <option value="">
             Selecciona una categoría
         </option>
     `;
-
 
     filtroCategoria.innerHTML = `
         <option value="todas">
@@ -468,10 +414,8 @@ function llenarSelectCategorias() {
         </option>
     `;
 
-
     categorias.forEach(
         (categoria) => {
-
             const optionModal =
                 document.createElement("option");
 
@@ -479,13 +423,12 @@ function llenarSelectCategorias() {
                 categoria.id;
 
             optionModal.textContent =
-                categoria.nombre || "Sin nombre";
-
+                categoria.nombre ||
+                "Sin nombre";
 
             categoriaEquipo.appendChild(
                 optionModal
             );
-
 
             const optionFiltro =
                 document.createElement("option");
@@ -494,31 +437,25 @@ function llenarSelectCategorias() {
                 categoria.id;
 
             optionFiltro.textContent =
-                categoria.nombre || "Sin nombre";
-
+                categoria.nombre ||
+                "Sin nombre";
 
             filtroCategoria.appendChild(
                 optionFiltro
             );
-
         }
     );
-
 }
 
-
 function llenarSelectResponsables() {
-
     responsableEquipo.innerHTML = `
         <option value="">
             Sin responsable asignado
         </option>
     `;
 
-
     responsables.forEach(
         (responsable) => {
-
             const option =
                 document.createElement("option");
 
@@ -527,44 +464,34 @@ function llenarSelectResponsables() {
 
             option.textContent =
                 responsable.nombre ||
+                responsable.nombreCompleto ||
                 responsable.email ||
                 "Usuario";
-
 
             responsableEquipo.appendChild(
                 option
             );
-
         }
     );
-
 }
 
-
 function mostrarCarga() {
-
     estadoCarga.classList.remove(
         "oculto"
     );
-
 
     estadoVacio.classList.add(
         "oculto"
     );
 
-
     gridEquipos.classList.add(
         "oculto"
     );
-
 }
 
-
 function actualizarResumen() {
-
     totalEquipos.textContent =
         equipos.length;
-
 
     totalActivos.textContent =
         equipos.filter(
@@ -573,14 +500,12 @@ function actualizarResumen() {
                 "activo"
         ).length;
 
-
     totalDescalificados.textContent =
         equipos.filter(
             equipo =>
                 obtenerEstadoEquipo(equipo) ===
                 "descalificado"
         ).length;
-
 
     totalConResponsable.textContent =
         equipos.filter(
@@ -589,30 +514,23 @@ function actualizarResumen() {
                     equipo.responsableId
                 )
         ).length;
-
 }
 
-
 function aplicarFiltros() {
-
     const texto =
         normalizarTexto(
             buscarEquipo.value
         );
 
-
     const categoria =
         filtroCategoria.value;
-
 
     const estado =
         filtroEstado.value;
 
-
     const lista =
         equipos.filter(
             (equipo) => {
-
                 const coincideTexto =
                     !texto ||
                     normalizarTexto(
@@ -620,112 +538,107 @@ function aplicarFiltros() {
                     ).includes(texto) ||
                     normalizarTexto(
                         equipo.descripcion || ""
+                    ).includes(texto) ||
+                    normalizarTexto(
+                        equipo.clubNombre || ""
                     ).includes(texto);
-
 
                 const coincideCategoria =
                     categoria === "todas" ||
                     equipo.categoriaId === categoria;
-
 
                 const estadoEquipo =
                     obtenerEstadoEquipo(
                         equipo
                     );
 
-
                 const coincideEstado =
                     estado === "todos" ||
                     estadoEquipo === estado;
-
 
                 return (
                     coincideTexto &&
                     coincideCategoria &&
                     coincideEstado
                 );
-
             }
         );
-
 
     renderizarEquipos(
         lista
     );
-
 }
 
-
 function renderizarEquipos(lista) {
-
     estadoCarga.classList.add(
         "oculto"
     );
 
-
     gridEquipos.innerHTML =
         "";
 
-
     if (!lista.length) {
-
         gridEquipos.classList.add(
             "oculto"
         );
-
 
         estadoVacio.classList.remove(
             "oculto"
         );
 
+        estadoVacio.querySelector(
+            "strong"
+        ).textContent =
+            equipos.length
+                ? "No encontramos equipos"
+                : "No hay equipos registrados";
+
+        estadoVacio.querySelector(
+            "p"
+        ).textContent =
+            equipos.length
+                ? "Prueba cambiando los filtros o el texto de búsqueda."
+                : "Crea el primer equipo para comenzar a organizar la competencia.";
 
         return;
-
     }
-
 
     estadoVacio.classList.add(
         "oculto"
     );
 
-
     gridEquipos.classList.remove(
         "oculto"
     );
 
-
     lista.forEach(
         (equipo) => {
-
             const categoria =
                 categorias.find(
                     item =>
-                        item.id === equipo.categoriaId
+                        item.id ===
+                        equipo.categoriaId
                 );
-
 
             const responsable =
                 responsables.find(
                     item =>
-                        item.id === equipo.responsableId
+                        item.id ===
+                        equipo.responsableId
                 );
-
 
             const estado =
                 obtenerEstadoEquipo(
                     equipo
                 );
 
-
             const card =
                 document.createElement(
                     "article"
                 );
 
-
             card.className =
                 `equipo-card ${estado}`;
-
 
             const logoHTML =
                 equipo.logoUrl
@@ -741,7 +654,6 @@ function renderizarEquipos(lista) {
                         )
                     );
 
-
             const motivoHTML =
                 estado === "descalificado"
                     ? `
@@ -755,22 +667,39 @@ function renderizarEquipos(lista) {
                     `
                     : "";
 
+            const clubHTML =
+                equipo.clubNombre
+                    ? `
+                        <div class="equipo-club-info">
+                            <span>Club / Comunidad</span>
+                            <strong>
+                                ${escaparHTML(
+                                    equipo.clubNombre
+                                )}
+                            </strong>
+                        </div>
+                    `
+                    : `
+                        <div class="equipo-club-info sin-club">
+                            <span>Club / Comunidad</span>
+                            <strong>
+                                Sin configurar
+                            </strong>
+                        </div>
+                    `;
 
             card.innerHTML = `
-
                 <div class="equipo-card-top">
 
                     <div class="equipo-logo">
                         ${logoHTML}
                     </div>
 
-
                     <span class="equipo-estado ${estado}">
                         ${textoEstado(estado)}
                     </span>
 
                 </div>
-
 
                 <h3>
                     ${escaparHTML(
@@ -779,14 +708,15 @@ function renderizarEquipos(lista) {
                     )}
                 </h3>
 
-
                 <span class="equipo-categoria">
                     ${escaparHTML(
                         categoria?.nombre ||
+                        equipo.categoriaNombre ||
                         "Categoría no disponible"
                     )}
                 </span>
 
+                ${clubHTML}
 
                 <p class="equipo-descripcion">
                     ${escaparHTML(
@@ -795,11 +725,9 @@ function renderizarEquipos(lista) {
                     )}
                 </p>
 
-
                 <div class="equipo-meta">
 
                     <div>
-
                         <span>
                             Responsable
                         </span>
@@ -807,16 +735,14 @@ function renderizarEquipos(lista) {
                         <strong>
                             ${escaparHTML(
                                 responsable?.nombre ||
+                                responsable?.nombreCompleto ||
                                 equipo.responsableNombre ||
                                 "Sin asignar"
                             )}
                         </strong>
-
                     </div>
 
-
                     <div>
-
                         <span>
                             Jugadores
                         </span>
@@ -824,16 +750,13 @@ function renderizarEquipos(lista) {
                         <strong>
                             ${Number(
                                 equipo.totalJugadores || 0
-                            )} / 26
+                            )} / ${obtenerLimitePlantillaVisual(equipo)}
                         </strong>
-
                     </div>
 
                 </div>
 
-
                 ${motivoHTML}
-
 
                 <div class="equipo-acciones">
 
@@ -844,125 +767,98 @@ function renderizarEquipos(lista) {
                         Editar
                     </button>
 
-
                     <a
-                        href="equipo.html?id=${equipo.id}"
+                        href="equipo.html?id=${encodeURIComponent(equipo.id)}"
                         class="btn-ver-equipo"
                     >
                         Ver equipo
                     </a>
 
                 </div>
-
             `;
-
 
             card.querySelector(
                 ".btn-editar-equipo"
             ).addEventListener(
                 "click",
                 () => {
-
                     abrirModalEditarEquipo(
                         equipo.id
                     );
-
                 }
             );
-
 
             gridEquipos.appendChild(
                 card
             );
-
         }
     );
-
 }
 
-
 function abrirModalNuevoEquipo() {
-
     equipoSeleccionado =
         null;
 
-
     formEquipo.reset();
-
 
     modalTitulo.textContent =
         "Nuevo equipo";
-
 
     seleccionarEstado(
         "activo"
     );
 
-
     limpiarPreviewLogo();
-
 
     grupoMotivoDescalificacion.classList.add(
         "oculto"
     );
 
-
     abrirModal();
-
 
     setTimeout(
         () => {
-
             nombreEquipo.focus();
-
         },
         100
     );
-
 }
 
-
 function abrirModalEditarEquipo(id) {
-
     const equipo =
         equipos.find(
             item =>
                 item.id === id
         );
 
-
     if (!equipo) {
         return;
     }
 
-
     equipoSeleccionado =
         equipo;
-
 
     modalTitulo.textContent =
         "Editar equipo";
 
-
     nombreEquipo.value =
         equipo.nombre || "";
-
 
     categoriaEquipo.value =
         equipo.categoriaId || "";
 
+    clubEquipo.value =
+        equipo.clubNombre ||
+        "";
 
     responsableEquipo.value =
         equipo.responsableId || "";
 
-
     descripcionEquipo.value =
         equipo.descripcion || "";
 
-
     motivoDescalificacion.value =
         equipo.motivoDescalificacion || "";
-
 
     seleccionarEstado(
         obtenerEstadoEquipo(
@@ -970,120 +866,87 @@ function abrirModalEditarEquipo(id) {
         )
     );
 
-
     limpiarPreviewLogo();
 
-
     if (equipo.logoUrl) {
-
         previewLogoImagen.src =
             equipo.logoUrl;
-
 
         previewLogoImagen.classList.remove(
             "oculto"
         );
 
-
         previewInicial.classList.add(
             "oculto"
         );
-
     } else {
-
         previewInicial.textContent =
             obtenerInicial(
                 equipo.nombre || "E"
             );
-
     }
 
-
     abrirModal();
-
 }
 
-
 function abrirModal() {
-
     modalEquipo.classList.remove(
         "oculto"
     );
 
-
     document.body.style.overflow =
         "hidden";
-
 }
 
-
 function cerrarModal() {
-
     modalEquipo.classList.add(
         "oculto"
     );
 
-
     document.body.style.overflow =
         "";
-
 
     equipoSeleccionado =
         null;
 
-
     limpiarPreviewTemporal();
-
 }
 
-
 function seleccionarEstado(estado) {
-
     estadoSeleccionado =
         estado;
-
 
     btnEstadoActivo.classList.toggle(
         "activo",
         estado === "activo"
     );
 
-
     btnEstadoInactivo.classList.toggle(
         "activo",
         estado === "inactivo"
     );
-
 
     btnEstadoDescalificado.classList.toggle(
         "activo",
         estado === "descalificado"
     );
 
-
     grupoMotivoDescalificacion.classList.toggle(
         "oculto",
         estado !== "descalificado"
     );
-
 }
 
-
 function manejarSeleccionLogo() {
-
     const archivo =
         logoEquipo.files?.[0];
 
-
     if (!archivo) {
-
         logoSeleccionado =
             null;
 
         return;
-
     }
-
 
     const tiposPermitidos = [
         "image/jpeg",
@@ -1091,90 +954,71 @@ function manejarSeleccionLogo() {
         "image/webp"
     ];
 
-
     if (
         !tiposPermitidos.includes(
             archivo.type
         )
     ) {
-
         mostrarToast(
             "error",
             "Imagen no válida",
             "Selecciona una imagen JPG, PNG o WEBP."
         );
 
-
         logoEquipo.value =
             "";
-
 
         logoSeleccionado =
             null;
 
         return;
-
     }
-
 
     const maximo =
         5 * 1024 * 1024;
 
-
     if (
-        archivo.size > maximo
+        archivo.size >
+        maximo
     ) {
-
         mostrarToast(
             "error",
             "Imagen demasiado grande",
             "Selecciona una imagen menor a 5 MB."
         );
 
-
         logoEquipo.value =
             "";
-
 
         logoSeleccionado =
             null;
 
         return;
-
     }
-
 
     logoSeleccionado =
         archivo;
 
-
     limpiarPreviewTemporal();
-
 
     previewLogoURL =
         URL.createObjectURL(
             archivo
         );
 
-
     previewLogoImagen.src =
         previewLogoURL;
-
 
     previewLogoImagen.classList.remove(
         "oculto"
     );
 
-
     previewInicial.classList.add(
         "oculto"
     );
-
 }
 
-
 function actualizarInicialPreview() {
-
     if (
         !previewLogoImagen.classList.contains(
             "oculto"
@@ -1183,18 +1027,14 @@ function actualizarInicialPreview() {
         return;
     }
 
-
     previewInicial.textContent =
         obtenerInicial(
             nombreEquipo.value ||
             "E"
         );
-
 }
 
-
 async function guardarEquipo(event) {
-
     event.preventDefault();
 
     const nombre =
@@ -1204,6 +1044,16 @@ async function guardarEquipo(event) {
 
     const categoriaId =
         categoriaEquipo.value;
+
+    const clubNombre =
+        normalizarNombreClubVisual(
+            clubEquipo.value
+        );
+
+    const clubId =
+        crearClubId(
+            clubNombre
+        );
 
     const responsableId =
         responsableEquipo.value;
@@ -1219,7 +1069,6 @@ async function guardarEquipo(event) {
             .replace(/\s+/g, " ");
 
     if (!nombre) {
-
         mostrarToast(
             "error",
             "Nombre requerido",
@@ -1227,11 +1076,9 @@ async function guardarEquipo(event) {
         );
 
         return;
-
     }
 
     if (!categoriaId) {
-
         mostrarToast(
             "error",
             "Categoría requerida",
@@ -1239,14 +1086,37 @@ async function guardarEquipo(event) {
         );
 
         return;
+    }
 
+    if (!clubNombre) {
+        mostrarToast(
+            "error",
+            "Club requerido",
+            "Escribe el club o comunidad a la que pertenece el equipo."
+        );
+
+        clubEquipo.focus();
+
+        return;
+    }
+
+    if (!clubId) {
+        mostrarToast(
+            "error",
+            "Club no válido",
+            "Escribe un nombre válido para el club o comunidad."
+        );
+
+        clubEquipo.focus();
+
+        return;
     }
 
     if (
-        estadoSeleccionado === "descalificado" &&
+        estadoSeleccionado ===
+            "descalificado" &&
         !motivo
     ) {
-
         mostrarToast(
             "error",
             "Motivo requerido",
@@ -1254,24 +1124,22 @@ async function guardarEquipo(event) {
         );
 
         return;
-
     }
 
     const nombreDuplicado =
         equipos.some(
             (equipo) => {
-
                 if (
                     equipoSeleccionado &&
-                    equipo.id === equipoSeleccionado.id
+                    equipo.id ===
+                        equipoSeleccionado.id
                 ) {
-
                     return false;
-
                 }
 
                 return (
-                    equipo.categoriaId === categoriaId &&
+                    equipo.categoriaId ===
+                        categoriaId &&
                     normalizarTexto(
                         equipo.nombre || ""
                     ) ===
@@ -1279,12 +1147,10 @@ async function guardarEquipo(event) {
                         nombre
                     )
                 );
-
             }
         );
 
     if (nombreDuplicado) {
-
         mostrarToast(
             "error",
             "Equipo existente",
@@ -1292,23 +1158,21 @@ async function guardarEquipo(event) {
         );
 
         return;
-
     }
 
     const categoria =
         categorias.find(
             item =>
-                item.id === categoriaId
+                item.id ===
+                categoriaId
         );
 
     const responsable =
         responsables.find(
             item =>
-                item.id === responsableId
+                item.id ===
+                responsableId
         );
-
-    const esEdicion =
-        Boolean(equipoSeleccionado);
 
     const datosAnteriores =
         equipoSeleccionado
@@ -1316,25 +1180,39 @@ async function guardarEquipo(event) {
                 id:
                     equipoSeleccionado.id,
                 nombre:
-                    equipoSeleccionado.nombre || "",
+                    equipoSeleccionado.nombre ||
+                    "",
                 categoriaId:
-                    equipoSeleccionado.categoriaId || "",
+                    equipoSeleccionado.categoriaId ||
+                    "",
                 categoriaNombre:
-                    equipoSeleccionado.categoriaNombre || "",
+                    equipoSeleccionado.categoriaNombre ||
+                    "",
+                clubId:
+                    equipoSeleccionado.clubId ||
+                    "",
+                clubNombre:
+                    equipoSeleccionado.clubNombre ||
+                    "",
                 responsableId:
-                    equipoSeleccionado.responsableId || "",
+                    equipoSeleccionado.responsableId ||
+                    "",
                 responsableNombre:
-                    equipoSeleccionado.responsableNombre || "",
+                    equipoSeleccionado.responsableNombre ||
+                    "",
                 descripcion:
-                    equipoSeleccionado.descripcion || "",
+                    equipoSeleccionado.descripcion ||
+                    "",
                 estado:
                     obtenerEstadoEquipo(
                         equipoSeleccionado
                     ),
                 motivoDescalificacion:
-                    equipoSeleccionado.motivoDescalificacion || "",
+                    equipoSeleccionado.motivoDescalificacion ||
+                    "",
                 logoUrl:
-                    equipoSeleccionado.logoUrl || null
+                    equipoSeleccionado.logoUrl ||
+                    null
             }
             : null;
 
@@ -1343,7 +1221,6 @@ async function guardarEquipo(event) {
     );
 
     try {
-
         let logoUrl =
             equipoSeleccionado?.logoUrl ||
             null;
@@ -1353,10 +1230,11 @@ async function guardarEquipo(event) {
             null;
 
         const cambioLogo =
-            Boolean(logoSeleccionado);
+            Boolean(
+                logoSeleccionado
+            );
 
         if (logoSeleccionado) {
-
             btnGuardarEquipo.textContent =
                 "Subiendo logo...";
 
@@ -1373,7 +1251,6 @@ async function guardarEquipo(event) {
 
             btnGuardarEquipo.textContent =
                 "Guardando equipo...";
-
         }
 
         const datos = {
@@ -1381,19 +1258,26 @@ async function guardarEquipo(event) {
             categoriaId,
             categoriaNombre:
                 categoria?.nombre || "",
+            clubId,
+            clubNombre,
             responsableId:
                 responsableId || null,
             responsableNombre:
-                responsable?.nombre || "",
+                responsable?.nombre ||
+                responsable?.nombreCompleto ||
+                "",
             descripcion,
             estado:
                 estadoSeleccionado,
             activo:
-                estadoSeleccionado === "activo",
+                estadoSeleccionado ===
+                "activo",
             descalificado:
-                estadoSeleccionado === "descalificado",
+                estadoSeleccionado ===
+                "descalificado",
             motivoDescalificacion:
-                estadoSeleccionado === "descalificado"
+                estadoSeleccionado ===
+                    "descalificado"
                     ? motivo
                     : "",
             logoUrl,
@@ -1402,10 +1286,10 @@ async function guardarEquipo(event) {
                 serverTimestamp()
         };
 
-        let equipoId = "";
+        let equipoId =
+            "";
 
         if (equipoSeleccionado) {
-
             equipoId =
                 equipoSeleccionado.id;
 
@@ -1443,12 +1327,10 @@ async function guardarEquipo(event) {
                 datosAnteriores.estado !==
                 estadoSeleccionado
             ) {
-
                 if (
                     estadoSeleccionado ===
                     "descalificado"
                 ) {
-
                     accion =
                         "equipo_descalificado";
 
@@ -1459,7 +1341,6 @@ async function guardarEquipo(event) {
                     datosAnteriores.estado ===
                     "descalificado"
                 ) {
-
                     accion =
                         "equipo_reactivado";
 
@@ -1467,20 +1348,27 @@ async function guardarEquipo(event) {
                         `El equipo ${nombre} dejó de estar descalificado y cambió a estado ${textoEstado(estadoSeleccionado).toLowerCase()}.`;
 
                 } else {
-
                     accion =
                         "estado_equipo_actualizado";
 
                     descripcionAuditoria =
                         `El equipo ${nombre} cambió de ${textoEstado(datosAnteriores.estado).toLowerCase()} a ${textoEstado(estadoSeleccionado).toLowerCase()}.`;
-
                 }
+
+            } else if (
+                datosAnteriores.clubId !==
+                clubId
+            ) {
+                accion =
+                    "club_equipo_actualizado";
+
+                descripcionAuditoria =
+                    `El equipo ${nombre} cambió de club/comunidad de ${datosAnteriores.clubNombre || "Sin configurar"} a ${clubNombre}.`;
 
             } else if (
                 datosAnteriores.responsableId !==
                 (responsableId || "")
             ) {
-
                 accion =
                     "responsable_actualizado";
 
@@ -1490,6 +1378,7 @@ async function guardarEquipo(event) {
 
                 const responsableNuevo =
                     responsable?.nombre ||
+                    responsable?.nombreCompleto ||
                     "Sin responsable";
 
                 descripcionAuditoria =
@@ -1499,7 +1388,6 @@ async function guardarEquipo(event) {
                 datosAnteriores.categoriaId !==
                 categoriaId
             ) {
-
                 accion =
                     "categoria_equipo_actualizada";
 
@@ -1507,18 +1395,17 @@ async function guardarEquipo(event) {
                     `El equipo ${nombre} cambió de categoría de ${datosAnteriores.categoriaNombre || "Sin categoría"} a ${categoria?.nombre || "Sin categoría"}.`;
 
             } else if (cambioLogo) {
-
                 accion =
                     "logo_equipo_actualizado";
 
                 descripcionAuditoria =
                     `Se actualizó el logo del equipo ${nombre}.`;
 
-            } else if (cambios.length) {
-
+            } else if (
+                cambios.length
+            ) {
                 descripcionAuditoria =
                     `Se actualizó el equipo ${nombre}. Cambios: ${cambios.join(", ")}.`;
-
             }
 
             await registrarAuditoria({
@@ -1548,13 +1435,12 @@ async function guardarEquipo(event) {
             mostrarToast(
                 "exito",
                 "Equipo actualizado",
-                logoSeleccionado
-                    ? "El equipo y su nuevo logo se guardaron correctamente."
+                cambioLogo
+                    ? "El equipo, su club y su nuevo logo se guardaron correctamente."
                     : "Los cambios se guardaron correctamente."
             );
 
         } else {
-
             const referencia =
                 collection(
                     db,
@@ -1583,41 +1469,38 @@ async function guardarEquipo(event) {
             equipoId =
                 documento.id;
 
-            equipos.push(
-                {
-                    id:
-                        documento.id,
-                    ...datos,
-                    totalJugadores: 0,
-                    pj: 0,
-                    pg: 0,
-                    pe: 0,
-                    pp: 0,
-                    gf: 0,
-                    gc: 0,
-                    dg: 0,
-                    pts: 0
-                }
-            );
+            equipos.push({
+                id:
+                    documento.id,
+                ...datos,
+                totalJugadores: 0,
+                pj: 0,
+                pg: 0,
+                pe: 0,
+                pp: 0,
+                gf: 0,
+                gc: 0,
+                dg: 0,
+                pts: 0
+            });
 
             let descripcionAuditoria =
-                `Se creó el equipo ${nombre} en la categoría ${categoria?.nombre || "Sin categoría"}.`;
+                `Se creó el equipo ${nombre} en la categoría ${categoria?.nombre || "Sin categoría"} y se asignó al club/comunidad ${clubNombre}.`;
 
-            if (responsable?.nombre) {
-
+            if (
+                responsable?.nombre ||
+                responsable?.nombreCompleto
+            ) {
                 descripcionAuditoria +=
-                    ` Responsable asignado: ${responsable.nombre}.`;
-
+                    ` Responsable asignado: ${responsable.nombre || responsable.nombreCompleto}.`;
             }
 
             if (
                 estadoSeleccionado ===
                 "descalificado"
             ) {
-
                 descripcionAuditoria +=
                     ` El equipo fue registrado como descalificado. Motivo: ${motivo}.`;
-
             }
 
             await registrarAuditoria({
@@ -1648,11 +1531,10 @@ async function guardarEquipo(event) {
             mostrarToast(
                 "exito",
                 "Equipo creado",
-                logoSeleccionado
-                    ? "El equipo y su logo ya quedaron registrados."
-                    : "El equipo ya quedó registrado en la liga."
+                cambioLogo
+                    ? "El equipo, su club y su logo ya quedaron registrados."
+                    : "El equipo y su club ya quedaron registrados en la liga."
             );
-
         }
 
         equipos.sort(
@@ -1672,7 +1554,6 @@ async function guardarEquipo(event) {
         cerrarModal();
 
     } catch (error) {
-
         console.error(
             "Error guardando equipo:",
             error
@@ -1681,13 +1562,9 @@ async function guardarEquipo(event) {
         let mensaje =
             "Ocurrió un problema al guardar el equipo.";
 
-        if (
-            error?.message
-        ) {
-
+        if (error?.message) {
             mensaje =
                 error.message;
-
         }
 
         mostrarToast(
@@ -1697,13 +1574,10 @@ async function guardarEquipo(event) {
         );
 
     } finally {
-
         bloquearGuardado(
             false
         );
-
     }
-
 }
 
 function obtenerCambiosAuditoriaEquipo(
@@ -1711,7 +1585,6 @@ function obtenerCambiosAuditoriaEquipo(
     nuevo,
     cambioLogo
 ) {
-
     if (!anterior) {
         return [];
     }
@@ -1719,64 +1592,73 @@ function obtenerCambiosAuditoriaEquipo(
     const cambios = [];
 
     if (
-        normalizarTexto(anterior.nombre) !==
-        normalizarTexto(nuevo.nombre)
+        normalizarTexto(
+            anterior.nombre
+        ) !==
+        normalizarTexto(
+            nuevo.nombre
+        )
     ) {
-
         cambios.push(
             `nombre de "${anterior.nombre}" a "${nuevo.nombre}"`
         );
-
     }
 
     if (
         anterior.categoriaId !==
         nuevo.categoriaId
     ) {
-
         cambios.push(
             `categoría de "${anterior.categoriaNombre || "Sin categoría"}" a "${nuevo.categoriaNombre || "Sin categoría"}"`
         );
+    }
 
+    if (
+        anterior.clubId !==
+        nuevo.clubId
+    ) {
+        cambios.push(
+            `club/comunidad de "${anterior.clubNombre || "Sin configurar"}" a "${nuevo.clubNombre || "Sin configurar"}"`
+        );
     }
 
     const responsableAnterior =
-        anterior.responsableId || "";
+        anterior.responsableId ||
+        "";
 
     const responsableNuevo =
-        nuevo.responsableId || "";
+        nuevo.responsableId ||
+        "";
 
     if (
         responsableAnterior !==
         responsableNuevo
     ) {
-
         cambios.push(
             `responsable de "${anterior.responsableNombre || "Sin responsable"}" a "${nuevo.responsableNombre || "Sin responsable"}"`
         );
-
     }
 
     if (
-        normalizarTexto(anterior.descripcion) !==
-        normalizarTexto(nuevo.descripcion)
+        normalizarTexto(
+            anterior.descripcion
+        ) !==
+        normalizarTexto(
+            nuevo.descripcion
+        )
     ) {
-
         cambios.push(
             "descripción"
         );
-
     }
 
     if (
         anterior.estado !==
         nuevo.estado
     ) {
-
         cambios.push(
             `estado de "${textoEstado(anterior.estado)}" a "${textoEstado(nuevo.estado)}"`
         );
-
     }
 
     if (
@@ -1787,77 +1669,58 @@ function obtenerCambiosAuditoriaEquipo(
             nuevo.motivoDescalificacion
         )
     ) {
-
         cambios.push(
             "motivo de descalificación"
         );
-
     }
 
     if (cambioLogo) {
-
         cambios.push(
             "logo"
         );
-
     }
 
     return cambios;
-
 }
 
-
 function revisarAccionURL() {
-
     const parametros =
         new URLSearchParams(
             window.location.search
         );
 
-
     if (
         parametros.get("accion") ===
         "nuevo"
     ) {
-
         abrirModalNuevoEquipo();
-
     }
-
 }
-
 
 function obtenerEstadoEquipo(equipo) {
-
     if (
-        equipo.estado === "descalificado" ||
-        equipo.descalificado === true
+        equipo.estado ===
+            "descalificado" ||
+        equipo.descalificado ===
+            true
     ) {
-
         return "descalificado";
-
     }
-
 
     if (
-        equipo.estado === "inactivo" ||
-        equipo.activo === false
+        equipo.estado ===
+            "inactivo" ||
+        equipo.activo ===
+            false
     ) {
-
         return "inactivo";
-
     }
-
 
     return "activo";
-
 }
 
-
 function textoEstado(estado) {
-
     switch (estado) {
-
         case "descalificado":
             return "Descalificado";
 
@@ -1867,102 +1730,142 @@ function textoEstado(estado) {
         case "activo":
         default:
             return "Activo";
-
     }
-
 }
 
+function obtenerLimitePlantillaVisual(equipo) {
+    if (
+        equipo.plantillaCongelada ===
+        true
+    ) {
+        const limite =
+            Number(
+                equipo.cupoTemporada ??
+                equipo.limitePlantillaTemporada
+            );
+
+        if (
+            Number.isFinite(limite) &&
+            limite >= 0
+        ) {
+            return limite;
+        }
+    }
+
+    const limite =
+        Number(
+            equipo.cupoTemporada ??
+            equipo.limitePlantillaTemporada
+        );
+
+    if (
+        Number.isFinite(limite) &&
+        limite > 0
+    ) {
+        return limite;
+    }
+
+    return 26;
+}
 
 function limpiarPreviewLogo() {
-
     limpiarPreviewTemporal();
-
 
     logoSeleccionado =
         null;
 
-
     logoEquipo.value =
         "";
-
 
     previewLogoImagen.removeAttribute(
         "src"
     );
 
-
     previewLogoImagen.classList.add(
         "oculto"
     );
 
-
     previewInicial.classList.remove(
         "oculto"
     );
-
 
     previewInicial.textContent =
         obtenerInicial(
             nombreEquipo.value ||
             "E"
         );
-
 }
 
-
 function limpiarPreviewTemporal() {
-
     if (previewLogoURL) {
-
         URL.revokeObjectURL(
             previewLogoURL
         );
 
-
         previewLogoURL =
             null;
-
     }
-
 }
 
-
 function bloquearGuardado(bloquear) {
-
     btnGuardarEquipo.disabled =
         bloquear;
-
 
     btnGuardarEquipo.textContent =
         bloquear
             ? "Guardando..."
             : "Guardar equipo";
-
 }
 
+function normalizarNombreClubVisual(texto) {
+    return String(
+        texto || ""
+    )
+        .trimStart()
+        .replace(/\s+/g, " ")
+        .toUpperCase();
+}
+
+function crearClubId(texto) {
+    return String(
+        texto || ""
+    )
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(
+            /[\u0300-\u036f]/g,
+            ""
+        )
+        .replace(
+            /[^a-z0-9]+/g,
+            "-"
+        )
+        .replace(
+            /^-+|-+$/g,
+            ""
+        );
+}
 
 function obtenerInicial(nombre) {
-
     const texto =
-        String(nombre || "")
-            .trim();
-
+        String(
+            nombre || ""
+        ).trim();
 
     if (!texto) {
         return "E";
     }
 
-
     return texto
         .charAt(0)
         .toUpperCase();
-
 }
 
-
 function normalizarTexto(texto) {
-
-    return String(texto || "")
+    return String(
+        texto || ""
+    )
         .toLowerCase()
         .normalize("NFD")
         .replace(
@@ -1970,99 +1873,94 @@ function normalizarTexto(texto) {
             ""
         )
         .trim();
-
 }
-
 
 function escaparHTML(texto) {
-
-    return String(texto || "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll("\"", "&quot;")
-        .replaceAll("'", "&#039;");
-
+    return String(
+        texto || ""
+    )
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            "\"",
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
 }
-
 
 function mostrarToast(
     tipo,
     titulo,
     texto
 ) {
-
     clearTimeout(
         toastTimer
     );
-
 
     toastIcono.textContent =
         tipo === "error"
             ? "!"
             : "✓";
 
-
     toastTitulo.textContent =
         titulo;
-
 
     toastTexto.textContent =
         texto;
 
-
-    if (tipo === "error") {
-
+    if (
+        tipo ===
+        "error"
+    ) {
         toast.style.background =
             "#fff3f2";
-
 
         toast.style.borderColor =
             "#f1cbc7";
 
-
         toastIcono.style.background =
             "#fee4e2";
 
-
         toastIcono.style.color =
             "#b42318";
-
     } else {
-
         toast.style.background =
             "#f0faf3";
-
 
         toast.style.borderColor =
             "#cbe7d5";
 
-
         toastIcono.style.background =
             "#d9f2e1";
 
-
         toastIcono.style.color =
             "#18794e";
-
     }
-
 
     toast.classList.remove(
         "oculto"
     );
 
-
     toastTimer =
         setTimeout(
             () => {
-
                 toast.classList.add(
                     "oculto"
                 );
-
             },
             3500
         );
-
 }

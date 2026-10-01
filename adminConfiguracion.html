@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    <meta
+        name="theme-color"
+        content="#0b756d"
+    >
+
+    <title>Configuración | Liga Municipal de Fútbol</title>
+
+    <link
+        rel="icon"
+        href="imagenes/logo.png"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/global.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/adminConfiguracion.css"
+    >
+</head>
+
+<body>
+
+    <div
+        id="estadoCarga"
+        class="estado-pagina estado-carga"
+    >
+        <div class="cargador"></div>
+
+        <h2>Cargando configuración</h2>
+
+        <p>
+            Preparando el centro de control de la liga...
+        </p>
+    </div>
+
+    <div
+        id="estadoError"
+        class="estado-pagina estado-error oculto"
+    >
+        <div class="estado-icono">
+            !
+        </div>
+
+        <h2>
+            No fue posible cargar la configuración
+        </h2>
+
+        <p id="estadoErrorTexto">
+            Ocurrió un problema al consultar la información.
+        </p>
+
+        <button
+            id="btnReintentar"
+            class="btn btn-primario"
+            type="button"
+        >
+            Reintentar
+        </button>
+    </div>
+
+    <div
+        id="appConfiguracion"
+        class="app-configuracion oculto"
+    >
+
+        <header class="topbar">
+
+            <div class="topbar-contenido">
+
+                <a
+                    href="admin.html"
+                    class="topbar-volver"
+                    aria-label="Volver al panel administrativo"
+                >
+                    <span class="topbar-volver-icono">
+                        ←
+                    </span>
+
+                    <span>
+                        Panel
+                    </span>
+                </a>
+
+                <div class="topbar-identidad">
+
+                    <div class="topbar-logo">
+                        <img
+                            src="imagenes/logo.png"
+                            alt="Liga Municipal de Fútbol Río Grande"
+                        >
+                    </div>
+
+                    <div class="topbar-textos">
+                        <strong>
+                            Liga Municipal de Fútbol
+                        </strong>
+
+                        <span>
+                            Río Grande
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="topbar-admin">
+
+                    <div class="topbar-admin-avatar">
+                        A
+                    </div>
+
+                    <div class="topbar-admin-info">
+                        <strong id="adminNombre">
+                            Administrador
+                        </strong>
+
+                        <span>
+                            Configuración
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <main class="configuracion-main">
+
+            <section class="encabezado-pagina">
+
+                <div class="encabezado-contenido">
+
+                    <div class="encabezado-etiqueta">
+                        CENTRO DE CONTROL
+                    </div>
+
+                    <h1>
+                        Configuración de la Liga
+                    </h1>
+
+                    <p>
+                        Administra permisos, periodos de inscripción,
+                        movimientos especiales, solicitudes y control
+                        administrativo de los equipos.
+                    </p>
+
+                </div>
+
+                <div class="encabezado-temporada">
+
+                    <span>
+                        Temporada activa
+                    </span>
+
+                    <strong id="temporadaActualNombre">
+                        Consultando...
+                    </strong>
+
+                    <div
+                        id="temporadaActualEstado"
+                        class="estado-temporada"
+                    >
+                        Cargando
+                    </div>
+
+                </div>
+
+            </section>
+
+            <section class="resumen-configuracion">
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        ⚽
+                    </div>
+
+                    <div class="resumen-info">
+                        <span>
+                            Inscripciones
+                        </span>
+
+                        <strong id="resumenInscripciones">
+                            Consultando...
+                        </strong>
+                    </div>
+
+                </article>
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        5
+                    </div>
+
+                    <div class="resumen-info">
+                        <span>
+                            Jornada 5
+                        </span>
+
+                        <strong id="resumenJornada5">
+                            Consultando...
+                        </strong>
+                    </div>
+
+                </article>
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        ✎
+                    </div>
+
+                    <div class="resumen-info">
+                        <span>
+                            Ediciones pendientes
+                        </span>
+
+                        <strong id="resumenEdiciones">
+                            0
+                        </strong>
+                    </div>
+
+                </article>
+
+                <article class="resumen-card">
+
+                    <div class="resumen-icono">
+                        ⇄
+                    </div>
+
+                    <div class="resumen-info">
+                        <span>
+                            Préstamos pendientes
+                        </span>
+
+                        <strong id="resumenPrestamos">
+                            0
+                        </strong>
+                    </div>
+
+                </article>
+
+            </section>
+
+            <nav class="configuracion-nav">
+
+                <button
+                    class="configuracion-nav-btn activo"
+                    type="button"
+                    data-seccion="inscripciones"
+                >
+                    <span class="configuracion-nav-icono">
+                        ⚽
+                    </span>
+
+                    <span>
+                        Inscripciones
+                    </span>
+                </button>
+
+                <button
+                    class="configuracion-nav-btn"
+                    type="button"
+                    data-seccion="jornada5"
+                >
+                    <span class="configuracion-nav-icono">
+                        5
+                    </span>
+
+                    <span>
+                        Jornada 5
+                    </span>
+                </button>
+
+                <button
+                    class="configuracion-nav-btn"
+                    type="button"
+                    data-seccion="ediciones"
+                >
+                    <span class="configuracion-nav-icono">
+                        ✎
+                    </span>
+
+                    <span>
+                        Ediciones
+                    </span>
+
+                    <span
+                        id="badgeEdiciones"
+                        class="nav-badge oculto"
+                    >
+                        0
+                    </span>
+                </button>
+
+                <button
+                    class="configuracion-nav-btn"
+                    type="button"
+                    data-seccion="prestamos"
+                >
+                    <span class="configuracion-nav-icono">
+                        ⇄
+                    </span>
+
+                    <span>
+                        Préstamos
+                    </span>
+
+                    <span
+                        id="badgePrestamos"
+                        class="nav-badge oculto"
+                    >
+                        0
+                    </span>
+                </button>
+
+                <button
+                    class="configuracion-nav-btn"
+                    type="button"
+                    data-seccion="pagos"
+                >
+                    <span class="configuracion-nav-icono">
+                        $
+                    </span>
+
+                    <span>
+                        Pagos
+                    </span>
+                </button>
+
+                <button
+                    class="configuracion-nav-btn"
+                    type="button"
+                    data-seccion="administracion"
+                >
+                    <span class="configuracion-nav-icono">
+                        ⚙
+                    </span>
+
+                    <span>
+                        Administración
+                    </span>
+                </button>
+
+            </nav>
+
+            <div class="configuracion-contenido">
+
+                <section
+                    id="seccionInscripciones"
+                    class="configuracion-seccion activo"
+                    data-seccion-contenido="inscripciones"
+                >
+
+                    <div class="seccion-cabecera">
+
+                        <div>
+                            <span class="seccion-kicker">
+                                REGISTRO INICIAL
+                            </span>
+
+                            <h2>
+                                Inscripción de jugadores
+                            </h2>
+
+                            <p>
+                                Controla si los jefes de equipo pueden
+                                registrar jugadores durante el periodo
+                                ordinario de inscripción.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="config-grid">
+
+                        <article class="config-card config-card-principal">
+
+                            <div class="config-card-cabecera">
+
+                                <div class="config-card-icono">
+                                    ⚽
+                                </div>
+
+                                <div>
+                                    <h3>
+                                        Registro de jugadores
+                                    </h3>
+
+                                    <p>
+                                        Permite o bloquea nuevas altas
+                                        durante el periodo inicial.
+                                    </p>
+                                </div>
+
+                            </div>
+
+                            <div class="control-principal">
+
+                                <div class="control-principal-info">
+
+                                    <span>
+                                        Estado actual
+                                    </span>
+
+                                    <strong id="estadoInscripcionesTexto">
+                                        Consultando...
+                                    </strong>
+
+                                    <small id="estadoInscripcionesDetalle">
+                                        Esperando información de Firebase.
+                                    </small>
+
+                                </div>
+
+                                <label class="switch-control">
+
+                                    <input
+                                        id="switchInscripciones"
+                                        type="checkbox"
+                                        disabled
+                                    >
+
+                                    <span class="switch-slider"></span>
+
+                                </label>
+
+                            </div>
+
+                            <div class="aviso-configuracion">
+
+                                <span class="aviso-icono">
+                                    !
+                                </span>
+
+                                <p>
+                                    Al cerrar la inscripción inicial,
+                                    la cantidad de jugadores registrados
+                                    en cada equipo quedará como su límite
+                                    de plantilla para esa temporada.
+                                </p>
+
+                            </div>
+
+                        </article>
+
+                        <article class="config-card">
+
+                            <div class="config-card-cabecera">
+
+                                <div class="config-card-icono">
+                                    #
+                                </div>
+
+                                <div>
+                                    <h3>
+                                        Máximo reglamentario
+                                    </h3>
+
+                                    <p>
+                                        Límite general permitido antes
+                                        del cierre de inscripciones.
+                                    </p>
+                                </div>
+
+                            </div>
+
+                            <div class="campo-configuracion">
+
+                                <label for="maximoJugadores">
+                                    Jugadores por equipo
+                                </label>
+
+                                <div class="campo-numero">
+                                    <input
+                                        id="maximoJugadores"
+                                        type="number"
+                                        min="1"
+                                        max="100"
+                                        value="26"
+                                        disabled
+                                    >
+
+                                    <span>
+                                        jugadores
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <button
+                                id="btnGuardarMaximoJugadores"
+                                class="btn btn-secundario btn-ancho"
+                                type="button"
+                                disabled
+                            >
+                                Guardar límite
+                            </button>
+
+                        </article>
+
+                    </div>
+
+                    <article class="panel-datos">
+
+                        <div class="panel-datos-cabecera">
+
+                            <div>
+                                <h3>
+                                    Estado de plantillas
+                                </h3>
+
+                                <p>
+                                    Consulta la cantidad registrada y el
+                                    límite congelado de cada equipo.
+                                </p>
+                            </div>
+
+                            <div class="buscador-mini">
+
+                                <input
+                                    id="buscarPlantilla"
+                                    type="search"
+                                    placeholder="Buscar equipo..."
+                                >
+
+                            </div>
+
+                        </div>
+
+                        <div
+                            id="listaPlantillas"
+                            class="lista-plantillas"
+                        >
+
+                            <div class="lista-vacia">
+                                Cargando equipos...
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+                <section
+                    id="seccionJornada5"
+                    class="configuracion-seccion"
+                    data-seccion-contenido="jornada5"
+                >
+
+                    <div class="seccion-cabecera">
+
+                        <div>
+                            <span class="seccion-kicker">
+                                PERIODO ESPECIAL
+                            </span>
+
+                            <h2>
+                                Movimientos de Jornada 5
+                            </h2>
+
+                            <p>
+                                Habilita temporalmente bajas y nuevas altas
+                                sin superar el tamaño de plantilla que cada
+                                equipo tenía al cierre inicial.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="config-grid">
+
+                        <article class="config-card config-card-principal">
+
+                            <div class="config-card-cabecera">
+
+                                <div class="config-card-icono">
+                                    5
+                                </div>
+
+                                <div>
+                                    <h3>
+                                        Ventana de movimientos
+                                    </h3>
+
+                                    <p>
+                                        Abre o cierra el periodo especial
+                                        de actualización de plantillas.
+                                    </p>
+                                </div>
+
+                            </div>
+
+                            <div class="control-principal">
+
+                                <div class="control-principal-info">
+
+                                    <span>
+                                        Estado actual
+                                    </span>
+
+                                    <strong id="estadoJornada5Texto">
+                                        Consultando...
+                                    </strong>
+
+                                    <small id="estadoJornada5Detalle">
+                                        Esperando información de Firebase.
+                                    </small>
+
+                                </div>
+
+                                <label class="switch-control">
+
+                                    <input
+                                        id="switchJornada5"
+                                        type="checkbox"
+                                        disabled
+                                    >
+
+                                    <span class="switch-slider"></span>
+
+                                </label>
+
+                            </div>
+
+                            <div class="aviso-configuracion aviso-azul">
+
+                                <span class="aviso-icono">
+                                    i
+                                </span>
+
+                                <p>
+                                    Los jugadores registrados durante este
+                                    periodo tendrán una credencial especial
+                                    que los distinguirá de las altas iniciales.
+                                </p>
+
+                            </div>
+
+                        </article>
+
+                        <article class="config-card">
+
+                            <div class="config-card-cabecera">
+
+                                <div class="config-card-icono">
+                                    ⇄
+                                </div>
+
+                                <div>
+                                    <h3>
+                                        Máximo de movimientos
+                                    </h3>
+
+                                    <p>
+                                        Cada equipo podrá utilizar hasta
+                                        este número de reemplazos.
+                                    </p>
+                                </div>
+
+                            </div>
+
+                            <div class="campo-configuracion">
+
+                                <label for="maximoMovimientosJ5">
+                                    Movimientos permitidos
+                                </label>
+
+                                <div class="campo-numero">
+                                    <input
+                                        id="maximoMovimientosJ5"
+                                        type="number"
+                                        min="1"
+                                        max="20"
+                                        value="5"
+                                        disabled
+                                    >
+
+                                    <span>
+                                        máximo
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <button
+                                id="btnGuardarMaximoJ5"
+                                class="btn btn-secundario btn-ancho"
+                                type="button"
+                                disabled
+                            >
+                                Guardar límite
+                            </button>
+
+                        </article>
+
+                    </div>
+
+                    <article class="panel-datos">
+
+                        <div class="panel-datos-cabecera">
+
+                            <div>
+                                <h3>
+                                    Movimientos por equipo
+                                </h3>
+
+                                <p>
+                                    Revisa cuántas bajas y altas ha utilizado
+                                    cada equipo durante el periodo especial.
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <div
+                            id="listaMovimientosJ5"
+                            class="lista-movimientos"
+                        >
+
+                            <div class="lista-vacia">
+                                No hay movimientos registrados.
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+                <section
+                    id="seccionEdiciones"
+                    class="configuracion-seccion"
+                    data-seccion-contenido="ediciones"
+                >
+
+                    <div class="seccion-cabecera">
+
+                        <div>
+                            <span class="seccion-kicker">
+                                AUTORIZACIONES
+                            </span>
+
+                            <h2>
+                                Solicitudes de edición
+                            </h2>
+
+                            <p>
+                                Revisa los cambios solicitados por los jefes
+                                de equipo antes de modificar la información
+                                oficial de un jugador.
+                            </p>
+                        </div>
+
+                        <div class="seccion-contador">
+                            <strong id="contadorEdiciones">
+                                0
+                            </strong>
+
+                            <span>
+                                pendientes
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div class="filtros-solicitudes">
+
+                        <button
+                            class="filtro-solicitud activo"
+                            type="button"
+                            data-filtro-edicion="pendiente"
+                        >
+                            Pendientes
+                        </button>
+
+                        <button
+                            class="filtro-solicitud"
+                            type="button"
+                            data-filtro-edicion="aprobada"
+                        >
+                            Aprobadas
+                        </button>
+
+                        <button
+                            class="filtro-solicitud"
+                            type="button"
+                            data-filtro-edicion="rechazada"
+                        >
+                            Rechazadas
+                        </button>
+
+                        <button
+                            class="filtro-solicitud"
+                            type="button"
+                            data-filtro-edicion="todas"
+                        >
+                            Todas
+                        </button>
+
+                    </div>
+
+                    <div
+                        id="listaSolicitudesEdicion"
+                        class="lista-solicitudes"
+                    >
+
+                        <div class="lista-vacia">
+
+                            <div class="lista-vacia-icono">
+                                ✓
+                            </div>
+
+                            <strong>
+                                Sin solicitudes pendientes
+                            </strong>
+
+                            <span>
+                                Las solicitudes de modificación de jugadores
+                                aparecerán en este apartado.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <section
+                    id="seccionPrestamos"
+                    class="configuracion-seccion"
+                    data-seccion-contenido="prestamos"
+                >
+
+                    <div class="seccion-cabecera">
+
+                        <div>
+                            <span class="seccion-kicker">
+                                REFUERZOS
+                            </span>
+
+                            <h2>
+                                Solicitudes de préstamo
+                            </h2>
+
+                            <p>
+                                Autoriza jugadores que participarán como
+                                refuerzo en otra categoría permitida de su
+                                misma comunidad o club.
+                            </p>
+                        </div>
+
+                        <div class="seccion-contador">
+                            <strong id="contadorPrestamos">
+                                0
+                            </strong>
+
+                            <span>
+                                pendientes
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div class="reglas-prestamo">
+
+                        <div class="regla-item">
+                            <span>
+                                1
+                            </span>
+
+                            <p>
+                                El jugador debe pertenecer a la misma
+                                comunidad o club.
+                            </p>
+                        </div>
+
+                        <div class="regla-item">
+                            <span>
+                                2
+                            </span>
+
+                            <p>
+                                Solo se permite el movimiento desde una
+                                categoría inferior hacia una superior.
+                            </p>
+                        </div>
+
+                        <div class="regla-item">
+                            <span>
+                                3
+                            </span>
+
+                            <p>
+                                La solicitud deberá cumplir la diferencia
+                                de categoría permitida por la liga.
+                            </p>
+                        </div>
+
+                        <div class="regla-item">
+                            <span>
+                                4
+                            </span>
+
+                            <p>
+                                Ningún préstamo será válido sin autorización
+                                administrativa.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="filtros-solicitudes">
+
+                        <button
+                            class="filtro-solicitud activo"
+                            type="button"
+                            data-filtro-prestamo="pendiente"
+                        >
+                            Pendientes
+                        </button>
+
+                        <button
+                            class="filtro-solicitud"
+                            type="button"
+                            data-filtro-prestamo="aprobada"
+                        >
+                            Aprobadas
+                        </button>
+
+                        <button
+                            class="filtro-solicitud"
+                            type="button"
+                            data-filtro-prestamo="rechazada"
+                        >
+                            Rechazadas
+                        </button>
+
+                        <button
+                            class="filtro-solicitud"
+                            type="button"
+                            data-filtro-prestamo="todas"
+                        >
+                            Todas
+                        </button>
+
+                    </div>
+
+                    <div
+                        id="listaSolicitudesPrestamo"
+                        class="lista-solicitudes"
+                    >
+
+                        <div class="lista-vacia">
+
+                            <div class="lista-vacia-icono">
+                                ⇄
+                            </div>
+
+                            <strong>
+                                Sin solicitudes pendientes
+                            </strong>
+
+                            <span>
+                                Las solicitudes de préstamo de jugadores
+                                aparecerán aquí.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <section
+                    id="seccionPagos"
+                    class="configuracion-seccion"
+                    data-seccion-contenido="pagos"
+                >
+
+                    <div class="seccion-cabecera">
+
+                        <div>
+                            <span class="seccion-kicker">
+                                CONTROL FINANCIERO
+                            </span>
+
+                            <h2>
+                                Pagos de equipos
+                            </h2>
+
+                            <p>
+                                Configura la meta económica de la temporada,
+                                registra abonos y consulta el saldo de cada equipo.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="config-grid pagos-config-grid">
+
+                        <article class="config-card config-card-principal">
+
+                            <div class="config-card-cabecera">
+
+                                <div class="config-card-icono">
+                                    $
+                                </div>
+
+                                <div>
+                                    <h3>
+                                        Meta de pago por equipo
+                                    </h3>
+
+                                    <p>
+                                        Define cuánto deberá cubrir cada equipo
+                                        durante la temporada actual.
+                                    </p>
+                                </div>
+
+                            </div>
+
+                            <div class="campo-configuracion">
+
+                                <label for="metaPagoTemporada">
+                                    Meta total de la temporada
+                                </label>
+
+                                <div class="campo-numero campo-dinero">
+                                    <span>
+                                        $
+                                    </span>
+
+                                    <input
+                                        id="metaPagoTemporada"
+                                        type="number"
+                                        min="0"
+                                        step="0.01"
+                                        placeholder="Sin configurar"
+                                    >
+
+                                    <span>
+                                        MXN
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <button
+                                id="btnGuardarMetaPago"
+                                class="btn btn-primario btn-ancho"
+                                type="button"
+                            >
+                                Guardar meta de pago
+                            </button>
+
+                        </article>
+
+                        <article class="config-card">
+
+                            <div class="config-card-cabecera">
+
+                                <div class="config-card-icono">
+                                    $
+                                </div>
+
+                                <div>
+                                    <h3>
+                                        Resumen financiero
+                                    </h3>
+
+                                    <p>
+                                        Estado general de los equipos durante
+                                        la temporada seleccionada.
+                                    </p>
+                                </div>
+
+                            </div>
+
+                            <div class="resumen-pagos-mini">
+
+                                <div>
+                                    <span>
+                                        Meta actual
+                                    </span>
+
+                                    <strong id="resumenMetaPago">
+                                        No configurada
+                                    </strong>
+                                </div>
+
+                                <div>
+                                    <span>
+                                        Equipos pagados
+                                    </span>
+
+                                    <strong id="resumenEquiposPagados">
+                                        0
+                                    </strong>
+                                </div>
+
+                                <div>
+                                    <span>
+                                        Con adeudo
+                                    </span>
+
+                                    <strong id="resumenEquiposAdeudo">
+                                        0
+                                    </strong>
+                                </div>
+
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                    <article class="panel-datos panel-pagos">
+
+                        <div class="panel-datos-cabecera">
+
+                            <div>
+                                <h3>
+                                    Estado de pagos por equipo
+                                </h3>
+
+                                <p>
+                                    Consulta abonos, saldo pendiente e historial
+                                    financiero de cada equipo.
+                                </p>
+                            </div>
+
+                            <div class="buscador-mini">
+
+                                <input
+                                    id="buscarEquipoPago"
+                                    type="search"
+                                    placeholder="Buscar equipo..."
+                                >
+
+                            </div>
+
+                        </div>
+
+                        <div
+                            id="listaPagosEquipos"
+                            class="lista-pagos-equipos"
+                        >
+
+                            <div class="lista-vacia">
+                                Cargando información financiera...
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+                <section
+                    id="seccionAdministracion"
+                    class="configuracion-seccion"
+                    data-seccion-contenido="administracion"
+                >
+
+                    <div class="seccion-cabecera">
+
+                        <div>
+                            <span class="seccion-kicker">
+                                DATOS DE LA LIGA
+                            </span>
+
+                            <h2>
+                                Administración
+                            </h2>
+
+                            <p>
+                                Consulta y elimina equipos, categorías o jugadores
+                                directamente desde el sistema administrativo.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="administracion-grid">
+
+                        <article class="panel-datos">
+
+                            <div class="panel-datos-cabecera">
+
+                                <div>
+                                    <h3>
+                                        Equipos
+                                    </h3>
+
+                                    <p>
+                                        Equipos registrados actualmente.
+                                    </p>
+                                </div>
+
+                                <span
+                                    id="totalEquipos"
+                                    class="contador-registros"
+                                >
+                                    0
+                                </span>
+
+                            </div>
+
+                            <div class="buscador-administracion">
+
+                                <input
+                                    id="buscarEquipo"
+                                    type="search"
+                                    placeholder="Buscar equipo..."
+                                >
+
+                            </div>
+
+                            <div
+                                id="listaEquipos"
+                                class="lista-administracion"
+                            >
+
+                                <div class="lista-vacia">
+                                    Cargando equipos...
+                                </div>
+
+                            </div>
+
+                        </article>
+
+                        <article class="panel-datos">
+
+                            <div class="panel-datos-cabecera">
+
+                                <div>
+                                    <h3>
+                                        Categorías
+                                    </h3>
+
+                                    <p>
+                                        Categorías registradas actualmente.
+                                    </p>
+                                </div>
+
+                                <span
+                                    id="totalCategorias"
+                                    class="contador-registros"
+                                >
+                                    0
+                                </span>
+
+                            </div>
+
+                            <div class="buscador-administracion">
+
+                                <input
+                                    id="buscarCategoria"
+                                    type="search"
+                                    placeholder="Buscar categoría..."
+                                >
+
+                            </div>
+
+                            <div
+                                id="listaCategorias"
+                                class="lista-administracion"
+                            >
+
+                                <div class="lista-vacia">
+                                    Cargando categorías...
+                                </div>
+
+                            </div>
+
+                        </article>
+
+                        <article class="panel-datos panel-jugadores-admin">
+
+                            <div class="panel-datos-cabecera">
+
+                                <div>
+                                    <h3>
+                                        Jugadores
+                                    </h3>
+
+                                    <p>
+                                        Jugadores registrados actualmente en la liga.
+                                    </p>
+                                </div>
+
+                                <span
+                                    id="totalJugadoresAdmin"
+                                    class="contador-registros"
+                                >
+                                    0
+                                </span>
+
+                            </div>
+
+                            <div class="buscador-administracion">
+
+                                <input
+                                    id="buscarJugadorAdmin"
+                                    type="search"
+                                    placeholder="Buscar jugador, equipo o CURP..."
+                                >
+
+                            </div>
+
+                            <div
+                                id="listaJugadoresAdmin"
+                                class="lista-administracion"
+                            >
+
+                                <div class="lista-vacia">
+                                    Cargando jugadores...
+                                </div>
+
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <div
+        id="modalConfirmacion"
+        class="modal-overlay oculto"
+    >
+
+        <div class="modal-confirmacion">
+
+            <button
+                id="btnCerrarModal"
+                class="modal-cerrar"
+                type="button"
+                aria-label="Cerrar"
+            >
+                ×
+            </button>
+
+            <div
+                id="modalIcono"
+                class="modal-icono"
+            >
+                !
+            </div>
+
+            <h2 id="modalTitulo">
+                Confirmar acción
+            </h2>
+
+            <p id="modalTexto">
+                Confirma que deseas realizar esta acción.
+            </p>
+
+            <div
+                id="modalAdvertencia"
+                class="modal-advertencia oculto"
+            >
+                Esta acción puede afectar información relacionada.
+            </div>
+
+            <div
+                id="modalCampoConfirmacion"
+                class="modal-campo-confirmacion oculto"
+            >
+
+                <label for="inputConfirmacion">
+                    Escribe
+                    <strong id="textoConfirmacionRequerido">
+                        ELIMINAR
+                    </strong>
+                    para continuar
+                </label>
+
+                <input
+                    id="inputConfirmacion"
+                    type="text"
+                    autocomplete="off"
+                >
+
+            </div>
+
+            <div class="modal-acciones">
+
+                <button
+                    id="btnCancelarModal"
+                    class="btn btn-secundario"
+                    type="button"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    id="btnConfirmarModal"
+                    class="btn btn-peligro"
+                    type="button"
+                >
+                    Confirmar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div
+        id="modalSolicitud"
+        class="modal-overlay oculto"
+    >
+
+        <div class="modal-solicitud">
+
+            <button
+                id="btnCerrarSolicitud"
+                class="modal-cerrar"
+                type="button"
+                aria-label="Cerrar"
+            >
+                ×
+            </button>
+
+            <div class="modal-solicitud-cabecera">
+
+                <span class="seccion-kicker">
+                    SOLICITUD
+                </span>
+
+                <h2 id="solicitudTitulo">
+                    Detalle de solicitud
+                </h2>
+
+                <p id="solicitudSubtitulo">
+                    Revisa la información antes de tomar una decisión.
+                </p>
+
+            </div>
+
+            <div
+                id="solicitudContenido"
+                class="solicitud-contenido"
+            ></div>
+
+            <div class="campo-observaciones">
+
+                <label for="solicitudObservaciones">
+                    Observaciones del administrador
+                </label>
+
+                <textarea
+                    id="solicitudObservaciones"
+                    rows="4"
+                    placeholder="Puedes agregar una observación..."
+                ></textarea>
+
+            </div>
+
+            <div class="modal-acciones modal-acciones-solicitud">
+
+                <button
+                    id="btnRechazarSolicitud"
+                    class="btn btn-peligro"
+                    type="button"
+                >
+                    Rechazar
+                </button>
+
+                <button
+                    id="btnAprobarSolicitud"
+                    class="btn btn-primario"
+                    type="button"
+                >
+                    Aprobar solicitud
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div
+        id="modalPagoEquipo"
+        class="modal-overlay oculto"
+    >
+
+        <div class="modal-solicitud modal-pago">
+
+            <button
+                id="btnCerrarPagoEquipo"
+                class="modal-cerrar"
+                type="button"
+                aria-label="Cerrar"
+            >
+                ×
+            </button>
+
+            <div class="modal-solicitud-cabecera">
+
+                <span class="seccion-kicker">
+                    CONTROL FINANCIERO
+                </span>
+
+                <h2 id="pagoEquipoTitulo">
+                    Equipo
+                </h2>
+
+                <p id="pagoEquipoSubtitulo">
+                    Registra y consulta los pagos de este equipo.
+                </p>
+
+            </div>
+
+            <div class="pago-equipo-resumen">
+
+                <div>
+                    <span>
+                        Meta
+                    </span>
+
+                    <strong id="pagoEquipoMeta">
+                        $0.00
+                    </strong>
+                </div>
+
+                <div>
+                    <span>
+                        Pagado
+                    </span>
+
+                    <strong id="pagoEquipoPagado">
+                        $0.00
+                    </strong>
+                </div>
+
+                <div>
+                    <span>
+                        Saldo
+                    </span>
+
+                    <strong id="pagoEquipoSaldo">
+                        $0.00
+                    </strong>
+                </div>
+
+                <div>
+                    <span>
+                        Estado
+                    </span>
+
+                    <strong id="pagoEquipoEstado">
+                        SIN CONFIGURAR
+                    </strong>
+                </div>
+
+            </div>
+
+            <form id="formRegistrarPago">
+
+                <div class="pago-form-grid">
+
+                    <div class="campo-observaciones">
+                        <label for="pagoCantidad">
+                            Cantidad
+                        </label>
+
+                        <input
+                            id="pagoCantidad"
+                            type="number"
+                            min="0.01"
+                            step="0.01"
+                            placeholder="0.00"
+                            required
+                        >
+                    </div>
+
+                    <div class="campo-observaciones">
+                        <label for="pagoFecha">
+                            Fecha
+                        </label>
+
+                        <input
+                            id="pagoFecha"
+                            type="date"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+                <div class="campo-observaciones">
+                    <label for="pagoConcepto">
+                        Concepto
+                    </label>
+
+                    <input
+                        id="pagoConcepto"
+                        type="text"
+                        maxlength="150"
+                        placeholder="Ej. Primer abono, pago semanal..."
+                        required
+                    >
+                </div>
+
+                <button
+                    id="btnRegistrarPago"
+                    class="btn btn-primario btn-ancho"
+                    type="submit"
+                >
+                    Registrar pago
+                </button>
+
+            </form>
+
+            <div class="historial-pagos-cabecera">
+                <h3>
+                    Historial de pagos
+                </h3>
+
+                <span id="totalMovimientosPago">
+                    0 movimientos
+                </span>
+            </div>
+
+            <div
+                id="historialPagosEquipo"
+                class="historial-pagos"
+            >
+
+                <div class="lista-vacia">
+                    No hay pagos registrados.
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div
+        id="toast"
+        class="toast oculto"
+    >
+
+        <div
+            id="toastIcono"
+            class="toast-icono"
+        >
+            ✓
+        </div>
+
+        <div class="toast-contenido">
+
+            <strong id="toastTitulo">
+                Acción completada
+            </strong>
+
+            <span id="toastTexto">
+                Los cambios fueron guardados.
+            </span>
+
+        </div>
+
+    </div>
+
+    <script
+        type="module"
+        src="js/admin/adminConfiguracion.js"
+    ></script>
+
+    <script
+        type="module"
+        src="js/admin/adminConfiguracion2.js"
+    ></script>
+
+</body>
+</html>

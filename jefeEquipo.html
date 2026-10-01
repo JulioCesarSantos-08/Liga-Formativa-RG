@@ -36,19 +36,11 @@
                 >
 
                 <div class="topbar-texto">
-
-                    <span>
-                        Liga Deportiva
-                    </span>
-
-                    <strong>
-                        Río Grande
-                    </strong>
-
+                    <span>Liga Deportiva</span>
+                    <strong>Río Grande</strong>
                 </div>
 
             </div>
-
 
             <div class="topbar-acciones">
 
@@ -56,15 +48,12 @@
                     href="publico.html"
                     class="btn-publico"
                 >
-                    <span>
-                        👁️
-                    </span>
+                    <span>👁️</span>
 
                     <span class="btn-publico-texto">
                         Ver liga
                     </span>
                 </a>
-
 
                 <button
                     type="button"
@@ -78,7 +67,6 @@
             </div>
 
         </header>
-
 
         <main class="contenido">
 
@@ -94,7 +82,6 @@
                 </span>
 
             </section>
-
 
             <section
                 id="sinEquipo"
@@ -132,7 +119,6 @@
 
             </section>
 
-
             <div
                 id="contenidoEquipo"
                 class="contenido-equipo oculto"
@@ -148,7 +134,6 @@
                         >
                             E
                         </div>
-
 
                         <div class="equipo-hero-info">
 
@@ -179,7 +164,6 @@
 
                     </div>
 
-
                     <div class="jefe-identidad">
 
                         <div
@@ -205,6 +189,39 @@
 
                 </section>
 
+                <section
+                    id="estadoRegistroEquipo"
+                    class="estado-registro-equipo"
+                >
+
+                    <div class="estado-registro-icono">
+                        👥
+                    </div>
+
+                    <div class="estado-registro-info">
+
+                        <span>
+                            ESTADO DE PLANTILLA
+                        </span>
+
+                        <strong id="estadoRegistroTitulo">
+                            Consultando configuración...
+                        </strong>
+
+                        <p id="estadoRegistroTexto">
+                            Estamos verificando los permisos actuales de registro.
+                        </p>
+
+                    </div>
+
+                    <div
+                        id="estadoRegistroBadge"
+                        class="estado-registro-badge"
+                    >
+                        CARGANDO
+                    </div>
+
+                </section>
 
                 <section class="resumen">
 
@@ -222,13 +239,13 @@
 
                             <strong>
                                 <span id="totalJugadores">0</span>
-                                / 26
+                                /
+                                <span id="limiteJugadores">26</span>
                             </strong>
 
                         </div>
 
                     </article>
-
 
                     <article class="resumen-card">
 
@@ -250,7 +267,6 @@
 
                     </article>
 
-
                     <article class="resumen-card">
 
                         <div class="resumen-icono">
@@ -270,7 +286,6 @@
                         </div>
 
                     </article>
-
 
                     <article class="resumen-card">
 
@@ -294,6 +309,51 @@
 
                 </section>
 
+                <section
+                    id="resumenJornada5"
+                    class="resumen-jornada5 oculto"
+                >
+
+                    <div class="resumen-jornada5-identidad">
+
+                        <div class="resumen-jornada5-icono">
+                            5
+                        </div>
+
+                        <div>
+
+                            <span>
+                                PERIODO ESPECIAL
+                            </span>
+
+                            <strong>
+                                Jornada 5 activa
+                            </strong>
+
+                            <p>
+                                Puedes realizar movimientos de plantilla
+                                respetando el cupo oficial de tu equipo.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="resumen-jornada5-contador">
+
+                        <span>
+                            Movimientos
+                        </span>
+
+                        <strong>
+                            <span id="movimientosJ5Usados">0</span>
+                            /
+                            <span id="movimientosJ5Limite">5</span>
+                        </strong>
+
+                    </div>
+
+                </section>
 
                 <section class="acciones-equipo">
 
@@ -313,11 +373,11 @@
                                 PLANTILLA
                             </small>
 
-                            <strong>
+                            <strong id="btnNuevoJugadorTitulo">
                                 Registrar jugador
                             </strong>
 
-                            <p>
+                            <p id="btnNuevoJugadorTexto">
                                 Agrega un nuevo integrante al equipo.
                             </p>
 
@@ -325,6 +385,61 @@
 
                     </button>
 
+                    <button
+                        type="button"
+                        id="btnJornada5"
+                        class="accion-card accion-jornada5 oculto"
+                    >
+
+                        <span class="accion-icono">
+                            5
+                        </span>
+
+                        <div>
+
+                            <small>
+                                PERIODO ESPECIAL
+                            </small>
+
+                            <strong>
+                                Movimientos Jornada 5
+                            </strong>
+
+                            <p>
+                                Gestiona bajas y nuevas altas autorizadas.
+                            </p>
+
+                        </div>
+
+                    </button>
+
+                    <button
+                        type="button"
+                        id="btnSolicitarPrestamo"
+                        class="accion-card accion-prestamo"
+                    >
+
+                        <span class="accion-icono">
+                            ⇄
+                        </span>
+
+                        <div>
+
+                            <small>
+                                REFUERZOS
+                            </small>
+
+                            <strong>
+                                Solicitar préstamo
+                            </strong>
+
+                            <p>
+                                Solicita un jugador elegible de otra categoría.
+                            </p>
+
+                        </div>
+
+                    </button>
 
                     <button
                         type="button"
@@ -353,7 +468,6 @@
                         </div>
 
                     </button>
-
 
                     <button
                         type="button"
@@ -385,7 +499,6 @@
 
                 </section>
 
-
                 <section class="panel-jugadores">
 
                     <div class="panel-header">
@@ -401,7 +514,6 @@
                             </h2>
 
                         </div>
-
 
                         <div class="buscador">
 
@@ -420,6 +532,31 @@
 
                     </div>
 
+                    <div
+                        id="avisoEdiciones"
+                        class="aviso-ediciones oculto"
+                    >
+
+                        <span class="aviso-ediciones-icono">
+                            ✎
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Cambios protegidos
+                            </strong>
+
+                            <p>
+                                Para modificar la información de un jugador
+                                registrado deberás enviar una solicitud.
+                                El cambio se aplicará únicamente cuando sea
+                                aprobado por un administrador.
+                            </p>
+
+                        </div>
+
+                    </div>
 
                     <div
                         id="sinJugadores"
@@ -434,12 +571,11 @@
                             Tu plantilla está vacía
                         </strong>
 
-                        <p>
+                        <p id="sinJugadoresTexto">
                             Registra al primer jugador de tu equipo.
                         </p>
 
                     </div>
-
 
                     <div
                         id="gridJugadores"
@@ -452,7 +588,6 @@
 
         </main>
 
-
         <nav
             id="navegacionMovil"
             class="navegacion-movil oculto"
@@ -463,63 +598,50 @@
                 class="nav-item activo"
                 data-accion="plantilla"
             >
-                <span>
-                    👥
-                </span>
-
-                <small>
-                    Plantilla
-                </small>
+                <span>👥</span>
+                <small>Plantilla</small>
             </button>
-
 
             <button
                 type="button"
+                id="navNuevoJugador"
                 class="nav-item"
                 data-accion="nuevo"
             >
-                <span>
-                    ＋
-                </span>
-
-                <small>
-                    Registrar
-                </small>
+                <span>＋</span>
+                <small>Registrar</small>
             </button>
 
+            <button
+                type="button"
+                id="navJornada5"
+                class="nav-item oculto"
+                data-accion="jornada5"
+            >
+                <span>5</span>
+                <small>Jornada 5</small>
+            </button>
 
             <button
                 type="button"
                 class="nav-item"
                 data-accion="credenciales"
             >
-                <span>
-                    🪪
-                </span>
-
-                <small>
-                    Credenciales
-                </small>
+                <span>🪪</span>
+                <small>Credenciales</small>
             </button>
-
 
             <a
                 href="publico.html"
                 class="nav-item"
             >
-                <span>
-                    🏆
-                </span>
-
-                <small>
-                    Liga
-                </small>
+                <span>🏆</span>
+                <small>Liga</small>
             </a>
 
         </nav>
 
     </div>
-
 
     <div
         id="modalJugador"
@@ -537,7 +659,10 @@
 
                 <div>
 
-                    <span class="modal-mini">
+                    <span
+                        id="modalJugadorMini"
+                        class="modal-mini"
+                    >
                         JUGADOR
                     </span>
 
@@ -546,7 +671,6 @@
                     </h2>
 
                 </div>
-
 
                 <button
                     type="button"
@@ -559,6 +683,22 @@
 
             </div>
 
+            <div
+                id="avisoSolicitudEdicion"
+                class="aviso-solicitud-edicion oculto"
+            >
+
+                <span>
+                    ℹ️
+                </span>
+
+                <p>
+                    Estás solicitando una modificación.
+                    Los datos originales permanecerán sin cambios
+                    hasta que un administrador apruebe la solicitud.
+                </p>
+
+            </div>
 
             <form id="formJugador">
 
@@ -568,6 +708,7 @@
                         id="previewFoto"
                         class="foto-preview"
                     >
+
                         <span id="previewInicial">
                             J
                         </span>
@@ -577,8 +718,8 @@
                             class="oculto"
                             alt="Fotografía del jugador"
                         >
-                    </div>
 
+                    </div>
 
                     <div class="foto-controles">
 
@@ -605,7 +746,6 @@
 
                 </div>
 
-
                 <div class="form-grupo">
 
                     <label for="nombreJugador">
@@ -622,7 +762,6 @@
 
                 </div>
 
-
                 <div class="form-grid">
 
                     <div class="form-grupo">
@@ -638,7 +777,6 @@
                         >
 
                     </div>
-
 
                     <div class="form-grupo">
 
@@ -658,7 +796,6 @@
                     </div>
 
                 </div>
-
 
                 <div class="form-grupo">
 
@@ -682,7 +819,6 @@
                     </small>
 
                 </div>
-
 
                 <div class="form-grupo">
 
@@ -726,7 +862,6 @@
 
                 </div>
 
-
                 <div class="form-grupo">
 
                     <label for="observacionesJugador">
@@ -742,6 +877,27 @@
 
                 </div>
 
+                <div
+                    id="grupoMotivoEdicion"
+                    class="form-grupo oculto"
+                >
+
+                    <label for="motivoEdicion">
+                        Motivo de la solicitud
+                    </label>
+
+                    <textarea
+                        id="motivoEdicion"
+                        rows="3"
+                        maxlength="400"
+                        placeholder="Explica por qué necesitas modificar la información..."
+                    ></textarea>
+
+                    <small>
+                        Esta explicación será visible para el administrador.
+                    </small>
+
+                </div>
 
                 <div class="aviso-jugador">
 
@@ -749,14 +905,12 @@
                         ℹ️
                     </span>
 
-                    <p>
-                        Cada equipo puede registrar un máximo de 26 jugadores.
-                        Los jugadores registrados formarán parte de la plantilla
-                        oficial y podrán aparecer en las cédulas arbitrales.
+                    <p id="avisoJugadorTexto">
+                        El número máximo de jugadores y los periodos
+                        de inscripción son administrados por la liga.
                     </p>
 
                 </div>
-
 
                 <div class="modal-acciones">
 
@@ -767,7 +921,6 @@
                     >
                         Cancelar
                     </button>
-
 
                     <button
                         type="submit"
@@ -785,6 +938,296 @@
 
     </div>
 
+    <div
+        id="modalJornada5"
+        class="modal-overlay oculto"
+    >
+
+        <div
+            class="modal-jugador modal-jornada5"
+            role="dialog"
+            aria-modal="true"
+        >
+
+            <div class="modal-header">
+
+                <div>
+
+                    <span class="modal-mini">
+                        PERIODO ESPECIAL
+                    </span>
+
+                    <h2>
+                        Movimientos Jornada 5
+                    </h2>
+
+                </div>
+
+                <button
+                    type="button"
+                    id="btnCerrarJornada5"
+                    class="btn-cerrar-modal"
+                    aria-label="Cerrar"
+                >
+                    ×
+                </button>
+
+            </div>
+
+            <div class="jornada5-estado">
+
+                <div>
+
+                    <span>
+                        Cupo oficial
+                    </span>
+
+                    <strong>
+                        <span id="j5TotalJugadores">0</span>
+                        /
+                        <span id="j5LimitePlantilla">0</span>
+                    </strong>
+
+                </div>
+
+                <div>
+
+                    <span>
+                        Movimientos usados
+                    </span>
+
+                    <strong>
+                        <span id="j5MovimientosUsados">0</span>
+                        /
+                        <span id="j5MovimientosMaximos">5</span>
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <div class="jornada5-explicacion">
+
+                <span>
+                    5
+                </span>
+
+                <p>
+                    Tu equipo no puede superar el número de jugadores
+                    con el que cerró la inscripción inicial. Puedes realizar
+                    hasta el máximo de movimientos autorizado por la liga.
+                    No es obligatorio utilizar todos.
+                </p>
+
+            </div>
+
+            <div class="jornada5-acciones">
+
+                <button
+                    type="button"
+                    id="btnJ5DarBaja"
+                    class="jornada5-accion jornada5-baja"
+                >
+
+                    <span>
+                        −
+                    </span>
+
+                    <div>
+                        <strong>Dar de baja jugador</strong>
+                        <p>
+                            Libera un lugar de tu plantilla para realizar un cambio.
+                        </p>
+                    </div>
+
+                </button>
+
+                <button
+                    type="button"
+                    id="btnJ5NuevaAlta"
+                    class="jornada5-accion jornada5-alta"
+                >
+
+                    <span>
+                        ＋
+                    </span>
+
+                    <div>
+                        <strong>Registrar nuevo jugador</strong>
+                        <p>
+                            Utiliza un lugar disponible dentro de tu cupo oficial.
+                        </p>
+                    </div>
+
+                </button>
+
+            </div>
+
+            <div
+                id="listaMovimientosJ5"
+                class="lista-movimientos-j5"
+            ></div>
+
+        </div>
+
+    </div>
+
+    <div
+        id="modalPrestamo"
+        class="modal-overlay oculto"
+    >
+
+        <div
+            class="modal-jugador modal-prestamo"
+            role="dialog"
+            aria-modal="true"
+        >
+
+            <div class="modal-header">
+
+                <div>
+
+                    <span class="modal-mini">
+                        REFUERZO
+                    </span>
+
+                    <h2>
+                        Solicitar préstamo
+                    </h2>
+
+                </div>
+
+                <button
+                    type="button"
+                    id="btnCerrarPrestamo"
+                    class="btn-cerrar-modal"
+                    aria-label="Cerrar"
+                >
+                    ×
+                </button>
+
+            </div>
+
+            <div class="prestamo-reglas">
+
+                <div>
+                    <span>✓</span>
+                    <p>
+                        Solo jugadores pertenecientes a la misma comunidad o club.
+                    </p>
+                </div>
+
+                <div>
+                    <span>✓</span>
+                    <p>
+                        El préstamo será únicamente de una categoría inferior hacia una superior.
+                    </p>
+                </div>
+
+                <div>
+                    <span>✓</span>
+                    <p>
+                        Solo se permitirán categorías compatibles según las reglas de la liga.
+                    </p>
+                </div>
+
+                <div>
+                    <span>✓</span>
+                    <p>
+                        El préstamo deberá ser aprobado por un administrador antes de ser válido.
+                    </p>
+                </div>
+
+            </div>
+
+            <form id="formPrestamo">
+
+                <div class="form-grupo">
+
+                    <label for="equipoOrigenPrestamo">
+                        Equipo de origen
+                    </label>
+
+                    <select
+                        id="equipoOrigenPrestamo"
+                        required
+                    >
+                        <option value="">
+                            Selecciona un equipo
+                        </option>
+                    </select>
+
+                </div>
+
+                <div class="form-grupo">
+
+                    <label for="jugadorPrestamo">
+                        Jugador
+                    </label>
+
+                    <select
+                        id="jugadorPrestamo"
+                        required
+                        disabled
+                    >
+                        <option value="">
+                            Primero selecciona el equipo
+                        </option>
+                    </select>
+
+                </div>
+
+                <div
+                    id="prestamoJugadorInfo"
+                    class="prestamo-jugador-info oculto"
+                ></div>
+
+                <div class="form-grupo">
+
+                    <label for="motivoPrestamo">
+                        Motivo de la solicitud
+                    </label>
+
+                    <textarea
+                        id="motivoPrestamo"
+                        rows="3"
+                        maxlength="400"
+                        placeholder="Explica brevemente por qué solicitas este jugador..."
+                        required
+                    ></textarea>
+
+                </div>
+
+                <div
+                    id="prestamoValidacion"
+                    class="prestamo-validacion oculto"
+                ></div>
+
+                <div class="modal-acciones">
+
+                    <button
+                        type="button"
+                        id="btnCancelarPrestamo"
+                        class="btn-secundario"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        id="btnEnviarPrestamo"
+                        class="btn-principal"
+                    >
+                        Enviar solicitud
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
 
     <div
         id="modalLimite"
@@ -793,17 +1236,19 @@
 
         <div class="modal-limite">
 
-            <div class="limite-icono">
-                26
+            <div
+                id="limiteIcono"
+                class="limite-icono"
+            >
+                !
             </div>
 
-            <h2>
-                Plantilla completa
+            <h2 id="limiteTitulo">
+                Registro no disponible
             </h2>
 
-            <p>
-                Este equipo ya alcanzó el máximo permitido
-                de 26 jugadores registrados.
+            <p id="limiteTexto">
+                En este momento no es posible registrar nuevos jugadores.
             </p>
 
             <button
@@ -817,7 +1262,6 @@
         </div>
 
     </div>
-
 
     <div
         id="toast"
@@ -842,11 +1286,14 @@
 
     </div>
 
-
     <script
         type="module"
         src="js/jefeEquipo/jefeEquipo.js"
     ></script>
+
+    <script type="module" src="js/jefeEquipo/jefeEquipo2.js"></script>
+
+    <script type="module" src="js/jefeEquipo/jefeEquipo3.js"></script>
 
 </body>
 </html>

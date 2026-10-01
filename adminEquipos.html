@@ -41,7 +41,6 @@
 
             </div>
 
-
             <div class="topbar-right">
 
                 <a
@@ -63,7 +62,6 @@
 
         </header>
 
-
         <main class="contenido-admin">
 
             <section class="encabezado-pagina">
@@ -80,11 +78,10 @@
 
                     <p>
                         Registra y administra los clubes participantes,
-                        su categoría, estado y responsable.
+                        su categoría, comunidad, estado y responsable.
                     </p>
 
                 </div>
-
 
                 <button
                     type="button"
@@ -95,7 +92,6 @@
                 </button>
 
             </section>
-
 
             <section class="resumen-equipos">
 
@@ -112,7 +108,6 @@
 
                 </article>
 
-
                 <article class="resumen-card">
 
                     <div class="resumen-icono">
@@ -126,7 +121,6 @@
 
                 </article>
 
-
                 <article class="resumen-card">
 
                     <div class="resumen-icono">
@@ -139,7 +133,6 @@
                     </div>
 
                 </article>
-
 
                 <article class="resumen-card">
 
@@ -155,7 +148,6 @@
                 </article>
 
             </section>
-
 
             <section class="panel-equipos">
 
@@ -176,7 +168,6 @@
 
                     </div>
 
-
                     <select
                         id="filtroCategoria"
                         class="select-filtro"
@@ -185,7 +176,6 @@
                             Todas las categorías
                         </option>
                     </select>
-
 
                     <select
                         id="filtroEstado"
@@ -210,7 +200,6 @@
 
                 </div>
 
-
                 <div
                     id="estadoCarga"
                     class="estado-carga"
@@ -223,7 +212,6 @@
                     </span>
 
                 </div>
-
 
                 <div
                     id="estadoVacio"
@@ -245,7 +233,6 @@
 
                 </div>
 
-
                 <div
                     id="gridEquipos"
                     class="grid-equipos oculto"
@@ -256,7 +243,6 @@
         </main>
 
     </div>
-
 
     <div
         id="modalEquipo"
@@ -284,7 +270,6 @@
 
                 </div>
 
-
                 <button
                     type="button"
                     id="btnCerrarModal"
@@ -295,7 +280,6 @@
                 </button>
 
             </div>
-
 
             <form id="formEquipo">
 
@@ -309,12 +293,11 @@
                         type="text"
                         id="nombreEquipo"
                         maxlength="100"
-                        placeholder="Ej. Deportivo Juárez"
+                        placeholder="Ej. Chacales C.A."
                         required
                     >
 
                 </div>
-
 
                 <div class="form-grupo">
 
@@ -333,6 +316,48 @@
 
                 </div>
 
+                <div class="form-grupo">
+
+                    <label for="clubEquipo">
+                        Club / Comunidad
+                    </label>
+
+                    <input
+                        type="text"
+                        id="clubEquipo"
+                        maxlength="100"
+                        placeholder="Ej. Chacales"
+                        autocomplete="off"
+                        required
+                    >
+
+                    <small>
+                        Escribe el club o comunidad a la que pertenece este equipo.
+                        Los equipos que puedan prestarse jugadores deberán compartir
+                        exactamente el mismo club o comunidad.
+                    </small>
+
+                    <div class="aviso-club">
+
+                        <span class="aviso-club-icono">
+                            ⇄
+                        </span>
+
+                        <div>
+                            <strong>
+                                Importante para préstamos
+                            </strong>
+
+                            <p>
+                                Si existen equipos como CHACALES y CHACALES C.A.,
+                                escribe CHACALES como club o comunidad en ambos.
+                                Así el sistema sabrá que pertenecen al mismo grupo.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
 
                 <div class="form-grupo">
 
@@ -357,7 +382,6 @@
                             >
                         </div>
 
-
                         <div class="logo-controles">
 
                             <label
@@ -375,8 +399,8 @@
                             >
 
                             <small>
-                                JPG, PNG o WEBP. Más adelante esta imagen
-                                se subirá a Cloudinary.
+                                JPG, PNG o WEBP. La imagen se utilizará
+                                como escudo oficial del equipo.
                             </small>
 
                         </div>
@@ -384,7 +408,6 @@
                     </div>
 
                 </div>
-
 
                 <div class="form-grupo">
 
@@ -406,7 +429,6 @@
 
                 </div>
 
-
                 <div class="form-grupo">
 
                     <label for="descripcionEquipo">
@@ -422,13 +444,11 @@
 
                 </div>
 
-
                 <div class="form-grupo">
 
                     <label>
                         Estado del equipo
                     </label>
-
 
                     <div class="estado-selector estado-selector-equipo">
 
@@ -442,7 +462,6 @@
                             Activo
                         </button>
 
-
                         <button
                             type="button"
                             id="btnEstadoInactivo"
@@ -452,7 +471,6 @@
                             <span class="estado-punto gris"></span>
                             Inactivo
                         </button>
-
 
                         <button
                             type="button"
@@ -467,7 +485,6 @@
                     </div>
 
                 </div>
-
 
                 <div
                     id="grupoMotivoDescalificacion"
@@ -492,7 +509,6 @@
 
                 </div>
 
-
                 <div class="aviso-equipo">
 
                     <span>
@@ -506,7 +522,6 @@
                     </p>
 
                 </div>
-
 
                 <div class="modal-acciones">
 
@@ -534,7 +549,6 @@
 
     </div>
 
-
     <div
         id="toast"
         class="toast oculto"
@@ -557,7 +571,6 @@
         </div>
 
     </div>
-
 
     <script
         type="module"

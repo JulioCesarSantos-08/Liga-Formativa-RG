@@ -1230,6 +1230,147 @@
     </div>
 
     <div
+        id="modalCurpExistente"
+        class="modal-overlay oculto"
+    >
+
+        <div
+            class="modal-jugador modal-curp-existente"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="curpExistenteTitulo"
+        >
+
+            <div class="modal-header">
+
+                <div>
+
+                    <span class="modal-mini">
+                        JUGADOR REGISTRADO
+                    </span>
+
+                    <h2 id="curpExistenteTitulo">
+                        Este jugador ya está registrado
+                    </h2>
+
+                </div>
+
+                <button
+                    type="button"
+                    id="btnCerrarCurpExistente"
+                    class="btn-cerrar-modal"
+                    aria-label="Cerrar"
+                >
+                    ×
+                </button>
+
+            </div>
+
+            <div class="curp-existente-aviso">
+
+                <div class="curp-existente-icono">
+                    !
+                </div>
+
+                <div>
+
+                    <strong>
+                        No es necesario registrar nuevamente al jugador
+                    </strong>
+
+                    <p>
+                        La CURP ingresada ya pertenece a un jugador de la liga.
+                        Sus datos, fotografía y documentos ya se encuentran registrados.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="curp-existente-jugador">
+
+                <div
+                    id="curpExistenteFoto"
+                    class="curp-existente-foto"
+                >
+                    J
+                </div>
+
+                <div class="curp-existente-info">
+
+                    <span>
+                        JUGADOR ENCONTRADO
+                    </span>
+
+                    <strong id="curpExistenteNombre">
+                        Jugador
+                    </strong>
+
+                    <div class="curp-existente-datos">
+
+                        <div>
+                            <small>Equipo actual</small>
+                            <b id="curpExistenteEquipo">—</b>
+                        </div>
+
+                        <div>
+                            <small>Categoría</small>
+                            <b id="curpExistenteCategoria">—</b>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="curp-existente-refuerzo">
+
+                <span class="curp-existente-refuerzo-icono">
+                    ⇄
+                </span>
+
+                <div>
+
+                    <strong>
+                        ¿Quieres utilizarlo como reforzamiento?
+                    </strong>
+
+                    <p>
+                        Si el jugador cumple las reglas de categoría y pertenece
+                        al mismo club o comunidad, puedes solicitar su reforzamiento
+                        sin crear otro registro.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="modal-acciones">
+
+                <button
+                    type="button"
+                    id="btnCancelarCurpExistente"
+                    class="btn-secundario"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    type="button"
+                    id="btnIrReforzamiento"
+                    class="btn-principal"
+                >
+                    Ir a Reforzamiento
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div
         id="modalLimite"
         class="modal-overlay oculto"
     >

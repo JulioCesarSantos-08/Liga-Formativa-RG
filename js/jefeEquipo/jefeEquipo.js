@@ -104,6 +104,15 @@ const limiteTitulo = document.getElementById("limiteTitulo");
 const limiteTexto = document.getElementById("limiteTexto");
 const btnCerrarLimite = document.getElementById("btnCerrarLimite");
 
+const modalCurpExistente = document.getElementById("modalCurpExistente");
+const curpExistenteFoto = document.getElementById("curpExistenteFoto");
+const curpExistenteNombre = document.getElementById("curpExistenteNombre");
+const curpExistenteEquipo = document.getElementById("curpExistenteEquipo");
+const curpExistenteCategoria = document.getElementById("curpExistenteCategoria");
+const btnCerrarCurpExistente = document.getElementById("btnCerrarCurpExistente");
+const btnCancelarCurpExistente = document.getElementById("btnCancelarCurpExistente");
+const btnIrReforzamiento = document.getElementById("btnIrReforzamiento");
+
 const toast = document.getElementById("toast");
 const toastIcono = document.getElementById("toastIcono");
 const toastTitulo = document.getElementById("toastTitulo");
@@ -252,19 +261,49 @@ function activarEventos() {
     );
 
 
-    curpJugador?.addEventListener(
-        "input",
-        () => {
+curpJugador?.addEventListener(
+    "input",
+    () => {
 
-            curpJugador.value =
-                curpJugador.value
-                    .toUpperCase()
-                    .replace(/[^A-Z0-9]/g, "")
-                    .slice(0, 18);
+        curpJugador.value =
+            curpJugador.value
+                .toUpperCase()
+                .replace(/[^A-Z0-9]/g, "")
+                .slice(0, 18);
 
+        if (
+            curpJugador.value.length !== 18 ||
+            jugadorSeleccionado
+        ) {
+            return;
         }
-    );
 
+        const curp =
+            curpJugador.value
+                .trim()
+                .toUpperCase();
+
+        const jugadorMismaCurp =
+            todosLosJugadores.find(
+                jugador =>
+                    String(
+                        jugador.curp || ""
+                    )
+                        .trim()
+                        .toUpperCase() === curp &&
+                    jugador.activo !== false
+            );
+
+        if (!jugadorMismaCurp) {
+            return;
+        }
+
+        mostrarJugadorYaRegistrado(
+            jugadorMismaCurp
+        );
+
+    }
+);
 
     fotoJugador?.addEventListener(
         "change",
@@ -277,6 +316,35 @@ function activarEventos() {
         manejarArchivoCurp
     );
 
+    btnCerrarCurpExistente?.addEventListener(
+    "click",
+    cerrarModalCurpExistente
+);
+
+btnCancelarCurpExistente?.addEventListener(
+    "click",
+    cerrarModalCurpExistente
+);
+
+modalCurpExistente?.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target === modalCurpExistente
+        ) {
+
+            cerrarModalCurpExistente();
+
+        }
+
+    }
+);
+
+btnIrReforzamiento?.addEventListener(
+    "click",
+    abrirReforzamientoDesdeCurp
+);
 
     btnCerrarLimite?.addEventListener(
         "click",
@@ -3655,63 +3723,6 @@ async function confirmarBajaJornada5(
 
 }
 
-
-function mostrarJugadorYaRegistrado(
-    jugador
-) {
-
-    const nombre =
-        jugador.nombre ||
-        jugador.nombreCompleto ||
-        "Este jugador";
-
-
-    const equipo =
-        jugador.equipoNombre ||
-        "otro equipo";
-
-
-    const categoria =
-        jugador.categoriaNombre ||
-        "otra categoría";
-
-
-    const irReforzamiento =
-        window.confirm(
-            `${nombre} ya está registrado.\n\nEquipo actual: ${equipo}\nCategoría: ${categoria}\n\nNo es necesario volver a cargar sus datos, fotografía o documentos.\n\nSi deseas utilizarlo en otra categoría permitida, debes hacerlo mediante Reforzamiento.\n\n¿Quieres ir a Reforzamiento?`
-        );
-
-
-    if (!irReforzamiento) {
-        return;
-    }
-
-
-    cerrarModalJugador();
-
-
-    if (
-        window.LigaReforzamientos &&
-        typeof window.LigaReforzamientos.abrir ===
-            "function"
-    ) {
-
-        window.LigaReforzamientos.abrir();
-
-        return;
-
-    }
-
-
-    mostrarToast(
-        "error",
-        "Reforzamientos no disponibles",
-        "No pudimos abrir el módulo de reforzamientos. Recarga la página e inténtalo nuevamente."
-    );
-
-}
-
-
 async function actualizarTotalJugadoresEquipo() {
 
     if (!equipoActual) {
@@ -4540,5 +4551,108 @@ function mostrarToast(
             },
             3500
         );
+
+}
+
+function mostrarJugadorYaRegistrado(jugador) {
+
+    if (
+        !jugador ||
+        !modalCurpExistente
+    ) {
+        return;
+    }
+
+    const nombre =
+        jugador.nombre ||
+        jugador.nombreCompleto ||
+        "Jugador registrado";
+
+    const equipo =
+        jugador.equipoNombre ||
+        "Equipo no disponible";
+
+    const categoria =
+        jugador.categoriaNombre ||
+        "Categoría no disponible";
+
+    curpExistenteNombre.textContent =
+        nombre;
+
+    curpExistenteEquipo.textContent =
+        equipo;
+
+    curpExistenteCategoria.textContent =
+        categoria;
+
+    if (
+        jugador.fotoUrl
+    ) {
+
+        curpExistenteFoto.innerHTML = `
+            <img
+                src="${escaparHTML(jugador.fotoUrl)}"
+                alt="${escaparHTML(nombre)}"
+            >
+        `;
+
+    } else {
+
+        curpExistenteFoto.innerHTML =
+            "";
+
+        curpExistenteFoto.textContent =
+            obtenerInicial(nombre);
+
+    }
+
+    modalJugador?.classList.add(
+        "oculto"
+    );
+
+    modalCurpExistente.classList.remove(
+        "oculto"
+    );
+
+    document.body.style.overflow =
+        "hidden";
+
+}
+
+
+function cerrarModalCurpExistente() {
+
+    modalCurpExistente?.classList.add(
+        "oculto"
+    );
+
+    document.body.style.overflow =
+        "";
+
+}
+
+
+function abrirReforzamientoDesdeCurp() {
+
+    cerrarModalCurpExistente();
+
+    cerrarModalJugador();
+
+    if (
+        window.LigaReforzamientos &&
+        typeof window.LigaReforzamientos.abrir === "function"
+    ) {
+
+        window.LigaReforzamientos.abrir();
+
+        return;
+
+    }
+
+    mostrarToast(
+        "error",
+        "Reforzamiento no disponible",
+        "No pudimos abrir el módulo de reforzamientos. Actualiza la página e inténtalo nuevamente."
+    );
 
 }

@@ -111,6 +111,15 @@ if (usuarioPrestamos) {
     }
 }
 
+window.LigaReforzamientos =
+    window.LigaReforzamientos ||
+    {};
+
+window.LigaReforzamientos.abrir =
+    async () => {
+        await abrirModalPrestamo();
+    };
+
 async function iniciarModuloPrestamos() {
     if (iniciadoPrestamos) {
         return;

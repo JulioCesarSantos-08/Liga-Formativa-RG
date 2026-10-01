@@ -275,7 +275,7 @@ curpJugador?.addEventListener(
             curpJugador.value.length !== 18 ||
             jugadorSeleccionado
         ) {
-            return;
+            return; m
         }
 
         const curp =

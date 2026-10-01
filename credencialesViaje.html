@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#06152b"
+    >
+
+    <title>
+        Credenciales de Viaje | Liga Formativa Río Grande
+    </title>
+
+    <link
+        rel="icon"
+        href="imagenes/logo.png"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/credencialesViaje.css"
+    >
+
+</head>
+
+<body>
+
+    <div
+        id="estadoCarga"
+        class="pantalla-carga"
+    >
+
+        <div class="carga-contenido">
+
+            <img
+                src="imagenes/logo.png"
+                alt="Liga Formativa Río Grande"
+            >
+
+            <div class="carga-spinner"></div>
+
+            <strong>
+                Preparando credenciales
+            </strong>
+
+            <span>
+                Consultando información del equipo...
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <header class="topbar">
+
+        <div class="topbar-contenido">
+
+            <button
+                type="button"
+                id="btnVolver"
+                class="btn-volver"
+                aria-label="Volver"
+            >
+                ←
+            </button>
+
+            <div class="topbar-identidad">
+
+                <img
+                    src="imagenes/logo.png"
+                    alt="Liga Formativa Río Grande"
+                >
+
+                <div>
+
+                    <span>
+                        LIGA FORMATIVA RÍO GRANDE
+                    </span>
+
+                    <strong>
+                        Credenciales de viaje
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <div class="topbar-espacio"></div>
+
+        </div>
+
+    </header>
+
+
+    <main
+        id="contenidoPrincipal"
+        class="pagina oculto"
+    >
+
+        <section class="encabezado-modulo">
+
+            <div class="encabezado-texto">
+
+                <span class="etiqueta-modulo">
+                    REPRESENTACIÓN DEPORTIVA
+                </span>
+
+                <h1>
+                    Credenciales de viaje
+                </h1>
+
+                <p>
+                    Identificación para jugadores que participan
+                    representando a su club y a Río Grande, Oaxaca.
+                </p>
+
+            </div>
+
+            <div class="encabezado-club">
+
+                <div class="encabezado-club-logo">
+
+                    <img
+                        id="encabezadoLogoEquipo"
+                        src="imagenes/logochacal.png"
+                        alt="Club Deportivo Chacales"
+                    >
+
+                </div>
+
+                <div>
+
+                    <span>
+                        CLUB
+                    </span>
+
+                    <strong id="encabezadoNombreEquipo">
+                        Chacales
+                    </strong>
+
+                    <small id="encabezadoCategoriaEquipo">
+                        Cargando categoría...
+                    </small>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="panel-seleccion">
+
+            <div class="panel-titulo">
+
+                <div>
+
+                    <span>
+                        PLANTILLA
+                    </span>
+
+                    <h2>
+                        Selecciona un jugador
+                    </h2>
+
+                </div>
+
+                <div
+                    id="contadorJugadores"
+                    class="contador-jugadores"
+                >
+                    0 jugadores
+                </div>
+
+            </div>
+
+
+            <div class="buscador-jugadores">
+
+                <span class="buscador-icono">
+                    ⌕
+                </span>
+
+                <input
+                    type="search"
+                    id="buscarJugador"
+                    placeholder="Buscar por nombre o CURP..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <div
+                id="listaJugadores"
+                class="lista-jugadores"
+            ></div>
+
+
+            <div
+                id="sinJugadores"
+                class="estado-vacio oculto"
+            >
+
+                <strong>
+                    No encontramos jugadores
+                </strong>
+
+                <p>
+                    No hay jugadores disponibles con los filtros actuales.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <section
+            id="panelCredencial"
+            class="panel-credencial oculto"
+        >
+
+            <div class="panel-titulo">
+
+                <div>
+
+                    <span>
+                        CREDENCIAL
+                    </span>
+
+                    <h2 id="tituloJugadorSeleccionado">
+                        Vista previa
+                    </h2>
+
+                </div>
+
+                <span
+                    id="estadoCredencial"
+                    class="estado-credencial pendiente"
+                >
+                    REVISANDO
+                </span>
+
+            </div>
+
+
+            <div
+                id="avisoDireccion"
+                class="aviso-direccion oculto"
+            >
+
+                <div class="aviso-direccion-icono">
+                    !
+                </div>
+
+                <div class="aviso-direccion-texto">
+
+                    <strong>
+                        Este jugador aún no tiene registrada su dirección
+                    </strong>
+
+                    <p>
+                        Para generar su credencial de viaje debes registrar
+                        primero su dirección.
+                    </p>
+
+                </div>
+
+                <button
+                    type="button"
+                    id="btnRegistrarDireccion"
+                    class="btn-direccion"
+                >
+                    Registrar dirección
+                </button>
+
+            </div>
+
+
+            <div class="credenciales-area">
+
+                <div class="credencial-columna">
+
+                    <span class="lado-titulo">
+                        FRENTE
+                    </span>
+
+                    <article
+                        id="credencialFrente"
+                        class="credencial credencial-frente"
+                    >
+
+                        <div class="credencial-textura"></div>
+
+                        <div class="franja-roja-superior"></div>
+
+                        <div class="credencial-frente-contenido">
+
+                            <div class="marca-superior">
+
+                                <img
+                                    src="imagenes/logomarcachacal.png"
+                                    alt="Chacales"
+                                    class="marca-chacal"
+                                >
+
+                                <div class="marca-superior-texto">
+
+                                    <span>
+                                        CLUB DEPORTIVO
+                                    </span>
+
+                                    <strong>
+                                        CHACALES
+                                    </strong>
+
+                                    <small>
+                                        RÍO GRANDE, OAXACA
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="frente-centro">
+
+                                <div class="foto-marco">
+
+                                    <div
+                                        id="credencialFoto"
+                                        class="foto-jugador"
+                                    >
+                                        J
+                                    </div>
+
+                                </div>
+
+
+                                <div class="frente-identidad">
+
+                                    <div class="escudo-equipo">
+
+                                        <img
+                                            src="imagenes/logochacal.png"
+                                            alt="Club Deportivo Chacales"
+                                        >
+
+                                    </div>
+
+
+                                    <div class="identidad-tipo">
+
+                                        <span>
+                                            JUGADOR
+                                        </span>
+
+                                        <strong id="credencialCategoria">
+                                            CATEGORÍA
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="datos-credencial">
+
+                                <div class="dato-credencial">
+
+                                    <span>
+                                        NOMBRE
+                                    </span>
+
+                                    <strong id="credencialNombre">
+                                        NOMBRE DEL JUGADOR
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="dato-credencial">
+
+                                    <span>
+                                        CURP
+                                    </span>
+
+                                    <strong id="credencialCurp">
+                                        —
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="dato-credencial dato-direccion">
+
+                                    <span>
+                                        DIRECCIÓN
+                                    </span>
+
+                                    <strong id="credencialDireccion">
+                                        PENDIENTE DE REGISTRO
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="frente-pie">
+
+                                <div>
+
+                                    <span>
+                                        CREDENCIAL DE REPRESENTACIÓN
+                                    </span>
+
+                                    <strong id="credencialTemporada">
+                                        TEMPORADA
+                                    </strong>
+
+                                </div>
+
+                                <img
+                                    src="imagenes/logo.png"
+                                    alt="Liga Formativa Río Grande"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+
+                <div class="credencial-columna">
+
+                    <span class="lado-titulo">
+                        REVERSO
+                    </span>
+
+                    <article
+                        id="credencialReverso"
+                        class="credencial credencial-reverso"
+                    >
+
+                        <div class="credencial-textura"></div>
+
+                        <div class="reverso-contenido">
+
+                            <div class="reverso-marca">
+
+                                <img
+                                    src="imagenes/logomarcachacal.png"
+                                    alt="Club Deportivo Chacales"
+                                >
+
+                            </div>
+
+
+                            <div class="reverso-titulo">
+
+                                <span>
+                                    JUGADOR REPRESENTATIVO
+                                </span>
+
+                                <strong>
+                                    DE RÍO GRANDE, OAXACA
+                                </strong>
+
+                            </div>
+
+
+                            <p class="reverso-descripcion">
+                                El portador de esta credencial forma parte
+                                de un club deportivo registrado y participa
+                                en actividades deportivas representando
+                                a nuestra comunidad.
+                            </p>
+
+
+                            <div class="reverso-valores">
+
+                                <div>
+
+                                    <span class="valor-icono">
+                                        ●●●
+                                    </span>
+
+                                    <strong>
+                                        DEPORTE
+                                    </strong>
+
+                                    <small>
+                                        QUE UNE
+                                    </small>
+
+                                </div>
+
+                                <div>
+
+                                    <span class="valor-icono">
+                                        ◇
+                                    </span>
+
+                                    <strong>
+                                        COMUNIDAD
+                                    </strong>
+
+                                    <small>
+                                        QUE APOYA
+                                    </small>
+
+                                </div>
+
+                                <div>
+
+                                    <span class="valor-icono">
+                                        ★
+                                    </span>
+
+                                    <strong>
+                                        GRANDES
+                                    </strong>
+
+                                    <small>
+                                        SUEÑOS
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="reverso-verificacion">
+
+                                <div
+                                    id="credencialQr"
+                                    class="credencial-qr"
+                                >
+
+                                    <span>
+                                        QR
+                                    </span>
+
+                                </div>
+
+
+                                <div class="verificacion-texto">
+
+                                    <span>
+                                        VERIFICACIÓN DE JUGADOR
+                                    </span>
+
+                                    <p>
+                                        Escanea el código para comprobar
+                                        que el jugador se encuentra
+                                        registrado en el sistema.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="reverso-coordinador">
+
+                                <div class="linea-firma"></div>
+
+                                <strong>
+                                    L.E.F. Eleazar Herrera Cruz
+                                </strong>
+
+                                <span>
+                                    Coordinador General del Club
+                                </span>
+
+                            </div>
+
+
+                            <div class="reverso-pie">
+
+                                <div class="reverso-rio-grande">
+                                    RÍO GRANDE
+                                </div>
+
+                                <img
+                                    src="imagenes/logochacal.png"
+                                    alt="Club Deportivo Chacales"
+                                >
+
+                            </div>
+
+
+                            <small class="leyenda-identificacion">
+                                CREDENCIAL DE REPRESENTACIÓN DEPORTIVA
+                            </small>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+
+            <div class="acciones-credencial">
+
+                <button
+                    type="button"
+                    id="btnCambiarJugador"
+                    class="btn-secundario"
+                >
+                    Cambiar jugador
+                </button>
+
+                <button
+                    type="button"
+                    id="btnImprimirCredencial"
+                    class="btn-principal"
+                    disabled
+                >
+                    Imprimir credencial
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <div
+        id="modalDireccion"
+        class="modal-overlay oculto"
+    >
+
+        <div
+            class="modal-direccion"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modalDireccionTitulo"
+        >
+
+            <div class="modal-header">
+
+                <div>
+
+                    <span>
+                        DATOS DEL JUGADOR
+                    </span>
+
+                    <h2 id="modalDireccionTitulo">
+                        Registrar dirección
+                    </h2>
+
+                </div>
+
+                <button
+                    type="button"
+                    id="btnCerrarDireccion"
+                    class="btn-cerrar-modal"
+                    aria-label="Cerrar"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="modal-jugador-resumen">
+
+                <div
+                    id="direccionJugadorFoto"
+                    class="direccion-jugador-foto"
+                >
+                    J
+                </div>
+
+                <div>
+
+                    <span>
+                        JUGADOR
+                    </span>
+
+                    <strong id="direccionJugadorNombre">
+                        Jugador
+                    </strong>
+
+                    <small id="direccionJugadorCurp">
+                        —
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <form id="formDireccion">
+
+                <div class="campo-formulario">
+
+                    <label for="direccionJugador">
+                        Dirección completa
+                    </label>
+
+                    <textarea
+                        id="direccionJugador"
+                        rows="4"
+                        maxlength="250"
+                        placeholder="Ej. Calle, número, colonia, localidad, municipio, Oaxaca"
+                        required
+                    ></textarea>
+
+                    <small>
+                        Esta información aparecerá en la credencial de viaje.
+                    </small>
+
+                </div>
+
+
+                <div class="modal-acciones">
+
+                    <button
+                        type="button"
+                        id="btnCancelarDireccion"
+                        class="btn-secundario"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        id="btnGuardarDireccion"
+                        class="btn-principal"
+                    >
+                        Guardar dirección
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="toast"
+        class="toast oculto"
+    >
+
+        <div
+            id="toastIcono"
+            class="toast-icono"
+        >
+            ✓
+        </div>
+
+        <div>
+
+            <strong id="toastTitulo">
+                Listo
+            </strong>
+
+            <span id="toastTexto">
+                Operación realizada.
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <script
+        type="module"
+        src="js/jefeEquipo/credencialesViaje.js"
+    ></script>
+
+</body>
+
+</html>

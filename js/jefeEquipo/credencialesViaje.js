@@ -1187,7 +1187,7 @@ function construirUrlVerificacion(
 ) {
 
     return new URL(
-        `verificarJugador.html?token=${encodeURIComponent(
+        `verificarJugador.html?v=${encodeURIComponent(
             token
         )}`,
         window.location.origin

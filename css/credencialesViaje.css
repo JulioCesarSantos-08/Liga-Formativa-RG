@@ -668,14 +668,30 @@ img {
 .credencial-textura {
     position: absolute;
     inset: 0;
-    opacity: .32;
+    z-index: 0;
     pointer-events: none;
     background:
-        repeating-linear-gradient(
-            160deg,
-            transparent 0 15px,
-            rgba(255, 255, 255, .025) 16px,
-            transparent 18px
+        linear-gradient(
+            180deg,
+            rgba(2, 8, 20, .20),
+            rgba(2, 11, 27, .46)
+        ),
+        url("../imagenes/mascotaChacalesFondo.png")
+        center center / cover
+        no-repeat;
+    opacity: .48;
+}
+
+.credencial-textura::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(2, 11, 27, .12),
+            transparent 42%,
+            rgba(2, 11, 27, .18)
         );
 }
 
@@ -1076,9 +1092,27 @@ img {
 }
 
 .reverso-coordinador {
+    position: relative;
     width: 82%;
     margin-top: auto;
     padding-top: 5%;
+}
+
+.firma-presidente {
+    position: absolute;
+    left: 50%;
+    bottom: 27px;
+    width: 64%;
+    max-width: 165px;
+    height: 46px;
+    transform: translateX(-50%);
+    object-fit: contain;
+    mix-blend-mode: screen;
+    filter:
+        grayscale(1)
+        brightness(0)
+        invert(1);
+    pointer-events: none;
 }
 
 .linea-firma {

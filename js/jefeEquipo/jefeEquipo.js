@@ -87,6 +87,11 @@ const archivoCurpNombre = document.getElementById("archivoCurpNombre");
 const observacionesJugador = document.getElementById("observacionesJugador");
 const btnGuardarJugador = document.getElementById("btnGuardarJugador");
 
+const avisoSolicitudEdicion = document.getElementById("avisoSolicitudEdicion");
+const grupoMotivoEdicion = document.getElementById("grupoMotivoEdicion");
+const motivoEdicion = document.getElementById("motivoEdicion");
+const avisoJugadorTexto = document.getElementById("avisoJugadorTexto");
+
 const modalJornada5 = document.getElementById("modalJornada5");
 const btnCerrarJornada5 = document.getElementById("btnCerrarJornada5");
 
@@ -2398,8 +2403,26 @@ function abrirEditarJugador(
         "Editar jugador";
 
 
-    btnGuardarJugador.textContent =
-        "Guardar cambios";
+btnGuardarJugador.textContent =
+    "Enviar solicitud";
+
+avisoSolicitudEdicion?.classList.remove(
+    "oculto"
+);
+
+grupoMotivoEdicion?.classList.remove(
+    "oculto"
+);
+
+if (motivoEdicion) {
+    motivoEdicion.required = true;
+    motivoEdicion.value = "";
+}
+
+if (avisoJugadorTexto) {
+    avisoJugadorTexto.textContent =
+        "Los cambios no modificarán al jugador inmediatamente. La liga deberá aprobar esta solicitud.";
+}
 
 
     nombreJugador.value =
@@ -2683,14 +2706,14 @@ async function guardarJugador(
         (
             !Number.isInteger(numero) ||
             numero < 0 ||
-            numero > 99
+            numero > 250
         )
     ) {
 
         mostrarToast(
             "error",
             "Dorsal incorrecto",
-            "El número debe estar entre 0 y 99."
+            "El número debe estar entre 0 y 250."
         );
 
         return;
@@ -2923,51 +2946,193 @@ async function guardarJugador(
         };
 
 
-        if (
-            jugadorSeleccionado
-        ) {
+if (
+    jugadorSeleccionado
+) {
 
-            await updateDoc(
-                doc(
-                    db,
-                    "jugadores",
-                    jugadorSeleccionado.id
-                ),
-                datos
-            );
+    const motivo =
+        String(
+            motivoEdicion?.value || ""
+        ).trim();
 
+    if (
+        motivo.length < 5
+    ) {
 
-            Object.assign(
-                jugadorSeleccionado,
-                datos
-            );
+        mostrarToast(
+            "error",
+            "Motivo requerido",
+            "Explica brevemente por qué necesitas modificar la información del jugador."
+        );
 
+        motivoEdicion?.focus();
 
-            const global =
-                todosLosJugadores.find(
-                    jugador =>
-                        jugador.id ===
-                        jugadorSeleccionado.id
-                );
+        return;
 
+    }
 
-            if (global) {
+    const solicitudPendiente =
+        await buscarSolicitudEdicionPendiente(
+            jugadorSeleccionado.id
+        );
 
-                Object.assign(
-                    global,
-                    datos
-                );
+    if (
+        solicitudPendiente
+    ) {
 
-            }
+        mostrarToast(
+            "error",
+            "Solicitud pendiente",
+            "Este jugador ya tiene una solicitud de edición esperando revisión."
+        );
 
+        return;
 
-            mostrarToast(
-                "exito",
-                "Jugador actualizado",
-                "Los cambios fueron guardados correctamente."
-            );
+    }
 
-        } else {
+    btnGuardarJugador.textContent =
+        "Enviando solicitud...";
+
+    await addDoc(
+        collection(
+            db,
+            "solicitudesEdicion"
+        ),
+        {
+            jugadorId:
+                jugadorSeleccionado.id,
+
+            jugadorNombre:
+                jugadorSeleccionado.nombre ||
+                jugadorSeleccionado.nombreCompleto ||
+                nombre,
+
+            equipoId:
+                equipoActual.id,
+
+            equipoNombre:
+                equipoActual.nombre || "",
+
+            categoriaId:
+                equipoActual.categoriaId || null,
+
+            categoriaNombre:
+                equipoActual.categoriaNombre || "",
+
+            solicitadoPorId:
+                usuarioActual?.uid || "",
+
+            solicitadoPorNombre:
+                usuarioActual?.nombre ||
+                usuarioActual?.nombreCompleto ||
+                usuarioActual?.email ||
+                "Jefe de equipo",
+
+            motivo,
+
+            estado:
+                "pendiente",
+
+            datosAnteriores: {
+                nombre:
+                    jugadorSeleccionado.nombre ||
+                    jugadorSeleccionado.nombreCompleto ||
+                    "",
+
+                nombreCompleto:
+                    jugadorSeleccionado.nombreCompleto ||
+                    jugadorSeleccionado.nombre ||
+                    "",
+
+                fechaNacimiento:
+                    jugadorSeleccionado.fechaNacimiento ||
+                    "",
+
+                numero:
+                    jugadorSeleccionado.numero ??
+                    jugadorSeleccionado.dorsal ??
+                    null,
+
+                dorsal:
+                    jugadorSeleccionado.dorsal ??
+                    jugadorSeleccionado.numero ??
+                    null,
+
+                curp:
+                    jugadorSeleccionado.curp ||
+                    "",
+
+                observaciones:
+                    jugadorSeleccionado.observaciones ||
+                    "",
+
+                fotoUrl:
+                    jugadorSeleccionado.fotoUrl ||
+                    null,
+
+                fotoPublicId:
+                    jugadorSeleccionado.fotoPublicId ||
+                    null,
+
+                curpArchivoUrl:
+                    jugadorSeleccionado.curpArchivoUrl ||
+                    null,
+
+                curpArchivoPublicId:
+                    jugadorSeleccionado.curpArchivoPublicId ||
+                    null
+            },
+
+            datosNuevos: {
+                nombre:
+                    datos.nombre,
+
+                nombreCompleto:
+                    datos.nombreCompleto,
+
+                fechaNacimiento:
+                    datos.fechaNacimiento,
+
+                numero:
+                    datos.numero,
+
+                dorsal:
+                    datos.dorsal,
+
+                curp:
+                    datos.curp,
+
+                observaciones:
+                    datos.observaciones,
+
+                fotoUrl:
+                    datos.fotoUrl,
+
+                fotoPublicId:
+                    datos.fotoPublicId,
+
+                curpArchivoUrl:
+                    datos.curpArchivoUrl,
+
+                curpArchivoPublicId:
+                    datos.curpArchivoPublicId
+            },
+
+            creadoEn:
+                serverTimestamp(),
+
+            actualizadoEn:
+                serverTimestamp()
+        }
+    );
+
+    mostrarToast(
+        "exito",
+        "Solicitud enviada",
+        "Los cambios quedaron pendientes de aprobación por la liga."
+    );
+
+} else {
 
             const esJornada5 =
                 modoRegistroJornada5 === true;
@@ -3083,12 +3248,12 @@ async function guardarJugador(
             false;
 
 
-        btnGuardarJugador.textContent =
-            jugadorSeleccionado
-                ? "Guardar cambios"
-                : modoRegistroJornada5
-                    ? "Registrar alta J5"
-                    : "Guardar jugador";
+btnGuardarJugador.textContent =
+    jugadorSeleccionado
+        ? "Enviar solicitud"
+        : modoRegistroJornada5
+            ? "Registrar alta J5"
+            : "Guardar jugador";
 
     }
 
@@ -3718,6 +3883,54 @@ async function confirmarBajaJornada5(
             error?.message ||
             "Ocurrió un problema al actualizar al jugador."
         );
+
+    }
+
+}
+
+async function buscarSolicitudEdicionPendiente(
+    jugadorId
+) {
+
+    try {
+
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "solicitudesEdicion"
+                )
+            );
+
+        return snapshot.docs.some(
+            documento => {
+
+                const solicitud =
+                    documento.data();
+
+                return (
+                    String(
+                        solicitud.jugadorId || ""
+                    ) === String(
+                        jugadorId || ""
+                    ) &&
+                    String(
+                        solicitud.estado || ""
+                    ).toLowerCase() ===
+                        "pendiente"
+                );
+
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Error consultando solicitudes de edición:",
+            error
+        );
+
+        return false;
 
     }
 

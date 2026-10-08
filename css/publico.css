@@ -3950,3 +3950,101 @@ button{
     }
 
 }
+
+
+.info-publica-card[href*="facebook.com"] {
+    border-color: #8db9e8;
+    background: linear-gradient(145deg, #edf5ff, #dcecff);
+}
+
+.info-publica-card[href*="facebook.com"] .info-publica-icono {
+    color: #1877f2;
+    background: #ffffff;
+    border-color: #b8d2f2;
+}
+
+.info-publica-card[href*="facebook.com"] .info-publica-flecha {
+    color: #1877f2;
+}
+
+.grid-info-publica .facebook-proximo {
+    border-color: #d5be83;
+    background: linear-gradient(145deg, #fff8e8, #f5e5be);
+    opacity: .82;
+    cursor:default;
+}
+
+.grid-info-publica .facebook-proximo .info-publica-icono {
+    background: #f5e8c9;
+}
+
+.grid-info-publica .facebook-proximo .info-proximamente {
+    color: #76561e;
+    background: #f1dda7;
+    border-color: #ccb071;
+}
+
+.menu-mas {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.menu-mas-card {
+    max-height: calc(100dvh - 24px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.menu-legal-link[href*="facebook.com"] {
+    border-color: #a4c5e8;
+    background: #e5f0ff;
+}
+
+.menu-legal-link[href*="facebook.com"] > span {
+    background: #d3e5ff;
+}
+
+.menu-legal-link.facebook-deshabilitado {
+    background: #eee1bd;
+    opacity: .7;
+    cursor: default;
+}
+
+@media (min-width: 980px) {
+    .informacion-publica .grid-info-publica {
+        flex-wrap: wrap;
+        row-gap: 8px;
+    }
+
+    .informacion-publica .info-publica-card {
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 520px) {
+    .grid-info-publica {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .info-publica-card {
+        min-width: 0;
+    }
+
+    .info-publica-contenido {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .info-publica-contenido strong,
+    .info-publica-contenido span {
+        overflow-wrap: anywhere;
+    }
+
+    .info-proximamente {
+        flex-shrink: 0;
+    }
+
+    .menu-mas-card {
+        max-height: calc(100dvh - 16px);
+    }
+}

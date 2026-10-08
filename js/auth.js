@@ -1,3 +1,4 @@
+
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
@@ -19,15 +20,11 @@ import {
     db
 } from "./firebase.js";
 
-
 const btnLogin = document.getElementById("btnLogin");
 const btnRegistro = document.getElementById("btnRegistro");
-
 const formLogin = document.getElementById("formLogin");
 const formRegistro = document.getElementById("formRegistro");
-
 const btnGoogle = document.getElementById("btnGoogle");
-
 const mensaje = document.getElementById("mensaje");
 
 const modalNombre = document.getElementById("modalNombre");
@@ -37,11 +34,81 @@ const mensajeNombre = document.getElementById("mensajeNombre");
 const btnGuardarNombre = document.getElementById("btnGuardarNombre");
 
 let usuarioPendiente = null;
-let autenticacionProcesada = false;
+let uidProcesando = null;
+let promesaProcesamiento = null;
 
+function normalizarNombre(valor) {
+    return String(valor || "")
+        .trim()
+        .replace(/\s+/g, " ")
+        .toLocaleUpperCase("es-MX");
+}
+
+function validarNombre(valor) {
+    const nombre = normalizarNombre(valor);
+    const palabras = nombre.split(" ").filter(Boolean);
+
+    if (!nombre) {
+        return {
+            valido: false,
+            nombre,
+            mensaje: "Escribe tu nombre completo."
+        };
+    }
+
+    if (nombre.length < 12) {
+        return {
+            valido: false,
+            nombre,
+            mensaje: "Tu nombre completo debe tener al menos 12 caracteres."
+        };
+    }
+
+    if (palabras.length < 3) {
+        return {
+            valido: false,
+            nombre,
+            mensaje: "Escribe tu nombre completo con al menos 3 palabras."
+        };
+    }
+
+    if (!/^[\p{L}\p{M}]+(?:[ '\-][\p{L}\p{M}]+)*$/u.test(nombre)) {
+        return {
+            valido: false,
+            nombre,
+            mensaje: "El nombre solo puede contener letras, espacios, apóstrofes o guiones."
+        };
+    }
+
+    return {
+        valido: true,
+        nombre,
+        mensaje: ""
+    };
+}
+
+function mostrarMensajeNombre(texto, tipo = "error") {
+    mensajeNombre.textContent = texto;
+
+    mensajeNombre.style.color =
+        tipo === "exito"
+            ? "#067647"
+            : tipo === "normal"
+                ? "#667085"
+                : "#b42318";
+}
+
+function actualizarCampoNombre() {
+    const resultado = validarNombre(nombreCompleto.value);
+
+    nombreCompleto.setCustomValidity(
+        resultado.valido ? "" : resultado.mensaje
+    );
+
+    return resultado;
+}
 
 btnLogin.addEventListener("click", () => {
-
     formLogin.classList.remove("hidden");
     formRegistro.classList.add("hidden");
 
@@ -49,12 +116,9 @@ btnLogin.addEventListener("click", () => {
     btnRegistro.classList.remove("active");
 
     limpiarMensaje();
-
 });
 
-
 btnRegistro.addEventListener("click", () => {
-
     formRegistro.classList.remove("hidden");
     formLogin.classList.add("hidden");
 
@@ -62,12 +126,9 @@ btnRegistro.addEventListener("click", () => {
     btnLogin.classList.remove("active");
 
     limpiarMensaje();
-
 });
 
-
 formLogin.addEventListener("submit", async (event) => {
-
     event.preventDefault();
 
     const email = document
@@ -79,34 +140,22 @@ formLogin.addEventListener("submit", async (event) => {
         .getElementById("loginPassword")
         .value;
 
-    mostrarMensaje(
-        "Iniciando sesión...",
-        "normal"
-    );
+    mostrarMensaje("Iniciando sesión...", "normal");
 
     try {
-
         const credencial = await signInWithEmailAndPassword(
             auth,
             email,
             password
         );
 
-        await procesarUsuario(
-            credencial.user
-        );
-
+        await procesarUsuario(credencial.user);
     } catch (error) {
-
         manejarErrorFirebase(error);
-
     }
-
 });
 
-
 formRegistro.addEventListener("submit", async (event) => {
-
     event.preventDefault();
 
     const email = document
@@ -123,129 +172,86 @@ formRegistro.addEventListener("submit", async (event) => {
         .value;
 
     if (password !== passwordConfirmar) {
-
         mostrarMensaje(
             "Las contraseñas no coinciden.",
             "error"
         );
-
         return;
     }
 
     if (password.length < 6) {
-
         mostrarMensaje(
             "La contraseña debe tener al menos 6 caracteres.",
             "error"
         );
-
         return;
     }
 
-    mostrarMensaje(
-        "Creando tu cuenta...",
-        "normal"
-    );
+    mostrarMensaje("Creando tu cuenta...", "normal");
 
     try {
-
         const credencial = await createUserWithEmailAndPassword(
             auth,
             email,
             password
         );
 
-        usuarioPendiente = credencial.user;
-
-        limpiarMensaje();
-
-        abrirModalNombre(
-            credencial.user.displayName || ""
-        );
-
+        await procesarUsuario(credencial.user);
     } catch (error) {
-
         manejarErrorFirebase(error);
-
     }
-
 });
 
-
 btnGoogle.addEventListener("click", async () => {
-
     const provider = new GoogleAuthProvider();
 
     provider.setCustomParameters({
         prompt: "select_account"
     });
 
-    mostrarMensaje(
-        "Conectando con Google...",
-        "normal"
-    );
+    mostrarMensaje("Conectando con Google...", "normal");
 
     try {
-
         const resultado = await signInWithPopup(
             auth,
             provider
         );
 
-        await procesarUsuario(
-            resultado.user
-        );
-
+        await procesarUsuario(resultado.user);
     } catch (error) {
-
         manejarErrorFirebase(error);
-
     }
-
 });
 
-
 formNombre.addEventListener("submit", async (event) => {
-
     event.preventDefault();
 
     if (!usuarioPendiente) {
-
-        mensajeNombre.textContent =
-            "No pudimos identificar tu sesión.";
-
-        mensajeNombre.style.color =
-            "#b42318";
-
+        mostrarMensajeNombre(
+            "No pudimos identificar tu sesión."
+        );
         return;
     }
 
-    const nombre = nombreCompleto
-        .value
-        .trim()
-        .replace(/\s+/g, " ");
+    const resultado = actualizarCampoNombre();
 
-    if (nombre.length < 3) {
+    nombreCompleto.value = resultado.nombre;
 
-        mensajeNombre.textContent =
-            "Escribe tu nombre completo.";
-
-        mensajeNombre.style.color =
-            "#b42318";
-
+    if (!resultado.valido) {
+        mostrarMensajeNombre(resultado.mensaje);
+        nombreCompleto.reportValidity();
+        nombreCompleto.focus();
         return;
     }
 
     bloquearBotonNombre(true);
 
-    mensajeNombre.textContent =
-        "Guardando información...";
-
-    mensajeNombre.style.color =
-        "#667085";
+    mostrarMensajeNombre(
+        "Guardando información...",
+        "normal"
+    );
 
     try {
-
         const referenciaUsuario = doc(
             db,
             "usuarios",
@@ -256,7 +262,7 @@ formNombre.addEventListener("submit", async (event) => {
             referenciaUsuario,
             {
                 uid: usuarioPendiente.uid,
-                nombre: nombre,
+                nombre: resultado.nombre,
                 email: usuarioPendiente.email || "",
                 rol: "publico",
                 activo: true,
@@ -264,43 +270,45 @@ formNombre.addEventListener("submit", async (event) => {
             }
         );
 
-        mensajeNombre.textContent =
-            "Registro completado.";
-
-        mensajeNombre.style.color =
-            "#067647";
+        mostrarMensajeNombre(
+            "Registro completado correctamente.",
+            "exito"
+        );
 
         setTimeout(() => {
-
-            redirigirPorRol(
-                "publico"
-            );
-
+            redirigirPorRol("publico");
         }, 500);
-
     } catch (error) {
-
         console.error(error);
 
-        mensajeNombre.textContent =
-            "No pudimos guardar tu información. Intenta nuevamente.";
-
-        mensajeNombre.style.color =
-            "#b42318";
+        mostrarMensajeNombre(
+            "No pudimos guardar tu información. Intenta nuevamente."
+        );
 
         bloquearBotonNombre(false);
-
     }
-
 });
 
-
-async function procesarUsuario(usuario) {
-
+function procesarUsuario(usuario) {
     if (!usuario) {
-        return;
+        return Promise.resolve();
     }
 
+    if (
+        uidProcesando === usuario.uid &&
+        promesaProcesamiento
+    ) {
+        return promesaProcesamiento;
+    }
+
+    uidProcesando = usuario.uid;
+
+    promesaProcesamiento = comprobarUsuario(usuario);
+
+    return promesaProcesamiento;
+}
+
+async function comprobarUsuario(usuario) {
     const referenciaUsuario = doc(
         db,
         "usuarios",
@@ -308,13 +316,9 @@ async function procesarUsuario(usuario) {
     );
 
     try {
-
-        const documento = await getDoc(
-            referenciaUsuario
-        );
+        const documento = await getDoc(referenciaUsuario);
 
         if (!documento.exists()) {
-
             usuarioPendiente = usuario;
 
             limpiarMensaje();
@@ -329,7 +333,6 @@ async function procesarUsuario(usuario) {
         const datos = documento.data();
 
         if (datos.activo === false) {
-
             await signOut(auth);
 
             mostrarMensaje(
@@ -343,225 +346,150 @@ async function procesarUsuario(usuario) {
         const rol = datos.rol || "publico";
 
         redirigirPorRol(rol);
-
     } catch (error) {
-
         console.error(error);
 
         mostrarMensaje(
             "No pudimos verificar tu información.",
             "error"
         );
-
     }
-
 }
 
-
 function redirigirPorRol(rol) {
-
     switch (rol) {
-
         case "admin":
-
-            window.location.href =
-                "admin.html";
-
+            window.location.href = "admin.html";
             break;
 
         case "arbitro":
-
-            window.location.href =
-                "arbitro.html";
-
+            window.location.href = "arbitro.html";
             break;
 
         case "jefeEquipo":
-
-            window.location.href =
-                "jefeEquipo.html";
-
+            window.location.href = "jefeEquipo.html";
             break;
 
         case "publico":
-
         default:
-
-            window.location.href =
-                "publico.html";
-
+            window.location.href = "publico.html";
             break;
     }
-
 }
-
 
 function abrirModalNombre(nombreGoogle = "") {
-
     modalNombre.classList.remove("hidden");
 
-    document.body.style.overflow =
-        "hidden";
+    document.body.style.overflow = "hidden";
 
-    nombreCompleto.value =
-        nombreGoogle.trim();
+    nombreCompleto.value = normalizarNombre(nombreGoogle);
+
+    nombreCompleto.setCustomValidity("");
+
+    mensajeNombre.textContent = "";
+
+    bloquearBotonNombre(false);
 
     setTimeout(() => {
-
         nombreCompleto.focus();
-
         nombreCompleto.select();
-
     }, 100);
-
 }
-
 
 function bloquearBotonNombre(bloquear) {
+    btnGuardarNombre.disabled = bloquear;
 
-    btnGuardarNombre.disabled =
-        bloquear;
+    const textoBoton = btnGuardarNombre.querySelector("span");
 
-    btnGuardarNombre.textContent =
-        bloquear
+    if (textoBoton) {
+        textoBoton.textContent = bloquear
             ? "Guardando..."
             : "Guardar y continuar";
-
+    } else {
+        btnGuardarNombre.textContent = bloquear
+            ? "Guardando..."
+            : "Guardar y continuar";
+    }
 }
 
-
-function mostrarMensaje(texto, tipo) {
-
+function mostrarMensaje(texto, tipo = "normal") {
     mensaje.textContent = texto;
 
     if (tipo === "error") {
-
-        mensaje.style.color =
-            "#b42318";
-
+        mensaje.style.color = "#b42318";
         return;
     }
 
     if (tipo === "exito") {
-
-        mensaje.style.color =
-            "#067647";
-
+        mensaje.style.color = "#067647";
         return;
     }
 
-    mensaje.style.color =
-        "#667085";
-
+    mensaje.style.color = "#667085";
 }
-
 
 function limpiarMensaje() {
-
     mensaje.textContent = "";
     mensajeNombre.textContent = "";
-
 }
 
-
 function manejarErrorFirebase(error) {
-
     console.error(error);
 
-    let texto =
-        "Ocurrió un error. Intenta nuevamente.";
+    let texto = "Ocurrió un error. Intenta nuevamente.";
 
     switch (error.code) {
-
         case "auth/invalid-credential":
-
-            texto =
-                "Correo o contraseña incorrectos.";
-
+            texto = "Correo o contraseña incorrectos.";
             break;
 
         case "auth/user-not-found":
-
-            texto =
-                "No existe una cuenta con este correo.";
-
+            texto = "No existe una cuenta con este correo.";
             break;
 
         case "auth/wrong-password":
-
-            texto =
-                "La contraseña es incorrecta.";
-
+            texto = "La contraseña es incorrecta.";
             break;
 
         case "auth/email-already-in-use":
-
-            texto =
-                "Ya existe una cuenta registrada con este correo.";
-
+            texto = "Ya existe una cuenta registrada con este correo.";
             break;
 
         case "auth/invalid-email":
-
-            texto =
-                "El correo electrónico no es válido.";
-
+            texto = "El correo electrónico no es válido.";
             break;
 
         case "auth/weak-password":
-
-            texto =
-                "La contraseña es demasiado débil.";
-
+            texto = "La contraseña es demasiado débil.";
             break;
 
         case "auth/popup-closed-by-user":
-
-            texto =
-                "Se cerró la ventana de Google antes de completar el acceso.";
-
+            texto = "Se cerró la ventana de Google antes de completar el acceso.";
             break;
 
         case "auth/popup-blocked":
-
-            texto =
-                "El navegador bloqueó la ventana de Google.";
-
+            texto = "El navegador bloqueó la ventana de Google.";
             break;
 
         case "auth/network-request-failed":
+            texto = "Revisa tu conexión a internet.";
+            break;
 
-            texto =
-                "Revisa tu conexión a internet.";
-
+        case "permission-denied":
+            texto = "No tienes permisos para guardar esta información.";
             break;
     }
 
-    mostrarMensaje(
-        texto,
-        "error"
-    );
-
+    mostrarMensaje(texto, "error");
 }
 
-
-onAuthStateChanged(
-    auth,
-    async (usuario) => {
-
-        if (!usuario) {
-            return;
-        }
-
-        if (autenticacionProcesada) {
-            return;
-        }
-
-        autenticacionProcesada = true;
-
-        await procesarUsuario(
-            usuario
-        );
-
+onAuthStateChanged(auth, async (usuario) => {
+    if (!usuario) {
+        usuarioPendiente = null;
+        uidProcesando = null;
+        promesaProcesamiento = null;
+        return;
     }
-);
+
+    await procesarUsuario(usuario);
+});

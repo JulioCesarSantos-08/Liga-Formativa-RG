@@ -21,7 +21,7 @@ if (!document.getElementById("mdDialogoDirectiva")) {
             destacado: true
         },
         {
-            nombre: "Chávez Ramírez Domingo Damian",
+            nombre: "DOMINGO DAMIAN CHÁVEZ RAMIREZ",
             cargo: "Vicepresidente",
             iniciales: "CD"
         },
@@ -31,7 +31,7 @@ if (!document.getElementById("mdDialogoDirectiva")) {
             iniciales: "PA"
         },
         {
-            nombre: "Angel Pérez Reyes",
+            nombre: "ANGEL PÉREZ REYES ",
             cargo: "Secretario",
             iniciales: "AP"
         }

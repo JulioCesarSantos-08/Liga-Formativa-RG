@@ -13,6 +13,8 @@ import {
     db
 } from "../firebase.js";
 
+import { obtenerJerarquiaCategoriaPrestamo } from "./reglasPrestamos.js";
+
 const btnSolicitarPrestamo =
     document.getElementById(
         "btnSolicitarPrestamo"
@@ -81,15 +83,6 @@ let temporadaActualPrestamos = null;
 let iniciadoPrestamos = false;
 let enviandoPrestamo = false;
 let ultimoEquipoPrestamosId = "";
-
-const NIVELES_CATEGORIA = {
-    "SUPER BEBE": 1,
-    "DIENTES DE LECHE": 2,
-    "PONY": 3,
-    "INFANTIL": 4,
-    "JUVENIL MENOR": 5,
-    "JUVENIL MAYOR": 6
-};
 
 const usuarioPrestamos =
     await protegerPagina([
@@ -625,79 +618,35 @@ function obtenerEquiposPrestamoElegibles() {
         return [];
     }
 
-    const clubDestino =
-        obtenerClubIdEquipo(
-            equipoActualPrestamos
-        );
+    const clubDestino = obtenerClubIdEquipo(equipoActualPrestamos);
+    const nivelDestino = obtenerNivelCategoriaEquipo(equipoActualPrestamos);
 
-    const nivelDestino =
-        obtenerNivelCategoriaEquipo(
-            equipoActualPrestamos
-        );
-
-    if (
-        !clubDestino ||
-        nivelDestino === null
-    ) {
-        return [];
-    }
-
-    const nivelOrigenPermitido =
-        nivelDestino - 1;
-
-    if (
-        nivelOrigenPermitido < 1
-    ) {
+    if (!clubDestino || nivelDestino === null || nivelDestino <= 1) {
         return [];
     }
 
     return todosLosEquiposPrestamos
-        .filter(
-            equipo => {
-                if (
-                    !equipo ||
-                    equipo.id ===
-                        equipoActualPrestamos.id
-                ) {
-                    return false;
-                }
-
-                if (
-                    !equipoEstaActivo(
-                        equipo
-                    )
-                ) {
-                    return false;
-                }
-
-                const clubOrigen =
-                    obtenerClubIdEquipo(
-                        equipo
-                    );
-
-                const nivelOrigen =
-                    obtenerNivelCategoriaEquipo(
-                        equipo
-                    );
-
-                return (
-                    clubOrigen ===
-                        clubDestino &&
-                    nivelOrigen ===
-                        nivelOrigenPermitido
-                );
+        .filter(equipo => {
+            if (!equipo || equipo.id === equipoActualPrestamos.id) {
+                return false;
             }
-        )
-        .sort(
-            (a, b) =>
-                String(
-                    a.nombre || ""
-                ).localeCompare(
-                    String(
-                        b.nombre || ""
-                    ),
-                    "es"
-                )
+
+            if (!equipoEstaActivo(equipo)) {
+                return false;
+            }
+
+            const clubOrigen = obtenerClubIdEquipo(equipo);
+            const nivelOrigen = obtenerNivelCategoriaEquipo(equipo);
+
+            return clubOrigen === clubDestino &&
+                nivelOrigen !== null &&
+                nivelDestino - nivelOrigen === 1;
+        })
+        .sort((a, b) =>
+            String(a.nombre || "").localeCompare(
+                String(b.nombre || ""),
+                "es"
+            )
         );
 }
 
@@ -774,31 +723,14 @@ function crearIdClub(
         );
 }
 
-function obtenerNivelCategoriaEquipo(
-    equipo
-) {
+function obtenerNivelCategoriaEquipo(equipo) {
     if (!equipo) {
         return null;
     }
 
-    const categoria =
-        categoriasPrestamos.find(
-            item =>
-                item.id ===
-                equipo.categoriaId
-        );
+    const nombre = obtenerNombreCategoriaEquipo(equipo);
 
-    const nombre =
-        normalizarCategoria(
-            categoria?.nombre ||
-            equipo.categoriaNombre ||
-            ""
-        );
-
-    return (
-        NIVELES_CATEGORIA[nombre] ??
-        null
-    );
+    return obtenerJerarquiaCategoriaPrestamo(nombre)?.nivel ?? null;
 }
 
 function obtenerNombreCategoriaEquipo(
@@ -1182,101 +1114,58 @@ function validarJugadorSeleccionado() {
     return validacion.valido;
 }
 
-function validarRelacionEquipos(
-    origen,
-    destino
-) {
-    if (
-        !origen ||
-        !destino
-    ) {
+function validarRelacionEquipos(origen, destino) {
+    if (!origen || !destino) {
         return {
             valido: false,
-            mensaje:
-                "No se pudo validar la información de los equipos."
+            mensaje: "No se pudo validar la informaci?n de los equipos."
         };
     }
 
-    if (
-        origen.id ===
-        destino.id
-    ) {
+    if (origen.id === destino.id) {
         return {
             valido: false,
-            mensaje:
-                "El equipo de origen y destino no pueden ser el mismo."
+            mensaje: "El equipo de origen y destino no pueden ser el mismo."
         };
     }
 
-    const clubOrigen =
-        obtenerClubIdEquipo(
-            origen
-        );
+    const clubOrigen = obtenerClubIdEquipo(origen);
+    const clubDestino = obtenerClubIdEquipo(destino);
 
-    const clubDestino =
-        obtenerClubIdEquipo(
-            destino
-        );
-
-    if (
-        !clubOrigen ||
-        !clubDestino
-    ) {
+    if (!clubOrigen || !clubDestino) {
         return {
             valido: false,
-            mensaje:
-                "Los dos equipos necesitan tener configurado su Club / Comunidad."
+            mensaje: "Los dos equipos necesitan tener configurado su Club / Comunidad."
         };
     }
 
-    if (
-        clubOrigen !==
-        clubDestino
-    ) {
+    if (clubOrigen !== clubDestino) {
         return {
             valido: false,
-            mensaje:
-                "El préstamo solo se permite entre equipos del mismo Club / Comunidad."
+            mensaje: "El pr?stamo solo se permite entre equipos del mismo Club / Comunidad."
         };
     }
 
-    const nivelOrigen =
-        obtenerNivelCategoriaEquipo(
-            origen
-        );
+    const nivelOrigen = obtenerNivelCategoriaEquipo(origen);
+    const nivelDestino = obtenerNivelCategoriaEquipo(destino);
 
-    const nivelDestino =
-        obtenerNivelCategoriaEquipo(
-            destino
-        );
-
-    if (
-        nivelOrigen === null ||
-        nivelDestino === null
-    ) {
+    if (nivelOrigen === null || nivelDestino === null) {
         return {
             valido: false,
-            mensaje:
-                "No pudimos identificar correctamente las categorías de los equipos."
+            mensaje: "No pudimos identificar correctamente las categor?as de los equipos."
         };
     }
 
-    if (
-        nivelDestino -
-        nivelOrigen !==
-        1
-    ) {
+    if (nivelDestino - nivelOrigen !== 1) {
         return {
             valido: false,
-            mensaje:
-                "El préstamo solo se permite de una categoría hacia la categoría inmediatamente superior."
+            mensaje: "El pr?stamo solo se permite desde una categor?a del nivel inmediatamente inferior."
         };
     }
 
     return {
         valido: true,
-        mensaje:
-            "Los equipos cumplen las reglas de préstamo."
+        mensaje: "Los equipos cumplen las reglas de pr?stamo."
     };
 }
 
@@ -1305,6 +1194,25 @@ function validarPrestamo(
 
     if (!relacion.valido) {
         return relacion;
+    }
+
+    const jerarquiaDestino =
+        obtenerJerarquiaCategoriaPrestamo(
+            obtenerNombreCategoriaEquipo(destino)
+        );
+
+    const sexoJugador =
+        normalizarTexto(jugador.sexo);
+
+    if (
+        jerarquiaDestino?.modalidad === "femenil" &&
+        !["mujer", "femenino"].includes(sexoJugador)
+    ) {
+        return {
+            valido: false,
+            mensaje:
+                "El refuerzo debe tener sexo Mujer para participar en una categor?a femenil."
+        };
     }
 
     if (

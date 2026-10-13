@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#07574f">
+    <title>Jefe de árbitros | Liga Municipal Río Grande</title>
+    <link rel="icon" href="imagenes/logo.png">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f4eedc;
+            color: #17332e;
+            font-family: Arial, sans-serif;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        button,
+        a,
+        input,
+        select,
+        textarea {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .oculto {
+            display: none !important;
+        }
+
+        .encabezado {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 14px 18px;
+            background: #fff8e8;
+            border-bottom: 3px solid #0b756d;
+        }
+
+        .marca {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .marca img {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+        }
+
+        .marca span,
+        .marca strong {
+            display: block;
+        }
+
+        .marca span {
+            margin-bottom: 4px;
+            font-size: .75rem;
+            color: #68746e;
+        }
+
+        .acciones {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .boton {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+            padding: 10px 14px;
+            border: 1px solid #b9ccc4;
+            border-radius: 10px;
+            background: #e5efea;
+            color: #07574f;
+            font-size: .85rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .boton.principal {
+            border-color: #0b756d;
+            background: #0b756d;
+            color: white;
+        }
+
+        .boton:disabled {
+            opacity: .6;
+            cursor: default;
+        }
+
+        main {
+            width: min(1100px, 100%);
+            margin: auto;
+            padding: 20px 14px 40px;
+        }
+
+        .bienvenida {
+            padding: 24px;
+            border-radius: 18px;
+            background: #07574f;
+            color: white;
+        }
+
+        .bienvenida h1 {
+            margin: 8px 0;
+            font-size: 1.5rem;
+        }
+
+        .bienvenida p {
+            margin-bottom: 0;
+            line-height: 1.6;
+            color: #d8ede6;
+        }
+
+        .resumen {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin: 18px 0;
+        }
+
+        .indicador,
+        .seccion {
+            padding: 18px;
+            border: 1px solid #d6d7c5;
+            border-radius: 16px;
+            background: #fff8e8;
+        }
+
+        .indicador span {
+            display: block;
+            margin-bottom: 8px;
+            color: #68746e;
+            font-size: .8rem;
+        }
+
+        .indicador strong {
+            font-size: 1.7rem;
+            color: #07574f;
+        }
+
+        .seccion {
+            margin-top: 18px;
+        }
+
+        .seccion h2 {
+            margin: 0 0 8px;
+            font-size: 1.1rem;
+        }
+
+        .descripcion,
+        .estado {
+            font-size: .85rem;
+            line-height: 1.6;
+            color: #68746e;
+        }
+
+        .estado.error {
+            color: #982d24;
+        }
+
+        .formulario {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            min-width: 0;
+            font-size: .85rem;
+            font-weight: 700;
+        }
+
+        .completo {
+            grid-column: 1 / -1;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            min-height: 46px;
+            padding: 11px;
+            border: 1px solid #bba87b;
+            border-radius: 10px;
+            background: white;
+            color: #17332e;
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        :focus-visible {
+            outline: 3px solid #62b9aa;
+            outline-offset: 3px;
+        }
+
+        .tabla-contenedor {
+            overflow-x: auto;
+            margin-top: 16px;
+        }
+
+        table {
+            width: 100%;
+            min-width: 580px;
+            border-collapse: collapse;
+            font-size: .85rem;
+        }
+
+        th,
+        td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #d5ddd6;
+            text-align: left;
+        }
+
+        th {
+            background: #e5efea;
+            color: #07574f;
+        }
+
+        .lista {
+            display: grid;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .tarjeta {
+            padding: 15px;
+            border: 1px solid #cbd5d1;
+            border-radius: 12px;
+            background: white;
+        }
+
+        .tarjeta h3 {
+            margin: 0 0 8px;
+            font-size: .95rem;
+        }
+
+        .tarjeta p {
+            margin: 6px 0;
+            font-size: .85rem;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .etiqueta {
+            display: inline-block;
+            padding: 5px 8px;
+            border-radius: 8px;
+            background: #e5efea;
+            color: #07574f;
+            font-size: .75rem;
+            font-weight: 700;
+        }
+
+        .etiqueta.pendiente {
+            background: #fff0bd;
+            color: #7b5800;
+        }
+
+        .etiqueta.rechazada {
+            background: #f9ded8;
+            color: #982d24;
+        }
+
+        @media (max-width: 700px) {
+            .resumen {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .formulario {
+                grid-template-columns: 1fr;
+            }
+
+            .bienvenida {
+                padding: 18px;
+            }
+
+            .bienvenida h1 {
+                font-size: 1.25rem;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .encabezado {
+                padding: 12px;
+            }
+
+            .acciones {
+                width: 100%;
+            }
+
+            .acciones .boton {
+                flex: 1;
+            }
+
+            .indicador,
+            .seccion {
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="encabezado">
+        <div class="marca">
+            <img src="imagenes/logo.png" alt="Logo de la liga">
+            <div>
+                <span>Liga Municipal Río Grande</span>
+                <strong>Coordinación arbitral</strong>
+            </div>
+        </div>
+
+        <nav class="acciones" aria-label="Acciones del panel">
+            <a id="volverPanel" class="boton" href="arbitro.html">
+                Mi panel arbitral
+            </a>
+            <button id="btnCerrarSesion" class="boton" type="button" disabled>
+                Cerrar sesión
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <p id="estadoCarga" class="estado" role="status">
+            Verificando acceso al panel...
+        </p>
+
+        <section id="estadoError" class="seccion oculto" role="alert">
+            <h2>No se pudo abrir el panel</h2>
+            <p id="estadoErrorTexto" class="estado error"></p>
+            <a class="boton" href="arbitro.html">Volver a mi panel</a>
+        </section>
+
+        <div id="contenidoJefeArbitros" class="oculto">
+            <section class="bienvenida">
+                <span>JEFE DE ÁRBITROS</span>
+                <h1 id="nombreJefeArbitros">Coordinación arbitral</h1>
+                <p>
+                    Consulta la actividad de los árbitros y solicita cambios
+                    de designación para los partidos de la liga.
+                </p>
+            </section>
+
+            <section class="resumen" aria-label="Resumen de actividad">
+                <article class="indicador">
+                    <span>Partidos</span>
+                    <strong id="totalPartidos">0</strong>
+                </article>
+                <article class="indicador">
+                    <span>Cédulas oficiales</span>
+                    <strong id="totalCedulas">0</strong>
+                </article>
+                <article class="indicador">
+                    <span>Cédulas pendientes</span>
+                    <strong id="totalPendientes">0</strong>
+                </article>
+                <article class="indicador">
+                    <span>Solicitudes pendientes</span>
+                    <strong id="totalSolicitudes">0</strong>
+                </article>
+            </section>
+
+            <button id="btnActualizar" class="boton" type="button" disabled>
+                Actualizar información
+            </button>
+
+            <section class="seccion">
+                <h2>Actividad por árbitro</h2>
+                <p class="descripcion">
+                    Partidos asignados y avance de sus cédulas.
+                </p>
+
+                <div class="tabla-contenedor">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th scope="col">Árbitro</th>
+                                <th scope="col">Asignados</th>
+                                <th scope="col">Oficiales</th>
+                                <th scope="col">Pendientes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoEstadisticasArbitros"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="seccion">
+                <h2>Solicitar cambio de árbitro</h2>
+                <p class="descripcion">
+                    La solicitud requiere aprobación administrativa.
+                    La designación del partido se actualizará al aprobarla.
+                </p>
+
+                <form id="formSolicitudCambio" class="formulario">
+                    <label class="campo">
+                        Partido
+                        <select id="partidoSolicitud" required disabled>
+                            <option value="">Selecciona un partido</option>
+                        </select>
+                    </label>
+
+                    <label class="campo">
+                        Árbitro propuesto
+                        <select id="arbitroPropuesto" required disabled>
+                            <option value="">Selecciona un árbitro</option>
+                        </select>
+                    </label>
+
+                    <label class="campo completo">
+                        Motivo del cambio
+                        <textarea
+                            id="motivoSolicitud"
+                            maxlength="1000"
+                            placeholder="Explica por qué solicitas cambiar al árbitro."
+                            required
+                            disabled
+                        ></textarea>
+                    </label>
+
+                    <div class="completo">
+                        <button
+                            id="btnEnviarSolicitud"
+                            class="boton principal"
+                            type="submit"
+                            disabled
+                        >
+                            Enviar solicitud
+                        </button>
+                    </div>
+                </form>
+
+                <p id="estadoSolicitud" class="estado" role="status" aria-live="polite"></p>
+            </section>
+
+            <section class="seccion">
+                <h2>Solicitudes de cambio</h2>
+                <p class="descripcion">
+                    Consulta el estado y la respuesta administrativa.
+                </p>
+                <div id="listaSolicitudes" class="lista"></div>
+            </section>
+
+            <section class="seccion">
+                <h2>Partidos de la liga</h2>
+
+                <label class="campo">
+                    Buscar partido
+                    <input
+                        id="buscarPartidos"
+                        type="search"
+                        placeholder="Equipo, categoría o árbitro"
+                        disabled
+                    >
+                </label>
+
+                <div id="listaPartidos" class="lista"></div>
+            </section>
+        </div>
+    </main>
+
+    <script type="module" src="js/arbitro/jefeArbitros.js"></script>
+</body>
+</html>

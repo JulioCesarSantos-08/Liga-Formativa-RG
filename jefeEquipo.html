@@ -1,9 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <meta name="theme-color" content="#0b756d">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,7 +16,6 @@
     <link rel="icon" type="image/png" sizes="192x192" href="imagenes/icon-192.png">
     <link rel="apple-touch-icon" href="imagenes/icon-192.png">
     <link rel="manifest" href="manifest.json">
-
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/jefeEquipo.css">
 </head>
@@ -28,7 +27,6 @@
         <header class="topbar">
 
             <div class="topbar-marca">
-
                 <img
                     src="imagenes/logo.png"
                     alt="Liga Deportiva Río Grande"
@@ -39,20 +37,13 @@
                     <span>Liga Deportiva</span>
                     <strong>Río Grande</strong>
                 </div>
-
             </div>
 
             <div class="topbar-acciones">
 
-                <a
-                    href="publico.html"
-                    class="btn-publico"
-                >
+                <a href="publico.html" class="btn-publico">
                     <span>👁️</span>
-
-                    <span class="btn-publico-texto">
-                        Ver liga
-                    </span>
+                    <span class="btn-publico-texto">Ver liga</span>
                 </a>
 
                 <button
@@ -70,35 +61,17 @@
 
         <main class="contenido">
 
-            <section
-                id="estadoCarga"
-                class="estado-carga"
-            >
-
+            <section id="estadoCarga" class="estado-carga">
                 <div class="spinner"></div>
-
-                <span>
-                    Cargando tu equipo...
-                </span>
-
+                <span>Cargando tu equipo...</span>
             </section>
 
-            <section
-                id="sinEquipo"
-                class="sin-equipo oculto"
-            >
+            <section id="sinEquipo" class="sin-equipo oculto">
 
-                <div class="sin-equipo-icono">
-                    🛡️
-                </div>
+                <div class="sin-equipo-icono">🛡️</div>
+                <span class="sin-equipo-mini">JEFE DE EQUIPO</span>
 
-                <span class="sin-equipo-mini">
-                    JEFE DE EQUIPO
-                </span>
-
-                <h1>
-                    Aún no tienes un equipo asignado
-                </h1>
+                <h1>Aún no tienes un equipo asignado</h1>
 
                 <p>
                     Tu cuenta ya tiene permisos como jefe de equipo,
@@ -110,40 +83,25 @@
                     antes de que puedas registrar jugadores.
                 </p>
 
-                <a
-                    href="publico.html"
-                    class="btn-ver-liga"
-                >
+                <a href="publico.html" class="btn-ver-liga">
                     Ver liga
                 </a>
 
             </section>
 
-            <div
-                id="contenidoEquipo"
-                class="contenido-equipo oculto"
-            >
+            <div id="contenidoEquipo" class="contenido-equipo oculto">
 
                 <section class="equipo-hero">
 
                     <div class="equipo-hero-identidad">
 
-                        <div
-                            id="equipoLogo"
-                            class="equipo-logo"
-                        >
-                            E
-                        </div>
+                        <div id="equipoLogo" class="equipo-logo">E</div>
 
                         <div class="equipo-hero-info">
 
-                            <span class="equipo-mini">
-                                MI EQUIPO
-                            </span>
+                            <span class="equipo-mini">MI EQUIPO</span>
 
-                            <h1 id="equipoNombre">
-                                Equipo
-                            </h1>
+                            <h1 id="equipoNombre">Equipo</h1>
 
                             <div class="equipo-meta">
 
@@ -166,23 +124,13 @@
 
                     <div class="jefe-identidad">
 
-                        <div
-                            id="jefeInicial"
-                            class="jefe-avatar"
-                        >
+                        <div id="jefeInicial" class="jefe-avatar">
                             J
                         </div>
 
                         <div>
-
-                            <span>
-                                Responsable
-                            </span>
-
-                            <strong id="jefeNombre">
-                                Jefe de equipo
-                            </strong>
-
+                            <span>Responsable</span>
+                            <strong id="jefeNombre">Jefe de equipo</strong>
                         </div>
 
                     </div>
@@ -194,15 +142,11 @@
                     class="estado-registro-equipo"
                 >
 
-                    <div class="estado-registro-icono">
-                        👥
-                    </div>
+                    <div class="estado-registro-icono">👥</div>
 
                     <div class="estado-registro-info">
 
-                        <span>
-                            ESTADO DE PLANTILLA
-                        </span>
+                        <span>ESTADO DE PLANTILLA</span>
 
                         <strong id="estadoRegistroTitulo">
                             Consultando configuración...
@@ -227,82 +171,49 @@
 
                     <article class="resumen-card">
 
-                        <div class="resumen-icono">
-                            👥
-                        </div>
+                        <div class="resumen-icono">👥</div>
 
                         <div>
-
-                            <span>
-                                Jugadores
-                            </span>
+                            <span>Jugadores</span>
 
                             <strong>
                                 <span id="totalJugadores">0</span>
                                 /
                                 <span id="limiteJugadores">26</span>
                             </strong>
-
                         </div>
 
                     </article>
 
                     <article class="resumen-card">
 
-                        <div class="resumen-icono">
-                            ✅
-                        </div>
+                        <div class="resumen-icono">✅</div>
 
                         <div>
-
-                            <span>
-                                Activos
-                            </span>
-
-                            <strong id="totalActivos">
-                                0
-                            </strong>
-
+                            <span>Activos</span>
+                            <strong id="totalActivos">0</strong>
                         </div>
 
                     </article>
 
                     <article class="resumen-card">
 
-                        <div class="resumen-icono">
-                            🚫
-                        </div>
+                        <div class="resumen-icono">🚫</div>
 
                         <div>
-
-                            <span>
-                                Suspendidos
-                            </span>
-
-                            <strong id="totalSuspendidos">
-                                0
-                            </strong>
-
+                            <span>Suspendidos</span>
+                            <strong id="totalSuspendidos">0</strong>
                         </div>
 
                     </article>
 
                     <article class="resumen-card">
 
-                        <div class="resumen-icono">
-                            🪪
-                        </div>
+                        <div class="resumen-icono">🪪</div>
 
                         <div>
-
-                            <span>
-                                Con credencial
-                            </span>
-
-                            <strong id="totalCredenciales">
-                                0
-                            </strong>
-
+                            <span>Con credencial</span>
+                            <strong id="totalCredenciales">0</strong>
                         </div>
 
                     </article>
@@ -316,19 +227,13 @@
 
                     <div class="resumen-jornada5-identidad">
 
-                        <div class="resumen-jornada5-icono">
-                            5
-                        </div>
+                        <div class="resumen-jornada5-icono">5</div>
 
                         <div>
 
-                            <span>
-                                PERIODO ESPECIAL
-                            </span>
+                            <span>PERIODO ESPECIAL</span>
 
-                            <strong>
-                                Jornada 5 activa
-                            </strong>
+                            <strong>Jornada 5 activa</strong>
 
                             <p>
                                 Puedes realizar movimientos de plantilla
@@ -341,9 +246,7 @@
 
                     <div class="resumen-jornada5-contador">
 
-                        <span>
-                            Movimientos
-                        </span>
+                        <span>Movimientos</span>
 
                         <strong>
                             <span id="movimientosJ5Usados">0</span>
@@ -363,15 +266,11 @@
                         class="accion-principal"
                     >
 
-                        <span class="accion-icono">
-                            ＋
-                        </span>
+                        <span class="accion-icono">＋</span>
 
                         <div>
 
-                            <small>
-                                PLANTILLA
-                            </small>
+                            <small>PLANTILLA</small>
 
                             <strong id="btnNuevoJugadorTitulo">
                                 Registrar jugador
@@ -391,19 +290,13 @@
                         class="accion-card accion-jornada5 oculto"
                     >
 
-                        <span class="accion-icono">
-                            5
-                        </span>
+                        <span class="accion-icono">5</span>
 
                         <div>
 
-                            <small>
-                                PERIODO ESPECIAL
-                            </small>
+                            <small>PERIODO ESPECIAL</small>
 
-                            <strong>
-                                Movimientos Jornada 5
-                            </strong>
+                            <strong>Movimientos Jornada 5</strong>
 
                             <p>
                                 Gestiona bajas y nuevas altas autorizadas.
@@ -419,19 +312,13 @@
                         class="accion-card accion-prestamo"
                     >
 
-                        <span class="accion-icono">
-                            ⇄
-                        </span>
+                        <span class="accion-icono">⇄</span>
 
                         <div>
 
-                            <small>
-                                REFUERZOS
-                            </small>
+                            <small>REFUERZOS</small>
 
-                            <strong>
-                                Solicitar préstamo
-                            </strong>
+                            <strong>Solicitar préstamo</strong>
 
                             <p>
                                 Solicita un jugador elegible de otra categoría.
@@ -447,19 +334,13 @@
                         class="accion-card"
                     >
 
-                        <span class="accion-icono">
-                            🪪
-                        </span>
+                        <span class="accion-icono">🪪</span>
 
                         <div>
 
-                            <small>
-                                DOCUMENTOS
-                            </small>
+                            <small>DOCUMENTOS</small>
 
-                            <strong>
-                                Generar credenciales
-                            </strong>
+                            <strong>Generar credenciales</strong>
 
                             <p>
                                 Prepara las credenciales imprimibles.
@@ -475,19 +356,13 @@
                         class="accion-card"
                     >
 
-                        <span class="accion-icono">
-                            ⚽
-                        </span>
+                        <span class="accion-icono">⚽</span>
 
                         <div>
 
-                            <small>
-                                COMPETENCIA
-                            </small>
+                            <small>COMPETENCIA</small>
 
-                            <strong>
-                                Mis partidos
-                            </strong>
+                            <strong>Mis partidos</strong>
 
                             <p>
                                 Consulta encuentros y resultados.
@@ -505,21 +380,15 @@
 
                         <div>
 
-                            <span class="panel-mini">
-                                PLANTILLA
-                            </span>
+                            <span class="panel-mini">PLANTILLA</span>
 
-                            <h2>
-                                Mis jugadores
-                            </h2>
+                            <h2>Mis jugadores</h2>
 
                         </div>
 
                         <div class="buscador">
 
-                            <span>
-                                🔎
-                            </span>
+                            <span>🔎</span>
 
                             <input
                                 type="search"
@@ -537,15 +406,11 @@
                         class="aviso-ediciones oculto"
                     >
 
-                        <span class="aviso-ediciones-icono">
-                            ✎
-                        </span>
+                        <span class="aviso-ediciones-icono">✎</span>
 
                         <div>
 
-                            <strong>
-                                Cambios protegidos
-                            </strong>
+                            <strong>Cambios protegidos</strong>
 
                             <p>
                                 Para modificar la información de un jugador
@@ -563,13 +428,9 @@
                         class="estado-vacio oculto"
                     >
 
-                        <div class="estado-vacio-icono">
-                            👥
-                        </div>
+                        <div class="estado-vacio-icono">👥</div>
 
-                        <strong>
-                            Tu plantilla está vacía
-                        </strong>
+                        <strong>Tu plantilla está vacía</strong>
 
                         <p id="sinJugadoresTexto">
                             Registra al primer jugador de tu equipo.
@@ -631,10 +492,7 @@
                 <small>Credenciales</small>
             </button>
 
-            <a
-                href="publico.html"
-                class="nav-item"
-            >
+            <a href="publico.html" class="nav-item">
                 <span>🏆</span>
                 <small>Liga</small>
             </a>
@@ -688,9 +546,7 @@
                 class="aviso-solicitud-edicion oculto"
             >
 
-                <span>
-                    ℹ️
-                </span>
+                <span>ℹ️</span>
 
                 <p>
                     Estás solicitando una modificación.
@@ -704,14 +560,9 @@
 
                 <div class="foto-jugador-box">
 
-                    <div
-                        id="previewFoto"
-                        class="foto-preview"
-                    >
+                    <div id="previewFoto" class="foto-preview">
 
-                        <span id="previewInicial">
-                            J
-                        </span>
+                        <span id="previewInicial">J</span>
 
                         <img
                             id="previewFotoImagen"
@@ -738,8 +589,9 @@
                         >
 
                         <small>
-                            La fotografía es opcional. Si no agregas una,
-                            se utilizará la imagen predeterminada.
+                            Puedes registrar al jugador sin fotografía
+                            por ahora, pero deberá completar su expediente
+                            para participar.
                         </small>
 
                     </div>
@@ -756,9 +608,49 @@
                         type="text"
                         id="nombreJugador"
                         maxlength="150"
-                        placeholder="Nombre completo del jugador"
+                        placeholder="NOMBRE COMPLETO DEL JUGADOR"
+                        autocomplete="name"
+                        autocapitalize="characters"
+                        spellcheck="false"
+                        style="text-transform:uppercase;"
                         required
                     >
+
+                    <small>
+                        El nombre se guardará completamente en MAYÚSCULAS.
+                    </small>
+
+                </div>
+
+                <div class="form-grupo">
+
+                    <label for="sexoJugador">
+                        Sexo del jugador
+                    </label>
+
+                    <select
+                        id="sexoJugador"
+                        name="sexoJugador"
+                        required
+                        style="width:100%;min-height:46px;padding:10px 12px;border:1px solid #bba87b;border-radius:10px;background:#fff8e8;color:#213732;font:inherit;"
+                    >
+                        <option value="">
+                            Selecciona una opción
+                        </option>
+
+                        <option value="hombre">
+                            Hombre
+                        </option>
+
+                        <option value="mujer">
+                            Mujer
+                        </option>
+                    </select>
+
+                    <small>
+                        Este dato se utilizará para comprobar las
+                        reglas de participación y reforzamiento.
+                    </small>
 
                 </div>
 
@@ -822,18 +714,14 @@
 
                 <div class="form-grupo">
 
-                    <label>
-                        Documento CURP
-                    </label>
+                    <label>Documento CURP</label>
 
                     <label
                         for="archivoCurp"
                         class="archivo-selector"
                     >
 
-                        <span class="archivo-icono">
-                            📄
-                        </span>
+                        <span class="archivo-icono">📄</span>
 
                         <div>
 
@@ -842,14 +730,14 @@
                             </strong>
 
                             <small>
-                                Documento oficial en formato PDF.
+                                Documento oficial en PDF.
+                                Si todavía no lo tienes, podrás
+                                completar el expediente después.
                             </small>
 
                         </div>
 
-                        <span class="archivo-flecha">
-                            ＋
-                        </span>
+                        <span class="archivo-flecha">＋</span>
 
                     </label>
 
@@ -901,9 +789,7 @@
 
                 <div class="aviso-jugador">
 
-                    <span>
-                        ℹ️
-                    </span>
+                    <span>ℹ️</span>
 
                     <p id="avisoJugadorTexto">
                         El número máximo de jugadores y los periodos
@@ -939,6 +825,56 @@
     </div>
 
     <div
+        id="modalDocumentacionIncompleta"
+        class="modal-overlay oculto"
+    >
+
+        <div
+            class="modal-limite"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="tituloDocumentacionIncompleta"
+            style="max-width:440px;width:calc(100% - 28px);text-align:center;"
+        >
+
+            <div class="limite-icono" aria-hidden="true">
+                !
+            </div>
+
+            <h2 id="tituloDocumentacionIncompleta">
+                Jugador registrado con información pendiente
+            </h2>
+
+            <p id="textoDocumentacionIncompleta">
+                El jugador fue registrado correctamente,
+                pero su expediente todavía está incompleto.
+            </p>
+
+            <div
+                id="listaDocumentacionPendiente"
+                style="text-align:left;margin:16px 0;padding:14px;border:1px solid #d5bc7a;border-radius:12px;background:#fff8e8;"
+            ></div>
+
+            <p>
+                Antes de participar en partidos oficiales,
+                el jugador deberá contar con su fotografía
+                y documento CURP conforme a las disposiciones
+                de la liga.
+            </p>
+
+            <button
+                type="button"
+                id="btnEntendidoDocumentacion"
+                class="btn-principal"
+            >
+                Entendido
+            </button>
+
+        </div>
+
+    </div>
+
+    <div
         id="modalJornada5"
         class="modal-overlay oculto"
     >
@@ -957,9 +893,7 @@
                         PERIODO ESPECIAL
                     </span>
 
-                    <h2>
-                        Movimientos Jornada 5
-                    </h2>
+                    <h2>Movimientos Jornada 5</h2>
 
                 </div>
 
@@ -977,40 +911,30 @@
             <div class="jornada5-estado">
 
                 <div>
-
-                    <span>
-                        Cupo oficial
-                    </span>
+                    <span>Cupo oficial</span>
 
                     <strong>
                         <span id="j5TotalJugadores">0</span>
                         /
                         <span id="j5LimitePlantilla">0</span>
                     </strong>
-
                 </div>
 
                 <div>
-
-                    <span>
-                        Movimientos usados
-                    </span>
+                    <span>Movimientos usados</span>
 
                     <strong>
                         <span id="j5MovimientosUsados">0</span>
                         /
                         <span id="j5MovimientosMaximos">5</span>
                     </strong>
-
                 </div>
 
             </div>
 
             <div class="jornada5-explicacion">
 
-                <span>
-                    5
-                </span>
+                <span>5</span>
 
                 <p>
                     Tu equipo no puede superar el número de jugadores
@@ -1029,15 +953,16 @@
                     class="jornada5-accion jornada5-baja"
                 >
 
-                    <span>
-                        −
-                    </span>
+                    <span>−</span>
 
                     <div>
+
                         <strong>Dar de baja jugador</strong>
+
                         <p>
                             Libera un lugar de tu plantilla para realizar un cambio.
                         </p>
+
                     </div>
 
                 </button>
@@ -1048,15 +973,16 @@
                     class="jornada5-accion jornada5-alta"
                 >
 
-                    <span>
-                        ＋
-                    </span>
+                    <span>＋</span>
 
                     <div>
+
                         <strong>Registrar nuevo jugador</strong>
+
                         <p>
                             Utiliza un lugar disponible dentro de tu cupo oficial.
                         </p>
+
                     </div>
 
                 </button>
@@ -1091,9 +1017,7 @@
                         REFUERZO
                     </span>
 
-                    <h2>
-                        Solicitar préstamo
-                    </h2>
+                    <h2>Solicitar préstamo</h2>
 
                 </div>
 
@@ -1113,28 +1037,32 @@
                 <div>
                     <span>✓</span>
                     <p>
-                        Solo jugadores pertenecientes a la misma comunidad o club.
+                        Solo jugadores pertenecientes a la misma
+                        comunidad o club.
                     </p>
                 </div>
 
                 <div>
                     <span>✓</span>
                     <p>
-                        El préstamo será únicamente de una categoría inferior hacia una superior.
+                        El préstamo será únicamente de una categoría
+                        inferior hacia una superior.
                     </p>
                 </div>
 
                 <div>
                     <span>✓</span>
                     <p>
-                        Solo se permitirán categorías compatibles según las reglas de la liga.
+                        Solo se permitirán categorías compatibles
+                        según las reglas de la liga.
                     </p>
                 </div>
 
                 <div>
                     <span>✓</span>
                     <p>
-                        El préstamo deberá ser aprobado por un administrador antes de ser válido.
+                        El préstamo deberá ser aprobado por un
+                        administrador antes de ser válido.
                     </p>
                 </div>
 
@@ -1377,10 +1305,7 @@
 
         <div class="modal-limite">
 
-            <div
-                id="limiteIcono"
-                class="limite-icono"
-            >
+            <div id="limiteIcono" class="limite-icono">
                 !
             </div>
 
@@ -1404,20 +1329,13 @@
 
     </div>
 
-    <div
-        id="toast"
-        class="toast oculto"
-    >
+    <div id="toast" class="toast oculto">
 
-        <span id="toastIcono">
-            ✓
-        </span>
+        <span id="toastIcono">✓</span>
 
         <div>
 
-            <strong id="toastTitulo">
-                Listo
-            </strong>
+            <strong id="toastTitulo">Listo</strong>
 
             <p id="toastTexto">
                 Información guardada correctamente.
@@ -1432,9 +1350,16 @@
         src="js/jefeEquipo/jefeEquipo.js"
     ></script>
 
-    <script type="module" src="js/jefeEquipo/jefeEquipo2.js"></script>
+    <script
+        type="module"
+        src="js/jefeEquipo/jefeEquipo2.js"
+    ></script>
 
-    <script type="module" src="js/jefeEquipo/jefeEquipo3.js"></script>
+    <script
+        type="module"
+        src="js/jefeEquipo/jefeEquipo3.js"
+    ></script>
 
+    <script type="module" src="js/jefeEquipo/refuerzosPlantilla.js"></script>
 </body>
 </html>

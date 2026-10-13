@@ -1,3 +1,4 @@
+
 import {
     collection,
     getDocs,
@@ -21,1204 +22,1089 @@ import {
     registrarAuditoria
 } from "../auditoria.js";
 
+const $ = id => document.getElementById(id);
 
-const adminInicial = document.getElementById("adminInicial");
+const adminInicial = $("adminInicial");
 
-const totalCategorias = document.getElementById("totalCategorias");
-const totalActivas = document.getElementById("totalActivas");
-const totalInactivas = document.getElementById("totalInactivas");
+const totalCategorias = $("totalCategorias");
+const totalActivas = $("totalActivas");
+const totalInactivas = $("totalInactivas");
 
-const buscarCategoria = document.getElementById("buscarCategoria");
-const filtroEstado = document.getElementById("filtroEstado");
+const buscarCategoria = $("buscarCategoria");
+const filtroEstado = $("filtroEstado");
 
-const estadoCarga = document.getElementById("estadoCarga");
-const estadoVacio = document.getElementById("estadoVacio");
-const gridCategorias = document.getElementById("gridCategorias");
+const estadoCarga = $("estadoCarga");
+const estadoVacio = $("estadoVacio");
+const gridCategorias = $("gridCategorias");
 
-const btnNuevaCategoria = document.getElementById("btnNuevaCategoria");
+const btnNuevaCategoria = $("btnNuevaCategoria");
 
-const modalCategoria = document.getElementById("modalCategoria");
-const btnCerrarModal = document.getElementById("btnCerrarModal");
-const btnCancelarModal = document.getElementById("btnCancelarModal");
+const modalCategoria = $("modalCategoria");
+const btnCerrarModal = $("btnCerrarModal");
+const btnCancelarModal = $("btnCancelarModal");
 
-const formCategoria = document.getElementById("formCategoria");
-const modalTitulo = document.getElementById("modalTitulo");
+const formCategoria = $("formCategoria");
+const modalTitulo = $("modalTitulo");
 
-const nombreCategoria = document.getElementById("nombreCategoria");
-const descripcionCategoria = document.getElementById("descripcionCategoria");
-const edadMinima = document.getElementById("edadMinima");
-const edadMaxima = document.getElementById("edadMaxima");
+const nombreCategoria = $("nombreCategoria");
+const descripcionCategoria = $("descripcionCategoria");
 
-const btnEstadoActivo = document.getElementById("btnEstadoActivo");
-const btnEstadoInactivo = document.getElementById("btnEstadoInactivo");
+const anioNacimientoDesde = $("anioNacimientoDesde");
+const anioNacimientoHasta = $("anioNacimientoHasta");
 
-const btnGuardarCategoria = document.getElementById("btnGuardarCategoria");
+const modalidadCategoria = $("modalidadCategoria");
+const jugadoresEnCancha = $("jugadoresEnCancha");
 
-const toast = document.getElementById("toast");
-const toastIcono = document.getElementById("toastIcono");
-const toastTitulo = document.getElementById("toastTitulo");
-const toastTexto = document.getElementById("toastTexto");
+const edadMinima = $("edadMinima");
+const edadMaxima = $("edadMaxima");
 
+const btnEstadoActivo = $("btnEstadoActivo");
+const btnEstadoInactivo = $("btnEstadoInactivo");
+
+const btnGuardarCategoria = $("btnGuardarCategoria");
+
+const toast = $("toast");
+const toastIcono = $("toastIcono");
+const toastTitulo = $("toastTitulo");
+const toastTexto = $("toastTexto");
 
 let categorias = [];
-
 let categoriaSeleccionada = null;
-
 let estadoSeleccionado = true;
-
 let toastTimer = null;
+let guardando = false;
 
-
-const usuario = await protegerPagina([
-    "admin"
-]);
-
+const usuario = await protegerPagina(["admin"]);
 
 if (usuario) {
-
     cargarAdministrador(usuario);
     activarEventos();
     await cargarCategorias();
-
 }
 
+function cargarAdministrador(datosUsuario) {
+    const nombre = datosUsuario.nombre?.trim() || "Administrador";
 
-function cargarAdministrador(usuario) {
-
-    const nombre =
-        usuario.nombre?.trim() ||
-        "Administrador";
-
-
-    adminInicial.textContent =
-        obtenerInicial(nombre);
-
+    adminInicial.textContent = nombre
+        .charAt(0)
+        .toUpperCase();
 }
-
 
 function activarEventos() {
-
     btnNuevaCategoria.addEventListener(
         "click",
         abrirModalNuevaCategoria
     );
-
 
     buscarCategoria.addEventListener(
         "input",
         aplicarFiltros
     );
 
-
     filtroEstado.addEventListener(
         "change",
         aplicarFiltros
     );
-
 
     btnCerrarModal.addEventListener(
         "click",
         cerrarModal
     );
 
-
     btnCancelarModal.addEventListener(
         "click",
         cerrarModal
     );
 
-
-    modalCategoria.addEventListener(
-        "click",
-        (event) => {
-
-            if (
-                event.target === modalCategoria
-            ) {
-
-                cerrarModal();
-
-            }
-
+    modalCategoria.addEventListener("click", event => {
+        if (event.target === modalCategoria) {
+            cerrarModal();
         }
-    );
+    });
 
+    btnEstadoActivo.addEventListener("click", () => {
+        seleccionarEstado(true);
+    });
 
-    btnEstadoActivo.addEventListener(
-        "click",
-        () => {
-
-            seleccionarEstado(true);
-
-        }
-    );
-
-
-    btnEstadoInactivo.addEventListener(
-        "click",
-        () => {
-
-            seleccionarEstado(false);
-
-        }
-    );
-
+    btnEstadoInactivo.addEventListener("click", () => {
+        seleccionarEstado(false);
+    });
 
     formCategoria.addEventListener(
         "submit",
         guardarCategoria
     );
 
+    nombreCategoria.addEventListener("blur", () => {
+        nombreCategoria.value = limpiarEspacios(
+            nombreCategoria.value
+        );
+    });
 
-    document.addEventListener(
-        "keydown",
-        (event) => {
-
-            if (
-                event.key === "Escape" &&
-                !modalCategoria.classList.contains("oculto")
-            ) {
-
-                cerrarModal();
-
-            }
-
-        }
-    );
-
-
-    const parametros =
-        new URLSearchParams(
-            window.location.search
+    [
+        anioNacimientoDesde,
+        anioNacimientoHasta
+    ].forEach(campo => {
+        campo.addEventListener(
+            "input",
+            validarRangoNacimiento
         );
 
+        campo.addEventListener(
+            "change",
+            validarRangoNacimiento
+        );
+    });
 
-    if (
-        parametros.get("accion") === "nueva"
-    ) {
+    [
+        edadMinima,
+        edadMaxima
+    ].forEach(campo => {
+        campo.addEventListener(
+            "input",
+            validarRangoEdad
+        );
 
+        campo.addEventListener(
+            "change",
+            validarRangoEdad
+        );
+    });
+
+    modalidadCategoria.addEventListener(
+        "change",
+        actualizarAyudaModalidad
+    );
+
+    document.addEventListener("keydown", event => {
+        if (
+            event.key === "Escape" &&
+            !modalCategoria.classList.contains("oculto")
+        ) {
+            cerrarModal();
+        }
+    });
+
+    const parametros = new URLSearchParams(
+        window.location.search
+    );
+
+    if (parametros.get("accion") === "nueva") {
         abrirModalNuevaCategoria();
-
     }
-
 }
 
-
 async function cargarCategorias() {
-
     mostrarCarga();
 
-
     try {
-
-        const referencia =
-            collection(
-                db,
-                "categorias"
-            );
-
+        const referencia = collection(
+            db,
+            "categorias"
+        );
 
         let snapshot;
 
-
         try {
-
-            const consulta =
+            snapshot = await getDocs(
                 query(
                     referencia,
-                    orderBy(
-                        "creadoEn",
-                        "asc"
-                    )
-                );
-
-
-            snapshot =
-                await getDocs(
-                    consulta
-                );
-
+                    orderBy("creadoEn", "asc")
+                )
+            );
         } catch (errorOrden) {
-
-            snapshot =
-                await getDocs(
-                    referencia
-                );
-
+            snapshot = await getDocs(referencia);
         }
 
+        categorias = snapshot.docs.map(documento => ({
+            id: documento.id,
+            ...documento.data()
+        }));
 
-        categorias =
-            snapshot.docs.map(
-                (documento) => {
-
-                    return {
-                        id: documento.id,
-                        ...documento.data()
-                    };
-
-                }
-            );
-
-
-        categorias.sort(
-            (a, b) => {
-
-                const nombreA =
-                    a.nombre || "";
-
-                const nombreB =
-                    b.nombre || "";
-
-
-                return nombreA.localeCompare(
-                    nombreB,
-                    "es"
-                );
-
-            }
-        );
-
-
+        ordenarCategorias();
         actualizarResumen();
         aplicarFiltros();
-
     } catch (error) {
-
         console.error(
             "Error cargando categorías:",
             error
         );
 
+        estadoCarga.classList.add("oculto");
+        gridCategorias.classList.add("oculto");
+        estadoVacio.classList.remove("oculto");
 
-        estadoCarga.classList.add(
-            "oculto"
-        );
-
-
-        gridCategorias.classList.add(
-            "oculto"
-        );
-
-
-        estadoVacio.classList.remove(
-            "oculto"
-        );
-
-
-        estadoVacio.querySelector(
-            "strong"
-        ).textContent =
+        estadoVacio.querySelector("strong").textContent =
             "No pudimos cargar las categorías";
 
-
-        estadoVacio.querySelector(
-            "p"
-        ).textContent =
+        estadoVacio.querySelector("p").textContent =
             "Revisa la conexión con Firebase e intenta nuevamente.";
-
     }
-
 }
-
 
 function mostrarCarga() {
-
-    estadoCarga.classList.remove(
-        "oculto"
-    );
-
-
-    estadoVacio.classList.add(
-        "oculto"
-    );
-
-
-    gridCategorias.classList.add(
-        "oculto"
-    );
-
+    estadoCarga.classList.remove("oculto");
+    estadoVacio.classList.add("oculto");
+    gridCategorias.classList.add("oculto");
 }
 
+function ordenarCategorias() {
+    categorias.sort((a, b) => {
+        return (a.nombre || "").localeCompare(
+            b.nombre || "",
+            "es"
+        );
+    });
+}
 
 function actualizarResumen() {
+    totalCategorias.textContent = categorias.length;
 
-    totalCategorias.textContent =
-        categorias.length;
+    totalActivas.textContent = categorias.filter(
+        categoria => categoria.activo !== false
+    ).length;
 
-
-    totalActivas.textContent =
-        categorias.filter(
-            categoria =>
-                categoria.activo !== false
-        ).length;
-
-
-    totalInactivas.textContent =
-        categorias.filter(
-            categoria =>
-                categoria.activo === false
-        ).length;
-
+    totalInactivas.textContent = categorias.filter(
+        categoria => categoria.activo === false
+    ).length;
 }
-
 
 function aplicarFiltros() {
-
-    const busqueda =
-        normalizarTexto(
-            buscarCategoria.value
-        );
-
-
-    const estado =
-        filtroEstado.value;
-
-
-    const filtradas =
-        categorias.filter(
-            (categoria) => {
-
-                const nombre =
-                    normalizarTexto(
-                        categoria.nombre || ""
-                    );
-
-
-                const descripcion =
-                    normalizarTexto(
-                        categoria.descripcion || ""
-                    );
-
-
-                const coincideBusqueda =
-                    !busqueda ||
-                    nombre.includes(busqueda) ||
-                    descripcion.includes(busqueda);
-
-
-                let coincideEstado = true;
-
-
-                if (estado === "activo") {
-
-                    coincideEstado =
-                        categoria.activo !== false;
-
-                }
-
-
-                if (estado === "inactivo") {
-
-                    coincideEstado =
-                        categoria.activo === false;
-
-                }
-
-
-                return (
-                    coincideBusqueda &&
-                    coincideEstado
-                );
-
-            }
-        );
-
-
-    renderizarCategorias(
-        filtradas
+    const busqueda = normalizarTexto(
+        buscarCategoria.value
     );
 
-}
+    const estado = filtroEstado.value;
 
+    const filtradas = categorias.filter(categoria => {
+        const texto = normalizarTexto(
+            [
+                categoria.nombre || "",
+                categoria.descripcion || "",
+                categoria.modalidad || "",
+                categoria.anioNacimientoDesde ?? "",
+                categoria.anioNacimientoHasta ?? ""
+            ].join(" ")
+        );
+
+        const coincideBusqueda =
+            !busqueda || texto.includes(busqueda);
+
+        let coincideEstado = true;
+
+        if (estado === "activo") {
+            coincideEstado = categoria.activo !== false;
+        }
+
+        if (estado === "inactivo") {
+            coincideEstado = categoria.activo === false;
+        }
+
+        return coincideBusqueda && coincideEstado;
+    });
+
+    renderizarCategorias(filtradas);
+}
 
 function renderizarCategorias(lista) {
-
-    estadoCarga.classList.add(
-        "oculto"
-    );
-
-
-    gridCategorias.innerHTML =
-        "";
-
+    estadoCarga.classList.add("oculto");
+    gridCategorias.innerHTML = "";
 
     if (!lista.length) {
+        gridCategorias.classList.add("oculto");
+        estadoVacio.classList.remove("oculto");
 
-        gridCategorias.classList.add(
-            "oculto"
-        );
+        const hayBusqueda =
+            buscarCategoria.value.trim() ||
+            filtroEstado.value !== "todos";
 
+        estadoVacio.querySelector("strong").textContent =
+            hayBusqueda
+                ? "No encontramos coincidencias"
+                : "No hay categorías";
 
-        estadoVacio.classList.remove(
-            "oculto"
-        );
-
+        estadoVacio.querySelector("p").textContent =
+            hayBusqueda
+                ? "Prueba con otro nombre o cambia los filtros."
+                : "Crea la primera categoría para comenzar a organizar la competencia.";
 
         return;
-
     }
 
+    estadoVacio.classList.add("oculto");
+    gridCategorias.classList.remove("oculto");
 
-    estadoVacio.classList.add(
-        "oculto"
-    );
+    lista.forEach(categoria => {
+        const card = document.createElement("article");
 
+        const activa = categoria.activo !== false;
 
-    gridCategorias.classList.remove(
-        "oculto"
-    );
+        card.className = activa
+            ? "categoria-card"
+            : "categoria-card inactiva";
 
+        const descripcion =
+            categoria.descripcion?.trim() ||
+            "Sin descripción";
 
-    lista.forEach(
-        (categoria) => {
+        const modalidad =
+            categoria.modalidad === "femenil"
+                ? "Femenil"
+                : categoria.modalidad === "general"
+                    ? "General / Mixta"
+                    : "Sin configurar";
 
-            const card =
-                document.createElement(
-                    "article"
-                );
+        const rangoNacimiento = obtenerRangoNacimiento(
+            categoria.anioNacimientoDesde,
+            categoria.anioNacimientoHasta
+        );
 
+        const cantidadCancha = Number(
+            categoria.jugadoresEnCancha
+        );
 
-            const activa =
-                categoria.activo !== false;
+        const cancha =
+            numeroValido(categoria.jugadoresEnCancha) &&
+            [5, 9, 11].includes(cantidadCancha)
+                ? `${cantidadCancha} vs. ${cantidadCancha}`
+                : "Sin configurar";
 
+        card.innerHTML = `
+            <div class="categoria-card-top">
+                <div class="categoria-icono">
+                    🗂️
+                </div>
 
-            card.className =
-                activa
-                    ? "categoria-card"
-                    : "categoria-card inactiva";
+                <span class="categoria-estado ${activa ? "activa" : "inactiva"}">
+                    ${activa ? "Activa" : "Inactiva"}
+                </span>
+            </div>
 
+            <h3>
+                ${escaparHTML(categoria.nombre || "Sin nombre")}
+            </h3>
 
-            const descripcion =
-                categoria.descripcion?.trim() ||
-                "Sin descripción";
+            <p>
+                ${escaparHTML(descripcion)}
+            </p>
 
+            <div class="categoria-meta">
+                <div>
+                    <span>Edad mínima</span>
 
-            card.innerHTML = `
+                    <strong>
+                        ${escaparHTML(formatearEdad(categoria.edadMinima))}
+                    </strong>
+                </div>
 
-                <div class="categoria-card-top">
+                <div>
+                    <span>Edad máxima</span>
 
-                    <div class="categoria-icono">
-                        🗂️
-                    </div>
+                    <strong>
+                        ${escaparHTML(formatearEdad(categoria.edadMaxima))}
+                    </strong>
+                </div>
+            </div>
 
-                    <span class="categoria-estado ${
-                        activa
-                            ? "activa"
-                            : "inactiva"
-                    }">
-
-                        ${
-                            activa
-                                ? "Activa"
-                                : "Inactiva"
-                        }
-
+            <div
+                style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px;"
+            >
+                <div
+                    style="padding:10px;border-radius:10px;background:rgba(11,117,109,.07);"
+                >
+                    <span
+                        style="display:block;color:#68746e;font-size:.68rem;margin-bottom:5px;"
+                    >
+                        Años de nacimiento
                     </span>
 
-                </div>
-
-                <h3>
-                    ${escaparHTML(
-                        categoria.nombre ||
-                        "Sin nombre"
-                    )}
-                </h3>
-
-                <p>
-                    ${escaparHTML(
-                        descripcion
-                    )}
-                </p>
-
-                <div class="categoria-meta">
-
-                    <div>
-
-                        <span>
-                            Edad mínima
-                        </span>
-
-                        <strong>
-                            ${
-                                categoria.edadMinima === null ||
-                                categoria.edadMinima === undefined ||
-                                categoria.edadMinima === ""
-                                    ? "Sin límite"
-                                    : `${categoria.edadMinima} años`
-                            }
-                        </strong>
-
-                    </div>
-
-                    <div>
-
-                        <span>
-                            Edad máxima
-                        </span>
-
-                        <strong>
-                            ${
-                                categoria.edadMaxima === null ||
-                                categoria.edadMaxima === undefined ||
-                                categoria.edadMaxima === ""
-                                    ? "Sin límite"
-                                    : `${categoria.edadMaxima} años`
-                            }
-                        </strong>
-
-                    </div>
-
-                </div>
-
-                <div class="categoria-acciones">
-
-                    <button
-                        type="button"
-                        class="btn-editar-categoria"
-                        data-id="${categoria.id}"
+                    <strong
+                        style="display:block;color:#102b28;font-size:.78rem;"
                     >
-                        Editar
-                    </button>
-
-                    <button
-                        type="button"
-                        class="btn-estado-categoria"
-                        data-id="${categoria.id}"
-                    >
-                        ${
-                            activa
-                                ? "Desactivar"
-                                : "Activar"
-                        }
-                    </button>
-
+                        ${escaparHTML(rangoNacimiento)}
+                    </strong>
                 </div>
 
-            `;
+                <div
+                    style="padding:10px;border-radius:10px;background:rgba(11,117,109,.07);"
+                >
+                    <span
+                        style="display:block;color:#68746e;font-size:.68rem;margin-bottom:5px;"
+                    >
+                        Modalidad
+                    </span>
 
+                    <strong
+                        style="display:block;color:#102b28;font-size:.78rem;"
+                    >
+                        ${escaparHTML(modalidad)}
+                    </strong>
+                </div>
 
-            card.querySelector(
-                ".btn-editar-categoria"
-            ).addEventListener(
-                "click",
-                () => {
+                <div
+                    style="padding:10px;border-radius:10px;background:rgba(11,117,109,.07);"
+                >
+                    <span
+                        style="display:block;color:#68746e;font-size:.68rem;margin-bottom:5px;"
+                    >
+                        Jugadores en cancha
+                    </span>
 
-                    abrirModalEditarCategoria(
-                        categoria.id
-                    );
+                    <strong
+                        style="display:block;color:#102b28;font-size:.78rem;"
+                    >
+                        ${escaparHTML(cancha)}
+                    </strong>
+                </div>
 
-                }
-            );
+                <div
+                    style="padding:10px;border-radius:10px;background:rgba(11,117,109,.07);"
+                >
+                    <span
+                        style="display:block;color:#68746e;font-size:.68rem;margin-bottom:5px;"
+                    >
+                        Límite de plantilla
+                    </span>
 
+                    <strong
+                        style="display:block;color:#102b28;font-size:.72rem;"
+                    >
+                        Configuración general
+                    </strong>
+                </div>
+            </div>
 
-            card.querySelector(
-                ".btn-estado-categoria"
-            ).addEventListener(
-                "click",
-                () => {
+            <div class="categoria-acciones">
+                <button
+                    type="button"
+                    class="btn-editar-categoria"
+                >
+                    Editar
+                </button>
 
-                    cambiarEstadoRapido(
-                        categoria.id
-                    );
+                <button
+                    type="button"
+                    class="btn-estado-categoria"
+                >
+                    ${activa ? "Desactivar" : "Activar"}
+                </button>
+            </div>
+        `;
 
-                }
-            );
+        card.querySelector(
+            ".btn-editar-categoria"
+        ).addEventListener("click", () => {
+            abrirModalEditarCategoria(categoria.id);
+        });
 
+        card.querySelector(
+            ".btn-estado-categoria"
+        ).addEventListener("click", () => {
+            cambiarEstadoRapido(categoria.id);
+        });
 
-            gridCategorias.appendChild(
-                card
-            );
-
-        }
-    );
-
+        gridCategorias.appendChild(card);
+    });
 }
 
-
 function abrirModalNuevaCategoria() {
+    if (guardando) {
+        return;
+    }
 
-    categoriaSeleccionada =
-        null;
-
+    categoriaSeleccionada = null;
 
     modalTitulo.textContent =
         "Nueva categoría";
 
-
     formCategoria.reset();
 
+    modalidadCategoria.value = "general";
+    jugadoresEnCancha.value = "";
 
-    seleccionarEstado(
-        true
-    );
-
+    seleccionarEstado(true);
+    limpiarValidaciones();
+    actualizarAyudaModalidad();
 
     abrirModal();
 
-
-    setTimeout(
-        () => {
-
-            nombreCategoria.focus();
-
-        },
-        100
-    );
-
+    setTimeout(() => {
+        nombreCategoria.focus();
+    }, 100);
 }
 
-
 function abrirModalEditarCategoria(id) {
-
-    const categoria =
-        categorias.find(
-            item =>
-                item.id === id
-        );
-
-
-    if (!categoria) {
+    if (guardando) {
         return;
     }
 
+    const categoria = categorias.find(
+        item => item.id === id
+    );
 
-    categoriaSeleccionada =
-        categoria;
+    if (!categoria) {
+        mostrarToast(
+            "error",
+            "Categoría no encontrada",
+            "No pudimos localizar la categoría seleccionada."
+        );
 
+        return;
+    }
+
+    categoriaSeleccionada = categoria;
 
     modalTitulo.textContent =
         "Editar categoría";
 
-
     nombreCategoria.value =
         categoria.nombre || "";
-
 
     descripcionCategoria.value =
         categoria.descripcion || "";
 
+    anioNacimientoDesde.value =
+        categoria.anioNacimientoDesde ?? "";
+
+    anioNacimientoHasta.value =
+        categoria.anioNacimientoHasta ?? "";
+
+    modalidadCategoria.value =
+        categoria.modalidad === "femenil"
+            ? "femenil"
+            : "general";
+
+    const cancha = Number(
+        categoria.jugadoresEnCancha
+    );
+
+    jugadoresEnCancha.value =
+        numeroValido(categoria.jugadoresEnCancha) &&
+        [5, 9, 11].includes(cancha)
+            ? String(cancha)
+            : "";
 
     edadMinima.value =
         categoria.edadMinima ?? "";
 
-
     edadMaxima.value =
         categoria.edadMaxima ?? "";
-
 
     seleccionarEstado(
         categoria.activo !== false
     );
 
+    limpiarValidaciones();
+    actualizarAyudaModalidad();
 
     abrirModal();
-
 }
 
-
 function abrirModal() {
-
-    modalCategoria.classList.remove(
-        "oculto"
-    );
-
+    modalCategoria.classList.remove("oculto");
 
     document.body.style.overflow =
         "hidden";
-
 }
-
 
 function cerrarModal() {
+    if (guardando) {
+        return;
+    }
 
-    modalCategoria.classList.add(
-        "oculto"
-    );
+    modalCategoria.classList.add("oculto");
 
+    categoriaSeleccionada = null;
 
-    categoriaSeleccionada =
-        null;
-
-
-    document.body.style.overflow =
-        "";
-
+    document.body.style.overflow = "";
 }
 
-
 function seleccionarEstado(activo) {
-
-    estadoSeleccionado =
-        activo;
-
+    estadoSeleccionado = activo;
 
     btnEstadoActivo.classList.toggle(
         "activo",
         activo
     );
 
-
     btnEstadoInactivo.classList.toggle(
         "activo",
         !activo
     );
-
 }
 
+function limpiarValidaciones() {
+    [
+        anioNacimientoDesde,
+        anioNacimientoHasta,
+        edadMinima,
+        edadMaxima
+    ].forEach(campo => {
+        campo.setCustomValidity("");
+    });
+}
 
-async function guardarCategoria(event) {
+function actualizarAyudaModalidad() {
+    const esFemenil =
+        modalidadCategoria.value === "femenil";
 
-    event.preventDefault();
+    modalidadCategoria.title = esFemenil
+        ? "Categoría destinada a equipos femeniles."
+        : "Categoría general o mixta.";
+}
 
+function validarRangoNacimiento() {
+    anioNacimientoDesde.setCustomValidity("");
+    anioNacimientoHasta.setCustomValidity("");
 
-    const nombre =
-        nombreCategoria.value
-            .trim()
-            .replace(/\s+/g, " ");
+    const desde = convertirNumeroOpcional(
+        anioNacimientoDesde.value
+    );
 
+    const hasta = convertirNumeroOpcional(
+        anioNacimientoHasta.value
+    );
 
-    const descripcion =
-        descripcionCategoria.value
-            .trim()
-            .replace(/\s+/g, " ");
-
-
-    const minima =
-        convertirNumeroOpcional(
-            edadMinima.value
-        );
-
-
-    const maxima =
-        convertirNumeroOpcional(
-            edadMaxima.value
-        );
-
-
-    if (!nombre) {
-
-        mostrarToast(
-            "error",
-            "Nombre requerido",
-            "Escribe el nombre de la categoría."
-        );
-
-        return;
-
+    if (desde === null && hasta === null) {
+        return true;
     }
 
+    if (desde === null || hasta === null) {
+        const mensaje =
+            "Debes escribir ambos años de nacimiento.";
+
+        if (desde === null) {
+            anioNacimientoDesde.setCustomValidity(
+                mensaje
+            );
+        } else {
+            anioNacimientoHasta.setCustomValidity(
+                mensaje
+            );
+        }
+
+        return false;
+    }
+
+    if (
+        !Number.isInteger(desde) ||
+        !Number.isInteger(hasta) ||
+        desde < 1900 ||
+        desde > 2100 ||
+        hasta < 1900 ||
+        hasta > 2100 ||
+        desde > hasta
+    ) {
+        anioNacimientoHasta.setCustomValidity(
+            "Revisa el rango: el año inicial debe ser menor o igual al final."
+        );
+
+        return false;
+    }
+
+    return true;
+}
+
+function validarRangoEdad() {
+    edadMinima.setCustomValidity("");
+    edadMaxima.setCustomValidity("");
+
+    const minima = convertirNumeroOpcional(
+        edadMinima.value
+    );
+
+    const maxima = convertirNumeroOpcional(
+        edadMaxima.value
+    );
+
+    if (
+        minima !== null &&
+        (
+            !Number.isInteger(minima) ||
+            minima < 0 ||
+            minima > 100
+        )
+    ) {
+        edadMinima.setCustomValidity(
+            "La edad mínima debe ser un número entero entre 0 y 100."
+        );
+
+        return false;
+    }
+
+    if (
+        maxima !== null &&
+        (
+            !Number.isInteger(maxima) ||
+            maxima < 0 ||
+            maxima > 100
+        )
+    ) {
+        edadMaxima.setCustomValidity(
+            "La edad máxima debe ser un número entero entre 0 y 100."
+        );
+
+        return false;
+    }
 
     if (
         minima !== null &&
         maxima !== null &&
         minima > maxima
     ) {
+        edadMaxima.setCustomValidity(
+            "La edad mínima no puede superar a la máxima."
+        );
+
+        return false;
+    }
+
+    return true;
+}
+
+function obtenerDatosFormulario() {
+    const nombre = limpiarEspacios(
+        nombreCategoria.value
+    );
+
+    const descripcion = limpiarEspacios(
+        descripcionCategoria.value
+    );
+
+    return {
+        nombre,
+        descripcion,
+        edadMinima: convertirNumeroOpcional(
+            edadMinima.value
+        ),
+        edadMaxima: convertirNumeroOpcional(
+            edadMaxima.value
+        ),
+        anioNacimientoDesde: convertirNumeroOpcional(
+            anioNacimientoDesde.value
+        ),
+        anioNacimientoHasta: convertirNumeroOpcional(
+            anioNacimientoHasta.value
+        ),
+        modalidad:
+            modalidadCategoria.value === "femenil"
+                ? "femenil"
+                : "general",
+        jugadoresEnCancha: convertirNumeroOpcional(
+            jugadoresEnCancha.value
+        ),
+        activo: estadoSeleccionado
+    };
+}
+
+function validarDatosCategoria(datos) {
+    if (!datos.nombre) {
+        mostrarToast(
+            "error",
+            "Nombre requerido",
+            "Escribe el nombre de la categoría."
+        );
+
+        nombreCategoria.focus();
+        return false;
+    }
+
+    if (!validarRangoNacimiento()) {
+        const campo = anioNacimientoDesde.validationMessage
+            ? anioNacimientoDesde
+            : anioNacimientoHasta;
+
+        mostrarToast(
+            "error",
+            "Años incorrectos",
+            campo.validationMessage
+        );
+
+        campo.reportValidity();
+        return false;
+    }
+
+    if (!validarRangoEdad()) {
+        const campo = edadMinima.validationMessage
+            ? edadMinima
+            : edadMaxima;
 
         mostrarToast(
             "error",
             "Edades incorrectas",
-            "La edad mínima no puede ser mayor que la edad máxima."
+            campo.validationMessage
         );
 
-        return;
-
+        campo.reportValidity();
+        return false;
     }
 
-
-    const existeNombre =
-        categorias.some(
-            (categoria) => {
-
-                if (
-                    categoriaSeleccionada &&
-                    categoria.id === categoriaSeleccionada.id
-                ) {
-
-                    return false;
-
-                }
-
-
-                return (
-                    normalizarTexto(
-                        categoria.nombre || ""
-                    ) ===
-                    normalizarTexto(
-                        nombre
-                    )
-                );
-
-            }
+    if (
+        datos.jugadoresEnCancha !== null &&
+        ![5, 9, 11].includes(datos.jugadoresEnCancha)
+    ) {
+        mostrarToast(
+            "error",
+            "Jugadores en cancha",
+            "Selecciona 5, 9 u 11 jugadores."
         );
 
+        jugadoresEnCancha.focus();
+        return false;
+    }
+
+    const existeNombre = categorias.some(categoria => {
+        if (
+            categoriaSeleccionada &&
+            categoria.id === categoriaSeleccionada.id
+        ) {
+            return false;
+        }
+
+        return normalizarTexto(categoria.nombre) ===
+            normalizarTexto(datos.nombre);
+    });
 
     if (existeNombre) {
-
         mostrarToast(
             "error",
             "Categoría existente",
             "Ya existe una categoría registrada con ese nombre."
         );
 
-        return;
-
+        nombreCategoria.focus();
+        return false;
     }
 
+    return true;
+}
 
+async function guardarCategoria(event) {
+    event.preventDefault();
+
+    if (guardando) {
+        return;
+    }
+
+    const datos = obtenerDatosFormulario();
+
+    if (!validarDatosCategoria(datos)) {
+        return;
+    }
+
+    guardando = true;
     bloquearGuardado(true);
 
-
     try {
-
         if (categoriaSeleccionada) {
-
-            const datosAnteriores = {
-                nombre:
-                    categoriaSeleccionada.nombre || "",
-                descripcion:
-                    categoriaSeleccionada.descripcion || "",
-                edadMinima:
-                    categoriaSeleccionada.edadMinima ?? null,
-                edadMaxima:
-                    categoriaSeleccionada.edadMaxima ?? null,
-                activo:
-                    categoriaSeleccionada.activo !== false
-            };
-
-
-            const categoriaId =
-                categoriaSeleccionada.id;
-
-
-            const referencia =
-                doc(
-                    db,
-                    "categorias",
-                    categoriaId
-                );
-
-
-            await updateDoc(
-                referencia,
-                {
-                    nombre,
-                    descripcion,
-                    edadMinima: minima,
-                    edadMaxima: maxima,
-                    activo: estadoSeleccionado,
-                    actualizadoEn:
-                        serverTimestamp()
-                }
-            );
-
-
-            categoriaSeleccionada.nombre =
-                nombre;
-
-
-            categoriaSeleccionada.descripcion =
-                descripcion;
-
-
-            categoriaSeleccionada.edadMinima =
-                minima;
-
-
-            categoriaSeleccionada.edadMaxima =
-                maxima;
-
-
-            categoriaSeleccionada.activo =
-                estadoSeleccionado;
-
-
-            const cambios =
-                obtenerCambiosCategoria(
-                    datosAnteriores,
-                    {
-                        nombre,
-                        descripcion,
-                        edadMinima: minima,
-                        edadMaxima: maxima,
-                        activo: estadoSeleccionado
-                    }
-                );
-
-
-            let accion =
-                "categoria_actualizada";
-
-
-            let descripcionAuditoria =
-                `Se actualizó la categoría ${nombre}.`;
-
-
-            if (
-                datosAnteriores.activo !==
-                estadoSeleccionado
-            ) {
-
-                accion =
-                    estadoSeleccionado
-                        ? "categoria_activada"
-                        : "categoria_desactivada";
-
-
-                descripcionAuditoria =
-                    estadoSeleccionado
-                        ? `Se activó la categoría ${nombre}.`
-                        : `Se desactivó la categoría ${nombre}.`;
-
-            } else if (cambios.length) {
-
-                descripcionAuditoria =
-                    `Se actualizó la categoría ${nombre}. Cambios: ${cambios.join(", ")}.`;
-
-            }
-
-
-            await registrarAuditoria({
-                usuarioId:
-                    usuario?.uid || "",
-                usuarioNombre:
-                    usuario?.nombre ||
-                    usuario?.nombreCompleto ||
-                    usuario?.email ||
-                    "Administrador",
-                usuarioRol:
-                    usuario?.rol ||
-                    "admin",
-                modulo:
-                    "categorias",
-                accion,
-                descripcion:
-                    descripcionAuditoria,
-                entidadTipo:
-                    "categoria",
-                entidadId:
-                    categoriaId,
-                entidadNombre:
-                    nombre
-            });
-
-
-            mostrarToast(
-                "exito",
-                "Categoría actualizada",
-                "Los cambios se guardaron correctamente."
-            );
-
+            await actualizarCategoria(datos);
         } else {
-
-            const referencia =
-                collection(
-                    db,
-                    "categorias"
-                );
-
-
-            const documento =
-                await addDoc(
-                    referencia,
-                    {
-                        nombre,
-                        descripcion,
-                        edadMinima: minima,
-                        edadMaxima: maxima,
-                        activo: estadoSeleccionado,
-                        creadoEn:
-                            serverTimestamp(),
-                        actualizadoEn:
-                            serverTimestamp()
-                    }
-                );
-
-
-            categorias.push(
-                {
-                    id: documento.id,
-                    nombre,
-                    descripcion,
-                    edadMinima: minima,
-                    edadMaxima: maxima,
-                    activo: estadoSeleccionado
-                }
-            );
-
-
-            let descripcionAuditoria =
-                `Se creó la categoría ${nombre}.`;
-
-
-            if (
-                minima !== null ||
-                maxima !== null
-            ) {
-
-                descripcionAuditoria +=
-                    ` Rango de edad: ${obtenerRangoEdad(minima, maxima)}.`;
-
-            }
-
-
-            if (!estadoSeleccionado) {
-
-                descripcionAuditoria +=
-                    " Fue registrada como inactiva.";
-
-            }
-
-
-            await registrarAuditoria({
-                usuarioId:
-                    usuario?.uid || "",
-                usuarioNombre:
-                    usuario?.nombre ||
-                    usuario?.nombreCompleto ||
-                    usuario?.email ||
-                    "Administrador",
-                usuarioRol:
-                    usuario?.rol ||
-                    "admin",
-                modulo:
-                    "categorias",
-                accion:
-                    "categoria_creada",
-                descripcion:
-                    descripcionAuditoria,
-                entidadTipo:
-                    "categoria",
-                entidadId:
-                    documento.id,
-                entidadNombre:
-                    nombre
-            });
-
-
-            mostrarToast(
-                "exito",
-                "Categoría creada",
-                "La nueva categoría ya está disponible en el sistema."
-            );
-
+            await crearCategoria(datos);
         }
 
-
-        categorias.sort(
-            (a, b) =>
-                (a.nombre || "").localeCompare(
-                    b.nombre || "",
-                    "es"
-                )
-        );
-
-
+        ordenarCategorias();
         actualizarResumen();
-
         aplicarFiltros();
 
+        guardando = false;
+        bloquearGuardado(false);
+
         cerrarModal();
-
     } catch (error) {
-
         console.error(
             "Error guardando categoría:",
             error
         );
 
-
         mostrarToast(
             "error",
             "No se pudo guardar",
-            "Ocurrió un problema al guardar la categoría."
+            "Ocurrió un problema al guardar la categoría. Intenta nuevamente."
         );
-
     } finally {
-
+        guardando = false;
         bloquearGuardado(false);
-
     }
-
 }
 
+async function actualizarCategoria(datos) {
+    const anterior = categoriaSeleccionada;
+    const categoriaId = anterior.id;
+
+    const datosAnteriores = {
+        ...anterior
+    };
+
+    const referencia = doc(
+        db,
+        "categorias",
+        categoriaId
+    );
+
+    await updateDoc(referencia, {
+        ...datos,
+        actualizadoEn: serverTimestamp()
+    });
+
+    const cambios = obtenerCambiosCategoria(
+        datosAnteriores,
+        datos
+    );
+
+    let accion = "categoria_actualizada";
+
+    let descripcion = cambios.length
+        ? `Se actualizó la categoría ${datos.nombre}. Cambios: ${cambios.join(", ")}.`
+        : `Se guardó la categoría ${datos.nombre} sin cambios en su configuración.`;
+
+    if (
+        datosAnteriores.activo !== datos.activo
+    ) {
+        accion = datos.activo
+            ? "categoria_activada"
+            : "categoria_desactivada";
+
+        descripcion = datos.activo
+            ? `Se activó la categoría ${datos.nombre}.`
+            : `Se desactivó la categoría ${datos.nombre}.`;
+
+        if (cambios.length > 1) {
+            descripcion += ` Otros cambios: ${cambios.join(", ")}.`;
+        }
+    }
+
+    Object.assign(anterior, datos);
+
+    await registrarAuditoriaSegura({
+        usuarioId: usuario?.uid || "",
+        usuarioNombre:
+            usuario?.nombre ||
+            usuario?.nombreCompleto ||
+            usuario?.email ||
+            "Administrador",
+        usuarioRol: usuario?.rol || "admin",
+        modulo: "categorias",
+        accion,
+        descripcion,
+        entidadTipo: "categoria",
+        entidadId: categoriaId,
+        entidadNombre: datos.nombre
+    });
+
+    mostrarToast(
+        "exito",
+        "Categoría actualizada",
+        "Los datos se guardaron correctamente."
+    );
+}
+
+async function crearCategoria(datos) {
+    const referencia = collection(
+        db,
+        "categorias"
+    );
+
+    const documento = await addDoc(
+        referencia,
+        {
+            ...datos,
+            creadoEn: serverTimestamp(),
+            actualizadoEn: serverTimestamp()
+        }
+    );
+
+    categorias.push({
+        id: documento.id,
+        ...datos
+    });
+
+    await registrarAuditoriaSegura({
+        usuarioId: usuario?.uid || "",
+        usuarioNombre:
+            usuario?.nombre ||
+            usuario?.nombreCompleto ||
+            usuario?.email ||
+            "Administrador",
+        usuarioRol: usuario?.rol || "admin",
+        modulo: "categorias",
+        accion: "categoria_creada",
+        descripcion:
+            `Se creó la categoría ${datos.nombre}. ` +
+            `Años de nacimiento: ${obtenerRangoNacimiento(
+                datos.anioNacimientoDesde,
+                datos.anioNacimientoHasta
+            )}. ` +
+            `Modalidad: ${datos.modalidad}. ` +
+            `Jugadores en cancha: ${
+                datos.jugadoresEnCancha ?? "sin configurar"
+            }.`,
+        entidadTipo: "categoria",
+        entidadId: documento.id,
+        entidadNombre: datos.nombre
+    });
+
+    mostrarToast(
+        "exito",
+        "Categoría creada",
+        "La categoría ya está disponible en el sistema."
+    );
+}
 
 async function cambiarEstadoRapido(id) {
+    if (guardando) {
+        return;
+    }
 
-    const categoria =
-        categorias.find(
-            item =>
-                item.id === id
-        );
-
+    const categoria = categorias.find(
+        item => item.id === id
+    );
 
     if (!categoria) {
         return;
     }
 
-
     const nuevoEstado =
-        !(categoria.activo !== false);
+        categoria.activo === false;
 
+    guardando = true;
 
     try {
-
-        const referencia =
+        await updateDoc(
             doc(
                 db,
                 "categorias",
                 categoria.id
-            );
-
-
-        await updateDoc(
-            referencia,
+            ),
             {
                 activo: nuevoEstado,
-                actualizadoEn:
-                    serverTimestamp()
+                actualizadoEn: serverTimestamp()
             }
         );
 
+        categoria.activo = nuevoEstado;
 
-        categoria.activo =
-            nuevoEstado;
-
-
-        await registrarAuditoria({
-            usuarioId:
-                usuario?.uid || "",
+        await registrarAuditoriaSegura({
+            usuarioId: usuario?.uid || "",
             usuarioNombre:
                 usuario?.nombre ||
                 usuario?.nombreCompleto ||
                 usuario?.email ||
                 "Administrador",
-            usuarioRol:
-                usuario?.rol ||
-                "admin",
-            modulo:
-                "categorias",
-            accion:
-                nuevoEstado
-                    ? "categoria_activada"
-                    : "categoria_desactivada",
-            descripcion:
-                nuevoEstado
-                    ? `Se activó la categoría ${categoria.nombre || "Sin nombre"}.`
-                    : `Se desactivó la categoría ${categoria.nombre || "Sin nombre"}.`,
-            entidadTipo:
-                "categoria",
-            entidadId:
-                categoria.id,
-            entidadNombre:
-                categoria.nombre || "Sin nombre"
+            usuarioRol: usuario?.rol || "admin",
+            modulo: "categorias",
+            accion: nuevoEstado
+                ? "categoria_activada"
+                : "categoria_desactivada",
+            descripcion: nuevoEstado
+                ? `Se activó la categoría ${categoria.nombre || "Sin nombre"}.`
+                : `Se desactivó la categoría ${categoria.nombre || "Sin nombre"}.`,
+            entidadTipo: "categoria",
+            entidadId: categoria.id,
+            entidadNombre: categoria.nombre || "Sin nombre"
         });
 
-
         actualizarResumen();
-
         aplicarFiltros();
-
 
         mostrarToast(
             "exito",
@@ -1227,314 +1113,175 @@ async function cambiarEstadoRapido(id) {
                 : "Categoría desactivada",
             nuevoEstado
                 ? "La categoría puede volver a utilizarse."
-                : "La categoría conservará su historial, pero no estará disponible para nuevos registros."
+                : "La categoría conservará su historial."
         );
-
     } catch (error) {
-
         console.error(
             "Error cambiando estado:",
             error
         );
-
 
         mostrarToast(
             "error",
             "No se pudo actualizar",
             "Ocurrió un problema al cambiar el estado de la categoría."
         );
-
+    } finally {
+        guardando = false;
     }
-
 }
 
+function obtenerCambiosCategoria(anterior, nuevo) {
+    const campos = [
+        ["nombre", "nombre"],
+        ["descripcion", "descripción"],
+        ["edadMinima", "edad mínima"],
+        ["edadMaxima", "edad máxima"],
+        ["anioNacimientoDesde", "año inicial de nacimiento"],
+        ["anioNacimientoHasta", "año final de nacimiento"],
+        ["modalidad", "modalidad"],
+        ["jugadoresEnCancha", "jugadores en cancha"],
+        ["activo", "estado"]
+    ];
 
-function obtenerCambiosCategoria(
-    anterior,
-    nuevo
-) {
+    return campos
+        .filter(([campo]) => {
+            const valorAnterior =
+                anterior[campo] ?? null;
 
-    const cambios = [];
+            const valorNuevo =
+                nuevo[campo] ?? null;
 
-
-    if (
-        normalizarTexto(anterior.nombre) !==
-        normalizarTexto(nuevo.nombre)
-    ) {
-
-        cambios.push(
-            `nombre de "${anterior.nombre || "Sin nombre"}" a "${nuevo.nombre || "Sin nombre"}"`
-        );
-
-    }
-
-
-    if (
-        normalizarTexto(anterior.descripcion) !==
-        normalizarTexto(nuevo.descripcion)
-    ) {
-
-        cambios.push(
-            "descripción"
-        );
-
-    }
-
-
-    if (
-        anterior.edadMinima !==
-        nuevo.edadMinima
-    ) {
-
-        cambios.push(
-            `edad mínima de "${formatearEdad(anterior.edadMinima)}" a "${formatearEdad(nuevo.edadMinima)}"`
-        );
-
-    }
-
-
-    if (
-        anterior.edadMaxima !==
-        nuevo.edadMaxima
-    ) {
-
-        cambios.push(
-            `edad máxima de "${formatearEdad(anterior.edadMaxima)}" a "${formatearEdad(nuevo.edadMaxima)}"`
-        );
-
-    }
-
-
-    if (
-        anterior.activo !==
-        nuevo.activo
-    ) {
-
-        cambios.push(
-            `estado de "${anterior.activo ? "Activa" : "Inactiva"}" a "${nuevo.activo ? "Activa" : "Inactiva"}"`
-        );
-
-    }
-
-
-    return cambios;
-
+            return valorAnterior !== valorNuevo;
+        })
+        .map(([, etiqueta]) => etiqueta);
 }
 
+async function registrarAuditoriaSegura(datos) {
+    try {
+        const resultado = await registrarAuditoria(datos);
 
-function obtenerRangoEdad(
-    minima,
-    maxima
-) {
-
-    if (
-        minima !== null &&
-        maxima !== null
-    ) {
-
-        return `${minima} a ${maxima} años`;
-
+        if (resultado?.ok === false) {
+            console.error(
+                "No se pudo completar la auditoría:",
+                resultado.error
+            );
+        }
+    } catch (error) {
+        console.error(
+            "No se pudo registrar la auditoría:",
+            error
+        );
     }
-
-
-    if (minima !== null) {
-
-        return `desde ${minima} años`;
-
-    }
-
-
-    if (maxima !== null) {
-
-        return `hasta ${maxima} años`;
-
-    }
-
-
-    return "sin límite";
-
 }
 
+function obtenerRangoNacimiento(desde, hasta) {
+    const tieneDesde = numeroValido(desde);
+    const tieneHasta = numeroValido(hasta);
 
-function formatearEdad(valor) {
-
-    if (
-        valor === null ||
-        valor === undefined ||
-        valor === ""
-    ) {
-
-        return "Sin límite";
-
+    if (tieneDesde && tieneHasta) {
+        return Number(desde) === Number(hasta)
+            ? String(desde)
+            : `${desde} - ${hasta}`;
     }
 
+    if (tieneDesde) {
+        return `Desde ${desde}`;
+    }
 
-    return `${valor} años`;
+    if (tieneHasta) {
+        return `Hasta ${hasta}`;
+    }
 
+    return "Sin configurar";
 }
 
-
-function bloquearGuardado(bloquear) {
-
-    btnGuardarCategoria.disabled =
-        bloquear;
-
-
-    btnGuardarCategoria.textContent =
-        bloquear
-            ? "Guardando..."
-            : "Guardar categoría";
-
+function numeroValido(valor) {
+    return (
+        valor !== null &&
+        valor !== undefined &&
+        valor !== "" &&
+        Number.isFinite(Number(valor))
+    );
 }
-
 
 function convertirNumeroOpcional(valor) {
-
-    const texto =
-        String(valor).trim();
-
+    const texto = String(valor ?? "").trim();
 
     if (!texto) {
         return null;
     }
 
+    const numero = Number(texto);
 
-    const numero =
-        Number(texto);
-
-
-    if (
-        Number.isNaN(numero)
-    ) {
-
-        return null;
-
-    }
-
-
-    return numero;
-
+    return Number.isFinite(numero)
+        ? numero
+        : null;
 }
 
+function formatearEdad(valor) {
+    return numeroValido(valor)
+        ? `${valor} años`
+        : "Sin límite";
+}
 
-function obtenerInicial(nombre) {
-
-    if (!nombre) {
-        return "A";
-    }
-
-
-    return nombre
+function limpiarEspacios(valor) {
+    return String(valor || "")
         .trim()
-        .charAt(0)
-        .toUpperCase();
-
+        .replace(/\s+/g, " ");
 }
 
-
-function normalizarTexto(texto) {
-
-    return String(texto)
+function normalizarTexto(valor) {
+    return String(valor ?? "")
         .toLowerCase()
         .normalize("NFD")
-        .replace(
-            /[\u0300-\u036f]/g,
-            ""
-        )
+        .replace(/[\u0300-\u036f]/g, "")
         .trim();
-
 }
 
-
-function escaparHTML(texto) {
-
-    return String(texto)
+function escaparHTML(valor) {
+    return String(valor ?? "")
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
-        .replaceAll("\"", "&quot;")
+        .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
-
 }
 
+function bloquearGuardado(bloquear) {
+    btnGuardarCategoria.disabled = bloquear;
 
-function mostrarToast(
-    tipo,
-    titulo,
-    texto
-) {
+    btnGuardarCategoria.textContent = bloquear
+        ? "Guardando..."
+        : "Guardar categoría";
+}
 
-    clearTimeout(
-        toastTimer
-    );
-
+function mostrarToast(tipo, titulo, texto) {
+    clearTimeout(toastTimer);
 
     toastIcono.textContent =
-        tipo === "error"
-            ? "!"
-            : "✓";
+        tipo === "error" ? "!" : "✓";
 
-
-    toastTitulo.textContent =
-        titulo;
-
-
-    toastTexto.textContent =
-        texto;
-
+    toastTitulo.textContent = titulo;
+    toastTexto.textContent = texto;
 
     if (tipo === "error") {
+        toast.style.background = "#fff3f2";
+        toast.style.borderColor = "#f1cbc7";
 
-        toast.style.background =
-            "#fff3f2";
-
-
-        toast.style.borderColor =
-            "#f1cbc7";
-
-
-        toastIcono.style.background =
-            "#fee4e2";
-
-
-        toastIcono.style.color =
-            "#b42318";
-
+        toastIcono.style.background = "#fee4e2";
+        toastIcono.style.color = "#b42318";
     } else {
+        toast.style.background = "#f0faf3";
+        toast.style.borderColor = "#cbe7d5";
 
-        toast.style.background =
-            "#f0faf3";
-
-
-        toast.style.borderColor =
-            "#cbe7d5";
-
-
-        toastIcono.style.background =
-            "#d9f2e1";
-
-
-        toastIcono.style.color =
-            "#18794e";
-
+        toastIcono.style.background = "#d9f2e1";
+        toastIcono.style.color = "#18794e";
     }
 
+    toast.classList.remove("oculto");
 
-    toast.classList.remove(
-        "oculto"
-    );
-
-
-    toastTimer =
-        setTimeout(
-            () => {
-
-                toast.classList.add(
-                    "oculto"
-                );
-
-            },
-            3500
-        );
-
+    toastTimer = setTimeout(() => {
+        toast.classList.add("oculto");
+    }, 3500);
 }

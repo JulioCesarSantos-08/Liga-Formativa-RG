@@ -626,5 +626,55 @@
         src="js/arbitro/arbitro.js"
     ></script>
 
+<script type="module" id="accesoJefeArbitros">
+import { obtenerUsuarioActual } from "./js/roles.js";
+import { db } from "./js/firebase.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+try {
+    const usuario = await obtenerUsuarioActual();
+
+    if (usuario && usuario.activo !== false) {
+        const uid = usuario.firebaseUser?.uid || usuario.uid;
+        const snapshot = await getDoc(
+            doc(db, "configuracionLiga", "general")
+        );
+
+        const designado =
+            usuario.rol === "arbitro" &&
+            !!uid &&
+            snapshot.exists() &&
+            snapshot.data().jefeArbitrosId === uid;
+
+        if (
+            (designado || usuario.rol === "admin") &&
+            !document.getElementById("btnPanelJefeArbitros")
+        ) {
+            const bienvenida = document.querySelector(".bienvenida");
+
+            if (bienvenida) {
+                const enlace = document.createElement("a");
+
+                enlace.id = "btnPanelJefeArbitros";
+                enlace.href = "jefeArbitros.html";
+                enlace.textContent = "Panel del jefe de \u00e1rbitros";
+                enlace.style.cssText =
+                    "display:flex;align-items:center;justify-content:center;" +
+                    "min-height:48px;margin:14px 0;padding:14px;" +
+                    "border-radius:12px;border:1px solid #07574f;" +
+                    "background:#0b756d;color:#fff;font-weight:800;" +
+                    "font-size:.85rem;text-align:center;text-decoration:none;";
+
+                bienvenida.insertAdjacentElement("afterend", enlace);
+            }
+        }
+    }
+} catch (error) {
+    console.error(
+        "No se pudo comprobar el acceso al jefe de arbitros:",
+        error
+    );
+}
+</script>
 </body>
 </html>

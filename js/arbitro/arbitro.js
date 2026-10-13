@@ -1,3 +1,5 @@
+import { exigirDocumentacionArbitro } from "./documentacionArbitro.js";
+
 import {
     collection,
     getDocs
@@ -82,6 +84,8 @@ const usuario = await protegerPagina([
 
 
 if (usuario) {
+
+    await exigirDocumentacionArbitro(usuario);
 
     usuarioActual = usuario;
 

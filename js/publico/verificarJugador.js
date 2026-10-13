@@ -474,7 +474,9 @@ function cargarEstadoCredencial() {
 
 
     estadoJugadorTexto.textContent =
-        "CREDENCIAL VIGENTE";
+        credencialActual.esRefuerzo === true
+            ? "REFUERZO AUTORIZADO"
+            : "CREDENCIAL VIGENTE";
 
 }
 

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Verificar credencial técnica | Liga Río Grande</title>
+    <link rel="icon" href="imagenes/logo.png">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100dvh;
+            display: grid;
+            place-items: center;
+            padding: 22px;
+            background: radial-gradient(
+                circle at top,
+                #dceee5,
+                #f6f0df
+            );
+            font-family: system-ui,sans-serif;
+            color: #153c30;
+        }
+
+        main {
+            width: 100%;
+            max-width: 480px;
+            background: white;
+            border: 1px solid #d7e3da;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 18px 55px #163c3020;
+        }
+
+        header {
+            padding: 25px;
+            text-align: center;
+            background: linear-gradient(130deg,#073d35,#132c48);
+            color: white;
+            border-bottom: 4px solid #d0a34a;
+        }
+
+        header img {
+            width: 82px;
+            height: 82px;
+            object-fit: contain;
+        }
+
+        h1 {
+            font-size: 1.35rem;
+            margin: 12px 0 6px;
+        }
+
+        header p {
+            font-size: .8rem;
+            color: #d2e5dc;
+            margin: 0;
+        }
+
+        .contenido {
+            padding: 24px;
+        }
+
+        .estado {
+            padding: 13px;
+            border-radius: 12px;
+            background: #eef4ef;
+            font-weight: 800;
+            line-height: 1.5;
+            font-size: .9rem;
+        }
+
+        .datos {
+            margin-top: 20px;
+        }
+
+        .fila {
+            padding: 12px 0;
+            border-bottom: 1px solid #e9eee9;
+        }
+
+        .fila span {
+            display: block;
+            font-size: .72rem;
+            color: #637d70;
+            margin-bottom: 5px;
+        }
+
+        .fila strong {
+            font-size: .9rem;
+            overflow-wrap: anywhere;
+        }
+
+        small {
+            display: block;
+            margin-top: 18px;
+            color: #708477;
+            font-size: .72rem;
+            line-height: 1.6;
+        }
+
+        button {
+            padding: 12px;
+            margin-top: 15px;
+            width: 100%;
+            border: 0;
+            border-radius: 12px;
+            background: #0c654e;
+            color: white;
+            font: inherit;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <header>
+            <img
+                src="imagenes/logo.png"
+                alt="Liga Municipal de Fútbol Río Grande"
+            >
+            <h1>Credencial técnica</h1>
+            <p>Liga Municipal · Río Grande, Tututepec, Oaxaca</p>
+        </header>
+
+        <div class="contenido">
+            <div
+                id="estado"
+                class="estado"
+                role="status"
+                aria-live="polite"
+            >
+                Consultando registro…
+            </div>
+
+            <div id="datos" class="datos" hidden>
+                <div class="fila">
+                    <span>NOMBRE</span>
+                    <strong id="nombre"></strong>
+                </div>
+
+                <div class="fila">
+                    <span>CARGO</span><strong id="cargo"></strong></div><div class="fila"><span>EQUIPO / CLUB</span><strong id="equipo"></strong></div><div class="fila"><span>CATEGORÍAS</span><strong id="categorias"></strong>
+                </div>
+
+                <div class="fila">
+                    <span>TEMPORADA</span>
+                    <strong id="temporada"></strong>
+                </div>
+
+                <div class="fila">
+                    <span>FOLIO</span>
+                    <strong id="folio"></strong>
+                </div>
+
+                <div class="fila">
+                    <span>ÚLTIMA EMISIÓN REGISTRADA</span>
+                    <strong id="fecha"></strong>
+                </div>
+            </div>
+
+            <button id="reintentar" type="button" hidden>
+                Reintentar consulta
+            </button>
+
+            <small>
+                Esta consulta muestra el registro de emisión de la credencial.
+                La asignación a partidos y el estado actual de la cuenta
+                se consultan dentro de la liga.
+            </small>
+        </div>
+    </main>
+
+    <script type="module">
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import { db } from "./js/firebase.js";
+
+        const estado = document.getElementById("estado");
+        const datos = document.getElementById("datos");
+        const reintentar = document.getElementById("reintentar");
+
+        const token =
+            new URLSearchParams(location.search).get("v") || "";
+
+        async function consultar() {
+            reintentar.hidden = true;
+            datos.hidden = true;
+            estado.textContent = "Consultando registro…";
+
+            if (!/^[a-f0-9]{32}$/.test(token)) {
+                estado.textContent = "Código de credencial inválido.";
+                return;
+            }
+
+            try {
+                const snapshot = await getDoc(
+                    doc(db, "credencialesTecnicasPublicas", token)
+                );
+
+                if (
+                    !snapshot.exists() ||
+                    !["director","auxiliar"].includes(snapshot.data().tipo)
+                ) {
+                    estado.textContent =
+                        "No se encontró una credencial con este código.";
+
+                    return;
+                }
+
+                const registro = snapshot.data();
+
+                if (registro.estado !== "emitida") {
+                    estado.textContent =
+                        "Esta credencial no tiene una emisión habilitada.";
+
+                    return;
+                }
+
+                document.getElementById("nombre").textContent =
+                    registro.nombre || "Integrante del cuerpo tecnico";
+
+                document.getElementById("cargo").textContent = registro.cargo || "Sin especificar";
+                document.getElementById("equipo").textContent = registro.equipo || "Sin especificar";
+                document.getElementById("categorias").textContent = Array.isArray(registro.categorias) ? registro.categorias.join(", ") : "Sin especificar";
+                document.getElementById("temporada").textContent =
+                    registro.temporada || "Sin especificar";
+
+                document.getElementById("folio").textContent =
+                    registro.folio || "Sin folio";
+
+                const fecha = registro.actualizadoEn?.toDate?.();
+
+                document.getElementById("fecha").textContent = fecha
+                    ? fecha.toLocaleString(
+                        "es-MX",
+                        { timeZone: "America/Mexico_City" }
+                    )
+                    : "Sin fecha registrada";
+
+                estado.textContent =
+                    "Credencial registrada por la liga";
+
+                datos.hidden = false;
+            } catch {
+                estado.textContent =
+                    "No se pudo consultar el registro. Comprueba tu conexión e intenta nuevamente.";
+
+                reintentar.hidden = false;
+            }
+        }
+
+        reintentar.addEventListener("click", consultar);
+        consultar();
+    </script>
+</body>
+</html>

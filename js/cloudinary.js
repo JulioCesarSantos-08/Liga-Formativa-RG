@@ -205,3 +205,44 @@ export async function subirPDFCurp(
     );
 
 }
+
+function carpetaResponsable(tipo) {
+    if (!["arbitros", "entrenadores", "auxiliares"].includes(tipo)) {
+        throw new Error("El tipo de responsable no es valido.");
+    }
+
+    return tipo;
+}
+
+export async function subirFotoResponsable(
+    archivo,
+    tipo = "arbitros"
+) {
+    const carpeta = carpetaResponsable(tipo);
+
+    return subirImagenCloudinary(
+        archivo,
+        carpeta + "/fotos"
+    );
+}
+
+export async function subirCurpResponsable(
+    archivo,
+    tipo = "arbitros"
+) {
+    const carpeta = carpetaResponsable(tipo);
+
+    if (!archivo || archivo.type !== "application/pdf") {
+        throw new Error("El documento de CURP debe ser un archivo PDF.");
+    }
+
+    if (archivo.size > 10 * 1024 * 1024) {
+        throw new Error("El PDF supera el tamano maximo permitido de 10 MB.");
+    }
+
+    return subirArchivoCloudinary(
+        archivo,
+        carpeta + "/curp",
+        "raw"
+    );
+}

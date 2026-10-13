@@ -206,6 +206,8 @@ let equipoVisitante = null;
 
 let jugadores = [];
 
+let prestamosActivosPartido = [];
+
 
 const usuario =
     await protegerPaginaPublica();
@@ -419,11 +421,22 @@ async function cargarDatosRelacionados() {
     );
 
 
+    tareas.push(
+        getDocs(
+            collection(
+                db,
+                "prestamosJugadores"
+            )
+        )
+    );
+
+
     const [
         snapshotLocal,
         snapshotVisitante,
         snapshotCedula,
-        snapshotJugadores
+        snapshotJugadores,
+        snapshotPrestamos
     ] = await Promise.all(
         tareas
     );
@@ -482,6 +495,16 @@ async function cargarDatosRelacionados() {
 
                 ...documento.data()
             })
+        );
+
+    prestamosActivosPartido = snapshotPrestamos.docs
+        .map(documento => ({
+            id: documento.id,
+            ...documento.data()
+        }))
+        .filter(prestamo =>
+            prestamo.activo === true &&
+            String(prestamo.estado || "").trim().toLowerCase() === "activo"
         );
 
 }
@@ -1076,13 +1099,56 @@ function renderizarIncidencias() {
             ""
         ).trim();
 
-
     textoIncidencias.textContent =
         incidencias ||
         "Sin incidencias registradas.";
 
-}
+    const seccionIncidencias =
+        document.getElementById("seccionIncidencias");
 
+    if (!seccionIncidencias) {
+        return;
+    }
+
+    seccionIncidencias
+        .querySelectorAll(".incidencia-reporte-equipo")
+        .forEach(elemento => elemento.remove());
+
+    const reportesEquipo = [
+        {
+            equipo: cedula?.localNombre || "Equipo local",
+            texto: cedula?.reporteEquipoLocal?.texto
+        },
+        {
+            equipo: cedula?.visitanteNombre || "Equipo visitante",
+            texto: cedula?.reporteEquipoVisitante?.texto
+        }
+    ].filter(reporte =>
+        String(reporte.texto || "").trim()
+    );
+
+    reportesEquipo.forEach(reporte => {
+        const tarjeta = document.createElement("article");
+        const icono = document.createElement("div");
+        const contenido = document.createElement("div");
+        const titulo = document.createElement("strong");
+        const texto = document.createElement("p");
+
+        tarjeta.className =
+            "incidencia-card incidencia-reporte-equipo";
+
+        icono.className = "incidencia-icono";
+        icono.textContent = String.fromCodePoint(0x1F4DD);
+
+        titulo.textContent = "Reporte de " + reporte.equipo;
+        texto.textContent = String(reporte.texto).trim();
+
+        contenido.append(titulo, texto);
+        tarjeta.append(icono, contenido);
+        seccionIncidencias.appendChild(tarjeta);
+    });
+
+}
 
 function renderizarAlineaciones() {
 
@@ -1116,149 +1182,96 @@ function renderizarListaJugadores(
     equipoId
 ) {
 
-    contenedor.innerHTML =
-        "";
+    contenedor.innerHTML = "";
 
-
-    const idsPresentes =
-        new Set(
-            presentes.map(
-                valor =>
-                    typeof valor ===
-                    "object"
-                        ? valor.id ||
-                          valor.jugadorId
-                        : valor
-            )
-        );
-
-
-    let lista =
-        jugadores.filter(
-            jugador =>
-                jugador.equipoId ===
-                equipoId
-        );
-
-
-    if (
-        idsPresentes.size > 0
-    ) {
-
-        lista =
-            lista.filter(
-                jugador =>
-                    idsPresentes.has(
-                        jugador.id
-                    )
-            );
-
-    }
-
-
-    lista.sort(
-        (a, b) => {
-
-            const numeroA =
-                Number(
-                    a.numero ??
-                    a.dorsal ??
-                    999
-                );
-
-
-            const numeroB =
-                Number(
-                    b.numero ??
-                    b.dorsal ??
-                    999
-                );
-
-
-            return (
-                numeroA -
-                numeroB
-            );
-
-        }
+    const idsPresentes = new Set(
+        presentes.map(valor =>
+            typeof valor === "object"
+                ? valor.id || valor.jugadorId
+                : valor
+        ).filter(Boolean)
     );
 
+    const propios = jugadores.filter(
+        jugador => jugador.equipoId === equipoId
+    );
+
+    const refuerzos = prestamosActivosPartido
+        .filter(prestamo =>
+            (prestamo.equipoDestinoId || prestamo.equipoId) === equipoId &&
+            prestamo.equipoOrigenId &&
+            prestamo.equipoOrigenId !== equipoId
+        )
+        .map(prestamo => {
+            const jugador = jugadores.find(
+                elemento => elemento.id === prestamo.jugadorId
+            );
+
+            if (
+                !jugador ||
+                jugador.activo === false ||
+                jugador.equipoId !== prestamo.equipoOrigenId ||
+                !idsPresentes.has(jugador.id)
+            ) {
+                return null;
+            }
+
+            return {
+                ...jugador,
+                esRefuerzo: true
+            };
+        })
+        .filter(Boolean);
+
+    const unicos = new Map();
+
+    [...propios, ...refuerzos].forEach(jugador => {
+        if (!unicos.has(jugador.id)) {
+            unicos.set(jugador.id, jugador);
+        }
+    });
+
+    let lista = [...unicos.values()];
+
+    if (idsPresentes.size > 0) {
+        lista = lista.filter(jugador => idsPresentes.has(jugador.id));
+    }
+
+    lista.sort((a, b) => {
+        const numeroA = Number(a.numero ?? a.dorsal ?? 999);
+        const numeroB = Number(b.numero ?? b.dorsal ?? 999);
+        return numeroA - numeroB;
+    });
 
     if (!lista.length) {
-
-        const elemento =
-            document.createElement(
-                "div"
-            );
-
-
-        elemento.style.padding =
-            "14px";
-
-        elemento.style.fontSize =
-            ".72rem";
-
-        elemento.style.color =
-            "#68746e";
-
-        elemento.textContent =
-            "No hay jugadores registrados para mostrar.";
-
-
-        contenedor.appendChild(
-            elemento
-        );
-
+        const elemento = document.createElement("div");
+        elemento.style.padding = "14px";
+        elemento.style.fontSize = ".72rem";
+        elemento.style.color = "#68746e";
+        elemento.textContent = "No hay jugadores registrados para mostrar.";
+        contenedor.appendChild(elemento);
         return;
-
     }
 
+    lista.forEach(jugador => {
+        const enlace = document.createElement("a");
+        enlace.href = "jugador.html?id=" + encodeURIComponent(jugador.id);
 
-    lista.forEach(
-        jugador => {
+        const numero = jugador.numero ?? jugador.dorsal ?? "-";
+        const nombre = jugador.nombreCompleto || jugador.nombre || "Jugador";
+        const etiqueta = jugador.esRefuerzo
+            ? '<small style="margin-left:auto;padding:3px 6px;border-radius:999px;background:#dcecff;color:#1557a4;font-size:.52rem;font-weight:900;white-space:nowrap">REFUERZO AUTORIZADO</small>'
+            : "";
 
-            const enlace =
-                document.createElement(
-                    "a"
-                );
+        enlace.innerHTML =
+            "<span>#" + escaparHTML(numero) + "</span>" +
+            escaparHTML(nombre) +
+            etiqueta;
 
-
-            enlace.href =
-                `jugador.html?id=${encodeURIComponent(
-                    jugador.id
-                )}`;
-
-
-            const numero =
-                jugador.numero ??
-                jugador.dorsal ??
-                "-";
-
-
-            enlace.innerHTML = `
-                <span>
-                    #${escaparHTML(
-                        numero
-                    )}
-                </span>
-
-                ${escaparHTML(
-                    jugador.nombreCompleto ||
-                    jugador.nombre ||
-                    "Jugador"
-                )}
-            `;
-
-
-            contenedor.appendChild(
-                enlace
-            );
-
-        }
-    );
+        contenedor.appendChild(enlace);
+    });
 
 }
-
 
 function obtenerPresentesLocal() {
 

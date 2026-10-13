@@ -1,3 +1,7 @@
+import { crearControlCambios } from "./cambiosCedula.js";
+
+import { crearControlAlineaciones } from "./alineacionesCedula.js";
+
 import {
     doc,
     getDoc,
@@ -266,6 +270,9 @@ const confirmarInformacion =
 const btnGuardarBorrador =
     document.getElementById("btnGuardarBorrador");
 
+const btnImprimirCedula =
+    document.getElementById("btnImprimirCedula");
+
 const btnEnviarCedula =
     document.getElementById("btnEnviarCedula");
 
@@ -359,6 +366,10 @@ let eventosRojas = [];
 let tipoEventoActual = null;
 
 let cedulaEnviada = false;
+
+let controlAlineaciones = null;
+
+let controlCambios = null;
 
 let toastTimer = null;
 
@@ -555,6 +566,16 @@ function activarEventos() {
     );
 
 
+    if (btnImprimirCedula) {
+
+        btnImprimirCedula.addEventListener(
+            "click",
+            () => window.print()
+        );
+
+    }
+
+
     btnEnviarCedula.addEventListener(
         "click",
         prepararEnvioCedula
@@ -734,6 +755,30 @@ async function iniciarCedula() {
 
         await cargarCedulaExistente();
 
+        controlCambios = await crearControlCambios({
+            obtenerAlineaciones: () => controlAlineaciones?.obtenerDatos(),
+            db,
+            partido,
+            jugadoresLocal,
+            jugadoresVisitante,
+            contenedor: contenidoCedula,
+            bloqueada: cedulaEnviada,
+            avisar: mensaje => mostrarToast("error", "Revisa el cambio", mensaje)
+        });
+
+        controlAlineaciones = await crearControlAlineaciones({
+            db,
+            partido,
+            jugadoresLocal,
+            jugadoresVisitante,
+            contenedorLocal: listaJugadoresLocal,
+            contenedorVisitante: listaJugadoresVisitante,
+            bloqueada: cedulaEnviada,
+            avisar: mensaje => mostrarToast("error", "Revisa la alineacion", mensaje)
+        });
+
+        controlCambios.actualizar();
+
 
         renderizarTodo();
 
@@ -877,75 +922,119 @@ async function cargarEquipos() {
 
 async function cargarJugadores() {
 
-    const snapshot =
-        await getDocs(
-            collection(
-                db,
-                "jugadores"
+    const [snapshotJugadores, snapshotPrestamos] =
+        await Promise.all([
+            getDocs(
+                collection(
+                    db,
+                    "jugadores"
+                )
+            ),
+            getDocs(
+                collection(
+                    db,
+                    "prestamosJugadores"
+                )
             )
-        );
-
+        ]);
 
     const todos =
-        snapshot.docs.map(
+        snapshotJugadores.docs.map(
             documento => ({
-                id:
-                    documento.id,
-
+                id: documento.id,
                 ...documento.data()
             })
         );
 
+    const prestamosActivos =
+        snapshotPrestamos.docs
+            .map(documento => ({
+                id: documento.id,
+                ...documento.data()
+            }))
+            .filter(prestamo =>
+                prestamo.activo === true &&
+                String(prestamo.estado || "")
+                    .trim()
+                    .toLowerCase() === "activo"
+            );
 
     const presentesLocal =
         new Set(
-            Array.isArray(
-                asistencia.presentesLocal
-            )
+            Array.isArray(asistencia.presentesLocal)
                 ? asistencia.presentesLocal
                 : []
         );
 
-
     const presentesVisitante =
         new Set(
-            Array.isArray(
-                asistencia.presentesVisitante
-            )
+            Array.isArray(asistencia.presentesVisitante)
                 ? asistencia.presentesVisitante
                 : []
         );
 
+    const construirPlantilla = (equipoId, presentes) => {
+        const propios = todos.filter(
+            jugador =>
+                jugador.equipoId === equipoId &&
+                presentes.has(jugador.id)
+        );
 
-    jugadoresLocal =
-        todos
-            .filter(
-                jugador =>
-                    jugador.equipoId ===
-                        partido.localId &&
-                    presentesLocal.has(
-                        jugador.id
-                    )
+        const idsPropios = new Set(
+            propios.map(jugador => jugador.id)
+        );
+
+        const refuerzos = prestamosActivos
+            .filter(prestamo =>
+                (prestamo.equipoDestinoId || prestamo.equipoId) === equipoId &&
+                prestamo.equipoOrigenId &&
+                prestamo.equipoOrigenId !== equipoId
             )
-            .sort(
-                ordenarJugadores
-            );
+            .map(prestamo => {
+                const jugador = todos.find(
+                    elemento => elemento.id === prestamo.jugadorId
+                );
 
+                if (
+                    !jugador ||
+                    jugador.activo === false ||
+                    jugador.equipoId !== prestamo.equipoOrigenId ||
+                    !presentes.has(jugador.id) ||
+                    idsPropios.has(jugador.id)
+                ) {
+                    return null;
+                }
 
-    jugadoresVisitante =
-        todos
-            .filter(
-                jugador =>
-                    jugador.equipoId ===
-                        partido.visitanteId &&
-                    presentesVisitante.has(
-                        jugador.id
-                    )
-            )
-            .sort(
-                ordenarJugadores
-            );
+                return {
+                    ...jugador,
+                    esRefuerzo: true,
+                    prestamoId: prestamo.id,
+                    equipoOrigenPrestamoId: prestamo.equipoOrigenId,
+                    equipoOrigenPrestamoNombre: prestamo.equipoOrigenNombre || ""
+                };
+            })
+            .filter(Boolean);
 
+        const unicos = new Map();
+
+        [...propios, ...refuerzos].forEach(jugador => {
+            if (!unicos.has(jugador.id)) {
+                unicos.set(jugador.id, jugador);
+            }
+        });
+
+        return [...unicos.values()].sort(ordenarJugadores);
+    };
+
+    jugadoresLocal = construirPlantilla(
+        partido.localId,
+        presentesLocal
+    );
+
+    jugadoresVisitante = construirPlantilla(
+        partido.visitanteId,
+        presentesVisitante
+    );
 
     jugadores = [
         ...jugadoresLocal,
@@ -953,7 +1042,6 @@ async function cargarJugadores() {
     ];
 
 }
-
 
 function cargarInformacionPartido() {
 
@@ -1168,7 +1256,7 @@ function renderizarPlantilla(
                 </span>
 
                 <strong>
-                    ${escaparHTML(nombre)}
+                    ${escaparHTML(nombre)}${jugador.esRefuerzo ? " (REFUERZO AUTORIZADO)" : ""}
                 </strong>
 
             `;
@@ -2328,6 +2416,26 @@ function prepararEnvioCedula() {
 
 function validarCedula() {
 
+    if (!controlCambios) {
+        return {
+            ok: false,
+            mensaje: "Espera a que termine de cargar el registro de cambios."
+        };
+    }
+
+    const validacionCambios = controlCambios.validar();
+    if (!validacionCambios.ok) return validacionCambios;
+
+    if (!controlAlineaciones) {
+        return {
+            ok: false,
+            mensaje: "Espera a que termine de cargar la alineacion."
+        };
+    }
+
+    const validacionAlineacion = controlAlineaciones.validar();
+    if (!validacionAlineacion.ok) return validacionAlineacion;
+
     const marcadorLocal =
         numeroSeguro(
             golesLocal.value
@@ -2971,6 +3079,10 @@ function construirDatosCedula(
 
     return {
 
+        alineaciones: controlAlineaciones.obtenerDatos(),
+
+        cambios: controlCambios.obtenerDatos(),
+
         partidoId:
             partido.id,
 
@@ -3285,6 +3397,10 @@ function construirDatosCedula(
 
 
 function bloquearCedula() {
+
+    controlAlineaciones?.bloquear();
+
+    controlCambios?.bloquear();
 
     const campos =
         contenidoCedula.querySelectorAll(

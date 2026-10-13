@@ -1,13 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b756d">
 
     <title>Categorías | Liga Deportiva Río Grande</title>
 
     <link rel="icon" href="imagenes/logo.png">
-
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/adminCategorias.css">
 </head>
@@ -41,7 +42,6 @@
 
             </div>
 
-
             <div class="topbar-right">
 
                 <a
@@ -63,7 +63,6 @@
 
         </header>
 
-
         <main class="contenido-admin">
 
             <section class="encabezado-pagina">
@@ -74,17 +73,15 @@
                         COMPETENCIA
                     </span>
 
-                    <h1>
-                        Categorías
-                    </h1>
+                    <h1>Categorías</h1>
 
                     <p>
-                        Crea y administra las categorías oficiales
-                        que participan en la liga.
+                        Administra las categorías oficiales,
+                        los años de nacimiento y las modalidades
+                        deportivas de la liga.
                     </p>
 
                 </div>
-
 
                 <button
                     type="button"
@@ -95,7 +92,6 @@
                 </button>
 
             </section>
-
 
             <section class="resumen-categorias">
 
@@ -112,7 +108,6 @@
 
                 </article>
 
-
                 <article class="resumen-card">
 
                     <div class="resumen-icono">
@@ -125,7 +120,6 @@
                     </div>
 
                 </article>
-
 
                 <article class="resumen-card">
 
@@ -141,7 +135,6 @@
                 </article>
 
             </section>
-
 
             <section class="panel-categorias">
 
@@ -162,40 +155,27 @@
 
                     </div>
 
-
                     <select
                         id="filtroEstado"
                         class="select-filtro"
                     >
-                        <option value="todos">
-                            Todas
-                        </option>
-
-                        <option value="activo">
-                            Activas
-                        </option>
-
-                        <option value="inactivo">
-                            Inactivas
-                        </option>
+                        <option value="todos">Todas</option>
+                        <option value="activo">Activas</option>
+                        <option value="inactivo">Inactivas</option>
                     </select>
 
                 </div>
-
 
                 <div
                     id="estadoCarga"
                     class="estado-carga"
                 >
-
                     <div class="spinner"></div>
 
                     <span>
                         Cargando categorías...
                     </span>
-
                 </div>
-
 
                 <div
                     id="estadoVacio"
@@ -217,7 +197,6 @@
 
                 </div>
 
-
                 <div
                     id="gridCategorias"
                     class="grid-categorias oculto"
@@ -229,7 +208,6 @@
 
     </div>
 
-
     <div
         id="modalCategoria"
         class="modal-overlay oculto"
@@ -240,6 +218,7 @@
             role="dialog"
             aria-modal="true"
             aria-labelledby="modalTitulo"
+            style="max-height:92dvh;overflow-y:auto;overscroll-behavior:contain;"
         >
 
             <div class="modal-header">
@@ -247,7 +226,7 @@
                 <div>
 
                     <span class="modal-mini">
-                        CATEGORÍA
+                        CONFIGURACIÓN DEPORTIVA
                     </span>
 
                     <h2 id="modalTitulo">
@@ -255,7 +234,6 @@
                     </h2>
 
                 </div>
-
 
                 <button
                     type="button"
@@ -268,7 +246,6 @@
 
             </div>
 
-
             <form id="formCategoria">
 
                 <div class="form-grupo">
@@ -280,13 +257,12 @@
                     <input
                         type="text"
                         id="nombreCategoria"
-                        placeholder="Ej. Categoría Libre"
+                        placeholder="Ej. Femenil Secundaria"
                         maxlength="80"
                         required
                     >
 
                 </div>
-
 
                 <div class="form-grupo">
 
@@ -296,13 +272,192 @@
 
                     <textarea
                         id="descripcionCategoria"
-                        rows="4"
+                        rows="3"
                         maxlength="250"
                         placeholder="Descripción opcional de la categoría..."
                     ></textarea>
 
                 </div>
 
+                <div
+                    style="margin:22px 0 14px;padding:12px 14px;border-radius:12px;background:#e1eee8;border:1px solid #a9ccc0;"
+                >
+
+                    <strong
+                        style="display:block;color:#07574f;font-size:.9rem;"
+                    >
+                        📅 Años de nacimiento
+                    </strong>
+
+                    <small
+                        style="display:block;margin-top:5px;color:#465f57;line-height:1.5;"
+                    >
+                        Establece los años de nacimiento oficiales
+                        para los jugadores de esta categoría.
+                    </small>
+
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="form-grupo">
+
+                        <label for="anioNacimientoDesde">
+                            Año inicial
+                        </label>
+
+                        <input
+                            type="number"
+                            id="anioNacimientoDesde"
+                            min="1900"
+                            max="2100"
+                            step="1"
+                            inputmode="numeric"
+                            placeholder="Ej. 2013"
+                        >
+
+                    </div>
+
+                    <div class="form-grupo">
+
+                        <label for="anioNacimientoHasta">
+                            Año final
+                        </label>
+
+                        <input
+                            type="number"
+                            id="anioNacimientoHasta"
+                            min="1900"
+                            max="2100"
+                            step="1"
+                            inputmode="numeric"
+                            placeholder="Ej. 2014"
+                        >
+
+                    </div>
+
+                </div>
+
+                <div class="aviso-categoria">
+
+                    <span>ℹ️</span>
+
+                    <p>
+                        Se utilizará la fecha de nacimiento de los
+                        jugadores para comprobar su elegibilidad.
+                        Las excepciones reglamentarias se
+                        administrarán por separado.
+                    </p>
+
+                </div>
+
+                <div
+                    style="margin:22px 0 14px;padding:12px 14px;border-radius:12px;background:#e1eee8;border:1px solid #a9ccc0;"
+                >
+
+                    <strong
+                        style="display:block;color:#07574f;font-size:.9rem;"
+                    >
+                        ⚽ Modalidad deportiva
+                    </strong>
+
+                    <small
+                        style="display:block;margin-top:5px;color:#465f57;line-height:1.5;"
+                    >
+                        Selecciona el tipo de competencia y la
+                        cantidad reglamentaria de jugadores en cancha.
+                    </small>
+
+                </div>
+
+                <div class="form-grupo">
+
+                    <label for="modalidadCategoria">
+                        Modalidad
+                    </label>
+
+                    <select
+                        id="modalidadCategoria"
+                        style="width:100%;min-height:46px;padding:10px;border:1px solid #bba87b;border-radius:10px;background:#fff8e8;color:#213732;font:inherit;"
+                    >
+
+                        <option value="general">
+                            General / Mixta
+                        </option>
+
+                        <option value="femenil">
+                            Femenil
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-grupo">
+
+                    <label for="jugadoresEnCancha">
+                        Jugadores por equipo en cancha
+                    </label>
+
+                    <select
+                        id="jugadoresEnCancha"
+                        style="width:100%;min-height:46px;padding:10px;border:1px solid #bba87b;border-radius:10px;background:#fff8e8;color:#213732;font:inherit;"
+                    >
+
+                        <option value="">
+                            Sin configurar
+                        </option>
+
+                        <option value="5">
+                            5 vs. 5
+                        </option>
+
+                        <option value="9">
+                            9 vs. 9
+                        </option>
+
+                        <option value="11">
+                            11 vs. 11
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="aviso-categoria">
+
+                    <span>⚙️</span>
+
+                    <p>
+                        El máximo de jugadores registrados por equipo
+                        no se configura aquí. Se controla desde
+                        Administración → Configuración → Inscripciones.
+                        Los equipos con plantillas congeladas
+                        conservarán su límite correspondiente.
+                    </p>
+
+                </div>
+
+                <div
+                    style="margin:22px 0 14px;padding:12px 14px;border-radius:12px;background:#e1eee8;border:1px solid #a9ccc0;"
+                >
+
+                    <strong
+                        style="display:block;color:#07574f;font-size:.9rem;"
+                    >
+                        🧒 Compatibilidad de edades
+                    </strong>
+
+                    <small
+                        style="display:block;margin-top:5px;color:#465f57;line-height:1.5;"
+                    >
+                        Estos datos se conservan porque otros
+                        módulos actuales del sistema todavía
+                        los utilizan. Los años de nacimiento
+                        serán la nueva referencia reglamentaria.
+                    </small>
+
+                </div>
 
                 <div class="form-grid">
 
@@ -317,11 +472,10 @@
                             id="edadMinima"
                             min="0"
                             max="100"
-                            placeholder="Ej. 18"
+                            placeholder="Opcional"
                         >
 
                     </div>
-
 
                     <div class="form-grupo">
 
@@ -341,7 +495,6 @@
 
                 </div>
 
-
                 <div class="form-grupo">
 
                     <label>
@@ -360,7 +513,6 @@
                             Activa
                         </button>
 
-
                         <button
                             type="button"
                             id="btnEstadoInactivo"
@@ -375,21 +527,18 @@
 
                 </div>
 
-
                 <div class="aviso-categoria">
 
-                    <span>
-                        ℹ️
-                    </span>
+                    <span>ℹ️</span>
 
                     <p>
-                        Una categoría inactiva seguirá conservando
-                        su historial, pero no podrá utilizarse para
-                        nuevos equipos o partidos.
+                        Las categorías inactivas conservan sus
+                        registros históricos, pero dejan de
+                        estar disponibles para nuevos equipos
+                        o partidos.
                     </p>
 
                 </div>
-
 
                 <div class="modal-acciones">
 
@@ -417,7 +566,6 @@
 
     </div>
 
-
     <div
         id="toast"
         class="toast oculto"
@@ -440,7 +588,6 @@
         </div>
 
     </div>
-
 
     <script
         type="module"

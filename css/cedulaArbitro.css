@@ -2336,3 +2336,142 @@ button{
     }
 
 }
+
+@page {
+    size: letter portrait;
+    margin: 10mm;
+}
+
+@media print {
+
+    *,
+    *::before,
+    *::after {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    html,
+    body {
+        width: 100% !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        background: #ffffff !important;
+        color: #16231f !important;
+    }
+
+    .cedula-page {
+        min-height: 0 !important;
+        background: #ffffff !important;
+    }
+
+    .topbar {
+        position: static !important;
+        min-height: 0 !important;
+        padding: 0 0 5mm !important;
+        border-bottom: 1px solid #0b756d !important;
+        background: #ffffff !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+    }
+
+    .topbar::after,
+    .partido-hero::after {
+        display: none !important;
+    }
+
+    #btnVolverPartido,
+    #btnImprimirCedula,
+    .acciones-finales,
+    .aviso-envio,
+    .estado-carga,
+    .estado-error,
+    .modal-overlay,
+    .toast,
+    .btn-agregar,
+    .btn-eliminar-evento,
+    .btn-cerrar-modal,
+    .modal-acciones {
+        display: none !important;
+    }
+
+    .contenido {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 5mm 0 0 !important;
+    }
+
+    .contenido-cedula {
+        gap: 4mm !important;
+    }
+
+    .partido-hero {
+        overflow: visible !important;
+        padding: 5mm !important;
+        border-radius: 3mm !important;
+        background: #0b756d !important;
+        color: #ffffff !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .hero-logo,
+    .hero-logo img,
+    .topbar-logo {
+        print-color-adjust: exact !important;
+    }
+
+    .cedula-bloque,
+    .resumen-cedula,
+    .certificacion-cedula {
+        padding: 4mm !important;
+        border: 1px solid #cbd5d1 !important;
+        border-radius: 2mm !important;
+        background: #ffffff !important;
+        box-shadow: none !important;
+        break-inside: auto;
+        page-break-inside: auto;
+    }
+
+    .seccion-header {
+        break-after: avoid;
+        page-break-after: avoid;
+    }
+
+    .plantilla-equipo,
+    .evento-card,
+    .tiempo-card,
+    .jugador-cedula-item {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        box-shadow: none !important;
+    }
+
+    .form-grid,
+    .plantillas-cedula,
+    .tiempos-grid,
+    .cuerpo-tecnico-grid,
+    .conducta-grid {
+        gap: 3mm !important;
+    }
+
+    .form-grupo input:not([type="checkbox"]):not([type="radio"]),
+    .form-grupo select,
+    .form-grupo textarea {
+        border: 1px solid #cbd5d1 !important;
+        background: #ffffff !important;
+        color: #16231f !important;
+        box-shadow: none !important;
+    }
+
+    .oculto {
+        display: none !important;
+    }
+
+    a {
+        color: inherit !important;
+        text-decoration: none !important;
+    }
+}

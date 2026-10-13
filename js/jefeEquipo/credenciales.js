@@ -1,3 +1,8 @@
+import { cargarJugadoresConRefuerzos, prepararCredencialRefuerzo, verificarRefuerzosAntesDeImprimir, marcarCredencialRefuerzo } from "./credencialesRefuerzos.js";
+import { aplicarDistintivoRefuerzo } from "./distintivoRefuerzo.js";
+
+import { aplicarDistintivoJornada5 } from "./distintivoJornada5.js";
+
 import {
     collection,
     getDocs,
@@ -169,9 +174,10 @@ async function iniciar() {
         validarAccesoEquipo();
 
 
+        await cargarTemporadaActual();
+
         await Promise.all([
             cargarJugadores(),
-            cargarTemporadaActual(),
             cargarLibreriaQr()
         ]);
 
@@ -341,35 +347,13 @@ function validarAccesoEquipo() {
 
 
 async function cargarJugadores() {
+    jugadores = await cargarJugadoresConRefuerzos(
+        equipoActual,
+        temporadaActual
+    );
 
-    const snapshot =
-        await getDocs(
-            collection(
-                db,
-                "jugadores"
-            )
-        );
-
-
-    jugadores =
-        snapshot.docs
-            .map(
-                documento => ({
-                    id: documento.id,
-                    ...documento.data()
-                })
-            )
-            .filter(
-                jugador =>
-                    jugador.equipoId ===
-                    equipoActual.id
-            )
-            .sort(
-                ordenarJugadores
-            );
-
+    jugadores.sort(ordenarJugadores);
 }
-
 
 async function cargarTemporadaActual() {
 
@@ -799,6 +783,10 @@ function crearCredencial(
         jugador
     );
 
+
+    aplicarDistintivoJornada5(credencial, jugador);
+
+    aplicarDistintivoRefuerzo(credencial, jugador);
 
     return credencial;
 
@@ -1259,6 +1247,15 @@ function mostrarQrNoDisponible(
 async function prepararCredencialesPublicas() {
 
     for (const jugador of jugadores) {
+        if (jugador.esRefuerzo) {
+            await prepararCredencialRefuerzo(
+                jugador,
+                equipoActual,
+                temporadaActual
+            );
+            continue;
+        }
+
 
         let token =
             String(
@@ -1560,6 +1557,12 @@ async function imprimirCredenciales() {
 
     try {
 
+        await verificarRefuerzosAntesDeImprimir(
+            lista,
+            equipoActual,
+            temporadaActual
+        );
+
         await esperarImagenes();
 
 
@@ -1628,69 +1631,43 @@ async function imprimirCredenciales() {
 }
 
 
-async function marcarCredencialesGeneradas(
-    lista
-) {
+async function marcarCredencialesGeneradas(lista) {
+    const actualizaciones = lista.map(jugador => {
+        if (jugador.esRefuerzo) {
+            return marcarCredencialRefuerzo(
+                jugador,
+                equipoActual,
+                temporadaActual,
+                obtenerUrlVerificacion(jugador)
+            );
+        }
 
-    const actualizaciones =
-        lista.map(
-            jugador =>
-                updateDoc(
-                    doc(
-                        db,
-                        "jugadores",
-                        jugador.id
-                    ),
-                    {
-                        credencialGenerada:
-                            true,
-
-                        credencialGeneradaEn:
-                            serverTimestamp(),
-
-                        credencialUrlVerificacion:
-                            obtenerUrlVerificacion(
-                                jugador
-                            )
-                    }
-                )
-        );
-
-
-    if (!actualizaciones.length) {
-
-        return;
-
-    }
-
-
-    try {
-
-        await Promise.all(
-            actualizaciones
-        );
-
-
-        lista.forEach(
-            jugador => {
-
-                jugador.credencialGenerada =
-                    true;
-
+        return updateDoc(
+            doc(db, "jugadores", jugador.id),
+            {
+                credencialGenerada: true,
+                credencialGeneradaEn: serverTimestamp(),
+                credencialUrlVerificacion:
+                    obtenerUrlVerificacion(jugador)
             }
         );
+    });
 
+    if (!actualizaciones.length) return;
+
+    try {
+        await Promise.all(actualizaciones);
+
+        lista.forEach(jugador => {
+            jugador.credencialGenerada = true;
+        });
     } catch (error) {
-
         console.warn(
             "No se pudo actualizar el estado de algunas credenciales:",
             error
         );
-
     }
-
 }
-
 
 async function esperarImagenes() {
 

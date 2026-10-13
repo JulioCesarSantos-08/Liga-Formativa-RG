@@ -22,6 +22,12 @@ import {
     registrarAuditoria
 } from "../auditoria.js";
 
+import { prepararDatosEdicionJugador } from "./datosEdicionJugador.js";
+
+import {
+    aprobarPrestamoJugador
+} from "./aprobarPrestamoJugador.js";
+
 const estadoCarga =
     document.getElementById("estadoCarga");
 
@@ -1381,61 +1387,203 @@ function crearDetalleEdicion(
         solicitud.nombreEquipo ||
         "Sin especificar";
 
-    const campo =
-        solicitud.campo ||
-        solicitud.campoModificado ||
-        "Información";
-
-    const actual =
-        solicitud.valorActual ??
-        solicitud.datoActual ??
-        "-";
-
-    const nuevo =
-        solicitud.valorNuevo ??
-        solicitud.datoNuevo ??
-        "-";
-
     const motivo =
         solicitud.motivo ||
         "Sin motivo especificado";
+
+    const anteriores =
+        solicitud.datosAnteriores &&
+        typeof solicitud.datosAnteriores === "object"
+            ? solicitud.datosAnteriores
+            : {};
+
+    const nuevos =
+        solicitud.datosNuevos &&
+        typeof solicitud.datosNuevos === "object"
+            ? solicitud.datosNuevos
+            : {};
+
+    const etiquetas = {
+        nombre: "Nombre",
+        nombreCompleto: "Nombre completo",
+        sexo: "Sexo",
+        curpArchivoUrl: "Documento CURP",
+        curpArchivoPublicId: "Archivo CURP",
+        fotoPublicId: "Archivo de fotograf?a",
+        curp: "CURP",
+        fechaNacimiento: "Fecha de nacimiento",
+        numero: "Número / dorsal",
+        dorsal: "Número / dorsal",
+        telefono: "Teléfono",
+        posicion: "Posición",
+        observaciones: "Observaciones",
+        fotoUrl: "Fotografía",
+        curpUrl: "Documento CURP",
+        categoriaId: "Categoría",
+        categoriaNombre: "Categoría",
+        equipoId: "Equipo",
+        equipoNombre: "Equipo"
+    };
+
+    const ignorar = new Set([
+        "actualizadoEn",
+        "actualizadoPor",
+        "actualizadoPorNombre",
+        "creadoEn",
+        "creadoPor",
+        "creadoPorNombre"
+    ]);
+
+    const claves =
+        Array.from(
+            new Set([
+                ...Object.keys(anteriores),
+                ...Object.keys(nuevos)
+            ])
+        );
+
+    const cambios =
+        claves.filter(
+            clave => {
+                if (ignorar.has(clave)) {
+                    return false;
+                }
+
+                const anterior =
+                    anteriores[clave] ?? "";
+
+                const nuevo =
+                    nuevos[clave] ?? "";
+
+                return String(anterior) !==
+                    String(nuevo);
+            }
+        );
+
+    const formatearValor =
+        valor => {
+            if (
+                valor === null ||
+                valor === undefined ||
+                valor === ""
+            ) {
+                return "Sin información";
+            }
+
+            if (valor === true) {
+                return "Sí";
+            }
+
+            if (valor === false) {
+                return "No";
+            }
+
+            if (
+                typeof valor === "object"
+            ) {
+                return "Información actualizada";
+            }
+
+            return String(valor);
+        };
+
+    let htmlCambios = "";
+
+    if (cambios.length) {
+        htmlCambios =
+            cambios.map(
+                clave => {
+                    const etiqueta =
+                        etiquetas[clave] ||
+                        clave
+                            .replace(
+                                /([A-Z])/g,
+                                " $1"
+                            )
+                            .replace(
+                                /^./,
+                                texto =>
+                                    texto.toUpperCase()
+                            );
+
+                    const anterior =
+                        formatearValor(
+                            anteriores[clave]
+                        );
+
+                    const nuevo =
+                        formatearValor(
+                            nuevos[clave]
+                        );
+
+                    return `
+                        <div class="solicitud-detalle" style="margin-top:13px;">
+                            <span>
+                                ${escaparHtml(etiqueta)}
+                            </span>
+
+                            <div class="cambio-comparacion">
+
+                                <div class="cambio-valor">
+                                    <span>Actual</span>
+                                    <strong>
+                                        ${escaparHtml(anterior)}
+                                    </strong>
+                                </div>
+
+                                <div class="cambio-flecha">
+                                    →
+                                </div>
+
+                                <div class="cambio-valor">
+                                    <span>Solicitado</span>
+                                    <strong>
+                                        ${escaparHtml(nuevo)}
+                                    </strong>
+                                </div>
+
+                            </div>
+                        </div>
+                    `;
+                }
+            ).join("");
+    } else {
+        htmlCambios = `
+            <div class="solicitud-detalle" style="margin-top:13px;">
+                <span>Cambios solicitados</span>
+                <strong>
+                    No se detectaron diferencias en la información.
+                </strong>
+            </div>
+        `;
+    }
 
     return `
         <div class="solicitud-detalle-grid">
 
             <div class="solicitud-detalle">
                 <span>Equipo</span>
-                <strong>${escaparHtml(equipo)}</strong>
+                <strong>
+                    ${escaparHtml(equipo)}
+                </strong>
             </div>
 
             <div class="solicitud-detalle">
-                <span>Campo solicitado</span>
-                <strong>${escaparHtml(campo)}</strong>
+                <span>Cambios detectados</span>
+                <strong>
+                    ${cambios.length}
+                </strong>
             </div>
 
         </div>
 
-        <div class="cambio-comparacion">
-
-            <div class="cambio-valor">
-                <span>Información actual</span>
-                <strong>${escaparHtml(actual)}</strong>
-            </div>
-
-            <div class="cambio-flecha">
-                →
-            </div>
-
-            <div class="cambio-valor">
-                <span>Información solicitada</span>
-                <strong>${escaparHtml(nuevo)}</strong>
-            </div>
-
-        </div>
+        ${htmlCambios}
 
         <div class="solicitud-detalle" style="margin-top:13px;">
             <span>Motivo</span>
-            <strong>${escaparHtml(motivo)}</strong>
+            <strong>
+                ${escaparHtml(motivo)}
+            </strong>
         </div>
     `;
 }
@@ -1498,9 +1646,12 @@ async function resolverSolicitud(
         return;
     }
 
-    const coleccion =
+    const esEdicion =
         tipoSolicitudSeleccionada ===
-            "edicion"
+        "edicion";
+
+    const coleccion =
+        esEdicion
             ? "solicitudesEdicion"
             : "solicitudesPrestamo";
 
@@ -1511,29 +1662,101 @@ async function resolverSolicitud(
         true;
 
     try {
-        await updateDoc(
-            doc(
-                db,
-                coleccion,
-                solicitudSeleccionada.id
-            ),
-            {
-                estado:
-                    nuevoEstado,
+        if (
+            esEdicion &&
+            nuevoEstado === "aprobada"
+        ) {
+            const jugadorId =
+                solicitudSeleccionada.jugadorId;
 
-                observacionesAdmin:
-                    solicitudObservaciones.value.trim(),
+            const datosNuevos =
+                solicitudSeleccionada.datosNuevos;
 
-                resueltoEn:
-                    serverTimestamp(),
-
-                resueltoPor:
-                    obtenerUsuarioId(),
-
-                resueltoPorNombre:
-                    obtenerNombreUsuario()
+            if (!jugadorId) {
+                throw new Error(
+                    "La solicitud no contiene el ID del jugador."
+                );
             }
-        );
+
+            if (
+                !datosNuevos ||
+                typeof datosNuevos !== "object" ||
+                Array.isArray(datosNuevos)
+            ) {
+                throw new Error(
+                    "La solicitud no contiene los nuevos datos del jugador."
+                );
+            }
+
+            const datosPermitidos = prepararDatosEdicionJugador(datosNuevos);
+
+            await updateDoc(
+                doc(
+                    db,
+                    "jugadores",
+                    jugadorId
+                ),
+                {
+                    ...datosPermitidos,
+
+                    actualizadoEn:
+                        serverTimestamp(),
+
+                    actualizadoPor:
+                        obtenerUsuarioId(),
+
+                    actualizadoPorNombre:
+                        obtenerNombreUsuario()
+                }
+            );
+
+            const indiceJugador =
+                jugadores.findIndex(
+                    jugador =>
+                        jugador.id ===
+                        jugadorId
+                );
+
+            if (indiceJugador !== -1) {
+                jugadores[indiceJugador] = {
+                    ...jugadores[indiceJugador],
+                    ...datosPermitidos
+                };
+            }
+        }
+
+        if (!esEdicion && nuevoEstado === "aprobada") {
+            await aprobarPrestamoJugador({
+                solicitudId: solicitudSeleccionada.id,
+                adminId: obtenerUsuarioId(),
+                adminNombre: obtenerNombreUsuario(),
+                observacionesAdmin: solicitudObservaciones.value.trim()
+            });
+        } else {
+            await updateDoc(
+                doc(
+                    db,
+                    coleccion,
+                    solicitudSeleccionada.id
+                ),
+                {
+                    estado:
+                        nuevoEstado,
+    
+                    observacionesAdmin:
+                        solicitudObservaciones.value.trim(),
+    
+                    resueltoEn:
+                        serverTimestamp(),
+    
+                    resueltoPor:
+                        obtenerUsuarioId(),
+    
+                    resueltoPorNombre:
+                        obtenerNombreUsuario()
+                }
+            );
+        }
 
         solicitudSeleccionada.estado =
             nuevoEstado;
@@ -1553,8 +1776,7 @@ async function resolverSolicitud(
                 "admin",
 
             modulo:
-                tipoSolicitudSeleccionada ===
-                    "edicion"
+                esEdicion
                     ? "CONFIGURACIÓN - EDICIONES"
                     : "CONFIGURACIÓN - PRÉSTAMOS",
 
@@ -1564,7 +1786,11 @@ async function resolverSolicitud(
                     : "SOLICITUD RECHAZADA",
 
             descripcion:
-                `Se ${nuevoEstado === "aprobada" ? "aprobó" : "rechazó"} una solicitud.`,
+                esEdicion
+                    ? nuevoEstado === "aprobada"
+                        ? `Se aprobó y aplicó la modificación del jugador ${solicitudSeleccionada.jugadorNombre || solicitudSeleccionada.nombreJugador || "Jugador"}.`
+                        : `Se rechazó la modificación solicitada para ${solicitudSeleccionada.jugadorNombre || solicitudSeleccionada.nombreJugador || "Jugador"}.`
+                    : `Se ${nuevoEstado === "aprobada" ? "aprobó" : "rechazó"} una solicitud de préstamo.`,
 
             entidadTipo:
                 coleccion,
@@ -1586,12 +1812,21 @@ async function resolverSolicitud(
 
         renderizarSolicitudesPrestamo();
 
+        if (esEdicion) {
+            renderizarJugadores();
+        }
+
         mostrarToast(
             "exito",
-            "Solicitud actualizada",
             nuevoEstado === "aprobada"
-                ? "La solicitud fue aprobada."
-                : "La solicitud fue rechazada."
+                ? "Solicitud aprobada"
+                : "Solicitud rechazada",
+            esEdicion &&
+            nuevoEstado === "aprobada"
+                ? "Los cambios fueron aplicados al jugador correctamente."
+                : nuevoEstado === "aprobada"
+                    ? "La solicitud fue aprobada."
+                    : "La solicitud fue rechazada."
         );
 
     } catch (error) {

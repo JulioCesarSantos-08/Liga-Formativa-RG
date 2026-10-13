@@ -1,3 +1,6 @@
+import { exigirAuxiliarTecnico } from "./auxiliarTecnico.js";
+import { exigirDocumentacionJefeEquipo } from "./documentacionJefeEquipo.js";
+
 import {
     collection,
     getDocs,
@@ -21,6 +24,14 @@ import {
     subirFotoJugador,
     subirPDFCurp
 } from "../cloudinary.js";
+
+import {
+    convertirNombreMayusculas,
+    normalizarNombreJugador,
+    normalizarSexoJugador,
+    validarDatosBasicosJugador,
+    construirAvisoDocumentacion
+} from "./jugadorRegistroUtilidades.js";
 
 
 const estadoCarga = document.getElementById("estadoCarga");
@@ -79,6 +90,7 @@ const previewInicial = document.getElementById("previewInicial");
 const previewFotoImagen = document.getElementById("previewFotoImagen");
 
 const nombreJugador = document.getElementById("nombreJugador");
+const sexoJugador = document.getElementById("sexoJugador");
 const fechaNacimiento = document.getElementById("fechaNacimiento");
 const numeroJugador = document.getElementById("numeroJugador");
 const curpJugador = document.getElementById("curpJugador");
@@ -117,6 +129,11 @@ const curpExistenteCategoria = document.getElementById("curpExistenteCategoria")
 const btnCerrarCurpExistente = document.getElementById("btnCerrarCurpExistente");
 const btnCancelarCurpExistente = document.getElementById("btnCancelarCurpExistente");
 const btnIrReforzamiento = document.getElementById("btnIrReforzamiento");
+
+const modalDocumentacionIncompleta = document.getElementById("modalDocumentacionIncompleta");
+const textoDocumentacionIncompleta = document.getElementById("textoDocumentacionIncompleta");
+const listaDocumentacionPendiente = document.getElementById("listaDocumentacionPendiente");
+const btnEntendidoDocumentacion = document.getElementById("btnEntendidoDocumentacion");
 
 const toast = document.getElementById("toast");
 const toastIcono = document.getElementById("toastIcono");
@@ -160,6 +177,8 @@ const usuario = await protegerPagina([
 
 
 if (usuario) {
+
+    await exigirDocumentacionJefeEquipo(usuario);
 
     usuarioActual = usuario;
 
@@ -214,7 +233,7 @@ function activarEventos() {
             }
 
             window.location.href =
-                `partidos.html?equipo=${encodeURIComponent(equipoActual.id)}`;
+                `misPartidos.html?equipo=${encodeURIComponent(equipoActual.id)}`;
 
         }
     );
@@ -260,10 +279,24 @@ function activarEventos() {
     );
 
 
-    nombreJugador?.addEventListener(
-        "input",
-        actualizarInicialPreview
-    );
+    nombreJugador?.addEventListener("input", () => {
+        const inicio = nombreJugador.selectionStart;
+        const fin = nombreJugador.selectionEnd;
+
+        nombreJugador.value = convertirNombreMayusculas(nombreJugador.value);
+
+        try {
+            nombreJugador.setSelectionRange(inicio, fin);
+        } catch (error) {
+        }
+
+        actualizarInicialPreview();
+    });
+
+    nombreJugador?.addEventListener("blur", () => {
+        nombreJugador.value = normalizarNombreJugador(nombreJugador.value);
+        actualizarInicialPreview();
+    });
 
 
 curpJugador?.addEventListener(
@@ -280,7 +313,7 @@ curpJugador?.addEventListener(
             curpJugador.value.length !== 18 ||
             jugadorSeleccionado
         ) {
-            return; m
+            return;
         }
 
         const curp =
@@ -350,6 +383,17 @@ btnIrReforzamiento?.addEventListener(
     "click",
     abrirReforzamientoDesdeCurp
 );
+
+    btnEntendidoDocumentacion?.addEventListener(
+        "click",
+        cerrarModalDocumentacionIncompleta
+    );
+
+    modalDocumentacionIncompleta?.addEventListener("click", event => {
+        if (event.target === modalDocumentacionIncompleta) {
+            cerrarModalDocumentacionIncompleta();
+        }
+    });
 
     btnCerrarLimite?.addEventListener(
         "click",
@@ -488,6 +532,14 @@ btnIrReforzamiento?.addEventListener(
 
 
             if (
+                modalDocumentacionIncompleta &&
+                !modalDocumentacionIncompleta.classList.contains("oculto")
+            ) {
+                cerrarModalDocumentacionIncompleta();
+                return;
+            }
+
+            if (
                 modalJugador &&
                 !modalJugador.classList.contains("oculto")
             ) {
@@ -551,6 +603,8 @@ async function iniciarPanel() {
 
         }
 
+
+        await exigirAuxiliarTecnico(usuarioActual, equipoActual);
 
         crearSelectorEquipos();
 
@@ -1003,6 +1057,8 @@ async function cambiarEquipoSeleccionado() {
     try {
 
         await cargarConfiguracionLiga();
+
+        await exigirAuxiliarTecnico(usuarioActual, equipoActual);
 
         await cargarJugadores();
 
@@ -2330,6 +2386,18 @@ function prepararModalNuevoJugador(
 
     formJugador.reset();
 
+    avisoSolicitudEdicion?.classList.add("oculto");
+    grupoMotivoEdicion?.classList.add("oculto");
+
+    if (motivoEdicion) {
+        motivoEdicion.required = false;
+        motivoEdicion.value = "";
+    }
+
+    if (avisoJugadorTexto) {
+        avisoJugadorTexto.textContent =
+            "El numero maximo de jugadores y los periodos de inscripcion son administrados por la liga.";
+    }
 
     modalTitulo.textContent =
         titulo;
@@ -2425,10 +2493,11 @@ if (avisoJugadorTexto) {
 }
 
 
-    nombreJugador.value =
-        jugador.nombre ||
-        jugador.nombreCompleto ||
-        "";
+    nombreJugador.value = normalizarNombreJugador(
+        jugador.nombre || jugador.nombreCompleto || ""
+    );
+
+    sexoJugador.value = normalizarSexoJugador(jugador.sexo);
 
 
     fechaNacimiento.value =
@@ -2628,10 +2697,31 @@ async function guardarJugador(
     }
 
 
-    const nombre =
-        nombreJugador.value
-            .trim()
-            .replace(/\s+/g, " ");
+    const nombre = normalizarNombreJugador(nombreJugador.value);
+    const sexo = normalizarSexoJugador(sexoJugador.value);
+
+    nombreJugador.value = nombre;
+
+    const validacionBasica = validarDatosBasicosJugador({
+        nombre,
+        sexo
+    });
+
+    if (!validacionBasica.valido) {
+        mostrarToast(
+            "error",
+            "Datos incompletos",
+            validacionBasica.mensaje
+        );
+
+        if (!nombre) {
+            nombreJugador.focus();
+        } else {
+            sexoJugador.focus();
+        }
+
+        return;
+    }
 
 
     const nacimiento =
@@ -2787,6 +2877,7 @@ async function guardarJugador(
     btnGuardarJugador.textContent =
         "Guardando...";
 
+    let avisoDocumentacionRegistro = null;
 
     try {
 
@@ -2884,6 +2975,8 @@ async function guardarJugador(
 
             nombreCompleto:
                 nombre,
+
+            sexo,
 
             fechaNacimiento:
                 nacimiento,
@@ -3044,6 +3137,9 @@ if (
                     jugadorSeleccionado.nombre ||
                     "",
 
+                sexo:
+                    normalizarSexoJugador(jugadorSeleccionado.sexo),
+
                 fechaNacimiento:
                     jugadorSeleccionado.fechaNacimiento ||
                     "",
@@ -3089,6 +3185,9 @@ if (
 
                 nombreCompleto:
                     datos.nombreCompleto,
+
+                sexo:
+                    datos.sexo,
 
                 fechaNacimiento:
                     datos.fechaNacimiento,
@@ -3200,6 +3299,7 @@ if (
 
             await actualizarTotalJugadoresEquipo();
 
+            avisoDocumentacionRegistro = construirAvisoDocumentacion(datos);
 
             mostrarToast(
                 "exito",
@@ -3226,6 +3326,10 @@ if (
         actualizarEstadoPlantilla();
 
         cerrarModalJugador();
+
+        if (avisoDocumentacionRegistro?.mostrar) {
+            abrirModalDocumentacionIncompleta(avisoDocumentacionRegistro);
+        }
 
     } catch (error) {
 
@@ -3259,6 +3363,32 @@ btnGuardarJugador.textContent =
 
 }
 
+
+function abrirModalDocumentacionIncompleta(aviso) {
+    if (!modalDocumentacionIncompleta || !aviso?.mostrar) {
+        return;
+    }
+
+    textoDocumentacionIncompleta.textContent = aviso.mensaje;
+    listaDocumentacionPendiente.replaceChildren();
+
+    aviso.pendientes.forEach(documento => {
+        const linea = document.createElement("div");
+        linea.textContent = "\u2022 " + documento.nombre;
+        linea.style.padding = "5px 0";
+        linea.style.fontWeight = "700";
+        listaDocumentacionPendiente.appendChild(linea);
+    });
+
+    modalDocumentacionIncompleta.classList.remove("oculto");
+    document.body.style.overflow = "hidden";
+    btnEntendidoDocumentacion?.focus();
+}
+
+function cerrarModalDocumentacionIncompleta() {
+    modalDocumentacionIncompleta?.classList.add("oculto");
+    document.body.style.overflow = "";
+}
 
 async function registrarMovimientoJornada5({
     tipo,

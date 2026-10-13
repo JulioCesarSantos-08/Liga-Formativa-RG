@@ -1,0 +1,701 @@
+.ca-panel {
+    margin: 20px 0;
+    background: #fff;
+    border: 1px solid #dce5df;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px #173d2910;
+}
+
+.ca-cabecera {
+    padding: 23px;
+    background: linear-gradient(120deg,#103e30,#196a50);
+    color: #fff;
+}
+
+.ca-cabecera small {
+    color: #f0cf8b;
+    letter-spacing: .1em;
+    font-weight: 800;
+    font-size: .65rem;
+}
+
+.ca-cabecera h2 {
+    color: #fff;
+    margin: 7px 0;
+    font-size: 1.25rem;
+}
+
+.ca-cabecera p {
+    color: #d4eadd;
+    margin: 0;
+    font-size: .82rem;
+    line-height: 1.6;
+}
+
+.ca-contenido {
+    padding: 22px;
+}
+
+.ca-controles {
+    display: flex;
+    align-items: end;
+    gap: 12px;
+}
+
+.ca-controles label {
+    flex: 1;
+    min-width: 0;
+    font-size: .8rem;
+    font-weight: 800;
+    color: #274a39;
+}
+
+.ca-panel select {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: 46px;
+    margin-top: 8px;
+    padding: 10px;
+    border: 1px solid #cddbd2;
+    border-radius: 12px;
+    background: #f7faf8;
+    font: inherit;
+    font-size: 16px;
+}
+
+.ca-panel button {
+    min-height: 46px;
+    padding: 11px 17px;
+    border: 0;
+    border-radius: 12px;
+    background: #0c664a;
+    color: white;
+    font: inherit;
+    font-size: .82rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.ca-panel button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.ca-panel button:focus-visible,
+.ca-panel select:focus-visible,
+.ca-panel input:focus-visible {
+    outline: 3px solid #8dc5a7;
+    outline-offset: 3px;
+}
+
+.ca-estado {
+    margin: 16px 0;
+    padding: 12px 14px;
+    background: #f0f6f2;
+    color: #365641;
+    border-radius: 12px;
+    font-size: .82rem;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.ca-expediente {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+    gap: 24px;
+    align-items: center;
+    padding: 18px;
+    background: #f6f8f6;
+    border: 1px solid #e3e9e4;
+    border-radius: 16px;
+}
+
+.ca-info {
+    min-width: 0;
+    font-size: .83rem;
+    line-height: 1.7;
+    color: #52675a;
+}
+
+.ca-info strong {
+    display: block;
+    color: #204330;
+    font-size: 1rem;
+}
+
+.ca-info p {
+    overflow-wrap: anywhere;
+    margin: 10px 0;
+}
+
+.ca-info a {
+    color: #0a6c4c;
+    font-weight: 800;
+}
+
+.ca-info button {
+    width: 100%;
+    margin-top: 12px;
+}
+
+.ca-panel [hidden] {
+    display: none !important;
+}
+
+.ca-lote {
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e8e2;
+}
+
+.ca-lote h3 {
+    margin: 0 0 8px;
+    color: #244c37;
+    font-size: 1rem;
+}
+
+.ca-lote p {
+    font-size: .8rem;
+    line-height: 1.6;
+    color: #63766a;
+}
+
+.ca-lista {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 9px;
+    margin: 14px 0;
+}
+
+.ca-opcion {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px;
+    border: 1px solid #dbe5dd;
+    border-radius: 12px;
+    background: #fafcfb;
+    min-width: 0;
+    cursor: pointer;
+}
+
+.ca-opcion:has(input:checked) {
+    background: #eaf5ee;
+    border-color: #85b799;
+}
+
+.ca-opcion input {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+    accent-color: #0c664a;
+}
+
+.ca-opcion span {
+    min-width: 0;
+    font-size: .8rem;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+    color: #284735;
+}
+
+.ca-opcion:has(input:disabled) {
+    opacity: .55;
+    cursor: default;
+}
+
+.ca-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.ca-panel .ca-secundario {
+    background: #eef4ef;
+    color: #305c40;
+    border: 1px solid #d4e3d8;
+}
+
+
+.ca-preview {
+    width: 100%;
+    max-width: 320px;
+    container-type: inline-size;
+    margin: auto;
+}
+
+.ca-card,
+.ca-card * {
+    box-sizing: border-box;
+}
+
+.ca-card {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 2/3;
+    padding: 4cqw;
+    border: 1px solid #bfa577;
+    border-radius: 6cqw;
+    background: linear-gradient(145deg,#fffdf5,#e8d4a4 35%,#fffaf0 70%,#ae8a43);
+    color: #163d43;
+    font-family: Arial,sans-serif;
+    overflow: hidden;
+    box-shadow: 0 15px 30px #0002;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+}
+
+.ca-marco {
+    position: relative;
+    display: grid;
+    grid-template-rows: 20fr 4fr 6fr 27fr 5fr 32fr 3fr 3fr;
+    gap: 1cqw;
+    height: 100%;
+    padding: 11cqw 5cqw;
+    border: 1.2cqw solid #123b3c;
+    border-radius: 3.5cqw;
+    background: linear-gradient(140deg,#fffdf5,#f7edda);
+    box-shadow: inset 0 0 0 1cqw #cc9e45,inset 0 0 0 1.6cqw #123b3c;
+    overflow: hidden;
+}
+
+.ca-marco > :not(.ca-marca):not(.ca-greca) {
+    min-width: 0;
+    min-height: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.ca-marca {
+    position: absolute;
+    width: 74cqw;
+    height: 74cqw;
+    object-fit: contain;
+    left: 50%;
+    top: 42%;
+    transform: translateX(-50%);
+    opacity: .07;
+    pointer-events: none;
+}
+
+.ca-greca {
+    position: absolute;
+    z-index: 2;
+    width: 10cqw;
+    height: 10cqw;
+    padding: 1cqw;
+    background: #103e42;
+    border: 1px solid #d9aa52;
+    border-radius: 1.8cqw;
+    color: #f1cf83;
+}
+
+.ca-greca svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.ca-greca.g1 {
+    top: 1cqw;
+    left: 1cqw;
+}
+
+.ca-greca.g2 {
+    top: 1cqw;
+    right: 1cqw;
+    transform: rotate(90deg);
+    background: #16314d;
+}
+
+.ca-greca.g3 {
+    bottom: 1cqw;
+    left: 1cqw;
+    transform: rotate(-90deg);
+    background: #16314d;
+}
+
+.ca-greca.g4 {
+    bottom: 1cqw;
+    right: 1cqw;
+    transform: rotate(180deg);
+}
+
+.ca-encabezado {
+    display: flex;
+    align-items: center;
+    gap: 2.5cqw;
+    margin: 0;
+    padding: 0 0 1cqw;
+    border-bottom: 1px solid #bba574;
+}
+
+.ca-logo {
+    display: block;
+    width: 20cqw;
+    height: 20cqw;
+    flex: 0 0 20cqw;
+    object-fit: contain;
+    filter: none;
+}
+
+.ca-titulos {
+    min-width: 0;
+    flex: 1;
+    text-align: center;
+}
+
+.ca-titulos strong {
+    display: block;
+    font-size: 4cqw;
+    line-height: 1.08;
+    font-weight: 900;
+    letter-spacing: -.025em;
+    color: #103b3c;
+}
+
+.ca-titulos span {
+    display: block;
+    margin-top: 1cqw;
+    font-size: 1.85cqw;
+    line-height: 1.3;
+    font-weight: 700;
+    color: #315969;
+}
+
+.ca-temporada {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-size: 2.3cqw;
+    line-height: 1.1;
+    font-weight: 800;
+    color: #916b27;
+}
+
+.ca-rol {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #d0a04e;
+    background: linear-gradient(110deg,#084f4b,#143551);
+    color: #fff;
+    font-size: 3.4cqw;
+    line-height: 1;
+    font-weight: 900;
+    letter-spacing: .16em;
+}
+
+.ca-identidad {
+    display: flex;
+    align-items: stretch;
+    gap: 3cqw;
+    margin: 0;
+    padding: 0;
+}
+
+.ca-foto-marco {
+    flex: 0 0 28cqw;
+    min-width: 0;
+    height: 100%;
+    padding: 1cqw;
+    border: .8cqw double #135d59;
+    border-radius: 1.5cqw;
+    background: #e6c57b;
+    box-shadow: 0 1cqw 2cqw #143b3b20;
+}
+
+.ca-foto {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: .5cqw;
+}
+
+.ca-datos {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+    min-width: 0;
+    gap: .5cqw;
+}
+
+.ca-datos small {
+    display: block;
+    margin: 0;
+    font-size: 1.85cqw;
+    line-height: 1.2;
+    font-weight: 800;
+    color: #9a6d22;
+}
+
+.ca-nombre {
+    display: block;
+    margin: 0 0 .7cqw;
+    padding: 0 0 .7cqw;
+    border-bottom: 1px solid #c6b17c;
+    font-size: 3.4cqw;
+    line-height: 1.12;
+    font-weight: 900;
+    color: #123e46;
+    overflow-wrap: anywhere;
+}
+
+.ca-datos span {
+    display: block;
+    margin: 0;
+    font-size: 2cqw;
+    line-height: 1.25;
+    font-weight: 700;
+    color: #31576a;
+}
+
+.ca-frase {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0 1cqw;
+    text-align: center;
+    font-size: 1.8cqw;
+    line-height: 1.15;
+    font-weight: 800;
+    color: #f7e9c3;
+    background: linear-gradient(110deg,#104b46,#173654);
+    border: 1px solid #c6a151;
+    border-radius: .7cqw;
+}
+
+.ca-validacion {
+    display: grid;
+    grid-template-columns: 32cqw minmax(0,1fr);
+    align-items: center;
+    gap: 3cqw;
+    margin: 0;
+    padding: 0;
+}
+
+.ca-qr-bloque {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .5cqw;
+    min-width: 0;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.ca-qr-bloque canvas.ca-qr-canvas {
+    display: block;
+    width: 32cqw !important;
+    max-width: 100% !important;
+    height: 32cqw !important;
+    aspect-ratio: 1/1;
+    margin: 0;
+    background: white;
+    border: 1px solid #ac955f;
+    border-radius: .7cqw;
+}
+
+.ca-qr-bloque span {
+    display: block;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+    font-size: 1.45cqw;
+    line-height: 1.2;
+    font-weight: 800;
+    text-align: center;
+    color: #164940;
+}
+
+.ca-firma-bloque {
+    min-width: 0;
+    text-align: center;
+    color: #153e43;
+}
+
+.ca-firma-bloque > div {
+    position: relative;
+    height: 17cqw;
+    border-bottom: 1px solid #997338;
+    margin: 0 0 1cqw;
+}
+
+.ca-sello {
+    position: absolute;
+    width: 16cqw;
+    height: 16cqw;
+    object-fit: contain;
+    left: 0;
+    top: 0;
+    opacity: .45;
+}
+
+.ca-firma {
+    position: absolute;
+    width: 100%;
+    height: 16cqw;
+    object-fit: contain;
+    left: 0;
+    top: 0;
+}
+
+.ca-firma-bloque strong {
+    display: block;
+    font-size: 1.7cqw;
+    line-height: 1.25;
+}
+
+.ca-firma-bloque span {
+    display: block;
+    margin-top: .5cqw;
+    font-size: 1.4cqw;
+    line-height: 1.2;
+    color: #8a6d34;
+}
+
+.ca-folio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    font-size: 1.55cqw;
+    line-height: 1;
+    text-align: center;
+    color: #675836;
+    white-space: nowrap;
+}
+
+.ca-pie {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    margin: 0;
+    padding: 0 .5cqw;
+    background: linear-gradient(110deg,#0b4b44,#133c54);
+    color: #f7dfa3;
+    border-radius: .5cqw;
+    text-align: center;
+    font-size: 1.65cqw;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: .025em;
+}
+
+#impresionCredencialesArbitros {
+    display: none;
+}
+
+@media (max-width:700px) {
+    .ca-expediente {
+        grid-template-columns: 1fr;
+    }
+
+    .ca-controles {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .ca-controles label {
+        width: 100%;
+    }
+
+    .ca-contenido {
+        padding: 17px;
+    }
+
+    .ca-cabecera {
+        padding: 19px;
+    }
+
+    .ca-lista {
+        grid-template-columns: 1fr;
+    }
+
+    .ca-acciones {
+        flex-direction: column;
+    }
+
+    .ca-acciones button {
+        width: 100%;
+    }
+}
+
+@media print {
+    @page {
+        size: A4 portrait;
+        margin: 7mm;
+    }
+
+    body.ca-imprimiendo > :not(#impresionCredencialesArbitros) {
+        display: none !important;
+    }
+
+    html:has(body.ca-imprimiendo),
+    body.ca-imprimiendo {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+        min-width: 0 !important;
+    }
+
+    body.ca-imprimiendo #impresionCredencialesArbitros {
+        display: block !important;
+        margin: 0;
+        padding: 0;
+    }
+
+    #impresionCredencialesArbitros .ca-hoja {
+        display: grid !important;
+        grid-template-columns: repeat(3,54mm);
+        grid-auto-rows: 81mm;
+        justify-content: center;
+        align-content: start;
+        gap: 5mm;
+        width: 196mm;
+        margin: 0 auto;
+        padding: 7mm 0;
+        box-sizing: border-box;
+        break-after: page;
+        page-break-after: always;
+    }
+
+    #impresionCredencialesArbitros .ca-hoja:last-child {
+        break-after: auto;
+        page-break-after: auto;
+    }
+
+    #impresionCredencialesArbitros .ca-preview {
+        width: 54mm;
+        height: 81mm;
+        max-width: none;
+        margin: 0;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    #impresionCredencialesArbitros .ca-card {
+        width: 54mm;
+        height: 81mm;
+        box-shadow: none;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+}

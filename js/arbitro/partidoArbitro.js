@@ -478,17 +478,25 @@ async function cargarEquipos() {
 
 async function cargarJugadores() {
 
-    const snapshot =
-        await getDocs(
-            collection(
-                db,
-                "jugadores"
+    const [snapshotJugadores, snapshotPrestamos] =
+        await Promise.all([
+            getDocs(
+                collection(
+                    db,
+                    "jugadores"
+                )
+            ),
+            getDocs(
+                collection(
+                    db,
+                    "prestamosJugadores"
+                )
             )
-        );
+        ]);
 
 
     const todos =
-        snapshot.docs.map(
+        snapshotJugadores.docs.map(
             documento => ({
                 id: documento.id,
                 ...documento.data()
@@ -496,31 +504,86 @@ async function cargarJugadores() {
         );
 
 
-    jugadoresLocal =
-        todos
-            .filter(
-                jugador =>
-                    jugador.equipoId === partido.localId &&
-                    jugador.activo !== false
-            )
-            .sort(
-                ordenarJugadores
+    const prestamosActivos =
+        snapshotPrestamos.docs
+            .map(documento => ({
+                id: documento.id,
+                ...documento.data()
+            }))
+            .filter(prestamo =>
+                prestamo.activo === true &&
+                String(prestamo.estado || "")
+                    .trim()
+                    .toLowerCase() === "activo"
             );
 
 
-    jugadoresVisitante =
-        todos
-            .filter(
-                jugador =>
-                    jugador.equipoId === partido.visitanteId &&
-                    jugador.activo !== false
+    const construirPlantillaPartido = equipoId => {
+        const propios = todos.filter(
+            jugador =>
+                jugador.equipoId === equipoId &&
+                jugador.activo !== false
+        );
+
+        const idsPropios = new Set(
+            propios.map(jugador => jugador.id)
+        );
+
+        const refuerzos = prestamosActivos
+            .filter(prestamo =>
+                (prestamo.equipoDestinoId || prestamo.equipoId) === equipoId &&
+                prestamo.equipoOrigenId &&
+                prestamo.equipoOrigenId !== equipoId
             )
-            .sort(
-                ordenarJugadores
-            );
+            .map(prestamo => {
+                const jugador = todos.find(
+                    elemento =>
+                        elemento.id === prestamo.jugadorId
+                );
+
+                if (
+                    !jugador ||
+                    jugador.activo === false ||
+                    jugador.equipoId !== prestamo.equipoOrigenId ||
+                    idsPropios.has(jugador.id)
+                ) {
+                    return null;
+                }
+
+                return {
+                    ...jugador,
+                    esRefuerzo: true,
+                    prestamoId: prestamo.id,
+                    equipoOrigenPrestamoId:
+                        prestamo.equipoOrigenId,
+                    equipoOrigenPrestamoNombre:
+                        prestamo.equipoOrigenNombre || ""
+                };
+            })
+            .filter(Boolean);
+
+        const unicos = new Map();
+
+        [...propios, ...refuerzos].forEach(jugador => {
+            if (!unicos.has(jugador.id)) {
+                unicos.set(jugador.id, jugador);
+            }
+        });
+
+        return [...unicos.values()].sort(
+            ordenarJugadores
+        );
+    };
+
+    jugadoresLocal = construirPlantillaPartido(
+        partido.localId
+    );
+
+    jugadoresVisitante = construirPlantillaPartido(
+        partido.visitanteId
+    );
 
 }
-
 
 async function cargarAsistenciaExistente() {
 
@@ -823,6 +886,13 @@ function renderizarJugadores(
                     motivoNoDisponible(
                         jugador
                     );
+
+            } else if (jugador.esRefuerzo) {
+
+                estadoTexto =
+                    numero
+                        ? "?? Refuerzo autorizado ? #" + numero
+                        : "?? Refuerzo autorizado";
 
             }
 

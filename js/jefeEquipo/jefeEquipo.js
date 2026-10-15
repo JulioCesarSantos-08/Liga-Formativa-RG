@@ -2796,14 +2796,14 @@ async function guardarJugador(
         (
             !Number.isInteger(numero) ||
             numero < 0 ||
-            numero > 250
+            numero > 999
         )
     ) {
 
         mostrarToast(
             "error",
             "Dorsal incorrecto",
-            "El número debe estar entre 0 y 250."
+            "El número debe estar entre 0 y 999."
         );
 
         return;

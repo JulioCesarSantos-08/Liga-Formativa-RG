@@ -4,21 +4,22 @@ import {
     signInWithEmailAndPassword,
     GoogleAuthProvider,
     signInWithPopup,
+    linkWithCredential,
     onAuthStateChanged,
     signOut
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
 import {
     doc,
-    getDoc,
-    setDoc,
-    serverTimestamp
+    getDoc
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 import {
     auth,
     db
 } from "./firebase.js";
+
+import { crearPerfilSinDuplicados, normalizarCorreoRegistro, prepararIndiceRegistro } from "./identidadRegistro.js";
 
 const btnLogin = document.getElementById("btnLogin");
 const btnRegistro = document.getElementById("btnRegistro");
@@ -34,6 +35,51 @@ const mensajeNombre = document.getElementById("mensajeNombre");
 const btnGuardarNombre = document.getElementById("btnGuardarNombre");
 
 let usuarioPendiente = null;
+let accesoEnCurso = false;
+let guardandoPerfil = false;
+let credencialGooglePendiente = null;
+let correoGooglePendiente = "";
+let overflowAnterior = null;
+
+async function ejecutarAcceso(accion) {
+    if (accesoEnCurso) return;
+
+    accesoEnCurso = true;
+
+    const botones = [
+        ...document.querySelectorAll(
+            "#formLogin button, #formRegistro button, #btnGoogle"
+        )
+    ];
+
+    const estados = botones.map(boton => boton.disabled);
+
+    botones.forEach(boton => {
+        boton.disabled = true;
+    });
+
+    try {
+        await accion();
+    } catch (error) {
+        manejarErrorFirebase(error);
+    } finally {
+        accesoEnCurso = false;
+
+        botones.forEach((boton, i) => {
+            boton.disabled = estados[i];
+        });
+    }
+}
+
+function cerrarModalNombre() {
+    modalNombre.classList.add("hidden");
+
+    if (overflowAnterior !== null) {
+        document.body.style.overflow = overflowAnterior;
+    }
+
+    overflowAnterior = null;
+}
 let uidProcesando = null;
 let promesaProcesamiento = null;
 
@@ -128,68 +174,81 @@ btnRegistro.addEventListener("click", () => {
     limpiarMensaje();
 });
 
-formLogin.addEventListener("submit", async (event) => {
+formLogin.addEventListener("submit", event => {
     event.preventDefault();
 
-    const email = document
-        .getElementById("loginEmail")
-        .value
-        .trim();
+    ejecutarAcceso(async () => {
+        const email = normalizarCorreoRegistro(
+            document.getElementById("loginEmail").value
+        );
 
-    const password = document
-        .getElementById("loginPassword")
-        .value;
+        const password = document.getElementById("loginPassword").value;
 
-    mostrarMensaje("Iniciando sesión...", "normal");
+        if (
+            credencialGooglePendiente &&
+            email !== correoGooglePendiente
+        ) {
+            throw new Error(
+                "Inicia sesion con el correo que elegiste en Google o vuelve a seleccionar una cuenta de Google."
+            );
+        }
 
-    try {
+        mostrarMensaje("Iniciando sesion...", "normal");
+
         const credencial = await signInWithEmailAndPassword(
             auth,
             email,
             password
         );
 
+        if (credencialGooglePendiente) {
+            try {
+                await linkWithCredential(
+                    credencial.user,
+                    credencialGooglePendiente
+                );
+
+                credencialGooglePendiente = null;
+                correoGooglePendiente = "";
+            } catch (error) {
+                await signOut(auth);
+                throw error;
+            }
+        }
+
         await procesarUsuario(credencial.user);
-    } catch (error) {
-        manejarErrorFirebase(error);
-    }
+    });
 });
 
-formRegistro.addEventListener("submit", async (event) => {
+formRegistro.addEventListener("submit", event => {
     event.preventDefault();
 
-    const email = document
-        .getElementById("registroEmail")
-        .value
-        .trim();
-
-    const password = document
-        .getElementById("registroPassword")
-        .value;
-
-    const passwordConfirmar = document
-        .getElementById("registroPasswordConfirmar")
-        .value;
-
-    if (password !== passwordConfirmar) {
-        mostrarMensaje(
-            "Las contraseñas no coinciden.",
-            "error"
+    ejecutarAcceso(async () => {
+        const email = normalizarCorreoRegistro(
+            document.getElementById("registroEmail").value
         );
-        return;
-    }
 
-    if (password.length < 6) {
-        mostrarMensaje(
-            "La contraseña debe tener al menos 6 caracteres.",
-            "error"
-        );
-        return;
-    }
+        const password = document.getElementById("registroPassword").value;
+        const confirmar = document.getElementById("registroPasswordConfirmar").value;
 
-    mostrarMensaje("Creando tu cuenta...", "normal");
+        if (password !== confirmar) {
+            throw new Error("Las contrasenas no coinciden.");
+        }
 
-    try {
+        if (password.length < 6) {
+            throw new Error(
+                "La contrasena debe tener al menos 6 caracteres."
+            );
+        }
+
+        if (credencialGooglePendiente) {
+            throw new Error(
+                "Primero ingresa con tu cuenta existente para vincular Google."
+            );
+        }
+
+        mostrarMensaje("Creando tu cuenta...", "normal");
+
         const credencial = await createUserWithEmailAndPassword(
             auth,
             email,
@@ -197,34 +256,57 @@ formRegistro.addEventListener("submit", async (event) => {
         );
 
         await procesarUsuario(credencial.user);
-    } catch (error) {
-        manejarErrorFirebase(error);
-    }
+    });
 });
 
-btnGoogle.addEventListener("click", async () => {
-    const provider = new GoogleAuthProvider();
+btnGoogle.addEventListener("click", () => {
+    ejecutarAcceso(async () => {
+        credencialGooglePendiente = null;
+        correoGooglePendiente = "";
 
-    provider.setCustomParameters({
-        prompt: "select_account"
+        const provider = new GoogleAuthProvider();
+
+        provider.setCustomParameters({
+            prompt: "select_account"
+        });
+
+        mostrarMensaje("Conectando con Google...", "normal");
+
+        try {
+            const resultado = await signInWithPopup(auth, provider);
+            await procesarUsuario(resultado.user);
+        } catch (error) {
+            if (
+                error.code !== "auth/account-exists-with-different-credential"
+            ) {
+                throw error;
+            }
+
+            const pendiente = GoogleAuthProvider.credentialFromError(error);
+            const email = normalizarCorreoRegistro(error.customData?.email);
+
+            if (!pendiente || !email) throw error;
+
+            credencialGooglePendiente = pendiente;
+            correoGooglePendiente = email;
+
+            btnLogin.click();
+
+            document.getElementById("loginEmail").value = email;
+            document.getElementById("loginPassword").focus();
+
+            mostrarMensaje(
+                "Este correo ya tiene una cuenta. Escribe su contrasena para acceder y vincular Google. Si utilizaste otro metodo, ingresa con ese metodo primero.",
+                "normal"
+            );
+        }
     });
-
-    mostrarMensaje("Conectando con Google...", "normal");
-
-    try {
-        const resultado = await signInWithPopup(
-            auth,
-            provider
-        );
-
-        await procesarUsuario(resultado.user);
-    } catch (error) {
-        manejarErrorFirebase(error);
-    }
 });
 
 formNombre.addEventListener("submit", async (event) => {
     event.preventDefault();
+
+    if (guardandoPerfil) return;
 
     if (!usuarioPendiente) {
         mostrarMensajeNombre(
@@ -244,6 +326,7 @@ formNombre.addEventListener("submit", async (event) => {
         return;
     }
 
+    guardandoPerfil = true;
     bloquearBotonNombre(true);
 
     mostrarMensajeNombre(
@@ -252,23 +335,16 @@ formNombre.addEventListener("submit", async (event) => {
     );
 
     try {
-        const referenciaUsuario = doc(
-            db,
-            "usuarios",
-            usuarioPendiente.uid
+        const usuario = usuarioPendiente;
+
+        const perfil = await crearPerfilSinDuplicados(
+            usuario,
+            resultado.nombre
         );
 
-        await setDoc(
-            referenciaUsuario,
-            {
-                uid: usuarioPendiente.uid,
-                nombre: resultado.nombre,
-                email: usuarioPendiente.email || "",
-                rol: "publico",
-                activo: true,
-                creadoEn: serverTimestamp()
-            }
-        );
+        if (auth.currentUser?.uid !== usuario.uid) {
+            throw new Error("Tu sesion cambio. Vuelve a ingresar.");
+        }
 
         mostrarMensajeNombre(
             "Registro completado correctamente.",
@@ -276,16 +352,18 @@ formNombre.addEventListener("submit", async (event) => {
         );
 
         setTimeout(() => {
-            redirigirPorRol("publico");
+            if (auth.currentUser?.uid === usuario.uid) redirigirPorRol(perfil.rol || "publico");
         }, 500);
     } catch (error) {
         console.error(error);
 
         mostrarMensajeNombre(
-            "No pudimos guardar tu información. Intenta nuevamente."
+            error.code?.startsWith("registro/") ? error.message : "No pudimos guardar tu informacion. Revisa tu conexion e intenta nuevamente."
         );
 
         bloquearBotonNombre(false);
+    } finally {
+        guardandoPerfil = false;
     }
 });
 
@@ -303,7 +381,12 @@ function procesarUsuario(usuario) {
 
     uidProcesando = usuario.uid;
 
-    promesaProcesamiento = comprobarUsuario(usuario);
+    promesaProcesamiento = comprobarUsuario(usuario).finally(() => {
+        if (uidProcesando === usuario.uid) {
+            uidProcesando = null;
+            promesaProcesamiento = null;
+        }
+    });
 
     return promesaProcesamiento;
 }
@@ -317,6 +400,7 @@ async function comprobarUsuario(usuario) {
 
     try {
         const documento = await getDoc(referenciaUsuario);
+        if (auth.currentUser?.uid !== usuario.uid) return;
 
         if (!documento.exists()) {
             usuarioPendiente = usuario;
@@ -344,6 +428,13 @@ async function comprobarUsuario(usuario) {
         }
 
         const rol = datos.rol || "publico";
+
+        if (rol === "admin") {
+            mostrarMensaje("Preparando proteccion de registros...", "normal");
+            await prepararIndiceRegistro();
+
+            if (auth.currentUser?.uid !== usuario.uid) return;
+        }
 
         redirigirPorRol(rol);
     } catch (error) {
@@ -378,7 +469,40 @@ function redirigirPorRol(rol) {
 }
 
 function abrirModalNombre(nombreGoogle = "") {
+    if (modalNombre.classList.contains("hidden")) {
+        overflowAnterior = document.body.style.overflow;
+    }
+
     modalNombre.classList.remove("hidden");
+
+    if (!document.getElementById("btnVolverAcceso")) {
+        const volver = document.createElement("button");
+
+        volver.id = "btnVolverAcceso";
+        volver.type = "button";
+        volver.className = "btn-google";
+        volver.textContent = "Volver al acceso";
+
+        volver.addEventListener("click", async () => {
+            if (guardandoPerfil || accesoEnCurso) return;
+
+            volver.disabled = true;
+
+            try {
+                await signOut(auth);
+                cerrarModalNombre();
+                btnLogin.click();
+            } catch (error) {
+                mostrarMensajeNombre(
+                    "No pudimos cerrar la sesion. Intenta nuevamente."
+                );
+            } finally {
+                volver.disabled = false;
+            }
+        });
+
+        formNombre.after(volver);
+    }
 
     document.body.style.overflow = "hidden";
 
@@ -436,9 +560,21 @@ function limpiarMensaje() {
 function manejarErrorFirebase(error) {
     console.error(error);
 
-    let texto = "Ocurrió un error. Intenta nuevamente.";
+    let texto = error.code ? "Ocurrio un error. Intenta nuevamente." : error.message || "Intenta nuevamente.";
 
     switch (error.code) {
+        case "auth/account-exists-with-different-credential":
+            texto = "Este correo ya tiene una cuenta con otro metodo de acceso. Ingresa con tu cuenta original.";
+            break;
+
+        case "auth/credential-already-in-use":
+            texto = "Google ya esta vinculado a otra cuenta. Contacta a la administracion para revisar los registros.";
+            break;
+
+        case "auth/too-many-requests":
+            texto = "Hubo demasiados intentos. Espera antes de volver a ingresar.";
+            break;
+
         case "auth/invalid-credential":
             texto = "Correo o contraseña incorrectos.";
             break;
@@ -452,7 +588,7 @@ function manejarErrorFirebase(error) {
             break;
 
         case "auth/email-already-in-use":
-            texto = "Ya existe una cuenta registrada con este correo.";
+            texto = "Ya existe una cuenta con este correo. Ingresa con tu contrasena o con Google si ese fue tu metodo de registro.";
             break;
 
         case "auth/invalid-email":
@@ -485,11 +621,13 @@ function manejarErrorFirebase(error) {
 
 onAuthStateChanged(auth, async (usuario) => {
     if (!usuario) {
+        cerrarModalNombre();
         usuarioPendiente = null;
         uidProcesando = null;
         promesaProcesamiento = null;
         return;
     }
 
+    if (accesoEnCurso) return;
     await procesarUsuario(usuario);
 });

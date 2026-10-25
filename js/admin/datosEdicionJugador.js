@@ -111,11 +111,11 @@ export function prepararDatosEdicionJugador(datosNuevos) {
             (
                 !Number.isInteger(numero) ||
                 numero < 0 ||
-                numero > 250
+                numero > 999
             )
         ) {
             throw new Error(
-                "El dorsal debe ser un número entero entre 0 y 250."
+                "El dorsal debe ser un número entero entre 0 y 999."
             );
         }
 

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#07594d">
+    <title>Resumen de equipos | Liga Municipal Río Grande</title>
+    <link rel="icon" href="imagenes/logo.png">
+    <link rel="stylesheet" href="css/adminResumenEquipos.css">
+</head>
+<body>
+    <header class="encabezado">
+        <a class="identidad" href="admin.html">
+            <img src="imagenes/logo.png" alt="Liga Municipal Río Grande">
+            <span>
+                <strong>Liga Municipal Río Grande</strong>
+                <small>Villa de Tututepec, Oaxaca</small>
+            </span>
+        </a>
+
+        <a class="boton boton-volver" href="admin.html">
+            Volver a administración
+        </a>
+    </header>
+
+    <main class="contenedor">
+        <section class="portada" aria-labelledby="titulo">
+            <div>
+                <span class="etiqueta">CONTROL ADMINISTRATIVO</span>
+                <h1 id="titulo">Resumen de equipos</h1>
+                <p>
+                    Consulta los equipos de cada club, sus responsables
+                    y los jugadores registrados por categoría.
+                </p>
+            </div>
+
+            <div class="acciones">
+                <button class="boton boton-secundario" id="btnActualizar" type="button" disabled>
+                    Actualizar datos
+                </button>
+                <button class="boton boton-principal" id="btnImprimir" type="button" disabled>
+                    Imprimir resumen
+                </button>
+            </div>
+        </section>
+
+        <section class="indicadores" aria-label="Totales del resumen">
+            <article class="indicador">
+                <span>Clubes mostrados</span>
+                <strong id="totalClubes">—</strong>
+            </article>
+
+            <article class="indicador">
+                <span>Equipos mostrados</span>
+                <strong id="totalEquipos">—</strong>
+            </article>
+
+            <article class="indicador">
+                <span>Jugadores activos</span>
+                <strong id="totalJugadores">—</strong>
+            </article>
+
+            <article class="indicador">
+                <span>Equipos sin jugadores</span>
+                <strong id="totalSinJugadores">—</strong>
+            </article>
+        </section>
+
+        <section class="panel-filtros" aria-label="Buscar y filtrar equipos">
+            <div class="campo campo-busqueda">
+                <label for="buscarResumen">Buscar</label>
+                <input
+                    id="buscarResumen"
+                    type="search"
+                    placeholder="Club, equipo o responsable"
+                    autocomplete="off"
+                    disabled
+                >
+            </div>
+
+            <div class="campo">
+                <label for="filtroCategoria">Categoría</label>
+                <select id="filtroCategoria" disabled>
+                    <option value="">Todas las categorías</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label for="filtroEstado">Estado del equipo</label>
+                <select id="filtroEstado" disabled>
+                    <option value="activos">Activos</option>
+                    <option value="todos">Todos</option>
+                    <option value="inactivos">Inactivos o descalificados</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label for="filtroRegistro">Registro de jugadores</label>
+                <select id="filtroRegistro" disabled>
+                    <option value="">Todos los equipos</option>
+                    <option value="con">Con jugadores</option>
+                    <option value="sin">Sin jugadores</option>
+                </select>
+            </div>
+
+            <button class="boton boton-limpiar" id="btnLimpiar" type="button" disabled>
+                Limpiar filtros
+            </button>
+        </section>
+
+        <div class="detalle-consulta">
+            <p id="fechaConsulta">Todavía no se han cargado los datos.</p>
+            <p>Los totales corresponden a los equipos mostrados.</p>
+        </div>
+
+        <p class="aviso-conteo">
+            Cada jugador activo se cuenta en su equipo de origen.
+            Los préstamos no aumentan el total de jugadores del club.
+        </p>
+
+        <div
+            id="estadoConsulta"
+            class="estado-consulta"
+            role="status"
+            aria-live="polite"
+        >
+            Verificando acceso de administración…
+        </div>
+
+        <section
+            id="listaClubes"
+            class="lista-clubes"
+            aria-label="Equipos agrupados por club"
+            aria-busy="true"
+        ></section>
+
+        <section id="estadoVacio" class="estado-vacio" hidden>
+            <h2>No hay equipos para mostrar</h2>
+            <p>Prueba con otro nombre o cambia los filtros.</p>
+        </section>
+
+        <footer class="pie-resumen">
+            Liga Municipal de Fútbol Río Grande · Resumen administrativo
+        </footer>
+    </main>
+
+    <script type="module" src="js/admin/adminResumenEquipos.js"></script>
+</body>
+</html>

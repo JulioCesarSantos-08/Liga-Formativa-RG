@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#07594d">
+    <title>Altas recientes | Liga Municipal Río Grande</title>
+    <link rel="icon" href="imagenes/logo.png">
+    <link rel="stylesheet" href="css/adminAltasJugadores.css">
+</head>
+<body>
+    <header class="encabezado">
+        <a class="identidad" href="admin.html">
+            <img src="imagenes/logo.png" alt="Liga Municipal Río Grande">
+            <span>
+                <strong>Liga Municipal Río Grande</strong>
+                <small>Villa de Tututepec, Oaxaca</small>
+            </span>
+        </a>
+
+        <a class="boton boton-volver" href="admin.html">
+            Volver a administración
+        </a>
+    </header>
+
+    <main class="contenedor">
+        <section class="portada" aria-labelledby="titulo">
+            <div>
+                <span class="etiqueta">SEGUIMIENTO DE INSCRIPCIONES</span>
+                <h1 id="titulo">Altas recientes</h1>
+                <p>
+                    Identifica a los jugadores recién registrados,
+                    sus equipos y los clubes a los que pertenecen.
+                </p>
+            </div>
+
+            <button
+                class="boton boton-principal"
+                id="btnActualizar"
+                type="button"
+                disabled
+            >
+                Actualizar registros
+            </button>
+        </section>
+
+        <section class="indicadores" aria-label="Totales de la consulta">
+            <article class="indicador">
+                <span>Altas mostradas</span>
+                <strong id="totalAltas">—</strong>
+            </article>
+
+            <article class="indicador">
+                <span>Equipos con altas</span>
+                <strong id="totalEquipos">—</strong>
+            </article>
+
+            <article class="indicador">
+                <span>Clubes con altas</span>
+                <strong id="totalClubes">—</strong>
+            </article>
+        </section>
+
+        <section class="panel-revision" aria-labelledby="tituloRevision">
+            <div>
+                <h2 id="tituloRevision">Tu punto de revisión</h2>
+                <p id="ultimaRevision">
+                    Consultando tu última revisión…
+                </p>
+                <small>
+                    La revisión se recuerda para tu cuenta
+                    en este navegador.
+                </small>
+            </div>
+
+            <button
+                class="boton boton-secundario"
+                id="btnMarcarRevisado"
+                type="button"
+                disabled
+            >
+                Marcar consulta como revisada
+            </button>
+        </section>
+
+        <section class="panel-filtros" aria-label="Filtros de altas recientes">
+            <div class="campo">
+                <label for="filtroPeriodo">Periodo</label>
+                <select id="filtroPeriodo" disabled>
+                    <option value="2h">Últimas 2 horas</option>
+                    <option value="24h">Últimas 24 horas</option>
+                    <option value="7d">Últimos 7 días</option>
+                    <option value="revision">Desde mi última revisión</option>
+                    <option value="todos">Todos los registros con fecha</option>
+                </select>
+            </div>
+
+            <div class="campo campo-busqueda">
+                <label for="buscarAlta">Buscar jugador o equipo</label>
+                <input
+                    id="buscarAlta"
+                    type="search"
+                    placeholder="Nombre del jugador o equipo"
+                    autocomplete="off"
+                    disabled
+                >
+            </div>
+
+            <div class="campo">
+                <label for="filtroClub">Club / comunidad</label>
+                <select id="filtroClub" disabled>
+                    <option value="">Todos los clubes</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label for="filtroCategoria">Categoría</label>
+                <select id="filtroCategoria" disabled>
+                    <option value="">Todas las categorías</option>
+                </select>
+            </div>
+
+            <button
+                class="boton boton-limpiar"
+                id="btnLimpiar"
+                type="button"
+                disabled
+            >
+                Limpiar filtros
+            </button>
+        </section>
+
+        <div class="detalle-consulta">
+            <p id="fechaConsulta">Todavía no se han consultado los registros.</p>
+            <p id="periodoConsulta">Periodo: últimas 2 horas.</p>
+        </div>
+
+        <p class="aviso-conteo">
+            Las altas se ordenan de la más reciente a la más antigua.
+            Editar un jugador o autorizar un refuerzo no crea una nueva alta.
+        </p>
+
+        <p id="avisoSinFecha" class="aviso-datos" hidden></p>
+
+        <div
+            id="estadoConsulta"
+            class="estado-consulta"
+            role="status"
+            aria-live="polite"
+        >
+            Verificando acceso de administración…
+        </div>
+
+        <section
+            id="listaAltas"
+            class="lista-altas"
+            aria-label="Jugadores registrados"
+            aria-busy="true"
+        ></section>
+
+        <section id="estadoVacio" class="estado-vacio" hidden>
+            <h2>No hay altas en esta consulta</h2>
+            <p>
+                Puedes ampliar el periodo o cambiar los filtros
+                para consultar otros registros.
+            </p>
+        </section>
+
+        <footer class="pie">
+            Liga Municipal de Fútbol Río Grande · Control de altas
+        </footer>
+    </main>
+
+    <script type="module" src="js/admin/adminAltasJugadores.js"></script>
+</body>
+</html>

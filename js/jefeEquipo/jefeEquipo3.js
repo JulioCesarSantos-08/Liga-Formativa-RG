@@ -911,42 +911,109 @@ function cargarJugadoresPrestamo() {
     if (!jugadoresActivos.length) {
         mostrarValidacion(
             false,
-            "Este equipo no tiene jugadores activos registrados."
+            "El equipo seleccionado no tiene jugadores activos disponibles. Revisa su plantilla y el estado de sus registros."
         );
-
         return;
     }
+
+    const motivosExclusionPrestamo = new Map();
+
+    for (const jugador of jugadoresActivos) {
+        const resultado = validarPrestamo(
+            equipoOrigen,
+            equipoActualPrestamos,
+            jugador
+        );
+
+        if (!resultado.valido) {
+            const motivo = explicarMensajePrestamo(
+                resultado.mensaje
+            );
+
+            motivosExclusionPrestamo.set(
+                motivo,
+                (motivosExclusionPrestamo.get(motivo) || 0) + 1
+            );
+        }
+    }
+
+    const detalle = [...motivosExclusionPrestamo]
+        .map(([motivo, cantidad]) =>
+            cantidad + ": " + motivo
+        )
+        .join(" | ");
 
     if (!disponibles.length) {
         mostrarValidacion(
             false,
-            "No hay jugadores disponibles para una nueva solicitud hacia este equipo."
+            "Ninguno de los " + jugadoresActivos.length +
+                " jugadores activos puede solicitarse para este equipo. " +
+                detalle
         );
-
         return;
     }
 
-    const noDisponibles =
-        jugadoresActivos.length -
-        disponibles.length;
-
-    if (noDisponibles > 0) {
-        mostrarValidacion(
-            true,
-            `${disponibles.length} jugadores disponibles. ${noDisponibles} no aparecen porque ya tienen una solicitud pendiente o un préstamo activo hacia este equipo.`
-        );
-
-        return;
-    }
+    const resumen = disponibles.length +
+        " disponibles de " + jugadoresActivos.length +
+        " jugadores activos.";
 
     mostrarValidacion(
         true,
-        `${disponibles.length} ${
-            disponibles.length === 1
-                ? "jugador disponible"
-                : "jugadores disponibles"
-        }.`
+        detalle
+            ? resumen + " No disponibles: " + detalle
+            : resumen +
+                " Selecciona al jugador y escribe el motivo. La solicitud requiere aprobaci\u00f3n administrativa."
     );
+}
+
+function explicarMensajePrestamo(mensaje) {
+    const texto = String(mensaje || "").trim();
+
+    const explicaciones = new Map([
+        [
+            "El jugador debe tener registrado el sexo Hombre o Mujer.",
+            "Falta registrar un sexo v\u00e1lido. El responsable del equipo de origen debe revisar el registro y seleccionar Hombre o Mujer; si solicita una correcci\u00f3n, debe aprobarla administraci\u00f3n."
+        ],
+        [
+            "Las categor\u00edas femeniles requieren una jugadora con sexo Mujer.",
+            "El registro indica Hombre y este movimiento involucra una categor\u00eda femenil. Solo se admiten jugadoras registradas como Mujer. Si el dato es incorrecto, corr\u00edgelo en el equipo de origen y completa su aprobaci\u00f3n; si corresponde a un ni\u00f1o, no es elegible."
+        ],
+        [
+            "Ya existe una solicitud pendiente para este jugador hacia este equipo.",
+            "Ya hay una solicitud pendiente para este jugador y este equipo receptor. Espera su resoluci\u00f3n en administraci\u00f3n; no es necesario enviar otra."
+        ],
+        [
+            "Este jugador ya tiene un pr\u00e9stamo activo hacia este equipo.",
+            "Este jugador ya tiene un refuerzo autorizado para este equipo receptor. Revisa la plantilla de refuerzos; no necesitas solicitarlo otra vez."
+        ],
+        [
+            "El jugador seleccionado no se encuentra activo.",
+            "El jugador est\u00e1 inactivo. Revisa su situaci\u00f3n con administraci\u00f3n antes de solicitarlo como refuerzo."
+        ],
+        [
+            "El jugador no pertenece al equipo de origen seleccionado.",
+            "El jugador ya no pertenece al equipo de origen seleccionado. Recarga la p\u00e1gina para consultar su asignaci\u00f3n actual."
+        ],
+        [
+            "No se pudieron identificar las categor\u00edas.",
+            "No se reconoce alguna de las categor\u00edas. Administraci\u00f3n debe revisar el nombre y la asignaci\u00f3n de categor\u00eda de ambos equipos."
+        ],
+        [
+            "Los equipos deben pertenecer al mismo Club / Comunidad.",
+            "Los equipos tienen una asignaci\u00f3n de Club / Comunidad diferente o incompleta. Administraci\u00f3n debe revisar sus asignaciones; tener el mismo nombre de equipo no sustituye esa configuraci\u00f3n."
+        ],
+        [
+            "Los equipos deben estar activos y habilitados.",
+            "El equipo de origen o el receptor est\u00e1 inactivo o descalificado. Revisa su estado con administraci\u00f3n."
+        ],
+        [
+            "El refuerzo debe proceder del nivel inmediatamente inferior.",
+            "Las categor\u00edas seleccionadas no permiten este movimiento. La regla general exige subir un nivel; las excepciones femeniles solo permiten los destinos autorizados por la liga."
+        ]
+    ]);
+
+    return explicaciones.get(texto) || texto ||
+        "No se pudo comprobar la disponibilidad. Recarga la p\u00e1gina e intenta nuevamente.";
 }
 
 function jugadorDisponiblePrestamo(
@@ -1682,7 +1749,7 @@ function mostrarValidacion(
     }
 
     prestamoValidacion.textContent =
-        mensaje;
+        explicarMensajePrestamo(mensaje);
 
     prestamoValidacion.className =
         `prestamo-validacion ${

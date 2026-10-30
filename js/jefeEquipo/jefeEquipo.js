@@ -1,3 +1,4 @@
+import { obtenerMensajeErrorJugador } from "./mensajesErrorJugador.js";
 import { exigirAuxiliarTecnico } from "./auxiliarTecnico.js";
 import { exigirDocumentacionJefeEquipo } from "./documentacionJefeEquipo.js";
 
@@ -2878,6 +2879,7 @@ async function guardarJugador(
         "Guardando...";
 
     let avisoDocumentacionRegistro = null;
+    let etapaRegistroJugador = "guardado";
 
     try {
 
@@ -2909,6 +2911,8 @@ async function guardarJugador(
                 "Subiendo fotografía...";
 
 
+            etapaRegistroJugador = "foto";
+
             const resultadoFoto =
                 await subirFotoJugador(
                     fotoSeleccionada
@@ -2933,6 +2937,8 @@ async function guardarJugador(
                 "Subiendo CURP...";
 
 
+            etapaRegistroJugador = "curp";
+
             const resultadoCurp =
                 await subirPDFCurp(
                     archivoCurpSeleccionado
@@ -2956,6 +2962,8 @@ async function guardarJugador(
                     ? "Registrando alta J5..."
                     : "Registrando jugador...";
 
+
+        etapaRegistroJugador = "guardado";
 
         const datos = {
 
@@ -3339,11 +3347,15 @@ if (
         );
 
 
+        const avisoError = obtenerMensajeErrorJugador(
+            error,
+            etapaRegistroJugador
+        );
+
         mostrarToast(
             "error",
-            "No se pudo guardar",
-            error?.message ||
-            "Ocurrió un problema al registrar al jugador."
+            avisoError.titulo,
+            avisoError.mensaje
         );
 
     } finally {

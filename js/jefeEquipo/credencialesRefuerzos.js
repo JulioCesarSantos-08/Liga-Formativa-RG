@@ -1,5 +1,6 @@
 import { collection, getDocs, doc, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { db, auth } from "../firebase.js";
+import { usuarioTieneAlgunRol } from "../permisosUsuario.js";
 import { validarJerarquiaCategoriasPrestamo } from "./reglasPrestamos.js";
 
 function texto(valor) {
@@ -165,8 +166,9 @@ async function procesar(
             auth.currentUser?.uid !== uid ||
             !usuario.exists() ||
             usuario.data().activo === false ||
-            !["admin", "jefeEquipo"].includes(
-                usuario.data().rol
+            !usuarioTieneAlgunRol(
+                usuario.data(),
+                ["admin", "jefeEquipo"]
             )
         ) {
             throw new Error(
@@ -261,7 +263,8 @@ async function procesar(
         const jerarquia =
             validarJerarquiaCategoriasPrestamo(
                 origen.categoriaNombre,
-                destino.categoriaNombre
+                destino.categoriaNombre,
+                actual
             );
 
         if (!jerarquia.valido) {

@@ -7,8 +7,12 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 import {
-    protegerPagina
+    protegerPagina,
+    usuarioTieneRol,
+    obtenerRolesUsuario
 } from "../roles.js";
+
+import { crearControlDobleRol } from "./dobleRolUsuarios.js";
 
 import {
     db
@@ -50,6 +54,8 @@ const modalNombre = document.getElementById("modalNombre");
 const modalCorreo = document.getElementById("modalCorreo");
 
 const modalRol = document.getElementById("modalRol");
+
+const controlDobleRolUsuarios = crearControlDobleRol(modalRol);
 
 const btnEstadoActivo = document.getElementById("btnEstadoActivo");
 const btnEstadoInactivo = document.getElementById("btnEstadoInactivo");
@@ -328,28 +334,28 @@ function actualizarResumen() {
     totalPublico.textContent =
         usuarios.filter(
             usuario =>
-                usuario.rol === "publico"
+                usuarioTieneRol(usuario, "publico")
         ).length;
 
 
     totalArbitros.textContent =
         usuarios.filter(
             usuario =>
-                usuario.rol === "arbitro"
+                usuarioTieneRol(usuario, "arbitro")
         ).length;
 
 
     totalJefes.textContent =
         usuarios.filter(
             usuario =>
-                usuario.rol === "jefeEquipo"
+                usuarioTieneRol(usuario, "jefeEquipo")
         ).length;
 
 
     totalAdmins.textContent =
         usuarios.filter(
             usuario =>
-                usuario.rol === "admin"
+                usuarioTieneRol(usuario, "admin")
         ).length;
 
 }
@@ -395,7 +401,7 @@ function aplicarFiltros() {
 
                 const coincideRol =
                     rol === "todos" ||
-                    usuario.rol === rol;
+                    usuarioTieneRol(usuario, rol);
 
 
                 let coincideEstado = true;
@@ -567,7 +573,7 @@ function crearFilaDesktop(usuario) {
         <td>
 
             <span class="badge-rol ${claseRol(rol)}">
-                ${textoRol(rol)}
+                ${obtenerRolesUsuario(usuario).map(textoRol).join(" + ")}
             </span>
 
         </td>
@@ -714,7 +720,7 @@ function crearCardMovil(usuario) {
                 </span>
 
                 <strong>
-                    ${textoRol(rol)}
+                    ${obtenerRolesUsuario(usuario).map(textoRol).join(" + ")}
                 </strong>
 
             </div>
@@ -807,6 +813,8 @@ function abrirModal(id) {
         usuario.rol ||
         "publico";
 
+    controlDobleRolUsuarios.cargar(usuario);
+
 
     estadoSeleccionado =
         usuario.activo !== false;
@@ -872,8 +880,27 @@ async function guardarCambiosUsuario() {
     }
 
 
-    const nuevoRol =
-        modalRol.value;
+    let nuevaAsignacion;
+
+    try {
+        nuevaAsignacion = controlDobleRolUsuarios.leer();
+    } catch (error) {
+        mostrarToast(
+            "error",
+            "Permisos no validos",
+            error.message
+        );
+
+        return;
+    }
+
+    const nuevoRol = nuevaAsignacion.rol;
+
+    const cambioRoles = JSON.stringify(
+        [...obtenerRolesUsuario(usuarioSeleccionado)].sort()
+    ) !== JSON.stringify(
+        [...nuevaAsignacion.roles].sort()
+    );
 
 
     if (
@@ -920,6 +947,19 @@ async function guardarCambiosUsuario() {
 
 
     const cambios = [];
+
+    if (cambioRoles) {
+        cambios.push(
+            "permisos de " +
+            obtenerRolesUsuario(usuarioSeleccionado)
+                .map(textoRol)
+                .join(" + ") +
+            " a " +
+            nuevaAsignacion.roles
+                .map(textoRol)
+                .join(" + ")
+        );
+    }
 
 
     if (rolAnterior !== nuevoRol) {
@@ -979,6 +1019,7 @@ async function guardarCambiosUsuario() {
             referencia,
             {
                 rol: nuevoRol,
+                roles: nuevaAsignacion.roles,
                 activo: estadoSeleccionado,
                 actualizadoEn:
                     serverTimestamp()
@@ -991,7 +1032,7 @@ async function guardarCambiosUsuario() {
 
 
         if (
-            rolAnterior !== nuevoRol &&
+            (rolAnterior !== nuevoRol || cambioRoles) &&
             estadoAnterior === estadoSeleccionado
         ) {
 
@@ -1003,6 +1044,7 @@ async function guardarCambiosUsuario() {
 
         if (
             rolAnterior === nuevoRol &&
+            !cambioRoles &&
             estadoAnterior !== estadoSeleccionado
         ) {
 
@@ -1050,6 +1092,10 @@ async function guardarCambiosUsuario() {
 
         usuarioSeleccionado.rol =
             nuevoRol;
+
+        usuarioSeleccionado.roles = [
+            ...nuevaAsignacion.roles
+        ];
 
 
         usuarioSeleccionado.activo =

@@ -1,5 +1,6 @@
 import { doc, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { db, auth } from "../firebase.js";
+import { usuarioTieneRol } from "../permisosUsuario.js";
 
 let promesa = null;
 
@@ -102,7 +103,7 @@ async function registrar(registro, temporada) {
 
         if (
             !responsable.exists() ||
-            responsable.data().rol !== "jefeEquipo" ||
+            !usuarioTieneRol(responsable.data(), "jefeEquipo") ||
             responsable.data().activo === false
         ) {
             throw new Error("El Director Técnico no tiene una cuenta activa.");

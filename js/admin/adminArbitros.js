@@ -4,7 +4,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 import { db } from "../firebase.js";
-import { protegerPagina } from "../roles.js";
+import { protegerPagina, usuarioTieneRol } from "../roles.js";
 
 const totalArbitros = document.getElementById("totalArbitros");
 const totalActivos = document.getElementById("totalActivos");
@@ -116,7 +116,10 @@ async function cargarDatos() {
                 id: documento.id,
                 ...documento.data()
             }))
-            .filter(usuario => normalizarRol(usuario.rol) === "arbitro");
+            .filter(usuario =>
+                normalizarRol(usuario.rol) === "arbitro" ||
+                usuarioTieneRol(usuario, "arbitro")
+            );
 
         partidos = partidosSnapshot.docs.map(documento => ({
             id: documento.id,

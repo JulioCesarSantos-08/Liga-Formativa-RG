@@ -7,7 +7,7 @@ import { db } from "../firebase.js";
 
 import {
   protegerPaginaPublica,
-  obtenerPanelSegunRol,
+  obtenerPanelesUsuario,
   cerrarSesion,
 } from "../roles.js";
 
@@ -103,23 +103,68 @@ function cargarDatosUsuario(usuario) {
 }
 
 function configurarPanelUsuario(usuario) {
-  const panel = obtenerPanelSegunRol(usuario.rol);
+  if (!btnVolverPanel) return;
 
-  if (!panel) {
+  menuMas.querySelectorAll(
+    "[data-panel-adicional]"
+  ).forEach(
+    enlace => enlace.remove()
+  );
+
+  const paneles = obtenerPanelesUsuario(usuario);
+  const principal = paneles[0];
+
+  if (!principal) {
     btnVolverPanel.classList.add("hidden");
-
     btnVolverPanel.removeAttribute("href");
-
     return;
   }
 
-  btnVolverPanel.href = panel.url;
+  btnVolverPanel.href = principal.url;
 
-  iconoVolverPanel.textContent = panel.icono;
+  btnVolverPanel.setAttribute(
+    "aria-label",
+    principal.texto
+  );
 
-  textoVolverPanel.textContent = panel.texto;
+  iconoVolverPanel.textContent = principal.icono;
+  textoVolverPanel.textContent = principal.texto;
 
   btnVolverPanel.classList.remove("hidden");
+
+  let anterior = btnVolverPanel;
+
+  for (const panel of paneles.slice(1)) {
+    const enlace = btnVolverPanel.cloneNode(true);
+
+    enlace.removeAttribute("id");
+
+    enlace.querySelectorAll("[id]").forEach(
+      elemento => elemento.removeAttribute("id")
+    );
+
+    enlace.dataset.panelAdicional = panel.rol;
+    enlace.href = panel.url;
+
+    enlace.setAttribute(
+      "aria-label",
+      panel.texto
+    );
+
+    enlace.querySelector("span").textContent =
+      panel.icono;
+
+    enlace.querySelector("strong").textContent =
+      panel.texto;
+
+    enlace.addEventListener(
+      "click",
+      cerrarMenu
+    );
+
+    anterior.after(enlace);
+    anterior = enlace;
+  }
 }
 
 function obtenerInicial(nombre) {

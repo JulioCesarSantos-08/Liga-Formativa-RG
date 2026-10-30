@@ -9,8 +9,11 @@ import {
 
 import {
     protegerPagina,
-    cerrarSesion
+    cerrarSesion,
+    usuarioTieneRol
 } from "../roles.js";
+
+import { crearResumenRapidoAdmin } from "./resumenRapidoAdmin.js";
 
 
 const sidebar =
@@ -101,6 +104,34 @@ let partidos = [];
 let cedulas = [];
 let temporadas = [];
 let auditoria = [];
+let resumenRapidoAdmin = null;
+let estadoResumenAdmin = "cargando";
+let actualizadoResumenAdmin = null;
+
+function obtenerDatosResumenAdmin() {
+    const activa = temporadas.find(esTemporadaActiva);
+
+    const tieneTemporadas = partidos.some(
+        partido => partido.temporadaId
+    );
+
+    const alcance = activa && tieneTemporadas
+        ? activa.nombre ||
+            obtenerAnioTemporada(activa) ||
+            "Temporada activa"
+        : "Todas las temporadas";
+
+    return {
+        usuario: usuarioActual,
+        temporada: alcance,
+        jugadores,
+        partidos: obtenerPartidosTemporadaActual(),
+        cedulasPendientes: calcularCedulasPendientes(),
+        estado: estadoResumenAdmin,
+        cargando: estadoResumenAdmin === "cargando",
+        actualizadoEn: actualizadoResumenAdmin
+    };
+}
 
 
 iniciar();
@@ -122,6 +153,10 @@ async function iniciar() {
         cargarAdministrador(
             usuarioActual
         );
+
+        resumenRapidoAdmin = crearResumenRapidoAdmin({
+            obtenerDatos: obtenerDatosResumenAdmin
+        });
 
         activarEventos();
 
@@ -180,6 +215,9 @@ function cargarAdministrador(usuario) {
 
 
 async function cargarDashboard() {
+
+    estadoResumenAdmin = "cargando";
+    resumenRapidoAdmin?.actualizar();
 
     establecerEstadoCarga();
 
@@ -245,6 +283,16 @@ async function cargarDashboard() {
     renderizarProximosPartidos();
 
     renderizarUltimasAcciones();
+
+    estadoResumenAdmin = resultados.slice(0, 6).every(
+        resultado => resultado.status === "fulfilled"
+    ) ? "listo" : "error";
+
+    actualizadoResumenAdmin = estadoResumenAdmin === "listo"
+        ? Date.now()
+        : null;
+
+    resumenRapidoAdmin?.actualizar();
 
 }
 
@@ -390,9 +438,10 @@ function actualizarEstadisticas() {
     const totalArbitros =
         usuarios.filter(
             usuario =>
-                normalizarRol(
-                    usuario.rol
-                ) === "arbitro" &&
+                (
+                    normalizarRol(usuario.rol) === "arbitro" ||
+                    usuarioTieneRol(usuario, "arbitro")
+                ) &&
                 usuario.activo !== false
         ).length;
 
@@ -1461,6 +1510,10 @@ function textoAccion(
 
 function mostrarErrorDashboard() {
 
+    estadoResumenAdmin = "error";
+    actualizadoResumenAdmin = null;
+    resumenRapidoAdmin?.actualizar();
+
     if (temporadaActualNombre) {
         temporadaActualNombre.textContent =
             "—";
@@ -1528,13 +1581,7 @@ function activarEventos() {
 
     btnPerfilAdmin?.addEventListener(
         "click",
-        () => {
-
-            alert(
-                "Más adelante aquí tendremos el perfil y configuración de la cuenta administrativa."
-            );
-
-        }
+        () => resumenRapidoAdmin?.abrir()
     );
 
     botonesModulo.forEach(

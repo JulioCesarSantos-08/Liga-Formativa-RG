@@ -10,7 +10,8 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 import {
-    protegerPagina
+    protegerPagina,
+    usuarioTieneRol
 } from "../roles.js";
 
 import {
@@ -277,61 +278,82 @@ async function cargarCategorias() {
 
 async function cargarResponsables() {
     try {
-        const referencia =
-            collection(
-                db,
-                "usuarios"
-            );
+        const referencia = collection(db, "usuarios");
 
-        const consulta =
-            query(
-                referencia,
-                where(
-                    "rol",
-                    "==",
+        const resultados = await Promise.allSettled([
+            getDocs(
+                query(
+                    referencia,
+                    where("rol", "==", "jefeEquipo")
+                )
+            ),
+            getDocs(
+                query(
+                    referencia,
+                    where("roles", "array-contains", "jefeEquipo")
+                )
+            )
+        ]);
+
+        const fallo = resultados.find(
+            resultado =>
+                resultado.status === "rejected"
+        );
+
+        if (fallo) {
+            throw fallo.reason;
+        }
+
+        const unicos = new Map();
+
+        for (const resultado of resultados) {
+            for (const documento of resultado.value.docs) {
+                unicos.set(
+                    documento.id,
+                    {
+                        ...documento.data(),
+                        id: documento.id
+                    }
+                );
+            }
+        }
+
+        responsables = [...unicos.values()]
+            .filter(usuarioItem =>
+                usuarioItem.activo !== false &&
+                usuarioTieneRol(
+                    usuarioItem,
                     "jefeEquipo"
                 )
-            );
-
-        const snapshot =
-            await getDocs(
-                consulta
-            );
-
-        responsables =
-            snapshot.docs
-                .map(
-                    documento => ({
-                        id: documento.id,
-                        ...documento.data()
-                    })
+            )
+            .sort((a, b) =>
+                String(
+                    a.nombre ||
+                    a.nombreCompleto ||
+                    a.email ||
+                    ""
+                ).localeCompare(
+                    String(
+                        b.nombre ||
+                        b.nombreCompleto ||
+                        b.email ||
+                        ""
+                    ),
+                    "es"
                 )
-                .filter(
-                    usuarioItem =>
-                        usuarioItem.activo !== false
-                )
-                .sort(
-                    (a, b) =>
-                        (
-                            a.nombre ||
-                            a.nombreCompleto ||
-                            a.email ||
-                            ""
-                        ).localeCompare(
-                            b.nombre ||
-                            b.nombreCompleto ||
-                            b.email ||
-                            "",
-                            "es"
-                        )
-                );
+            );
 
         llenarSelectResponsables();
-
     } catch (error) {
         console.error(
             "Error cargando responsables:",
             error
+        );
+
+        mostrarToast(
+            "error",
+            "No se cargaron los responsables",
+            "No se pudo completar la consulta. Actualiza la p\u00e1gina e intenta nuevamente."
         );
     }
 }

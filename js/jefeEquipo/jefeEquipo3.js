@@ -13,7 +13,11 @@ import {
     db
 } from "../firebase.js";
 
-import { obtenerJerarquiaCategoriaPrestamo } from "./reglasPrestamos.js";
+import {
+    obtenerJerarquiaCategoriaPrestamo,
+    puedenRelacionarseCategoriasPrestamo,
+    validarJerarquiaCategoriasPrestamo
+} from "./reglasPrestamos.js";
 
 const btnSolicitarPrestamo =
     document.getElementById(
@@ -599,7 +603,7 @@ function cargarEquiposElegibles() {
 
         mostrarValidacion(
             false,
-            "No encontramos un equipo del mismo Club / Comunidad en la categoría inmediatamente inferior."
+            "No encontramos equipos del mismo Club / Comunidad con una categor\u00eda compatible para este pr\u00e9stamo."
         );
 
         return;
@@ -614,20 +618,27 @@ function cargarEquiposElegibles() {
 }
 
 function obtenerEquiposPrestamoElegibles() {
-    if (!equipoActualPrestamos) {
-        return [];
-    }
+    if (!equipoActualPrestamos) return [];
 
-    const clubDestino = obtenerClubIdEquipo(equipoActualPrestamos);
-    const nivelDestino = obtenerNivelCategoriaEquipo(equipoActualPrestamos);
+    const clubDestino =
+        obtenerClubIdEquipo(equipoActualPrestamos);
 
-    if (!clubDestino || nivelDestino === null || nivelDestino <= 1) {
+    const categoriaDestino =
+        obtenerNombreCategoriaEquipo(equipoActualPrestamos);
+
+    if (
+        !clubDestino ||
+        !equipoEstaActivo(equipoActualPrestamos)
+    ) {
         return [];
     }
 
     return todosLosEquiposPrestamos
         .filter(equipo => {
-            if (!equipo || equipo.id === equipoActualPrestamos.id) {
+            if (
+                !equipo ||
+                equipo.id === equipoActualPrestamos.id
+            ) {
                 return false;
             }
 
@@ -635,12 +646,11 @@ function obtenerEquiposPrestamoElegibles() {
                 return false;
             }
 
-            const clubOrigen = obtenerClubIdEquipo(equipo);
-            const nivelOrigen = obtenerNivelCategoriaEquipo(equipo);
-
-            return clubOrigen === clubDestino &&
-                nivelOrigen !== null &&
-                nivelDestino - nivelOrigen === 1;
+            return obtenerClubIdEquipo(equipo) === clubDestino &&
+                puedenRelacionarseCategoriasPrestamo(
+                    obtenerNombreCategoriaEquipo(equipo),
+                    categoriaDestino
+                );
         })
         .sort((a, b) =>
             String(a.nombre || "").localeCompare(
@@ -857,14 +867,13 @@ function cargarJugadoresPrestamo() {
                 ordenarJugadores
             );
 
-    const disponibles =
-        jugadoresActivos.filter(
-            jugador =>
-                jugadorDisponiblePrestamo(
-                    jugador,
-                    equipoActualPrestamos
-                )
-        );
+    const disponibles = jugadoresActivos.filter(jugador =>
+        validarPrestamo(
+            equipoOrigen,
+            equipoActualPrestamos,
+            jugador
+        ).valido
+    );
 
     disponibles.forEach(
         jugador => {
@@ -1118,55 +1127,69 @@ function validarRelacionEquipos(origen, destino) {
     if (!origen || !destino) {
         return {
             valido: false,
-            mensaje: "No se pudo validar la informaci?n de los equipos."
+            mensaje: "No se pudieron identificar los equipos."
         };
     }
 
     if (origen.id === destino.id) {
         return {
             valido: false,
-            mensaje: "El equipo de origen y destino no pueden ser el mismo."
+            mensaje: "El origen y destino no pueden ser el mismo equipo."
+        };
+    }
+
+    if (
+        !equipoEstaActivo(origen) ||
+        !equipoEstaActivo(destino)
+    ) {
+        return {
+            valido: false,
+            mensaje: "Los equipos deben estar activos y habilitados."
         };
     }
 
     const clubOrigen = obtenerClubIdEquipo(origen);
     const clubDestino = obtenerClubIdEquipo(destino);
 
-    if (!clubOrigen || !clubDestino) {
+    if (
+        !clubOrigen ||
+        !clubDestino ||
+        clubOrigen !== clubDestino
+    ) {
         return {
             valido: false,
-            mensaje: "Los dos equipos necesitan tener configurado su Club / Comunidad."
+            mensaje: "Los equipos deben pertenecer al mismo Club / Comunidad."
         };
     }
 
-    if (clubOrigen !== clubDestino) {
+    if (
+        !puedenRelacionarseCategoriasPrestamo(
+            obtenerNombreCategoriaEquipo(origen),
+            obtenerNombreCategoriaEquipo(destino)
+        )
+    ) {
         return {
             valido: false,
-            mensaje: "El pr?stamo solo se permite entre equipos del mismo Club / Comunidad."
-        };
-    }
-
-    const nivelOrigen = obtenerNivelCategoriaEquipo(origen);
-    const nivelDestino = obtenerNivelCategoriaEquipo(destino);
-
-    if (nivelOrigen === null || nivelDestino === null) {
-        return {
-            valido: false,
-            mensaje: "No pudimos identificar correctamente las categor?as de los equipos."
-        };
-    }
-
-    if (nivelDestino - nivelOrigen !== 1) {
-        return {
-            valido: false,
-            mensaje: "El pr?stamo solo se permite desde una categor?a del nivel inmediatamente inferior."
+            mensaje: "Las categor\u00edas no permiten este movimiento. Solo se admite el nivel superior inmediato o los destinos especiales de las categor\u00edas femeniles."
         };
     }
 
     return {
         valido: true,
-        mensaje: "Los equipos cumplen las reglas de pr?stamo."
+        mensaje: "Equipos compatibles. Falta comprobar al jugador."
     };
+}
+
+function validarJugadorPrestamoCompartido(
+    origen,
+    destino,
+    jugador
+) {
+    return validarJerarquiaCategoriasPrestamo(
+        obtenerNombreCategoriaEquipo(origen),
+        obtenerNombreCategoriaEquipo(destino),
+        jugador
+    );
 }
 
 function validarPrestamo(
@@ -1196,23 +1219,14 @@ function validarPrestamo(
         return relacion;
     }
 
-    const jerarquiaDestino =
-        obtenerJerarquiaCategoriaPrestamo(
-            obtenerNombreCategoriaEquipo(destino)
-        );
+    const jerarquia = validarJugadorPrestamoCompartido(
+        origen,
+        destino,
+        jugador
+    );
 
-    const sexoJugador =
-        normalizarTexto(jugador.sexo);
-
-    if (
-        jerarquiaDestino?.modalidad === "femenil" &&
-        !["mujer", "femenino"].includes(sexoJugador)
-    ) {
-        return {
-            valido: false,
-            mensaje:
-                "El refuerzo debe tener sexo Mujer para participar en una categor?a femenil."
-        };
+    if (!jerarquia.valido) {
+        return jerarquia;
     }
 
     if (

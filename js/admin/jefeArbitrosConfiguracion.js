@@ -4,7 +4,40 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 import { db } from "../firebase.js";
-import { protegerPagina } from "../roles.js";
+import { protegerPagina, usuarioTieneRol } from "../roles.js";
+
+async function consultarArbitrosDesignacion() {
+    const referencia = collection(db, "usuarios");
+
+    const resultados = await Promise.all([
+        getDocs(
+            query(
+                referencia,
+                where("rol", "==", "arbitro")
+            )
+        ),
+        getDocs(
+            query(
+                referencia,
+                where("roles", "array-contains", "arbitro")
+            )
+        )
+    ]);
+
+    const unicos = new Map();
+
+    for (const resultado of resultados) {
+        for (const documento of resultado.docs) {
+            if (usuarioTieneRol(documento.data(), "arbitro")) {
+                unicos.set(documento.id, documento);
+            }
+        }
+    }
+
+    return {
+        docs: [...unicos.values()]
+    };
+}
 
 async function guardarDesignacion(adminUid, arbitroId) {
     return runTransaction(db, async transaccion => {
@@ -29,7 +62,7 @@ async function guardarDesignacion(adminUid, arbitroId) {
 
             if (
                 !arbitroSnapshot.exists() ||
-                arbitroSnapshot.data().rol !== "arbitro" ||
+                !usuarioTieneRol(arbitroSnapshot.data(), "arbitro") ||
                 arbitroSnapshot.data().activo === false
             ) {
                 throw new Error(
@@ -187,12 +220,7 @@ async function iniciar() {
 
     try {
         const [usuariosSnapshot, configuracionSnapshot] = await Promise.all([
-            getDocs(
-                query(
-                    collection(db, "usuarios"),
-                    where("rol", "==", "arbitro")
-                )
-            ),
+            consultarArbitrosDesignacion(),
             getDoc(doc(db, "configuracionLiga", "general"))
         ]);
 

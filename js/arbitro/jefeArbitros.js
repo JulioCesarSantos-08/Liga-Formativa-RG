@@ -4,7 +4,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 import { db } from "../firebase.js";
-import { protegerPagina, cerrarSesion } from "../roles.js";
+import { protegerPagina, cerrarSesion, usuarioTieneRol } from "../roles.js";
 
 const $ = id => document.getElementById(id);
 
@@ -68,7 +68,7 @@ async function solicitarCambioArbitro(
             !configSnap.exists() ||
             configSnap.data().jefeArbitrosId !== solicitanteUid ||
             !jefeSnap.exists() ||
-            jefeSnap.data().rol !== "arbitro" ||
+            !usuarioTieneRol(jefeSnap.data(), "arbitro") ||
             jefeSnap.data().activo === false
         ) {
             throw new Error(
@@ -94,7 +94,7 @@ async function solicitarCambioArbitro(
 
         if (
             !nuevoSnap.exists() ||
-            nuevoSnap.data().rol !== "arbitro" ||
+            !usuarioTieneRol(nuevoSnap.data(), "arbitro") ||
             nuevoSnap.data().activo === false
         ) {
             throw new Error(
@@ -175,6 +175,39 @@ function mostrarError(mensaje) {
     $("estadoError").classList.remove("oculto");
 }
 
+async function consultarArbitrosDobleRol() {
+    const referencia = collection(db, "usuarios");
+
+    const resultados = await Promise.all([
+        getDocs(
+            query(
+                referencia,
+                where("rol", "==", "arbitro")
+            )
+        ),
+        getDocs(
+            query(
+                referencia,
+                where("roles", "array-contains", "arbitro")
+            )
+        )
+    ]);
+
+    const unicos = new Map();
+
+    for (const resultado of resultados) {
+        for (const documento of resultado.docs) {
+            if (usuarioTieneRol(documento.data(), "arbitro")) {
+                unicos.set(documento.id, documento);
+            }
+        }
+    }
+
+    return {
+        docs: [...unicos.values()]
+    };
+}
+
 async function cargarDatos() {
     $("btnActualizar").disabled = true;
     $("estadoError").classList.add("oculto");
@@ -190,7 +223,7 @@ async function cargarDatos() {
         const cuenta = cuentaSnap.exists() ? cuentaSnap.data() : {};
 
         puedeSolicitar =
-            cuenta.rol === "arbitro" &&
+            usuarioTieneRol(cuenta, "arbitro") &&
             cuenta.activo !== false &&
             configSnap.exists() &&
             configSnap.data().jefeArbitrosId === uid;
@@ -206,12 +239,7 @@ async function cargarDatos() {
 
         const resultados = await Promise.all([
             getDocs(collection(db, "partidos")),
-            getDocs(
-                query(
-                    collection(db, "usuarios"),
-                    where("rol", "==", "arbitro")
-                )
-            ),
+            consultarArbitrosDobleRol(),
             getDocs(collection(db, "cedulas")),
             getDocs(collection(db, "solicitudesCambioArbitro"))
         ]);
@@ -556,5 +584,4 @@ async function iniciar() {
         mostrarError(error.message || "No se pudo abrir el panel.");
     }
 }
-
 await iniciar();

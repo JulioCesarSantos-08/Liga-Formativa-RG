@@ -4,6 +4,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 import { db, auth } from "../firebase.js";
+import { usuarioTieneRol } from "../permisosUsuario.js";
 
 async function resolverCambio({
     solicitudId,
@@ -179,7 +180,7 @@ async function resolverCambio({
 
             if (
                 !arbitroSnap.exists() ||
-                arbitroSnap.data().rol !== "arbitro" ||
+                !usuarioTieneRol(arbitroSnap.data(), "arbitro") ||
                 arbitroSnap.data().activo === false
             ) {
                 throw new Error(

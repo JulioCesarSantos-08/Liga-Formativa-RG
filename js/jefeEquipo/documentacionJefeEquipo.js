@@ -1,6 +1,6 @@
 import { doc, getDoc, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { db, auth } from "../firebase.js";
-import { cerrarSesion } from "../roles.js";
+import { cerrarSesion, usuarioTieneRol } from "../roles.js";
 import { subirFotoResponsable, subirCurpResponsable } from "../cloudinary.js";
 
 function expedienteCompleto(datos) {
@@ -17,10 +17,10 @@ async function guardarExpediente(uid, version, cambios) {
         if (
             auth.currentUser?.uid !== uid ||
             !snapshot.exists() ||
-            snapshot.data().rol !== "jefeEquipo" ||
+            !usuarioTieneRol(snapshot.data(), "jefeEquipo") ||
             snapshot.data().activo === false
         ) {
-            throw new Error("Tu sesión debe corresponder a un árbitro activo.");
+            throw new Error("Tu sesión debe corresponder a un Director Técnico activo.");
         }
 
         const actual = snapshot.data().documentacionJefeEquipo || {};
@@ -54,9 +54,9 @@ export async function exigirDocumentacionJefeEquipo(usuario) {
     if (
         !uid ||
         auth.currentUser?.uid !== uid ||
-        usuario.rol !== "jefeEquipo"
+        !usuarioTieneRol(usuario, "jefeEquipo")
     ) {
-        throw new Error("No se pudo verificar tu sesión arbitral.");
+        throw new Error("No se pudo verificar tu sesión de Director Técnico.");
     }
 
     const panel = document.createElement("dialog");
@@ -438,7 +438,7 @@ export async function exigirDocumentacionJefeEquipo(usuario) {
                 if (
                     auth.currentUser?.uid !== uid ||
                     !snapshot.exists() ||
-                    snapshot.data().rol !== "jefeEquipo" ||
+                    !usuarioTieneRol(snapshot.data(), "jefeEquipo") ||
                     snapshot.data().activo === false
                 ) {
                     throw new Error("No se pudo verificar una cuenta de jefe de equipo activa.");

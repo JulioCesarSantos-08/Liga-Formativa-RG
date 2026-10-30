@@ -1,5 +1,6 @@
 import { doc, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { db, auth } from "../firebase.js";
+import { usuarioTieneRol } from "../permisosUsuario.js";
 
 let promesaQr = null;
 
@@ -78,7 +79,7 @@ async function registrarEmision(arbitro, temporada) {
 
         if (
             !snapshot.exists() ||
-            snapshot.data().rol !== "arbitro" ||
+            !usuarioTieneRol(snapshot.data(), "arbitro") ||
             snapshot.data().activo === false
         ) {
             throw new Error("El árbitro debe tener una cuenta activa.");

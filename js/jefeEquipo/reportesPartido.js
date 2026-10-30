@@ -9,7 +9,8 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 import {
-    protegerPagina
+    protegerPagina,
+    usuarioTieneRol
 } from "../roles.js";
 
 import {
@@ -28,7 +29,7 @@ if (usuario) {
 async function iniciarReportesEquipo() {
     const contenedorPartidos = document.getElementById("contenidoPartidos");
 
-    if (!contenedorPartidos || usuario.rol !== "jefeEquipo") {
+    if (!contenedorPartidos || !usuarioTieneRol(usuario, "jefeEquipo")) {
         return;
     }
 

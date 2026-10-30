@@ -1,7 +1,7 @@
 import { prepararQrCredencialArbitro } from "./qrCredencialArbitro.js";
 import { collection, query, where, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { db, auth } from "../firebase.js";
-import { protegerPagina } from "../roles.js";
+import { protegerPagina, usuarioTieneRol } from "../roles.js";
 
 function urlSegura(valor) {
     try {
@@ -23,7 +23,7 @@ function completo(arbitro) {
 }
 
 function imprimible(arbitro) {
-    return arbitro.rol === "arbitro" &&
+    return usuarioTieneRol(arbitro, "arbitro") &&
         arbitro.activo !== false &&
         completo(arbitro);
 }
@@ -52,18 +52,49 @@ async function validarAdmin(uid) {
 }
 
 async function consultarArbitros() {
-    const snapshot = await getDocs(
-        query(
-            collection(db, "usuarios"),
-            where("rol", "==", "arbitro")
+    const referencia = collection(db, "usuarios");
+
+    const resultados = await Promise.allSettled([
+        getDocs(
+            query(
+                referencia,
+                where("rol", "==", "arbitro")
+            )
+        ),
+        getDocs(
+            query(
+                referencia,
+                where("roles", "array-contains", "arbitro")
+            )
         )
+    ]);
+
+    const fallo = resultados.find(
+        resultado => resultado.status === "rejected"
     );
 
-    return snapshot.docs
-        .map(item => ({
-            ...item.data(),
-            id: item.id
-        }))
+    if (fallo) {
+        throw fallo.reason;
+    }
+
+    const unicos = new Map();
+
+    for (const resultado of resultados) {
+        for (const documento of resultado.value.docs) {
+            unicos.set(
+                documento.id,
+                {
+                    ...documento.data(),
+                    id: documento.id
+                }
+            );
+        }
+    }
+
+    return [...unicos.values()]
+        .filter(arbitro =>
+            usuarioTieneRol(arbitro, "arbitro")
+        )
         .sort((a, b) =>
             String(a.nombre || "").localeCompare(
                 String(b.nombre || ""),

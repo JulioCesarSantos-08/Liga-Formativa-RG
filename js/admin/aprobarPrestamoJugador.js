@@ -340,7 +340,8 @@ export async function aprobarPrestamoJugador({
 
             const jerarquia = validarJerarquiaCategoriasPrestamo(
                 categoriaOrigen.nombre,
-                categoriaDestino.nombre
+                categoriaDestino.nombre,
+                jugador
             );
 
             if (!jerarquia.valido) {
@@ -359,7 +360,10 @@ export async function aprobarPrestamoJugador({
             const elegibilidadDestino = evaluarJugadorCategoria(
                 jugador,
                 categoriaDestino,
-                { permitirMenores: true }
+                {
+                    permitirMenores: true,
+                    categoriaOrigenPrestamo: categoriaOrigen
+                }
             );
 
             if (!elegibilidadDestino.valido) {

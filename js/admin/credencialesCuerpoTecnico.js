@@ -1,6 +1,6 @@
 import { collection, query, where, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { db, auth } from "../firebase.js";
-import { protegerPagina } from "../roles.js";
+import { protegerPagina, usuarioTieneRol } from "../roles.js";
 import { prepararQrTecnico } from "./qrCredencialTecnico.js";
 
 function urlSegura(valor) {
@@ -152,14 +152,59 @@ async function validarAdmin(uid) {
     }
 }
 
-async function consultar() {
-    const [usuarios, equipos, temporadas] = await Promise.all([
+async function consultarUsuariosJefesEquipo() {
+    const referencia = collection(db, "usuarios");
+
+    const resultados = await Promise.allSettled([
         getDocs(
             query(
-                collection(db, "usuarios"),
+                referencia,
                 where("rol", "==", "jefeEquipo")
             )
         ),
+        getDocs(
+            query(
+                referencia,
+                where("roles", "array-contains", "jefeEquipo")
+            )
+        )
+    ]);
+
+    const fallo = resultados.find(
+        resultado =>
+            resultado.status === "rejected"
+    );
+
+    if (fallo) {
+        throw fallo.reason;
+    }
+
+    const unicos = new Map();
+
+    for (const resultado of resultados) {
+        for (const documento of resultado.value.docs) {
+            if (
+                usuarioTieneRol(
+                    documento.data(),
+                    "jefeEquipo"
+                )
+            ) {
+                unicos.set(
+                    documento.id,
+                    documento
+                );
+            }
+        }
+    }
+
+    return {
+        docs: [...unicos.values()]
+    };
+}
+
+async function consultar() {
+    const [usuarios, equipos, temporadas] = await Promise.all([
+        consultarUsuariosJefesEquipo(),
         getDocs(collection(db, "equipos")),
         getDocs(collection(db, "temporadas"))
     ]);

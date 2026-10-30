@@ -921,63 +921,61 @@ async function cargarEquipos() {
 
 
 async function cargarJugadores() {
+    const [
+        snapshotJugadores,
+        snapshotPrestamos,
+        snapshotCategorias
+    ] = await Promise.all([
+        getDocs(collection(db, "jugadores")),
+        getDocs(collection(db, "prestamosJugadores")),
+        getDocs(collection(db, "categorias"))
+    ]);
 
-    const [snapshotJugadores, snapshotPrestamos] =
-        await Promise.all([
-            getDocs(
-                collection(
-                    db,
-                    "jugadores"
-                )
-            ),
-            getDocs(
-                collection(
-                    db,
-                    "prestamosJugadores"
-                )
-            )
-        ]);
+    const todos = snapshotJugadores.docs.map(
+        documento => ({
+            ...documento.data(),
+            id: documento.id
+        })
+    );
 
-    const todos =
-        snapshotJugadores.docs.map(
-            documento => ({
-                id: documento.id,
-                ...documento.data()
-            })
+    const categoriasOrigenPorId = new Map(
+        snapshotCategorias.docs.map(documento => [
+            documento.id,
+            {
+                ...documento.data(),
+                id: documento.id
+            }
+        ])
+    );
+
+    const prestamosActivos = snapshotPrestamos.docs
+        .map(documento => ({
+            ...documento.data(),
+            id: documento.id
+        }))
+        .filter(prestamo =>
+            prestamo.activo === true &&
+            String(prestamo.estado || "")
+                .trim()
+                .toLowerCase() === "activo"
         );
 
-    const prestamosActivos =
-        snapshotPrestamos.docs
-            .map(documento => ({
-                id: documento.id,
-                ...documento.data()
-            }))
-            .filter(prestamo =>
-                prestamo.activo === true &&
-                String(prestamo.estado || "")
-                    .trim()
-                    .toLowerCase() === "activo"
-            );
+    const presentesLocal = new Set(
+        Array.isArray(asistencia.presentesLocal)
+            ? asistencia.presentesLocal
+            : []
+    );
 
-    const presentesLocal =
-        new Set(
-            Array.isArray(asistencia.presentesLocal)
-                ? asistencia.presentesLocal
-                : []
-        );
-
-    const presentesVisitante =
-        new Set(
-            Array.isArray(asistencia.presentesVisitante)
-                ? asistencia.presentesVisitante
-                : []
-        );
+    const presentesVisitante = new Set(
+        Array.isArray(asistencia.presentesVisitante)
+            ? asistencia.presentesVisitante
+            : []
+    );
 
     const construirPlantilla = (equipoId, presentes) => {
-        const propios = todos.filter(
-            jugador =>
-                jugador.equipoId === equipoId &&
-                presentes.has(jugador.id)
+        const propios = todos.filter(jugador =>
+            jugador.equipoId === equipoId &&
+            presentes.has(jugador.id)
         );
 
         const idsPropios = new Set(
@@ -992,7 +990,8 @@ async function cargarJugadores() {
             )
             .map(prestamo => {
                 const jugador = todos.find(
-                    elemento => elemento.id === prestamo.jugadorId
+                    elemento =>
+                        elemento.id === prestamo.jugadorId
                 );
 
                 if (
@@ -1005,12 +1004,45 @@ async function cargarJugadores() {
                     return null;
                 }
 
+                const categoriaIdJugador = String(
+                    jugador.categoriaId || ""
+                ).trim();
+
+                const categoriaIdPrestamo = String(
+                    prestamo.categoriaOrigenId || ""
+                ).trim();
+
+                const categoriaIdDestino = String(
+                    prestamo.categoriaDestinoId || ""
+                ).trim();
+
+                const origenCoincide =
+                    !categoriaIdJugador ||
+                    !categoriaIdPrestamo ||
+                    categoriaIdJugador === categoriaIdPrestamo;
+
+                const destinoCoincide =
+                    !categoriaIdDestino ||
+                    categoriaIdDestino ===
+                        String(partido.categoriaId || "").trim();
+
+                const categoriaOrigenPrestamo =
+                    origenCoincide && destinoCoincide
+                        ? categoriasOrigenPorId.get(
+                            categoriaIdJugador ||
+                            categoriaIdPrestamo
+                        ) || null
+                        : null;
+
                 return {
                     ...jugador,
                     esRefuerzo: true,
                     prestamoId: prestamo.id,
-                    equipoOrigenPrestamoId: prestamo.equipoOrigenId,
-                    equipoOrigenPrestamoNombre: prestamo.equipoOrigenNombre || ""
+                    equipoOrigenPrestamoId:
+                        prestamo.equipoOrigenId,
+                    equipoOrigenPrestamoNombre:
+                        prestamo.equipoOrigenNombre || "",
+                    categoriaOrigenPrestamo
                 };
             })
             .filter(Boolean);
@@ -1019,11 +1051,16 @@ async function cargarJugadores() {
 
         [...propios, ...refuerzos].forEach(jugador => {
             if (!unicos.has(jugador.id)) {
-                unicos.set(jugador.id, jugador);
+                unicos.set(
+                    jugador.id,
+                    jugador
+                );
             }
         });
 
-        return [...unicos.values()].sort(ordenarJugadores);
+        return [...unicos.values()].sort(
+            ordenarJugadores
+        );
     };
 
     jugadoresLocal = construirPlantilla(
@@ -1040,7 +1077,6 @@ async function cargarJugadores() {
         ...jugadoresLocal,
         ...jugadoresVisitante
     ];
-
 }
 
 function cargarInformacionPartido() {

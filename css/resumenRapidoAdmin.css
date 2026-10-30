@@ -1,0 +1,293 @@
+.ra-dialogo {
+    --ra-verde: #075b4c;
+    --ra-oscuro: #123d35;
+    --ra-dorado: #c59a44;
+    --ra-texto: #24483f;
+    --ra-suave: #667a72;
+    box-sizing: border-box;
+    width: min(720px, calc(100% - 24px));
+    max-height: calc(100dvh - 32px);
+    margin: auto;
+    padding: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    border: 1px solid #cfb478;
+    border-radius: 26px;
+    background: #fffaf0;
+    color: var(--ra-texto);
+    box-shadow: 0 28px 90px #082d3559;
+    font-family: inherit;
+    scrollbar-width: thin;
+    scrollbar-color: #bfa164 transparent;
+}
+
+.ra-dialogo *,
+.ra-dialogo *::before,
+.ra-dialogo *::after {
+    box-sizing: border-box;
+}
+
+.ra-dialogo::backdrop {
+    background: #062f2bc2;
+    backdrop-filter: blur(7px);
+}
+
+.ra-cabecera {
+    position: relative;
+    padding: 28px 76px 25px 28px;
+    overflow: hidden;
+    background: linear-gradient(125deg, #073e35, #096b59);
+    color: #fffaf0;
+}
+
+.ra-cabecera::after {
+    position: absolute;
+    right: -45px;
+    bottom: -100px;
+    width: 230px;
+    height: 230px;
+    border: 28px solid #ffffff0a;
+    border-radius: 50%;
+    content: "";
+    pointer-events: none;
+}
+
+.ra-etiqueta {
+    margin: 0 0 9px;
+    color: #f1cd83;
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+}
+
+.ra-titulo {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    font-size: clamp(1.35rem, 4vw, 1.85rem);
+    font-weight: 850;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.ra-subtitulo {
+    position: relative;
+    z-index: 1;
+    margin: 10px 0 0;
+    color: #d5e8de;
+    font-size: .82rem;
+    line-height: 1.6;
+}
+
+.ra-cerrar {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 2;
+    display: grid;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    place-items: center;
+    border: 1px solid #ffffff45;
+    border-radius: 13px;
+    background: #ffffff12;
+    color: white;
+    font: inherit;
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+.ra-cerrar:hover {
+    background: #ffffff25;
+}
+
+.ra-cuerpo {
+    display: grid;
+    gap: 22px;
+    padding: 25px 28px 28px;
+}
+
+.ra-contexto {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 16px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #dfd7c3;
+    font-size: .76rem;
+    line-height: 1.5;
+}
+
+.ra-contexto strong {
+    color: var(--ra-verde);
+}
+
+.ra-contexto span {
+    color: var(--ra-suave);
+}
+
+.ra-seccion-titulo {
+    margin: 0 0 12px;
+    color: var(--ra-oscuro);
+    font-size: .88rem;
+    font-weight: 800;
+}
+
+.ra-metricas {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.ra-metrica {
+    min-width: 0;
+    padding: 17px 15px;
+    border: 1px solid #d5e2d8;
+    border-radius: 17px;
+    background: #f0f6ef;
+}
+
+.ra-metrica[data-tono="atencion"] {
+    border-color: #ead29a;
+    background: #fff2d5;
+}
+
+.ra-numero {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--ra-verde);
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    font-weight: 850;
+    line-height: 1.15;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+}
+
+.ra-metrica[data-tono="atencion"] .ra-numero {
+    color: #956020;
+}
+
+.ra-metrica-texto {
+    display: block;
+    color: #516a5f;
+    font-size: .73rem;
+    font-weight: 650;
+    line-height: 1.5;
+}
+
+.ra-aviso {
+    margin: 0;
+    padding: 13px 15px;
+    border: 1px solid #e5cb8f;
+    border-radius: 13px;
+    background: #fff1cf;
+    color: #765522;
+    font-size: .78rem;
+    line-height: 1.6;
+}
+
+.ra-accesos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.ra-acceso {
+    display: flex;
+    min-width: 0;
+    min-height: 64px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 15px;
+    border: 1px solid #d4ddcf;
+    border-radius: 14px;
+    background: #ffffff;
+    color: var(--ra-oscuro);
+    font-size: .79rem;
+    font-weight: 750;
+    line-height: 1.4;
+    text-decoration: none;
+    transition: background .15s ease, border-color .15s ease;
+}
+
+.ra-acceso::after {
+    flex-shrink: 0;
+    color: var(--ra-verde);
+    font-size: 1.3rem;
+    content: "\203A";
+}
+
+.ra-acceso:hover {
+    border-color: #79a492;
+    background: #edf5ef;
+}
+
+.ra-pie {
+    margin: 0;
+    color: var(--ra-suave);
+    font-size: .71rem;
+    line-height: 1.6;
+}
+
+.ra-dialogo button:focus-visible,
+.ra-dialogo a:focus-visible {
+    outline: 3px solid var(--ra-dorado);
+    outline-offset: 3px;
+}
+
+@media (max-width: 540px) {
+    .ra-dialogo {
+        width: calc(100% - 16px);
+        max-height: calc(100dvh - 16px);
+        border-radius: 21px;
+    }
+
+    .ra-cabecera {
+        padding: 24px 66px 22px 20px;
+    }
+
+    .ra-cerrar {
+        top: 16px;
+        right: 14px;
+    }
+
+    .ra-cuerpo {
+        gap: 20px;
+        padding: 20px 16px 24px;
+    }
+
+    .ra-metricas {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+    }
+
+    .ra-metrica {
+        padding: 15px 12px;
+        border-radius: 14px;
+    }
+
+    .ra-acceso {
+        padding: 12px;
+        font-size: .75rem;
+    }
+}
+
+@media (max-width: 340px) {
+    .ra-accesos {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ra-acceso {
+        transition: none;
+    }
+
+    .ra-dialogo {
+        scroll-behavior: auto;
+    }
+}

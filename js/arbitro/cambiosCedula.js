@@ -322,7 +322,7 @@ export async function crearControlCambios({
         );
 
         situacion.textContent = resultado.ok
-            ? "Niñas del año adicional en cancha · Local: " +
+            ? "Niñas mayores en cancha · Local: " +
                 resultado.cupos.local.cantidad + "/" +
                 resultado.cupos.local.limite +
                 " · Visitante: " +

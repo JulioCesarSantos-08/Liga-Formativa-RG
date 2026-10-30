@@ -1,4 +1,10 @@
-import { normalizarSexoJugador } from "./jefeEquipo/jugadorRegistroUtilidades.js";
+import {
+    normalizarSexoJugador
+} from "./jefeEquipo/jugadorRegistroUtilidades.js";
+
+import {
+    esExcepcionFemenilPrestamo
+} from "./jefeEquipo/reglasPrestamos.js";
 
 function normalizar(valor) {
     return String(valor ?? "")
@@ -36,16 +42,22 @@ function rangoCategoria(categoria) {
         return null;
     }
 
-    return { minimo, maximo };
+    return {
+        minimo,
+        maximo
+    };
 }
 
 function anioNacimiento(valor) {
     if (typeof valor === "string") {
-        const partes = /^(\d{4})-(\d{2})-(\d{2})$/.exec(
-            valor.trim()
-        );
+        const partes =
+            /^(\d{4})-(\d{2})-(\d{2})$/.exec(
+                valor.trim()
+            );
 
-        if (!partes) return null;
+        if (!partes) {
+            return null;
+        }
 
         const anio = Number(partes[1]);
         const mes = Number(partes[2]);
@@ -85,7 +97,9 @@ function anioNacimiento(valor) {
 
         const anio = fecha.getUTCFullYear();
 
-        return anio >= 1900 ? anio : null;
+        return anio >= 1900
+            ? anio
+            : null;
     } catch {
         return null;
     }
@@ -97,13 +111,38 @@ export function limiteNinasMayores(categoria) {
         categoria.categoriaNombre
     );
 
-    return nombre === "super bebe" ? 2 : 3;
+    return nombre === "super bebe"
+        ? 2
+        : 3;
+}
+
+function categoriaOrigenRefuerzo(jugador) {
+    if (
+        jugador?.esRefuerzo !== true ||
+        !String(jugador.prestamoId || "").trim() ||
+        !jugador.equipoOrigenPrestamoId ||
+        jugador.equipoOrigenPrestamoId !==
+            jugador.equipoId
+    ) {
+        return null;
+    }
+
+    const categoria =
+        jugador.categoriaOrigenPrestamo;
+
+    return categoria &&
+        typeof categoria === "object"
+        ? categoria
+        : null;
 }
 
 export function evaluarJugadorCategoria(
     jugador,
     categoria,
-    { permitirMenores = false } = {}
+    {
+        permitirMenores = false,
+        categoriaOrigenPrestamo = null
+    } = {}
 ) {
     const nombre = String(
         categoria.nombre ||
@@ -111,7 +150,9 @@ export function evaluarJugadorCategoria(
         "la categoría"
     ).trim();
 
-    const rango = rangoCategoria(categoria);
+    const rango = rangoCategoria(
+        categoria
+    );
 
     if (!rango) {
         return {
@@ -139,7 +180,10 @@ export function evaluarJugadorCategoria(
         normalizar(categoria.modalidad) === "femenil" ||
         normalizar(nombre).startsWith("femenil");
 
-    if (femenil && sexo !== "mujer") {
+    if (
+        femenil &&
+        sexo !== "mujer"
+    ) {
         return {
             valido: false,
             mensaje:
@@ -161,9 +205,50 @@ export function evaluarJugadorCategoria(
         };
     }
 
-    const esNinaMayor =
+    const origenRefuerzo =
+        categoriaOrigenPrestamo ||
+        categoriaOrigenRefuerzo(jugador);
+
+    let refuerzoFemenilPermitido = false;
+
+    if (
+        origenRefuerzo &&
+        esExcepcionFemenilPrestamo(
+            jugador,
+            origenRefuerzo.nombre ||
+                origenRefuerzo.categoriaNombre,
+            nombre
+        )
+    ) {
+        const origenValido =
+            evaluarJugadorCategoria(
+                {
+                    sexo: jugador.sexo,
+                    fechaNacimiento:
+                        jugador.fechaNacimiento
+                },
+                origenRefuerzo
+            );
+
+        if (!origenValido.valido) {
+            return {
+                valido: false,
+                mensaje:
+                    "La jugadora no cumple su categoría de origen: " +
+                    origenValido.mensaje
+            };
+        }
+
+        refuerzoFemenilPermitido = true;
+    }
+
+    const esNinaDelAnioAdicional =
         sexo === "mujer" &&
         anio === rango.minimo - 1;
+
+    const esNinaMayor =
+        sexo === "mujer" &&
+        anio < rango.minimo;
 
     const edadNormal =
         anio >= rango.minimo &&
@@ -175,8 +260,9 @@ export function evaluarJugadorCategoria(
 
     if (
         !edadNormal &&
-        !esNinaMayor &&
-        !menorPermitido
+        !esNinaDelAnioAdicional &&
+        !menorPermitido &&
+        !refuerzoFemenilPermitido
     ) {
         return {
             valido: false,
@@ -200,6 +286,7 @@ export function evaluarJugadorCategoria(
         mensaje: "",
         anioNacimiento: anio,
         esNinaMayor,
+        refuerzoFemenilPermitido,
         limiteNinasMayores:
             limiteNinasMayores(categoria)
     };
@@ -220,11 +307,14 @@ export function validarCupoNinasMayores(
     let cantidad = 0;
 
     for (const jugador of jugadoresEnCancha) {
-        const resultado = evaluarJugadorCategoria(
-            jugador,
-            categoria,
-            { permitirMenores: true }
-        );
+        const resultado =
+            evaluarJugadorCategoria(
+                jugador,
+                categoria,
+                {
+                    permitirMenores: true
+                }
+            );
 
         if (!resultado.valido) {
             return resultado;
@@ -235,7 +325,8 @@ export function validarCupoNinasMayores(
         }
     }
 
-    const limite = limiteNinasMayores(categoria);
+    const limite =
+        limiteNinasMayores(categoria);
 
     return {
         valido: cantidad <= limite,
@@ -244,7 +335,7 @@ export function validarCupoNinasMayores(
         mensaje: cantidad > limite
             ? "Solo pueden estar simultáneamente en cancha " +
                 limite +
-                " niñas del año adicional permitido."
+                " niñas mayores de la edad de la categoría."
             : ""
     };
 }

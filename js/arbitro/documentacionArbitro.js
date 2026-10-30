@@ -1,6 +1,6 @@
 import { doc, getDoc, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { db, auth } from "../firebase.js";
-import { cerrarSesion } from "../roles.js";
+import { cerrarSesion, usuarioTieneRol } from "../roles.js";
 import { subirFotoResponsable, subirCurpResponsable } from "../cloudinary.js";
 
 function expedienteCompleto(datos) {
@@ -17,7 +17,7 @@ async function guardarExpediente(uid, version, cambios) {
         if (
             auth.currentUser?.uid !== uid ||
             !snapshot.exists() ||
-            snapshot.data().rol !== "arbitro" ||
+            !usuarioTieneRol(snapshot.data(), "arbitro") ||
             snapshot.data().activo === false
         ) {
             throw new Error("Tu sesión debe corresponder a un árbitro activo.");
@@ -54,7 +54,7 @@ export async function exigirDocumentacionArbitro(usuario) {
     if (
         !uid ||
         auth.currentUser?.uid !== uid ||
-        usuario.rol !== "arbitro"
+        !usuarioTieneRol(usuario, "arbitro")
     ) {
         throw new Error("No se pudo verificar tu sesión arbitral.");
     }
@@ -438,7 +438,7 @@ export async function exigirDocumentacionArbitro(usuario) {
                 if (
                     auth.currentUser?.uid !== uid ||
                     !snapshot.exists() ||
-                    snapshot.data().rol !== "arbitro" ||
+                    !usuarioTieneRol(snapshot.data(), "arbitro") ||
                     snapshot.data().activo === false
                 ) {
                     throw new Error("No se pudo verificar una cuenta arbitral activa.");

@@ -289,7 +289,7 @@ export async function crearControlAlineaciones({
             ) {
                 const distintivo = document.createElement("span");
                 distintivo.className = "alineacion-nina-mayor";
-                distintivo.textContent = "Niña del año adicional";
+                distintivo.textContent = "Niña mayor de la categoría";
                 filas[indice].appendChild(distintivo);
             }
 
@@ -382,7 +382,7 @@ export async function crearControlAlineaciones({
                 contador.className = "alineacion-cupo";
 
                 contador.textContent = resultado.valido
-                    ? "Niñas del año adicional en cancha: " +
+                    ? "Niñas mayores en cancha: " +
                         resultado.cantidad + "/" +
                         limiteNinasMayores(categoriaParticipacion)
                     : resultado.mensaje;

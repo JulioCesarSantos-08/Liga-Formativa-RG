@@ -1,6 +1,6 @@
 import { doc, getDoc, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { db, auth } from "../firebase.js";
-import { cerrarSesion } from "../roles.js";
+import { cerrarSesion, usuarioTieneRol } from "../roles.js";
 import { subirFotoResponsable, subirCurpResponsable } from "../cloudinary.js";
 
 function completo(datos) {
@@ -28,7 +28,7 @@ async function guardarAuxiliar(
         if (
             auth.currentUser?.uid !== uid ||
             !usuario.exists() ||
-            usuario.data().rol !== "jefeEquipo" ||
+            !usuarioTieneRol(usuario.data(), "jefeEquipo") ||
             usuario.data().activo === false
         ) {
             throw new Error("Se requiere la sesión activa del Director Técnico.");
@@ -90,7 +90,7 @@ export async function exigirAuxiliarTecnico(
     if (
         !uid ||
         auth.currentUser?.uid !== uid ||
-        usuario.rol !== "jefeEquipo"
+        !usuarioTieneRol(usuario, "jefeEquipo")
     ) {
         throw new Error("No se pudo verificar la sesión del Director Técnico.");
     }
@@ -435,7 +435,7 @@ export async function exigirAuxiliarTecnico(
                 if (
                     auth.currentUser?.uid !== uid ||
                     !cuenta.exists() ||
-                    cuenta.data().rol !== "jefeEquipo" ||
+                    !usuarioTieneRol(cuenta.data(), "jefeEquipo") ||
                     cuenta.data().activo === false ||
                     !equipo.exists() ||
                     equipo.data().responsableId !== uid

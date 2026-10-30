@@ -4,7 +4,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 import { db } from "../firebase.js";
-import { protegerPagina } from "../roles.js";
+import { protegerPagina, usuarioTieneRol } from "../roles.js";
 
 const totalJefes = document.getElementById("totalJefes");
 const totalActivos = document.getElementById("totalActivos");
@@ -116,7 +116,10 @@ async function cargarDatos() {
                 id: documento.id,
                 ...documento.data()
             }))
-            .filter(usuario => esRolJefe(usuario.rol));
+            .filter(usuario =>
+                esRolJefe(usuario.rol) ||
+                usuarioTieneRol(usuario, "jefeEquipo")
+            );
 
         equipos = equiposSnapshot.docs.map(documento => ({
             id: documento.id,

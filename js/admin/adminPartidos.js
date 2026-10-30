@@ -10,7 +10,8 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 import {
-    protegerPagina
+    protegerPagina,
+    usuarioTieneRol
 } from "../roles.js";
 
 import {
@@ -378,7 +379,7 @@ async function cargarDatosBase() {
                 )
                 .filter(
                     usuario =>
-                        usuario.rol === "arbitro" &&
+                        usuarioTieneRol(usuario, "arbitro") &&
                         usuario.activo !== false
                 )
                 .sort(

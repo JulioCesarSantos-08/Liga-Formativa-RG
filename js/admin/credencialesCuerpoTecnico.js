@@ -847,11 +847,11 @@ async function iniciar() {
 
             const trabajos = [];
 
-            for (let i = 0; i < seleccionados.length; i += 9) {
+            for (let i = 0; i < seleccionados.length; i += 6) {
                 const hoja = document.createElement("section");
                 hoja.className = "ca-hoja";
 
-                seleccionados.slice(i, i + 9).forEach(item => {
+                seleccionados.slice(i, i + 6).forEach(item => {
                     const tarjeta = crearTarjeta(
                         item,
                         datos.temporada

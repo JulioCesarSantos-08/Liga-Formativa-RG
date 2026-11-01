@@ -93,7 +93,7 @@ let toastTimer = null;
 let promesaLibreriaQr = null;
 
 
-const CREDENCIALES_POR_HOJA = 9;
+const CREDENCIALES_POR_HOJA = 6;
 
 const URL_BASE =
     "https://liga-formativa-rg.vercel.app";

@@ -640,7 +640,7 @@
 
 @media print {
     @page {
-        size: A4 portrait;
+        size: letter landscape;
         margin: 7mm;
     }
 
@@ -663,15 +663,19 @@
     }
 
     #impresionCredencialesArbitros .ca-hoja {
+        --impresion-adultos-seis: 1;
+        min-height: 198mm;
+        break-inside: avoid;
+        page-break-inside: avoid;
         display: grid !important;
-        grid-template-columns: repeat(3,54mm);
-        grid-auto-rows: 81mm;
+        grid-template-columns: repeat(3,64mm);
+        grid-auto-rows: 96mm;
         justify-content: center;
         align-content: start;
-        gap: 5mm;
-        width: 196mm;
+        gap: 6mm;
+        width: 100%;
         margin: 0 auto;
-        padding: 7mm 0;
+        padding: 0;
         box-sizing: border-box;
         break-after: page;
         page-break-after: always;
@@ -683,8 +687,8 @@
     }
 
     #impresionCredencialesArbitros .ca-preview {
-        width: 54mm;
-        height: 81mm;
+        width: 64mm;
+        height: 96mm;
         max-width: none;
         margin: 0;
         break-inside: avoid;
@@ -692,8 +696,8 @@
     }
 
     #impresionCredencialesArbitros .ca-card {
-        width: 54mm;
-        height: 81mm;
+        width: 64mm;
+        height: 96mm;
         box-shadow: none;
         break-inside: avoid;
         page-break-inside: avoid;

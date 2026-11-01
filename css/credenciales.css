@@ -1672,7 +1672,7 @@ button{
 }
 
 @page{
-    size:A4 portrait;
+    size:letter landscape;
     margin:7mm;
 }
 
@@ -1709,19 +1709,23 @@ button{
     }
 
     .hoja-credenciales{
-        width:196mm !important;
-        min-height:283mm !important;
+        --impresion-jugadores-seis: 1;
+        box-sizing:border-box !important;
+        width:100% !important;
+        min-height:198mm !important;
         display:grid !important;
-        grid-template-columns:repeat(3,54mm) !important;
-        grid-auto-rows:81mm !important;
+        grid-template-columns:repeat(3,64mm) !important;
+        grid-auto-rows:96mm !important;
         justify-content:center !important;
         align-content:start !important;
-        gap:5mm !important;
+        gap:6mm !important;
         margin:0 auto !important;
-        padding:7mm 0 !important;
+        padding:0 !important;
         border:0 !important;
         border-radius:0 !important;
         background:#fff !important;
+        break-inside:avoid !important;
+        page-break-inside:avoid !important;
         break-after:page !important;
         page-break-after:always !important;
     }
@@ -1732,8 +1736,8 @@ button{
     }
 
     .credencial{
-        width:54mm !important;
-        height:81mm !important;
+        width:64mm !important;
+        height:96mm !important;
         max-width:none !important;
         margin:0 !important;
         break-inside:avoid !important;
@@ -1741,282 +1745,282 @@ button{
     }
 
     .credencial-frente{
-        width:54mm !important;
-        height:81mm !important;
+        width:64mm !important;
+        height:96mm !important;
         aspect-ratio:auto !important;
     }
 
     .credencial-carcasa{
-        padding:1mm !important;
-        border-radius:3.5mm !important;
+        padding:1.1852mm !important;
+        border-radius:4.1481mm !important;
         box-shadow:none !important;
     }
 
     .marco-exterior{
-        border-width:.7mm !important;
-        border-radius:2.8mm !important;
+        border-width:0.8296mm !important;
+        border-radius:3.3185mm !important;
     }
 
     .marco-exterior::before{
-        inset:1.3mm !important;
-        border-width:.3mm !important;
+        inset:1.5407mm !important;
+        border-width:0.3556mm !important;
     }
 
     .marco-exterior::after{
-        inset:2mm !important;
-        border-width:.2mm !important;
+        inset:2.3704mm !important;
+        border-width:0.237mm !important;
     }
 
     .marco-interior{
-        top:4mm !important;
-        right:3mm !important;
-        bottom:4.1mm !important;
-        left:3mm !important;
-        border-width:.3mm !important;
+        top:4.7407mm !important;
+        right:3.5556mm !important;
+        bottom:4.8593mm !important;
+        left:3.5556mm !important;
+        border-width:0.3556mm !important;
     }
 
     .greca{
-        left:2.5mm !important;
-        right:2.5mm !important;
-        height:2.6mm !important;
-        border-width:.3mm !important;
+        left:2.963mm !important;
+        right:2.963mm !important;
+        height:3.0815mm !important;
+        border-width:0.3556mm !important;
     }
 
     .greca-superior{
-        top:1.6mm !important;
+        top:1.8963mm !important;
     }
 
     .greca-inferior{
-        bottom:1.6mm !important;
+        bottom:1.8963mm !important;
     }
 
     .greca-lateral{
-        top:4mm !important;
-        bottom:4mm !important;
-        width:1.5mm !important;
-        border-width:.25mm !important;
+        top:4.7407mm !important;
+        bottom:4.7407mm !important;
+        width:1.7778mm !important;
+        border-width:0.2963mm !important;
     }
 
     .greca-lateral-izquierda{
-        left:1.3mm !important;
+        left:1.5407mm !important;
     }
 
     .greca-lateral-derecha{
-        right:1.3mm !important;
+        right:1.5407mm !important;
     }
 
     .esquina-ornamental{
-        width:4.5mm !important;
-        height:4.5mm !important;
-        border-width:.4mm !important;
+        width:5.3333mm !important;
+        height:5.3333mm !important;
+        border-width:0.4741mm !important;
     }
 
     .credencial-logo-liga{
-        max-width:21mm !important;
-        max-height:21mm !important;
+        max-width:24.8889mm !important;
+        max-height:24.8889mm !important;
     }
 
     .credencial-titulos h2{
-        font-size:7pt !important;
+        font-size:8.2963pt !important;
     }
 
     .credencial-titulos h3{
-        font-size:2.8pt !important;
+        font-size:3.3185pt !important;
     }
 
     .separador-prehispanico{
-        margin:1mm 0 .8mm !important;
-        gap:.8mm !important;
+        margin:1.1852mm 0 0.9481mm !important;
+        gap:0.9481mm !important;
     }
 
     .separador-linea{
-        height:.7mm !important;
+        height:0.8296mm !important;
     }
 
     .separador-flor{
-        width:2.7mm !important;
-        height:2.7mm !important;
+        width:3.2mm !important;
+        height:3.2mm !important;
     }
 
     .temporada span{
-        font-size:2.9pt !important;
+        font-size:3.437pt !important;
     }
 
     .temporada strong{
-        font-size:5.5pt !important;
+        font-size:6.5185pt !important;
     }
 
     .foto-marco-ornamental{
-        padding:1mm !important;
-        border-width:.4mm !important;
-        border-radius:1.2mm !important;
+        padding:1.1852mm !important;
+        border-width:0.4741mm !important;
+        border-radius:1.4222mm !important;
     }
 
     .credencial-foto{
-        border-width:.3mm !important;
-        border-radius:.5mm !important;
+        border-width:0.3556mm !important;
+        border-radius:0.5926mm !important;
     }
 
     .dato-jugador{
-        grid-template-columns:4.5mm minmax(0,1fr) !important;
-        gap:.8mm !important;
-        border-bottom-width:.25mm !important;
+        grid-template-columns:5.3333mm minmax(0,1fr) !important;
+        gap:0.9481mm !important;
+        border-bottom-width:0.2963mm !important;
     }
 
     .dato-icono{
-        width:4mm !important;
-        height:4mm !important;
-        border-width:.3mm !important;
-        border-radius:.8mm !important;
+        width:4.7407mm !important;
+        height:4.7407mm !important;
+        border-width:0.3556mm !important;
+        border-radius:0.9481mm !important;
     }
 
     .dato-icono::before{
-        width:1.6mm !important;
-        height:1.6mm !important;
-        border-width:.35mm !important;
+        width:1.8963mm !important;
+        height:1.8963mm !important;
+        border-width:0.4148mm !important;
     }
 
     .dato-icono::after{
-        width:.8mm !important;
-        height:2.8mm !important;
-        border-left-width:.35mm !important;
-        border-right-width:.35mm !important;
+        width:0.9481mm !important;
+        height:3.3185mm !important;
+        border-left-width:0.4148mm !important;
+        border-right-width:0.4148mm !important;
     }
 
     .dato-icono span{
-        width:2.8mm !important;
-        height:.8mm !important;
-        border-top-width:.35mm !important;
-        border-bottom-width:.35mm !important;
+        width:3.3185mm !important;
+        height:0.9481mm !important;
+        border-top-width:0.4148mm !important;
+        border-bottom-width:0.4148mm !important;
     }
 
     .dato-contenido{
-        padding:.4mm 0 !important;
+        padding:0.4741mm 0 !important;
     }
 
     .dato-contenido span{
-        font-size:2.3pt !important;
+        font-size:2.7259pt !important;
     }
 
     .dato-contenido strong{
-        font-size:3.5pt !important;
+        font-size:4.1481pt !important;
     }
 
     .dato-nombre .dato-contenido strong{
-        font-size:3.7pt !important;
+        font-size:4.3852pt !important;
     }
 
     .frase-formativa{
-        grid-template-columns:7mm 1fr 7mm !important;
-        gap:.5mm !important;
-        margin:.5mm 2.5mm .3mm !important;
-        padding:.6mm .7mm !important;
-        border-width:.4mm !important;
-        border-radius:1mm !important;
+        grid-template-columns:8.2963mm 1fr 8.2963mm !important;
+        gap:0.5926mm !important;
+        margin:0.5926mm 2.963mm 0.3556mm !important;
+        padding:0.7111mm 0.8296mm !important;
+        border-width:0.4741mm !important;
+        border-radius:1.1852mm !important;
     }
 
     .frase-formativa p{
-        font-size:2.7pt !important;
+        font-size:3.2pt !important;
     }
 
     .frase-figura{
-        width:6mm !important;
-        height:5mm !important;
+        width:7.1111mm !important;
+        height:5.9259mm !important;
     }
 
     .figura-cabeza{
-        width:5mm !important;
-        height:4mm !important;
-        border-width:.35mm !important;
+        width:5.9259mm !important;
+        height:4.7407mm !important;
+        border-width:0.4148mm !important;
     }
 
     .qr-marco{
-        max-width:11.5mm !important;
-        padding:.5mm !important;
-        border-width:.3mm !important;
+        max-width:13.6296mm !important;
+        padding:0.5926mm !important;
+        border-width:0.3556mm !important;
     }
 
     .qr-area > span{
-        margin-top:.4mm !important;
-        font-size:1.5pt !important;
+        margin-top:0.4741mm !important;
+        font-size:1.7778pt !important;
     }
 
     .firma-sello{
-        height:10mm !important;
+        height:11.8519mm !important;
     }
 
     .firma-img{
-        width:18mm !important;
-        height:9mm !important;
+        width:21.3333mm !important;
+        height:10.6667mm !important;
     }
 
     .credencial-sello{
-        width:9mm !important;
-        height:9mm !important;
+        width:10.6667mm !important;
+        height:10.6667mm !important;
     }
 
     .firma-linea{
-        height:.2mm !important;
+        height:0.237mm !important;
     }
 
     .firma-area > strong{
-        margin-top:.5mm !important;
-        font-size:1.9pt !important;
+        margin-top:0.5926mm !important;
+        font-size:2.2519pt !important;
     }
 
     .firma-area > span{
-        font-size:1.4pt !important;
+        font-size:1.6593pt !important;
     }
 
     .identidad-liga-inferior img{
-        width:8mm !important;
-        height:8mm !important;
+        width:9.4815mm !important;
+        height:9.4815mm !important;
     }
 
     .identidad-liga-inferior strong{
-        font-size:2.2pt !important;
+        font-size:2.6074pt !important;
     }
 
     .identidad-liga-inferior span{
-        font-size:1.3pt !important;
+        font-size:1.5407pt !important;
     }
 
     .credencial-folio span{
-        font-size:1.4pt !important;
+        font-size:1.6593pt !important;
     }
 
     .credencial-folio-texto{
-        max-width:17mm !important;
-        font-size:1.6pt !important;
+        max-width:20.1481mm !important;
+        font-size:1.8963pt !important;
     }
 
     .credencial-oficial > span{
-        width:1mm !important;
-        height:1mm !important;
+        width:1.1852mm !important;
+        height:1.1852mm !important;
     }
 
     .credencial-oficial strong{
-        font-size:1.4pt !important;
+        font-size:1.6593pt !important;
     }
 
     .credencial-pie{
-        padding:1mm .5mm .6mm !important;
-        gap:.7mm !important;
-        border-top-width:.4mm !important;
+        padding:1.1852mm 0.5926mm 0.7111mm !important;
+        gap:0.8296mm !important;
+        border-top-width:0.4741mm !important;
     }
 
     .credencial-pie strong{
-        font-size:1.65pt !important;
+        font-size:1.9556pt !important;
     }
 
     .credencial-pie > i{
-        width:.5mm !important;
-        height:.5mm !important;
+        width:0.5926mm !important;
+        height:0.5926mm !important;
     }
 
     .pie-flor{
-        width:2.4mm !important;
-        height:2.4mm !important;
+        width:2.8444mm !important;
+        height:2.8444mm !important;
     }
 
 }

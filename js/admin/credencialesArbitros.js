@@ -31,8 +31,8 @@ function imprimible(arbitro) {
 function dividirHojas(lista) {
     const hojas = [];
 
-    for (let i = 0; i < lista.length; i += 9) {
-        hojas.push(lista.slice(i, i + 9));
+    for (let i = 0; i < lista.length; i += 6) {
+        hojas.push(lista.slice(i, i + 6));
     }
 
     return hojas;

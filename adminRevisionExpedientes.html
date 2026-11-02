@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#07594d">
+    <title>Revisión de expedientes | Liga Municipal Río Grande</title>
+    <link rel="icon" href="imagenes/logo.png">
+    <link rel="stylesheet" href="css/adminRevisionExpedientes.css">
+</head>
+<body>
+    <header class="re-encabezado">
+        <a class="re-identidad" href="admin.html">
+            <img
+                src="imagenes/logo.png"
+                alt="Liga Municipal Río Grande"
+            >
+            <span>
+                <strong>Liga Municipal Río Grande</strong>
+                <small>Administración · Expedientes</small>
+            </span>
+        </a>
+
+        <a class="re-boton re-boton-volver" href="admin.html">
+            Volver al panel
+        </a>
+    </header>
+
+    <main class="re-contenedor">
+        <section class="re-portada" aria-labelledby="reTitulo">
+            <div>
+                <span class="re-etiqueta">CONTROL DOCUMENTAL</span>
+                <h1 id="reTitulo">Revisión de expedientes</h1>
+                <p>
+                    Revisa fotografías y documentos del personal de la liga.
+                    Solicita su corrección cuando un archivo no corresponda.
+                </p>
+            </div>
+
+            <button
+                id="reActualizar"
+                class="re-boton re-boton-claro"
+                type="button"
+                disabled
+            >
+                Actualizar expedientes
+            </button>
+        </section>
+
+        <section class="re-indicadores" aria-label="Resumen de expedientes">
+            <article class="re-indicador">
+                <span>Expedientes</span>
+                <strong id="reTotal">—</strong>
+            </article>
+
+            <article class="re-indicador">
+                <span>Documentación completa</span>
+                <strong id="reCompletos">—</strong>
+            </article>
+
+            <article class="re-indicador">
+                <span>Documentación pendiente</span>
+                <strong id="rePendientes">—</strong>
+            </article>
+        </section>
+
+        <section class="re-filtros" aria-label="Buscar expedientes">
+            <div class="re-campo re-campo-busqueda">
+                <label for="reBuscar">Buscar persona o equipo</label>
+                <input
+                    id="reBuscar"
+                    type="search"
+                    placeholder="Nombre, equipo o categoría"
+                    autocomplete="off"
+                    disabled
+                >
+            </div>
+
+            <div class="re-campo">
+                <label for="reFiltroEstado">Documentación</label>
+                <select id="reFiltroEstado" disabled>
+                    <option value="todos">Todos los expedientes</option>
+                    <option value="completos">Completos</option>
+                    <option value="pendientes">Pendientes</option>
+                </select>
+            </div>
+
+            <div class="re-campo">
+                <label for="reFiltroCargo">Cargo</label>
+                <select id="reFiltroCargo" disabled>
+                    <option value="todos">Todos los cargos</option>
+                    <option value="arbitro">Árbitro</option>
+                    <option value="director">Director Técnico</option>
+                    <option value="auxiliar">Auxiliar Técnico</option>
+                </select>
+            </div>
+        </section>
+
+        <p
+            id="reEstado"
+            class="re-aviso"
+            role="status"
+            aria-live="polite"
+        >
+            Verificando acceso administrativo…
+        </p>
+
+        <div id="reContenido" hidden>
+            <section
+                class="re-seccion"
+                aria-labelledby="reTituloArbitros"
+            >
+                <div class="re-seccion-cabecera">
+                    <div>
+                        <span class="re-etiqueta">COORDINACIÓN ARBITRAL</span>
+                        <h2 id="reTituloArbitros">Árbitros</h2>
+                    </div>
+                    <span id="reCantidadArbitros" class="re-contador">0</span>
+                </div>
+
+                <div id="reListaArbitros" class="re-lista"></div>
+
+                <p id="reSinArbitros" class="re-vacio" hidden>
+                    No hay expedientes arbitrales que coincidan con los filtros.
+                </p>
+            </section>
+
+            <section
+                class="re-seccion"
+                aria-labelledby="reTituloTecnicos"
+            >
+                <div class="re-seccion-cabecera">
+                    <div>
+                        <span class="re-etiqueta">CUERPO TÉCNICO</span>
+                        <h2 id="reTituloTecnicos">
+                            Directores técnicos y auxiliares
+                        </h2>
+                    </div>
+                    <span id="reCantidadTecnicos" class="re-contador">0</span>
+                </div>
+
+                <div id="reListaTecnicos" class="re-lista"></div>
+
+                <p id="reSinTecnicos" class="re-vacio" hidden>
+                    No hay expedientes técnicos que coincidan con los filtros.
+                </p>
+            </section>
+        </div>
+    </main>
+
+    <dialog
+        id="reDetalle"
+        class="re-dialogo"
+        aria-labelledby="reDetalleNombre"
+    >
+        <header class="re-dialogo-cabecera">
+            <div>
+                <span id="reDetalleCargo" class="re-etiqueta"></span>
+                <h2 id="reDetalleNombre"></h2>
+            </div>
+
+            <button
+                id="reCerrarDetalle"
+                class="re-cerrar"
+                type="button"
+                aria-label="Cerrar expediente"
+                autofocus
+            >×</button>
+        </header>
+
+        <div class="re-dialogo-cuerpo">
+            <p id="reDetalleAsignacion" class="re-asignacion"></p>
+            <p id="reDetalleEstado" class="re-estado-expediente"></p>
+
+            <div class="re-documentos">
+                <section class="re-documento">
+                    <h3>Fotografía registrada</h3>
+
+                    <div class="re-foto-grande">
+                        <img
+                            id="reDetalleFoto"
+                            alt="Fotografía registrada en el expediente"
+                            hidden
+                        >
+                        <span id="reDetalleSinFoto">
+                            Sin fotografía
+                        </span>
+                    </div>
+                </section>
+
+                <section class="re-documento">
+                    <h3>Documento de CURP</h3>
+                    <p id="reDetalleCurp" class="re-curp"></p>
+
+                    <a
+                        id="reDetallePdf"
+                        class="re-boton re-boton-secundario"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        hidden
+                    >
+                        Consultar PDF de CURP
+                    </a>
+
+                    <p id="reDetalleSinPdf" class="re-ayuda">
+                        No hay un PDF registrado.
+                    </p>
+                </section>
+            </div>
+
+            <section class="re-correcciones" aria-labelledby="reCorreccionesTitulo">
+                <h3 id="reCorreccionesTitulo">Solicitar corrección</h3>
+                <p class="re-ayuda">
+                    Retira el requisito incorrecto para que el responsable
+                    tenga que completarlo nuevamente desde su panel.
+                </p>
+
+                <div class="re-acciones-correccion">
+                    <button
+                        id="reRetirarFoto"
+                        class="re-boton re-boton-secundario"
+                        type="button"
+                    >
+                        Pedir nueva fotografía
+                    </button>
+
+                    <button
+                        id="reRetirarPdf"
+                        class="re-boton re-boton-secundario"
+                        type="button"
+                    >
+                        Pedir nuevo PDF de CURP
+                    </button>
+
+                    <button
+                        id="reVaciarDocumentacion"
+                        class="re-boton re-boton-peligro"
+                        type="button"
+                    >
+                        Vaciar documentación
+                    </button>
+                </div>
+            </section>
+
+            <p
+                id="reDetalleAviso"
+                class="re-aviso"
+                role="status"
+                aria-live="polite"
+                hidden
+            ></p>
+        </div>
+    </dialog>
+
+    <dialog
+        id="reConfirmacion"
+        class="re-dialogo re-dialogo-confirmacion"
+        aria-labelledby="reConfirmacionTitulo"
+    >
+        <header class="re-dialogo-cabecera">
+            <div>
+                <span class="re-etiqueta">CONFIRMAR CORRECCIÓN</span>
+                <h2 id="reConfirmacionTitulo"></h2>
+            </div>
+
+            <button
+                id="reCerrarConfirmacion"
+                class="re-cerrar"
+                type="button"
+                aria-label="Cerrar confirmación"
+            >×</button>
+        </header>
+
+        <div class="re-dialogo-cuerpo">
+            <p id="reConfirmacionPersona" class="re-asignacion"></p>
+            <p id="reConfirmacionDescripcion" class="re-ayuda"></p>
+
+            <p class="re-aviso">
+                El expediente quedará pendiente y no estará disponible
+                para imprimir hasta que se complete nuevamente.
+            </p>
+
+            <div class="re-acciones-confirmacion">
+                <button
+                    id="reCancelarCorreccion"
+                    class="re-boton re-boton-secundario"
+                    type="button"
+                    autofocus
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    id="reConfirmarCorreccion"
+                    class="re-boton re-boton-peligro"
+                    type="button"
+                >
+                    Confirmar corrección
+                </button>
+            </div>
+
+            <p
+                id="reConfirmacionAviso"
+                class="re-aviso"
+                role="status"
+                aria-live="polite"
+                hidden
+            ></p>
+        </div>
+    </dialog>
+
+    <script
+        type="module"
+        src="js/admin/adminRevisionExpedientes.js"
+    ></script>
+</body>
+</html>

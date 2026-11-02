@@ -254,9 +254,16 @@ export function evaluarJugadorCategoria(
         anio >= rango.minimo &&
         anio <= rango.maximo;
 
-    const menorPermitido =
-        permitirMenores &&
+    const menorEnCategoriaFemenil =
+        sexo === "mujer" &&
+        ["femenil primaria", "femenil secundaria"].includes(
+            normalizar(nombre)
+        ) &&
         anio > rango.maximo;
+
+    const menorPermitido =
+        (permitirMenores && anio > rango.maximo) ||
+        menorEnCategoriaFemenil;
 
     if (
         !edadNormal &&

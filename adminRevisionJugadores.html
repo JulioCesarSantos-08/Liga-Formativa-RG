@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#075d53">
+    <title>Revisión de jugadores | Liga Río Grande</title>
+    <link rel="icon" href="imagenes/logo.png">
+    <link rel="stylesheet" href="css/adminRevisionJugadores.css">
+    <script type="module" src="js/admin/adminRevisionJugadores.js"></script>
+</head>
+<body>
+    <header class="rj-header">
+        <a href="admin.html" class="rj-boton rj-secundario">← Panel</a>
+        <img src="imagenes/logo.png" alt="Liga Río Grande" width="46" height="46">
+        <div>
+            <small>ADMINISTRACIÓN</small>
+            <strong>Revisión de jugadores</strong>
+        </div>
+    </header>
+
+    <main>
+        <section class="rj-presentacion">
+            <div>
+                <small>NOMBRES Y DORSALES</small>
+                <h1>Cada registro, bien escrito.</h1>
+                <p>Consulta la CURP, corrige los datos y confirma los jugadores que ya revisaste.</p>
+            </div>
+            <button id="rjActualizar" class="rj-boton" disabled>
+                Actualizar lista
+            </button>
+        </section>
+
+        <section class="rj-metricas" aria-label="Avance de revisión">
+            <div>
+                <strong id="rjTotal">—</strong>
+                <span>Jugadores registrados</span>
+            </div>
+            <div>
+                <strong id="rjPendientes">—</strong>
+                <span>Pendientes de revisar</span>
+            </div>
+            <div>
+                <strong id="rjConfirmados">—</strong>
+                <span>Revisiones confirmadas</span>
+            </div>
+        </section>
+
+        <section class="rj-panel">
+            <div class="rj-filtros">
+                <label>
+                    Buscar jugador
+                    <input id="rjBuscar" type="search" placeholder="Nombre, CURP o dorsal" disabled>
+                </label>
+
+                <label>
+                    Categoría
+                    <select id="rjCategoria" disabled>
+                        <option value="">Todas las categorías</option>
+                    </select>
+                </label>
+
+                <label>
+                    Equipo
+                    <select id="rjEquipo" disabled>
+                        <option value="">Todos los equipos</option>
+                    </select>
+                </label>
+
+                <label>
+                    Mostrar
+                    <select id="rjEstado" disabled>
+                        <option value="pendientes">Pendientes</option>
+                        <option value="confirmados">Confirmados</option>
+                        <option value="todos">Todos</option>
+                    </select>
+                </label>
+            </div>
+
+            <p class="rj-nota">
+                El avance se guarda entre dispositivos. Si cambia el nombre,
+                dorsal, CURP o su documento, el registro vuelve a pendiente.
+                Incluye jugadores activos e inactivos.
+            </p>
+
+            <p id="rjAviso" class="rj-aviso" role="status" aria-live="polite">
+                Verificando acceso administrativo…
+            </p>
+
+            <div id="rjLista" class="rj-lista"></div>
+
+            <p id="rjSinResultados" class="rj-vacio" hidden>
+                No hay jugadores que coincidan con estos filtros.
+            </p>
+
+            <nav class="rj-paginacion" aria-label="Páginas de jugadores">
+                <button id="rjAnterior" class="rj-boton rj-secundario" disabled>
+                    Anterior
+                </button>
+                <span id="rjPagina" aria-live="polite"></span>
+                <button id="rjSiguiente" class="rj-boton rj-secundario" disabled>
+                    Siguiente
+                </button>
+            </nav>
+        </section>
+    </main>
+
+    <dialog id="rjDetalle" aria-labelledby="rjTituloDetalle">
+        <div class="rj-dialogo-header">
+            <div>
+                <small>REVISIÓN ADMINISTRATIVA</small>
+                <h2 id="rjTituloDetalle">Revisar jugador</h2>
+            </div>
+            <button id="rjCerrar" class="rj-cerrar" aria-label="Cerrar revisión">
+                ×
+            </button>
+        </div>
+
+        <div class="rj-dialogo-cuerpo">
+            <p id="rjAsignacion" class="rj-nota"></p>
+            <p id="rjCurpTexto"></p>
+
+            <button id="rjVerCurp" class="rj-boton rj-secundario">
+                Ver PDF de CURP
+            </button>
+
+            <p id="rjSinCurp" class="rj-nota" hidden>
+                Este jugador no tiene un PDF de CURP disponible.
+            </p>
+
+            <label>
+                Nombre completo
+                <input id="rjNombre" maxlength="150" autocomplete="off">
+            </label>
+
+            <label>
+                Número / dorsal
+                <input id="rjDorsal" type="number" min="0" max="999" step="1" inputmode="numeric" placeholder="Sin dorsal">
+            </label>
+
+            <p class="rj-nota">
+                El nombre se guarda en mayúsculas. El dorsal admite del 0 al 999;
+                puedes dejarlo vacío. Los cambios se aplican directamente,
+                sin solicitud adicional.
+            </p>
+
+            <p id="rjDetalleAviso" class="rj-aviso" role="status" aria-live="polite" hidden></p>
+
+            <div class="rj-acciones">
+                <button id="rjGuardar" class="rj-boton rj-secundario">
+                    Guardar cambios
+                </button>
+                <button id="rjConfirmar" class="rj-boton">
+                    Guardar y confirmar revisión
+                </button>
+                <button id="rjReabrir" class="rj-boton rj-secundario" hidden>
+                    Volver a pendiente
+                </button>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="rjDocumento" class="rj-documento" aria-labelledby="rjTituloDocumento">
+        <div class="rj-dialogo-header">
+            <h2 id="rjTituloDocumento">Documento CURP</h2>
+            <button id="rjCerrarDocumento" class="rj-cerrar" aria-label="Cerrar documento">
+                ×
+            </button>
+        </div>
+
+        <div class="rj-dialogo-cuerpo">
+            <p class="rj-nota">
+                Si tu navegador no muestra el PDF, puedes abrirlo en otra pestaña.
+            </p>
+            <a id="rjAbrirPdf" class="rj-boton rj-secundario" target="_blank" rel="noopener noreferrer">
+                Abrir PDF en otra pestaña
+            </a>
+            <iframe id="rjVisor" title="PDF de CURP del jugador" referrerpolicy="no-referrer"></iframe>
+        </div>
+    </dialog>
+</body>
+</html>

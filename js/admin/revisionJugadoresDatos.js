@@ -37,7 +37,7 @@ export function huellaRevision(jugador) {
 }
 
 export function revisionConfirmada(jugador) {
-    return jugador.revisionNombreDorsal?.confirmado === true &&
+    return jugador.alertaRevisionIdentidad?.activa !== true && jugador.revisionNombreDorsal?.confirmado === true &&
         jugador.revisionNombreDorsal.huella ===
             huellaRevision(jugador);
 }
@@ -86,7 +86,7 @@ function estadoRevision(jugador) {
     return JSON.stringify([
         revision.version || 0,
         revision.confirmado === true,
-        revision.huella || ""
+        revision.huella || "", jugador.alertaRevisionIdentidad?.version || 0, jugador.alertaRevisionIdentidad?.activa === true
     ]);
 }
 
@@ -201,6 +201,15 @@ export async function guardarRevisionJugador(
         }
 
         const actual = snapshot.data();
+
+        if (
+            accion === "confirmar" &&
+            actual.alertaRevisionIdentidad?.activa === true
+        ) {
+            throw new Error(
+                "Resuelve primero la alerta de identidad. El jugador debe permanecer pendiente mientras exista esta observacion."
+            );
+        }
 
         if (
             huellaRevision(actual) !== esperada ||

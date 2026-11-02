@@ -449,3 +449,62 @@ iframe {
         text-align: center;
     }
 }
+
+.rj-tarjeta[data-alerta="true"] {
+    background: #fff1ed;
+    border: 2px solid #b13e30;
+    border-left-width: 6px;
+}
+
+.rj-insignia[data-alerta="true"] {
+    background: #b13e30;
+    color: #fff;
+}
+
+.rj-motivo-alerta {
+    color: #8f3027;
+    font-weight: 700;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.rj-alerta-identidad {
+    margin-top: 22px;
+    padding: 16px;
+    border: 1px solid #dfb5a9;
+    border-radius: 12px;
+    background: #fff2ed;
+}
+
+.rj-alerta-identidad h3 {
+    margin: 0;
+    color: #932f24;
+    font-size: 16px;
+}
+
+.rj-alerta-identidad p {
+    font-size: 12px;
+}
+
+.rj-peligro {
+    background: #a7372c;
+    color: white;
+}
+
+#rjMotivoAlerta {
+    width: 100%;
+    padding: 12px;
+    resize: vertical;
+    min-height: 96px;
+    border: 1px solid #cfaaa0;
+    border-radius: 10px;
+    background: #fffdfa;
+    color: #163e37;
+    font: inherit;
+    font-size: 16px;
+}
+
+#rjMotivoAlerta:focus-visible {
+    outline: 3px solid #c28821;
+    outline-offset: 3px;
+}

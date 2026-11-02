@@ -11,6 +11,11 @@ import {
     urlCurpRevision
 } from "./revisionJugadoresDatos.js";
 
+import { guardarAlertaJugador } from "./alertasRevisionJugadores.js";
+
+const alertaActiva = jugador =>
+    jugador?.alertaRevisionIdentidad?.activa === true;
+
 const el = nombre =>
     document.getElementById("rj" + nombre);
 
@@ -90,10 +95,16 @@ function bloquear(valor) {
         "Confirmar",
         "Reabrir",
         "Nombre",
-        "Dorsal"
+        "Dorsal",
+        "MarcarAlerta",
+        "ResolverAlerta",
+        "MotivoAlerta"
     ].forEach(id => {
         el(id).disabled = valor;
     });
+
+    el("Confirmar").disabled =
+        valor || alertaActiva(seleccionado);
 
     document.querySelectorAll(".rj-revisar").forEach(
         boton => boton.disabled = valor
@@ -103,8 +114,7 @@ function bloquear(valor) {
         valor || pagina <= 1;
 
     el("Siguiente").disabled =
-        valor ||
-        pagina * porPagina >= filtrar().length;
+        valor || pagina * porPagina >= filtrar().length;
 }
 
 function categoriaId(jugador) {
@@ -130,6 +140,7 @@ function equipoNombre(jugador) {
 
 function filtrar() {
     const buscar = texto(el("Buscar").value);
+    const estado = el("Estado").value;
 
     return jugadores.filter(jugador =>
         (
@@ -141,15 +152,22 @@ function filtrar() {
             jugador.equipoId === el("Equipo").value
         ) &&
         (
-            el("Estado").value === "todos" ||
-            revisionConfirmada(jugador) ===
-                (el("Estado").value === "confirmados")
+            estado === "todos" ||
+            (
+                estado === "alertas"
+                    ? alertaActiva(jugador)
+                    : revisionConfirmada(jugador) ===
+                        (estado === "confirmados")
+            )
         ) &&
         texto(
             [
                 nombreRevision(jugador),
                 jugador.curp,
-                dorsalRevision(jugador)
+                dorsalRevision(jugador),
+                jugador.alertaRevisionIdentidad?.activa
+                    ? jugador.alertaRevisionIdentidad.motivo
+                    : ""
             ].join(" ")
         ).includes(buscar)
     );
@@ -157,40 +175,47 @@ function filtrar() {
 
 function tarjeta(jugador) {
     const nodo = crear("article", "rj-tarjeta");
+    const alerta = alertaActiva(jugador);
+
+    nodo.dataset.alerta = String(alerta);
 
     const confirmado = revisionConfirmada(jugador);
 
     const insignia = crear(
         "span",
         "rj-insignia",
-        confirmado
-            ? "Revisión confirmada"
-            : "Pendiente de revisión"
+        alerta
+            ? "ALERTA DE IDENTIDAD"
+            : confirmado
+                ? "Revision confirmada"
+                : "Pendiente de revision"
     );
 
     insignia.dataset.confirmado = String(confirmado);
-
-    const boton = crear(
-        "button",
-        "rj-boton rj-secundario rj-revisar",
-        "Revisar / editar"
-    );
-
-    boton.type = "button";
-
-    boton.addEventListener(
-        "click",
-        () => abrir(jugador)
-    );
+    insignia.dataset.alerta = String(alerta);
 
     nodo.append(
         insignia,
-        crear("h3", "", nombreRevision(jugador)),
+        crear("h3", "", nombreRevision(jugador))
+    );
+
+    if (alerta) {
+        nodo.append(
+            crear(
+                "p",
+                "rj-motivo-alerta",
+                jugador.alertaRevisionIdentidad.motivo ||
+                    "Identidad pendiente de aclarar"
+            )
+        );
+    }
+
+    nodo.append(
         crear(
             "p",
             "",
             equipoNombre(jugador) +
-            " · " +
+            " / " +
             categoriaNombre(jugador)
         ),
         crear(
@@ -213,18 +238,40 @@ function tarjeta(jugador) {
             ) +
             (
                 jugador.activo === false
-                    ? " · Jugador inactivo"
+                    ? " / Jugador inactivo"
                     : ""
             )
-        ),
-        boton
+        )
     );
+
+    const boton = crear(
+        "button",
+        "rj-boton rj-secundario rj-revisar",
+        "Revisar / editar"
+    );
+
+    boton.type = "button";
+
+    boton.addEventListener(
+        "click",
+        () => abrir(jugador)
+    );
+
+    nodo.append(boton);
 
     return nodo;
 }
 
 function renderizar() {
-    const visibles = filtrar();
+    const visibles = filtrar().sort((a, b) =>
+        Number(alertaActiva(b)) -
+            Number(alertaActiva(a)) ||
+        nombreRevision(a).localeCompare(
+            nombreRevision(b),
+            "es"
+        ) ||
+        a.id.localeCompare(b.id)
+    );
 
     const paginas = Math.max(
         1,
@@ -417,6 +464,24 @@ function abrir(jugador) {
     el("Reabrir").hidden =
         !revisionConfirmada(jugador);
 
+    el("MotivoAlerta").value =
+        jugador.alertaRevisionIdentidad?.motivo || "";
+
+    el("ResolverAlerta").hidden =
+        !alertaActiva(jugador);
+
+    el("MarcarAlerta").textContent =
+        alertaActiva(jugador)
+            ? "Actualizar motivo de alerta"
+            : "Guardar alerta";
+
+    el("EstadoAlerta").textContent =
+        alertaActiva(jugador)
+            ? "ALERTA ACTIVA: el registro permanece pendiente hasta aclarar el problema."
+            : "Marca este registro si su identidad o documentacion requiere aclaracion.";
+
+    bloquear(false);
+
     aviso("DetalleAviso", "");
 
     el("Detalle").showModal();
@@ -476,6 +541,56 @@ async function guardar(accion) {
                     : accion === "pendiente"
                         ? ": volvió a pendientes. Los campos del formulario no se modificaron."
                         : ": nombre y dorsal guardados. Falta confirmar su revisión."
+            ),
+            "exito"
+        );
+    } catch (error) {
+        aviso(
+            "DetalleAviso",
+            errorLegible(error),
+            "error"
+        );
+    } finally {
+        ocupado = false;
+        renderizar();
+    }
+}
+
+async function gestionarAlerta(activa) {
+    if (ocupado || !seleccionado) return;
+
+    bloquear(true);
+
+    aviso(
+        "DetalleAviso",
+        "Guardando estado de la alerta..."
+    );
+
+    try {
+        const resultado = await guardarAlertaJugador(
+            seleccionado,
+            el("MotivoAlerta").value,
+            activa
+        );
+
+        jugadores = jugadores.map(jugador =>
+            jugador.id === resultado.id
+                ? resultado
+                : jugador
+        );
+
+        el("Detalle").close();
+
+        seleccionado = null;
+        pagina = 1;
+
+        aviso(
+            "Aviso",
+            nombreRevision(resultado) +
+            (
+                activa
+                    ? ": alerta guardada. Permanece pendiente y aparece primero entre los resultados que coincidan con tus filtros."
+                    : ": alerta resuelta. Su revision permanece pendiente hasta que la confirmes."
             ),
             "exito"
         );
@@ -564,6 +679,16 @@ async function iniciar() {
         el("Reabrir").addEventListener(
             "click",
             () => guardar("pendiente")
+        );
+
+        el("MarcarAlerta").addEventListener(
+            "click",
+            () => gestionarAlerta(true)
+        );
+
+        el("ResolverAlerta").addEventListener(
+            "click",
+            () => gestionarAlerta(false)
         );
 
         el("VerCurp").addEventListener("click", () => {

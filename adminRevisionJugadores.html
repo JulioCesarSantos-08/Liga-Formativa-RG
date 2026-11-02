@@ -73,6 +73,7 @@
                         <option value="pendientes">Pendientes</option>
                         <option value="confirmados">Confirmados</option>
                         <option value="todos">Todos</option>
+                        <option value="alertas">Con alerta de identidad</option>
                     </select>
                 </label>
             </div>
@@ -143,6 +144,39 @@
                 puedes dejarlo vacío. Los cambios se aplican directamente,
                 sin solicitud adicional.
             </p>
+
+            <section class="rj-alerta-identidad" aria-labelledby="rjTituloAlerta">
+                <h3 id="rjTituloAlerta">Alerta de identidad</h3>
+
+                <p id="rjEstadoAlerta">
+                    Marca este registro si su identidad o documentacion requiere aclaracion.
+                </p>
+
+                <label>
+                    Motivo de la alerta
+                    <textarea id="rjMotivoAlerta" maxlength="600" rows="3" placeholder="Ejemplo: el PDF de CURP pertenece a otra persona y no coincide con la CURP escrita."></textarea>
+                </label>
+
+                <p class="rj-nota">
+                    La alerta mantiene al jugador pendiente y lo coloca primero.
+                    Estos botones no guardan los cambios de nombre o dorsal del formulario.
+                </p>
+
+                <div class="rj-acciones">
+                    <button id="rjMarcarAlerta" class="rj-boton rj-peligro" type="button">
+                        Guardar alerta
+                    </button>
+
+                    <button id="rjResolverAlerta" class="rj-boton rj-secundario" type="button" hidden>
+                        Resolver alerta
+                    </button>
+                </div>
+
+                <p class="rj-nota">
+                    Resolver significa que ya verificaste y aclaraste el problema.
+                    Despues debes confirmar la revision por separado.
+                </p>
+            </section>
 
             <p id="rjDetalleAviso" class="rj-aviso" role="status" aria-live="polite" hidden></p>
 

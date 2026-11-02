@@ -18,6 +18,7 @@
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/jefeEquipo.css">
+    <link rel="stylesheet" href="css/historialSolicitudes.css">
 </head>
 
 <body>
@@ -348,6 +349,15 @@
 
                         </div>
 
+                    </button>
+
+                    <button type="button" id="btnHistorialSolicitudes" class="accion-card" disabled>
+                        <span class="accion-icono" aria-hidden="true">&#128203;</span>
+                        <div>
+                            <small>SEGUIMIENTO</small>
+                            <strong>Historial de solicitudes <span id="hsRespuestasNuevas" hidden></span></strong>
+                            <p>Consulta respuestas y cambios de tus jugadores.</p>
+                        </div>
                     </button>
 
                     <button
@@ -1361,5 +1371,6 @@
     ></script>
 
     <script type="module" src="js/jefeEquipo/refuerzosPlantilla.js"></script>
+    <script type="module" src="js/jefeEquipo/historialSolicitudes.js"></script>
 </body>
 </html>

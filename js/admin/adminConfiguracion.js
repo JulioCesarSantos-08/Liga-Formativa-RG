@@ -1,3 +1,4 @@
+import { validarDorsalDisponible } from "../validarDorsalDisponible.js";
 import {
     collection,
     getDocs,
@@ -1689,6 +1690,21 @@ async function resolverSolicitud(
             }
 
             const datosPermitidos = prepararDatosEdicionJugador(datosNuevos);
+
+            if (Object.prototype.hasOwnProperty.call(datosPermitidos, "numero")) {
+                const actual = await getDoc(
+                    doc(db, "jugadores", jugadorId)
+                );
+
+                if (!actual.exists()) {
+                    throw new Error("El jugador ya no existe. Actualiza la lista.");
+                }
+
+                await validarDorsalDisponible(
+                    { ...actual.data(), id: jugadorId },
+                    datosPermitidos.numero
+                );
+            }
 
             await updateDoc(
                 doc(

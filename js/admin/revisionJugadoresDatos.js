@@ -1,3 +1,4 @@
+import { validarDorsalDisponible } from "../validarDorsalDisponible.js";
 import {
     collection,
     doc,
@@ -179,6 +180,13 @@ export async function guardarRevisionJugador(
             nombreCompleto: valores.nombre,
             numero: valores.numero
         });
+
+    if (accion !== "pendiente") {
+        await validarDorsalDisponible(
+            jugador,
+            cambios.numero
+        );
+    }
 
     const referencia = doc(db, "jugadores", id);
 

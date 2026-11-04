@@ -136,11 +136,11 @@
 
             <label>
                 Número / dorsal
-                <input id="rjDorsal" type="number" min="0" max="999" step="1" inputmode="numeric" placeholder="Sin dorsal">
+                <input id="rjDorsal" type="text" maxlength="3" pattern="[0-9]{1,3}" inputmode="numeric" placeholder="Ej. 7 o 07">
             </label>
 
             <p class="rj-nota">
-                El nombre se guarda en mayúsculas. El dorsal admite del 0 al 999;
+                El nombre se guarda en mayúsculas. El dorsal admite de 1 a 3 dígitos; 7 y 07 son distintos;
                 puedes dejarlo vacío. Los cambios se aplican directamente,
                 sin solicitud adicional.
             </p>

@@ -1,3 +1,4 @@
+import { validarDorsalDisponible } from "../validarDorsalDisponible.js";
 import { obtenerMensajeErrorJugador } from "./mensajesErrorJugador.js";
 import { exigirAuxiliarTecnico } from "./auxiliarTecnico.js";
 import { exigirDocumentacionJefeEquipo } from "./documentacionJefeEquipo.js";
@@ -2733,10 +2734,7 @@ async function guardarJugador(
         numeroJugador.value.trim();
 
 
-    const numero =
-        numeroTexto === ""
-            ? null
-            : Number(numeroTexto);
+    const numero = numeroTexto === "" ? null : numeroTexto;
 
 
     const curp =
@@ -2795,16 +2793,14 @@ async function guardarJugador(
     if (
         numero !== null &&
         (
-            !Number.isInteger(numero) ||
-            numero < 0 ||
-            numero > 999
+            !/^[0-9]{1,3}$/.test(numero)
         )
     ) {
 
         mostrarToast(
             "error",
             "Dorsal incorrecto",
-            "El número debe estar entre 0 y 999."
+            "Escribe de 1 a 3 dígitos. Se conservan los ceros: 7 y 07 son distintos."
         );
 
         return;
@@ -2882,6 +2878,11 @@ async function guardarJugador(
     let etapaRegistroJugador = "guardado";
 
     try {
+        await validarDorsalDisponible({
+            id: jugadorSeleccionado?.id || null,
+            equipoId: equipoActual.id,
+            categoriaId: equipoActual.categoriaId || null
+        }, numero);
 
         let fotoUrl =
             jugadorSeleccionado?.fotoUrl ||

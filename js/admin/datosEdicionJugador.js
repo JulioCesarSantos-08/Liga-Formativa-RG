@@ -1,3 +1,4 @@
+import { normalizarDorsal } from "../dorsales.js";
 
 const camposOpcionales = [
     "fechaNacimiento",
@@ -101,23 +102,7 @@ export function prepararDatosEdicionJugador(datosNuevos) {
         const valor =
             datosNuevos.numero ?? datosNuevos.dorsal;
 
-        const numero =
-            valor === "" || valor == null
-                ? null
-                : Number(valor);
-
-        if (
-            numero !== null &&
-            (
-                !Number.isInteger(numero) ||
-                numero < 0 ||
-                numero > 999
-            )
-        ) {
-            throw new Error(
-                "El dorsal debe ser un número entero entre 0 y 999."
-            );
-        }
+        const numero = normalizarDorsal(valor);
 
         datosPermitidos.numero = numero;
         datosPermitidos.dorsal = numero;

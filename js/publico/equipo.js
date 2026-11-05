@@ -1,3 +1,4 @@
+import { ladoGanadorDefault } from "../resultadosDefault.js";
 import {
     collection,
     doc,
@@ -967,7 +968,7 @@ function renderizarProximoPartido() {
                 📍
                 ${escaparHTML(
                     proximo.campo ||
-                    "Campo por definir"
+                    "Sede pendiente"
                 )}
             </div>
 
@@ -1183,6 +1184,13 @@ function obtenerResultadoEquipo(
     golesLocal,
     golesVisitante
 ) {
+
+    const ladoDefault = ladoGanadorDefault(partido);
+    if (ladoDefault) {
+        return partido.ganadorId === equipo.id
+            ? { tipo: "victoria por default", clase: "resultado-victoria" }
+            : { tipo: "derrota por default", clase: "" };
+    }
 
     const esLocal =
         partido.localId ===
@@ -2220,7 +2228,7 @@ function formatearHora(
 
     if (!valor) {
 
-        return "Hora por definir";
+        return "Hora pendiente";
 
     }
 

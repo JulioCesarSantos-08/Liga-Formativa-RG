@@ -1,3 +1,4 @@
+import { ladoGanadorDefault } from "../resultadosDefault.js";
 import {
     collection,
     getDocs
@@ -1682,6 +1683,8 @@ function obtenerTextoEstado(
 function obtenerMarcador(
     partido
 ) {
+    const lado = ladoGanadorDefault(partido);
+    if (lado) return "Default: ganó " + (lado === "local" ? "local" : "visitante");
 
     const golesLocal =
         obtenerNumeroSeguro([
@@ -1809,7 +1812,7 @@ function obtenerCampoPartido(
 
 
     return campo?.trim() ||
-        "Campo por definir";
+        "Sede pendiente";
 
 }
 
@@ -1989,7 +1992,7 @@ function formatearHoraPartido(
     }
 
 
-    return "Hora por definir";
+    return "Hora pendiente";
 
 }
 

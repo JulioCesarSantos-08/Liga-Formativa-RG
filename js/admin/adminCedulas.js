@@ -1,3 +1,4 @@
+import { ladoGanadorDefault, textoResultadoDefault } from "../resultadosDefault.js";
 import {
     collection,
     getDocs
@@ -1169,7 +1170,7 @@ function cargarContenidoCedula(
         );
 
 
-    modalResultado.textContent =
+    modalResultado.textContent = textoResultadoDefault(partido) ||
         `${golesLocal} - ${golesVisitante}`;
 
 
@@ -1301,6 +1302,8 @@ function obtenerResultado(
     partido,
     cedula
 ) {
+    const lado = ladoGanadorDefault(partido);
+    if (lado) return "Default: ganó " + (lado === "local" ? "local" : "visitante");
 
     if (
         !cedula &&

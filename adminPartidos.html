@@ -436,8 +436,9 @@
                         <input
                             type="time"
                             id="horaPartido"
-                            required
+                            aria-describedby="ayudaHoraPendiente"
                         >
+                        <small id="ayudaHoraPendiente">Opcional. Si lo dejas vacío, aparecerá como pendiente.</small>
 
                     </div>
 
@@ -454,8 +455,7 @@
                         type="text"
                         id="campoPartido"
                         maxlength="120"
-                        placeholder="Ej. Campo Municipal"
-                        required
+                        placeholder="Pendiente si lo dejas vacío"
                     >
 
                 </div>
@@ -469,16 +469,16 @@
 
                     <select
                         id="arbitroPartido"
-                        required
                     >
                         <option value="">
-                            Selecciona un árbitro
+                            Pendiente de asignación
                         </option>
                     </select>
 
                     <small>
-                        Solo el árbitro asignado podrá registrar la
-                        asistencia y la cédula de este partido.
+                        Puedes dejarlo pendiente y asignarlo después.
+                        El jefe de árbitros podrá gestionar la asignación con el flujo actual.
+                        Solo el árbitro asignado podrá registrar la asistencia y la cédula.
                     </small>
 
                 </div>

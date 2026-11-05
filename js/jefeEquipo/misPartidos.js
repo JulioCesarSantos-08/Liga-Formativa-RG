@@ -1,3 +1,4 @@
+import { ladoGanadorDefault } from "../resultadosDefault.js";
 import {
     collection,
     getDocs,
@@ -488,6 +489,14 @@ function calcularEstadisticasEquipo() {
                     partido.localId === equipoActual.id;
 
 
+                const ganadorDefault = ladoGanadorDefault(partido);
+                if (ganadorDefault) {
+                    pj++;
+                    if (partido.ganadorId === equipoActual.id) pg++;
+                    else pp++;
+                    return;
+                }
+
                 const golesFavor =
                     esLocal
                         ? numeroSeguro(
@@ -818,7 +827,7 @@ function renderizarPartidos(
                         <strong>
                             ${escaparHTML(
                                 partido.campo ||
-                                "Por definir"
+                                "Pendiente"
                             )}
                         </strong>
 
@@ -936,12 +945,12 @@ function abrirDetalle(
 
     modalCampo.textContent =
         partido.campo ||
-        "Sin definir";
+        "Pendiente";
 
 
     modalArbitro.textContent =
         partido.arbitroNombre ||
-        "Sin asignar";
+        "Pendiente";
 
 
     cargarLogo(
@@ -987,6 +996,9 @@ function cerrarModal() {
 function obtenerResultado(
     partido
 ) {
+    if (ladoGanadorDefault(partido)) {
+        return partido.ganadorId === equipoActual.id ? "Victoria por default" : "Derrota por default";
+    }
 
     if (
         partido.estado !== "finalizado" ||
@@ -1149,7 +1161,7 @@ function formatearFecha(
 
     if (!fecha) {
 
-        return "Sin definir";
+        return "Pendiente";
 
     }
 
@@ -1193,7 +1205,7 @@ function formatearHora(
 
     if (!hora) {
 
-        return "Sin definir";
+        return "Pendiente";
 
     }
 

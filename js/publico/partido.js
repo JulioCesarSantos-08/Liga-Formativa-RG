@@ -1,3 +1,4 @@
+import { textoResultadoDefault } from "../resultadosDefault.js";
 import {
     collection,
     doc,
@@ -606,13 +607,13 @@ function renderizarPartido() {
 
     campoPartido.textContent =
         partido.campo ||
-        "Por definir";
+        "Pendiente";
 
 
     arbitroPartido.textContent =
         partido.arbitroNombre ||
         cedula?.arbitroNombre ||
-        "Por asignar";
+        "Pendiente";
 
 
     renderizarMarcador(
@@ -705,6 +706,12 @@ function renderizarEscudo(
 function renderizarMarcador(
     estado
 ) {
+    const textoDefault = textoResultadoDefault(partido);
+    if (textoDefault) {
+        textoMarcador.textContent = textoDefault;
+        resultadoPartido.textContent = "DEFAULT";
+        return;
+    }
 
     const golesLocal =
         obtenerGolesLocal();
@@ -1808,7 +1815,7 @@ function formatearFecha(
 
     if (!valor) {
 
-        return "Por definir";
+        return "Pendiente";
 
     }
 
@@ -1907,7 +1914,7 @@ function formatearHora(
 
     if (!valor) {
 
-        return "Por definir";
+        return "Pendiente";
 
     }
 

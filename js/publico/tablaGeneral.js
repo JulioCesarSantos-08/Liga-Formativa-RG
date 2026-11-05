@@ -1,3 +1,4 @@
+import { sumarDefaultTabla } from "../resultadosDefault.js";
 import {
     collection,
     getDocs
@@ -334,6 +335,8 @@ function construirRankingGeneral() {
 
             }
 
+
+            if (sumarDefaultTabla(partido, local, visitante)) return;
 
             local.pj += 1;
             visitante.pj += 1;

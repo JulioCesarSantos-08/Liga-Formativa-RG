@@ -552,7 +552,7 @@ function llenarArbitros() {
 
     arbitroPartido.innerHTML = `
         <option value="">
-            Selecciona un árbitro
+            Pendiente de asignación
         </option>
     `;
 
@@ -1145,7 +1145,7 @@ function renderizarPartidos(lista) {
 
                         ${escaparHTML(
                             partido.campo ||
-                            "Sede por definir"
+                            "Sede pendiente"
                         )}
 
                     </div>
@@ -1162,7 +1162,7 @@ function renderizarPartidos(lista) {
                     <strong>
                         ${escaparHTML(
                             partido.arbitroNombre ||
-                            "Sin asignar"
+                            "Pendiente"
                         )}
                     </strong>
 
@@ -1452,7 +1452,7 @@ async function guardarPartido(event) {
 
 
     const arbitroId =
-        arbitroPartido.value;
+        arbitroPartido.value || null;
 
 
     const observaciones =
@@ -1524,45 +1524,14 @@ async function guardarPartido(event) {
     }
 
 
-    if (
-        !fecha ||
-        !hora
-    ) {
-
+    if (!fecha) {
         mostrarToast(
             "error",
-            "Fecha y hora requeridas",
-            "Indica cuándo se jugará el partido."
+            "Fecha requerida",
+            "Indica la fecha del partido. La hora, sede y árbitro pueden quedar pendientes."
         );
 
         return;
-
-    }
-
-
-    if (!campo) {
-
-        mostrarToast(
-            "error",
-            "Campo requerido",
-            "Indica el campo o sede del encuentro."
-        );
-
-        return;
-
-    }
-
-
-    if (!arbitroId) {
-
-        mostrarToast(
-            "error",
-            "Árbitro requerido",
-            "Selecciona el árbitro responsable."
-        );
-
-        return;
-
     }
 
 
@@ -1622,7 +1591,7 @@ async function guardarPartido(event) {
         !jornada ||
         !local ||
         !visitante ||
-        !arbitro
+        (arbitroId && !arbitro)
     ) {
 
         mostrarToast(
@@ -1670,7 +1639,7 @@ async function guardarPartido(event) {
 
 
     const conflictoEquipos =
-        partidos.some(
+        Boolean(fecha && hora) && partidos.some(
             partido => {
 
                 if (
@@ -1729,7 +1698,7 @@ async function guardarPartido(event) {
 
 
     const conflictoArbitro =
-        partidos.some(
+        Boolean(fecha && hora && arbitroId) && partidos.some(
             partido => {
 
                 if (
@@ -1810,8 +1779,8 @@ async function guardarPartido(event) {
             arbitroId,
 
             arbitroNombre:
-                arbitro.nombre ||
-                arbitro.email ||
+                arbitro?.nombre ||
+                arbitro?.email ||
                 "",
 
             observaciones,
@@ -1883,19 +1852,19 @@ if (partidoAnterior.fecha !== fecha) {
 
 if (partidoAnterior.hora !== hora) {
     cambios.push(
-        `hora: ${partidoAnterior.hora || "Sin hora"} → ${hora}`
+        `hora: ${partidoAnterior.hora || "Pendiente"} → ${hora || "Pendiente"}`
     );
 }
 
 if ((partidoAnterior.campo || "") !== campo) {
     cambios.push(
-        `campo: ${partidoAnterior.campo || "Sin campo"} → ${campo}`
+        `campo: ${partidoAnterior.campo || "Pendiente"} → ${campo || "Pendiente"}`
     );
 }
 
 if (partidoAnterior.arbitroId !== arbitroId) {
     cambios.push(
-        `árbitro: ${partidoAnterior.arbitroNombre || "Sin árbitro"} → ${arbitro.nombre || arbitro.email || "Sin árbitro"}`
+        `árbitro: ${partidoAnterior.arbitroNombre || "Sin árbitro"} → ${arbitro?.nombre || arbitro?.email || "Pendiente"}`
     );
 }
 
@@ -2025,7 +1994,7 @@ mostrarToast(
     modulo: "partidos",
     accion: "partido_creado",
     descripcion:
-        `Creó el partido ${local.nombre || "Local"} vs ${visitante.nombre || "Visitante"}, ${jornada.nombre || `Jornada ${jornada.numero || ""}`}, programado para ${fecha} a las ${hora} en ${campo}.`,
+        `Creó el partido ${local.nombre || "Local"} vs ${visitante.nombre || "Visitante"}, ${jornada.nombre || `Jornada ${jornada.numero || ""}`}, programado para ${fecha}, hora: ${hora || "Pendiente"}, sede: ${campo || "Pendiente"}.`,
     entidadTipo: "partido",
     entidadId: referenciaPartido.id,
     entidadNombre:
@@ -2284,7 +2253,7 @@ function obtenerPartesFecha(fecha) {
 function formatearHora(hora) {
 
     if (!hora) {
-        return "Hora por definir";
+        return "Hora pendiente";
     }
 
 

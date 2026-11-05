@@ -57,8 +57,8 @@ async function resolverCambio({
     let referenciasDelDia = [];
 
     if (aprobar) {
-        if (!previa.fecha || !previa.hora) {
-            throw new Error("La solicitud no tiene un horario válido.");
+        if (!previa.fecha) {
+            throw new Error("La solicitud no tiene una fecha válida.");
         }
 
         const partidosDia = await getDocs(
@@ -127,9 +127,9 @@ async function resolverCambio({
 
             if (
                 solicitud.fecha !== previa.fecha ||
-                solicitud.hora !== previa.hora ||
+                (solicitud.hora || "") !== (previa.hora || "") ||
                 partido.fecha !== solicitud.fecha ||
-                partido.hora !== solicitud.hora
+                (partido.hora || "") !== (solicitud.hora || "")
             ) {
                 throw new Error(
                     "El horario cambió desde la solicitud. Recházala y solicita el cambio con el horario actualizado."
@@ -209,6 +209,7 @@ async function resolverCambio({
                 const otro = snapshot.data();
 
                 return (
+                    Boolean(partido.fecha && partido.hora) &&
                     otro.estado !== "cancelado" &&
                     otro.fecha === partido.fecha &&
                     otro.hora === partido.hora &&

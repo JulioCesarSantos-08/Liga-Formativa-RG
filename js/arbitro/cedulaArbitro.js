@@ -1,3 +1,4 @@
+import { instalarDefaultCedula, guardarCedulaProtegida } from "./defaultCedula.js";
 import { crearControlCambios } from "./cambiosCedula.js";
 
 import { crearControlAlineaciones } from "./alineacionesCedula.js";
@@ -726,13 +727,24 @@ async function iniciarCedula() {
         }
 
 
+        instalarDefaultCedula({
+            partido,
+            contenedor: document.querySelector("main.contenido"),
+            hayIncidencias: () => eventosGoles.length > 0 || eventosAmarillas.length > 0 || eventosRojas.length > 0 ||
+                Number(golesLocal.value || 0) > 0 || Number(golesVisitante.value || 0) > 0 ||
+                (controlCambios?.obtenerDatos() || []).length > 0
+        });
+
         await cargarAsistencia();
+        if (!asistencia && partido.resueltoPorDefault === true) {
+            asistencia = { presentesLocal: [], presentesVisitante: [] };
+        }
 
 
         if (!asistencia) {
 
             mostrarError(
-                "Este partido todavía no tiene un pase de lista registrado."
+                "Para una cédula normal registra primero el pase de lista. Si no se disputó el partido, usa Resolver por default en el apartado superior."
             );
 
             return;
@@ -2349,20 +2361,7 @@ async function guardarBorrador() {
 
     try {
 
-        await setDoc(
-            doc(
-                db,
-                "cedulas",
-                partido.id
-            ),
-            construirDatosCedula(
-                "borrador"
-            ),
-            {
-                merge: true
-            }
-        );
-
+        await guardarCedulaProtegida(partido.id, construirDatosCedula("borrador"));
 
         estadoCedulaTop.textContent =
             "Borrador";
@@ -2389,7 +2388,7 @@ async function guardarBorrador() {
         mostrarToast(
             "error",
             "No se pudo guardar",
-            "Ocurrió un problema al guardar el borrador."
+            error.message || "Ocurrió un problema al guardar el borrador."
         );
 
     } finally {
@@ -2755,25 +2754,6 @@ async function enviarCedulaOficial() {
 
     try {
 
-        const referenciaCedula =
-            doc(
-                db,
-                "cedulas",
-                partido.id
-            );
-
-
-        await setDoc(
-            referenciaCedula,
-            construirDatosCedula(
-                "registrada"
-            ),
-            {
-                merge: true
-            }
-        );
-
-
         const datosPartido = {
 
             golesLocal:
@@ -2824,15 +2804,7 @@ async function enviarCedulaOficial() {
         };
 
 
-        await updateDoc(
-            doc(
-                db,
-                "partidos",
-                partido.id
-            ),
-            datosPartido
-        );
-
+        await guardarCedulaProtegida(partido.id, construirDatosCedula("registrada"), datosPartido);
 
         await actualizarEstadisticasJugadores();
 
@@ -2885,7 +2857,7 @@ async function enviarCedulaOficial() {
         mostrarToast(
             "error",
             "No se pudo enviar",
-            "La cédula no pudo registrarse. Intenta nuevamente."
+            error.message || "La cédula no pudo registrarse. Intenta nuevamente."
         );
 
     } finally {

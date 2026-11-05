@@ -135,7 +135,7 @@ async function solicitarCambioArbitro(
             hora: partido.hora || "",
             campo: partido.campo || "",
             arbitroActualId: partido.arbitroId || null,
-            arbitroActualNombre: partido.arbitroNombre || "Sin asignar",
+            arbitroActualNombre: partido.arbitroNombre || "Pendiente",
             arbitroPropuestoId: propuestoId,
             arbitroPropuestoNombre: nuevoSnap.data().nombre || "Árbitro",
             solicitanteId: solicitanteUid,
@@ -321,7 +321,7 @@ function renderizar() {
 
         if (!estadisticas.has(id)) {
             estadisticas.set(id, {
-                nombre: partido.arbitroNombre || "Sin asignar",
+                nombre: partido.arbitroNombre || "Pendiente",
                 asignados: 0,
                 oficiales: 0
             });
@@ -415,7 +415,7 @@ function renderizar() {
 
         texto(
             tarjeta,
-            `Actual: ${solicitud.arbitroActualNombre || "Sin asignar"}`
+            `Actual: ${solicitud.arbitroActualNombre || "Pendiente"}`
         );
 
         texto(
@@ -493,12 +493,12 @@ function renderizarPartidos() {
 
         texto(
             tarjeta,
-            `${partido.fecha || "Sin fecha"} ${partido.hora || ""} · ${partido.campo || "Sin sede"}`
+            `${partido.fecha || "Sin fecha"} ${partido.hora || "Hora pendiente"} · ${partido.campo || "Sede pendiente"}`
         );
 
         texto(
             tarjeta,
-            `Árbitro: ${partido.arbitroNombre || "Sin asignar"}`
+            `Árbitro: ${partido.arbitroNombre || "Pendiente"}`
         );
 
         texto(

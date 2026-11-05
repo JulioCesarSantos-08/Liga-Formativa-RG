@@ -1,3 +1,4 @@
+import { instalarDefaultCedula } from "./defaultCedula.js";
 import {
     collection,
     getDocs,
@@ -371,6 +372,11 @@ async function iniciarPagina() {
 
         }
 
+
+        instalarDefaultCedula({
+            partido,
+            contenedor: document.querySelector("main")
+        });
 
         await cargarEquipos();
 

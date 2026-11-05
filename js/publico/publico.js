@@ -1,3 +1,4 @@
+import { textoResultadoDefault } from "../resultadosDefault.js";
 import {
   collection,
   getDocs,
@@ -430,7 +431,7 @@ function renderizarProximoPartido() {
                 </span>
 
                 <span>
-                    ${escaparHTML(partido.campo || "Campo por definir")}
+                    ${escaparHTML(partido.campo || "Sede pendiente")}
                 </span>
 
             </div>
@@ -522,7 +523,7 @@ function renderizarUltimosResultados() {
                     </span>
 
                     <span>
-                        Finalizado
+                        ${escaparHTML(textoResultadoDefault(partido) || "Finalizado")}
                     </span>
 
                 </div>
@@ -535,9 +536,7 @@ function renderizarUltimosResultados() {
                     </span>
 
                     <strong>
-                        ${golesLocal}
-                        -
-                        ${golesVisitante}
+                        ${partido.resueltoPorDefault === true ? "DEFAULT" : golesLocal + " - " + golesVisitante}
                     </strong>
 
                     <span>
@@ -731,7 +730,7 @@ function combinarFechaHora(fecha, hora) {
 
 function formatearHora(hora) {
   if (!hora) {
-    return "Por definir";
+    return "Pendiente";
   }
 
   const texto = String(hora).trim();

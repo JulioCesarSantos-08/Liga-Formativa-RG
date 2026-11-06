@@ -31,8 +31,8 @@ function imprimible(arbitro) {
 function dividirHojas(lista) {
     const hojas = [];
 
-    for (let i = 0; i < lista.length; i += 6) {
-        hojas.push(lista.slice(i, i + 6));
+    for (let i = 0; i < lista.length; i += 4) {
+        hojas.push(lista.slice(i, i + 4));
     }
 
     return hojas;
@@ -314,7 +314,7 @@ async function iniciar() {
             <h2>Expedientes y credenciales</h2>
             <p>
                 Credenciales individuales o por lote.
-                Hasta nueve por hoja A4.
+                Hasta cuatro por hoja carta vertical. Tamaño: 8.6 × 12.9 cm.
             </p>
         </header>
 

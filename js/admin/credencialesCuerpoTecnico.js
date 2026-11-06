@@ -576,7 +576,7 @@ async function iniciar() {
                 </div>
 
                 <p>
-                    Hasta nueve credenciales por hoja A4.
+                    Hasta cuatro credenciales por hoja carta vertical. Tamaño: 8.6 × 12.9 cm.
                     Elige Guardar como PDF para descargar el lote.
                     Primera impresión gratuita; las reposiciones
                     se gestionan desde administración.
@@ -847,11 +847,11 @@ async function iniciar() {
 
             const trabajos = [];
 
-            for (let i = 0; i < seleccionados.length; i += 6) {
+            for (let i = 0; i < seleccionados.length; i += 4) {
                 const hoja = document.createElement("section");
                 hoja.className = "ca-hoja";
 
-                seleccionados.slice(i, i + 6).forEach(item => {
+                seleccionados.slice(i, i + 4).forEach(item => {
                     const tarjeta = crearTarjeta(
                         item,
                         datos.temporada
@@ -895,7 +895,7 @@ async function iniciar() {
             window.print();
 
             estado.textContent =
-                `${seleccionados.length} credenciales preparadas en ${Math.ceil(seleccionados.length / 9)} hoja(s). Elige Guardar como PDF o tu impresora.`;
+                `${seleccionados.length} credenciales preparadas en ${Math.ceil(seleccionados.length / 4)} hoja(s). Elige Guardar como PDF o tu impresora.`;
         } catch (error) {
             raiz?.remove();
             document.body.classList.remove("ca-imprimiendo");

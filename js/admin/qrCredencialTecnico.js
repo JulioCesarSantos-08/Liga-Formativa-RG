@@ -68,7 +68,7 @@ async function registrar(registro, temporada) {
     const uid = auth.currentUser?.uid;
 
     if (!uid) {
-        throw new Error("Inicia sesión como administrador.");
+        throw new Error("Inicia sesión para generar tu credencial.");
     }
 
     const candidato = tokenNuevo();
@@ -95,10 +95,16 @@ async function registrar(registro, temporada) {
         if (
             auth.currentUser?.uid !== uid ||
             !admin.exists() ||
-            admin.data().rol !== "admin" ||
+            !(
+                admin.data().rol === "admin" ||
+                (
+                    uid === registro.responsableId &&
+                    usuarioTieneRol(admin.data(), "jefeEquipo")
+                )
+            ) ||
             admin.data().activo === false
         ) {
-            throw new Error("Se requiere una sesión administradora activa.");
+            throw new Error("Solo administración o el entrenador responsable pueden generar esta credencial.");
         }
 
         if (

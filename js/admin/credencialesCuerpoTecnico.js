@@ -1,7 +1,27 @@
-import { collection, query, where, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+import { collection, query, where, getDocsFromServer, doc, getDocFromServer } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { db, auth } from "../firebase.js";
 import { protegerPagina, usuarioTieneRol } from "../roles.js";
 import { prepararQrTecnico } from "./qrCredencialTecnico.js";
+
+const accesoEntrenador = location.pathname.endsWith("/misCredencialesTecnicas.html");
+
+async function consultarPropietario() {
+    const uid = auth.currentUser?.uid;
+
+    if (!uid) {
+        throw new Error("Inicia sesión para consultar tus credenciales.");
+    }
+
+    const usuario = await getDocFromServer(
+        doc(db, "usuarios", uid)
+    );
+
+    if (!usuario.exists()) {
+        throw new Error("No se encontró tu cuenta.");
+    }
+
+    return { docs: [usuario] };
+}
 
 function urlSegura(valor) {
     try {
@@ -140,15 +160,21 @@ function construirRegistros(usuarios, equipos) {
 }
 
 async function validarAdmin(uid) {
-    const snapshot = await getDoc(doc(db, "usuarios", uid));
+    const snapshot = await getDocFromServer(doc(db, "usuarios", uid));
 
     if (
         auth.currentUser?.uid !== uid ||
         !snapshot.exists() ||
-        snapshot.data().rol !== "admin" ||
+        !(
+            snapshot.data().rol === "admin" ||
+            (
+                accesoEntrenador &&
+                usuarioTieneRol(snapshot.data(), "jefeEquipo")
+            )
+        ) ||
         snapshot.data().activo === false
     ) {
-        throw new Error("Se requiere una sesión administradora activa.");
+        throw new Error("Tu cuenta debe estar activa y tener permiso para consultar estas credenciales.");
     }
 }
 
@@ -156,13 +182,13 @@ async function consultarUsuariosJefesEquipo() {
     const referencia = collection(db, "usuarios");
 
     const resultados = await Promise.allSettled([
-        getDocs(
+        getDocsFromServer(
             query(
                 referencia,
                 where("rol", "==", "jefeEquipo")
             )
         ),
-        getDocs(
+        getDocsFromServer(
             query(
                 referencia,
                 where("roles", "array-contains", "jefeEquipo")
@@ -204,9 +230,22 @@ async function consultarUsuariosJefesEquipo() {
 
 async function consultar() {
     const [usuarios, equipos, temporadas] = await Promise.all([
-        consultarUsuariosJefesEquipo(),
-        getDocs(collection(db, "equipos")),
-        getDocs(collection(db, "temporadas"))
+        accesoEntrenador
+            ? consultarPropietario()
+            : consultarUsuariosJefesEquipo(),
+        getDocsFromServer(
+            accesoEntrenador
+                ? query(
+                    collection(db, "equipos"),
+                    where(
+                        "responsableId",
+                        "==",
+                        auth.currentUser.uid
+                    )
+                )
+                : collection(db, "equipos")
+        ),
+        getDocsFromServer(collection(db, "temporadas"))
     ]);
 
     const listaTemporadas = temporadas.docs.map(
@@ -397,7 +436,7 @@ async function esperarImagenes(raiz) {
 }
 
 async function iniciar() {
-    const usuario = await protegerPagina(["admin"]);
+    const usuario = await protegerPagina(accesoEntrenador ? ["jefeEquipo", "admin"] : ["admin"]);
     if (!usuario) return;
 
     const uid = usuario.firebaseUser?.uid || usuario.uid;
@@ -486,10 +525,14 @@ async function iniciar() {
     panel.id = "credencialesCuerpoTecnicoPanel";
     panel.className = "ca-panel";
 
+    if (accesoEntrenador) {
+        panel.dataset.autoservicio = "true";
+    }
+
     panel.innerHTML = `
         <header class="ca-cabecera">
-            <small>ADMINISTRACIÓN · CUERPO TÉCNICO</small>
-            <h2>Expedientes y credenciales</h2>
+            <small>${accesoEntrenador ? "MIS DOCUMENTOS · CUERPO TÉCNICO" : "ADMINISTRACIÓN · CUERPO TÉCNICO"}</small>
+            <h2>${accesoEntrenador ? "Mis credenciales y las de mis auxiliares" : "Expedientes y credenciales"}</h2>
             <p>
                 Directores por club y categorías asignadas.
                 Auxiliares por equipo y categoría.
@@ -534,7 +577,7 @@ async function iniciar() {
                     </p>
 
                     <button type="button" data-uno>
-                        Imprimir esta credencial
+                        Imprimir / descargar esta credencial
                     </button>
                 </div>
 
@@ -578,8 +621,9 @@ async function iniciar() {
                 <p>
                     Hasta cuatro credenciales por hoja carta vertical. Tamaño: 8.6 × 12.9 cm.
                     Elige Guardar como PDF para descargar el lote.
-                    Primera impresión gratuita; las reposiciones
-                    se gestionan desde administración.
+                    Conserva el PDF y cuida tu credencial.
+                    Recomendamos evitar más de tres reimpresiones.
+                    Puedes volver a descargarla cuando lo necesites.
                 </p>
             </section>
         </div>
@@ -748,7 +792,11 @@ async function iniciar() {
                 );
             });
 
-            selector.value = anterior;
+            selector.value = anterior || (
+                accesoEntrenador
+                    ? registros.find(item => item.listo)?.id || ""
+                    : ""
+            );
 
             for (const id of elegidos) {
                 if (

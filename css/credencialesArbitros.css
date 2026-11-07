@@ -703,3 +703,64 @@
         page-break-inside: avoid;
     }
 }
+
+
+.ct-card .ca-marco {
+    grid-template-rows:16fr 3fr 5fr 30fr 15fr 25fr 3fr 3fr !important;
+}
+
+.ct-card .ca-identidad {
+    min-height:0;
+    gap:2cqw;
+}
+
+.ct-card .ca-foto-marco {
+    flex:0 0 34cqw;
+    min-height:0;
+}
+
+.ct-card .ca-datos {
+    min-height:0;
+    gap:.7cqw !important;
+}
+
+.ct-card .ca-nombre {
+    font-size:4cqw !important;
+    line-height:1.08;
+    overflow-wrap:anywhere;
+}
+
+.ct-card .ct-equipo {
+    font-size:3.3cqw !important;
+    line-height:1.12;
+    overflow-wrap:anywhere;
+}
+
+.ct-card .ca-datos small {
+    font-size:2.1cqw !important;
+}
+
+.ct-card .ct-autorizaciones {
+    min-height:0;
+    padding:.7cqw 1.5cqw;
+    gap:.5cqw;
+}
+
+.ct-card .ct-autorizaciones strong {
+    font-size:2.1cqw !important;
+}
+
+.ct-card .ct-categorias {
+    font-size:2.8cqw !important;
+    line-height:1.12 !important;
+}
+
+#credencialesCuerpoTecnicoPanel[data-autoservicio] .ca-expediente {
+    grid-template-columns:minmax(0,1fr) minmax(240px,380px);
+}
+
+@media (max-width:700px) {
+    #credencialesCuerpoTecnicoPanel[data-autoservicio] .ca-expediente {
+        grid-template-columns:minmax(0,1fr);
+    }
+}

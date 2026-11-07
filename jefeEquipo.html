@@ -19,6 +19,64 @@
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/jefeEquipo.css">
     <link rel="stylesheet" href="css/historialSolicitudes.css">
+
+    <style>
+        #btnMisCredencialesTecnicas {
+            position:relative;
+            overflow:visible;
+            background:linear-gradient(135deg,#075c50,#0a7a70);
+            border:2px solid #d5aa43;
+            box-shadow:0 5px 16px #075c5026;
+            color:#fff;
+            text-decoration:none;
+        }
+
+        #btnMisCredencialesTecnicas small {
+            color:#ffe3a0;
+        }
+
+        #btnMisCredencialesTecnicas strong {
+            color:#fff;
+        }
+
+        #btnMisCredencialesTecnicas p {
+            color:#e2f5ec;
+        }
+
+        #btnMisCredencialesTecnicas .accion-icono {
+            background:#ffffff1c;
+            border-color:#ffffff45;
+            color:#fff;
+        }
+
+        #btnMisCredencialesTecnicas .ct-distintivo-nuevo {
+            position:absolute;
+            top:-10px;
+            right:10px;
+            z-index:2;
+            display:inline-flex;
+            align-items:center;
+            padding:5px 10px;
+            border:1px solid #b98922;
+            border-radius:20px;
+            background:#ffe4a0;
+            color:#16483c;
+            font-size:10px;
+            font-weight:900;
+            line-height:1;
+            letter-spacing:.08em;
+            box-shadow:0 2px 6px #183d3026;
+        }
+
+        #btnMisCredencialesTecnicas:hover {
+            background:linear-gradient(135deg,#064b42,#08695f);
+        }
+
+        #btnMisCredencialesTecnicas:focus-visible {
+            outline:3px solid #08766b;
+            outline-offset:4px;
+        }
+    </style>
 </head>
 
 <body>
@@ -350,6 +408,20 @@
                         </div>
 
                     </button>
+
+                    <a
+                        href="misCredencialesTecnicas.html"
+                        class="accion-card"
+                        id="btnMisCredencialesTecnicas"
+                    >
+                        <span class="ct-distintivo-nuevo">NUEVO</span>
+                        <span class="accion-icono" aria-hidden="true">&#129706;</span>
+                        <div>
+                            <small>CUERPO TÉCNICO</small>
+                            <strong>Mis credenciales y auxiliares</strong>
+                            <p>Consulta, imprime o guarda tus credenciales en PDF.</p>
+                        </div>
+                    </a>
 
                     <button type="button" id="btnHistorialSolicitudes" class="accion-card" disabled>
                         <span class="accion-icono" aria-hidden="true">&#128203;</span>

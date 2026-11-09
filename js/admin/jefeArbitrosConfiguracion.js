@@ -75,9 +75,19 @@ async function guardarDesignacion(adminUid, arbitroId) {
             ).trim();
         }
 
+        const previa = await transaccion.get(doc(db, "configuracionLiga", "general"));
+        const cambioTitular = (previa.exists() ? previa.data().jefeArbitrosId || null : null) !== (arbitroId || null);
         transaccion.set(
             doc(db, "configuracionLiga", "general"),
             {
+                ...(cambioTitular ? {
+                    auxiliarJefeArbitrosId:null,
+                    auxiliarJefeArbitrosNombre:"",
+                    auxiliarJefeArbitrosDe:null,
+                    auxiliarJefeArbitrosAsignadoEn:null,
+                    auxiliarJefeArbitrosActualizadoEn:serverTimestamp(),
+                    auxiliarJefeArbitrosActualizadoPor:adminUid
+                } : {}),
                 jefeArbitrosId: arbitroId || null,
                 jefeArbitrosNombre: nombre,
                 jefeArbitrosActualizadoEn: serverTimestamp(),

@@ -4,6 +4,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 import { db } from "../firebase.js";
+import { cambiosSolicitud } from "../arbitro/coordinacionReglas.js";
 import { protegerPagina } from "../roles.js";
 import {
     aprobarCambioArbitro,
@@ -296,7 +297,7 @@ async function iniciar() {
     panel.innerHTML = `
         <div class="solicitudes-arbitros-cabecera">
             <h3>
-                Solicitudes de cambio de árbitro
+                Solicitudes de cambios de partidos
                 <span data-cambios="total">0</span>
             </h3>
             <select
@@ -310,8 +311,8 @@ async function iniciar() {
             </select>
         </div>
         <p>
-            Revisa el motivo y el árbitro propuesto antes de resolver
-            cada solicitud.
+            Revisa el motivo y los cambios de árbitro, fecha, hora y sede
+            antes de resolver cada solicitud.
         </p>
         <p
             data-cambios="mensaje"
@@ -383,8 +384,8 @@ async function iniciar() {
 
             mostrarMensaje(
                 aprobar
-                    ? "Solicitud aprobada. El partido tiene actualizado su árbitro."
-                    : "Solicitud rechazada. Se conservó el árbitro asignado."
+                    ? "Solicitud aprobada. La programación y el árbitro quedaron actualizados."
+                    : "Solicitud rechazada. Se conservó la programación del partido."
             );
         } catch (error) {
             console.error("Error resolviendo cambio de árbitro:", error);
@@ -462,6 +463,7 @@ async function iniciar() {
                 `Solicitó: ${solicitud.solicitanteNombre || "Jefe de árbitros"}`
             );
 
+            cambiosSolicitud(solicitud).forEach(cambio => texto(tarjeta, cambio));
             texto(tarjeta, `Motivo: ${solicitud.motivo || ""}`);
 
             if (solicitud.estado === "pendiente") {

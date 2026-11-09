@@ -4,6 +4,10 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 import { db } from "../firebase.js";
+import { esCoordinador, cambiosSolicitud } from "./coordinacionReglas.js";
+import { enviarCambio } from "./coordinacionDatos.js";
+import { iniciarMejoras } from "./coordinacionMejoras.js";
+let mejoras = null;
 import { protegerPagina, cerrarSesion, usuarioTieneRol } from "../roles.js";
 
 const $ = id => document.getElementById(id);
@@ -26,132 +30,15 @@ function cerrado(partido) {
         oficiales.has(partido.id);
 }
 
-async function solicitarCambioArbitro(
-    solicitanteUid,
-    partidoId,
-    propuestoId,
-    motivo
-) {
-    if (
-        !partidoId ||
-        !propuestoId ||
-        !motivo.trim() ||
-        motivo.trim().length > 1000
-    ) {
-        throw new Error(
-            "Selecciona el partido, el árbitro y un motivo de hasta 1000 caracteres."
-        );
-    }
-
-    const referencia = doc(
-        collection(db, "solicitudesCambioArbitro")
-    );
-
-    return runTransaction(db, async transaccion => {
-        const refPartido = doc(db, "partidos", partidoId);
-
-        const [
-            configSnap,
-            jefeSnap,
-            partidoSnap,
-            nuevoSnap,
-            cedulaSnap
-        ] = await Promise.all([
-            transaccion.get(doc(db, "configuracionLiga", "general")),
-            transaccion.get(doc(db, "usuarios", solicitanteUid)),
-            transaccion.get(refPartido),
-            transaccion.get(doc(db, "usuarios", propuestoId)),
-            transaccion.get(doc(db, "cedulas", partidoId))
-        ]);
-
-        if (
-            !configSnap.exists() ||
-            configSnap.data().jefeArbitrosId !== solicitanteUid ||
-            !jefeSnap.exists() ||
-            !usuarioTieneRol(jefeSnap.data(), "arbitro") ||
-            jefeSnap.data().activo === false
-        ) {
-            throw new Error(
-                "Tu cuenta ya no tiene la designación de jefe de árbitros."
-            );
-        }
-
-        if (!partidoSnap.exists()) {
-            throw new Error("El partido ya no está disponible.");
-        }
-
-        const partido = partidoSnap.data();
-
-        if (
-            ["cancelado", "finalizado"].includes(partido.estado) ||
-            partido.resultadoRegistrado === true ||
-            (cedulaSnap.exists() && esOficial(cedulaSnap.data()))
-        ) {
-            throw new Error(
-                "No se puede solicitar un cambio para un partido cancelado o con resultado oficial."
-            );
-        }
-
-        if (
-            !nuevoSnap.exists() ||
-            !usuarioTieneRol(nuevoSnap.data(), "arbitro") ||
-            nuevoSnap.data().activo === false
-        ) {
-            throw new Error(
-                "El árbitro propuesto no está activo o ya no está disponible."
-            );
-        }
-
-        if (partido.arbitroId === propuestoId) {
-            throw new Error("Ese árbitro ya está asignado al partido.");
-        }
-
-        if (partido.solicitudCambioArbitroPendienteId) {
-            const pendiente = await transaccion.get(
-                doc(
-                    db,
-                    "solicitudesCambioArbitro",
-                    partido.solicitudCambioArbitroPendienteId
-                )
-            );
-
-            if (
-                pendiente.exists() &&
-                pendiente.data().estado === "pendiente"
-            ) {
-                throw new Error(
-                    "Este partido ya tiene una solicitud de cambio pendiente."
-                );
-            }
-        }
-
-        transaccion.set(referencia, {
-            partidoId,
-            localNombre: partido.localNombre || "Equipo local",
-            visitanteNombre: partido.visitanteNombre || "Equipo visitante",
-            categoriaNombre: partido.categoriaNombre || "",
-            jornadaNombre: partido.jornadaNombre || "",
-            fecha: partido.fecha || "",
-            hora: partido.hora || "",
-            campo: partido.campo || "",
-            arbitroActualId: partido.arbitroId || null,
-            arbitroActualNombre: partido.arbitroNombre || "Pendiente",
-            arbitroPropuestoId: propuestoId,
-            arbitroPropuestoNombre: nuevoSnap.data().nombre || "Árbitro",
-            solicitanteId: solicitanteUid,
-            solicitanteNombre: jefeSnap.data().nombre || "Jefe de árbitros",
-            motivo: motivo.trim(),
-            estado: "pendiente",
-            creadoEn: serverTimestamp(),
-            actualizadoEn: serverTimestamp()
-        });
-
-        transaccion.update(refPartido, {
-            solicitudCambioArbitroPendienteId: referencia.id
-        });
-
-        return referencia.id;
-    });
+async function solicitarCambioArbitro(solicitanteUid, partidoId, propuestoId, motivo) {
+    const base = partidos.find(p => p.id === partidoId);
+    if (!base) throw new Error("Selecciona un partido disponible.");
+    return enviarCambio(solicitanteUid, partidoId, {
+        arbitroId: propuestoId || null,
+        fecha: $("fechaPropuesta").value,
+        hora: $("horaPropuesta").value,
+        campo: $("campoPropuesto").value.trim()
+    }, base, motivo);
 }
 
 function opcion(select, valor, contenido) {
@@ -222,11 +109,13 @@ async function cargarDatos() {
 
         const cuenta = cuentaSnap.exists() ? cuentaSnap.data() : {};
 
-        puedeSolicitar =
-            usuarioTieneRol(cuenta, "arbitro") &&
-            cuenta.activo !== false &&
-            configSnap.exists() &&
-            configSnap.data().jefeArbitrosId === uid;
+        const config = configSnap.exists() ? configSnap.data() : {};
+        const titularSnap = config.jefeArbitrosId && config.jefeArbitrosId !== uid
+            ? await getDoc(doc(db, "usuarios", config.jefeArbitrosId)) : cuentaSnap;
+        puedeSolicitar = (cuenta.rol === "admin" && cuenta.activo !== false) || esCoordinador(
+            config, uid, cuenta,
+            titularSnap.exists() ? titularSnap.data() : null
+        );
 
         if (
             cuenta.activo === false ||
@@ -273,6 +162,9 @@ async function cargarDatos() {
             (a.creadoEn?.toMillis?.() || 0)
         );
 
+        $("tipoAccesoCoordinacion").textContent = cuenta.rol === "admin"
+            ? "ADMINISTRACIÓN · COORDINACIÓN ARBITRAL"
+            : config.jefeArbitrosId === uid ? "JEFE TITULAR DE ÁRBITROS" : "AUXILIAR DEL JEFE DE ÁRBITROS";
         $("nombreJefeArbitros").textContent =
             cuenta.nombre || "Coordinación arbitral";
 
@@ -282,7 +174,9 @@ async function cargarDatos() {
         $("volverPanel").textContent = cuenta.rol === "admin"
             ? "Administración de árbitros" : "Mi panel arbitral";
 
+        if (mejoras?.permitido() === false) throw new Error("Tu acceso a la coordinación cambió.");
         renderizar();
+        mejoras?.actualizar(arbitros);
 
         $("estadoCarga").classList.add("oculto");
         $("contenidoJefeArbitros").classList.remove("oculto");
@@ -292,6 +186,107 @@ async function cargarDatos() {
     } finally {
         $("btnActualizar").disabled = false;
     }
+}
+
+function claveFiltroSolicitud(partido, tipo) {
+    const id = partido[tipo + "Id"];
+    const nombre = partido[tipo + "Nombre"];
+    return id ? "id:" + id : nombre ? "nombre:" + nombre : "sin-dato";
+}
+
+function disponiblesSolicitud() {
+    return partidos.filter(p => !cerrado(p) && !solicitudes.some(s =>
+        s.partidoId === p.id && s.estado === "pendiente"
+    ));
+}
+
+function opcionesFiltroSolicitud(id, lista, tipo, titulo) {
+    const select = $(id);
+    const anterior = select.value;
+    const opciones = new Map();
+
+    lista.forEach(p => opciones.set(
+        claveFiltroSolicitud(p, tipo),
+        p[tipo + "Nombre"] || (
+            tipo === "categoria" ? "Sin categoría" : "Sin jornada"
+        )
+    ));
+
+    select.replaceChildren();
+    opcion(select, "", titulo);
+
+    [...opciones]
+        .sort((a, b) => a[1].localeCompare(b[1], "es", { numeric: true }))
+        .forEach(([valor, nombre]) => opcion(select, valor, nombre));
+
+    select.value = opciones.has(anterior) ? anterior : "";
+    select.disabled = !puedeSolicitar;
+}
+
+function cargarFiltrosSolicitud(reiniciarJornada = false) {
+    const disponibles = disponiblesSolicitud();
+
+    opcionesFiltroSolicitud(
+        "categoriaSolicitud",
+        disponibles,
+        "categoria",
+        "Todas las categorías"
+    );
+
+    const categoria = $("categoriaSolicitud").value;
+
+    if (reiniciarJornada) $("jornadaSolicitud").value = "";
+
+    opcionesFiltroSolicitud(
+        "jornadaSolicitud",
+        disponibles.filter(p =>
+            !categoria || claveFiltroSolicitud(p, "categoria") === categoria
+        ),
+        "jornada",
+        "Todas las jornadas"
+    );
+
+    filtrarPartidosSolicitud();
+}
+
+function filtrarPartidosSolicitud() {
+    const categoria = $("categoriaSolicitud").value;
+    const jornada = $("jornadaSolicitud").value;
+    const select = $("partidoSolicitud");
+    const anterior = select.value;
+
+    const lista = disponiblesSolicitud().filter(p =>
+        (!categoria || claveFiltroSolicitud(p, "categoria") === categoria) &&
+        (!jornada || claveFiltroSolicitud(p, "jornada") === jornada)
+    );
+
+    select.replaceChildren();
+
+    opcion(
+        select,
+        "",
+        lista.length ? "Selecciona un partido" : "No hay partidos disponibles"
+    );
+
+    lista.forEach(p => opcion(
+        select,
+        p.id,
+        [
+            (p.localNombre || "Local") + " vs. " + (p.visitanteNombre || "Visitante"),
+            p.categoriaNombre || "Sin categoría",
+            p.jornadaNombre || "Sin jornada",
+            p.fecha || "Fecha pendiente",
+            p.hora || "Hora pendiente"
+        ].join(" · ")
+    ));
+
+    select.value = lista.some(p => p.id === anterior) ? anterior : "";
+
+    if (!anterior || select.value !== anterior) cargarPropuestos();
+
+    $("resumenFiltroSolicitud").textContent = lista.length
+        ? lista.length + " partido(s) disponibles. Solo se muestran encuentros abiertos sin solicitud pendiente."
+        : "No hay partidos abiertos sin solicitud pendiente para estos filtros.";
 }
 
 function renderizar() {
@@ -350,27 +345,15 @@ function renderizar() {
         $("cuerpoEstadisticasArbitros").appendChild(tr);
     });
 
-    $("partidoSolicitud").replaceChildren();
-    opcion($("partidoSolicitud"), "", "Selecciona un partido");
+    cargarFiltrosSolicitud();
 
-    partidos
-        .filter(p =>
-            !cerrado(p) &&
-            !solicitudes.some(s =>
-                s.partidoId === p.id && s.estado === "pendiente"
-            )
-        )
-        .forEach(p => opcion(
-            $("partidoSolicitud"),
-            p.id,
-            `${p.localNombre || "Local"} vs. ${p.visitanteNombre || "Visitante"} · ${p.categoriaNombre || ""} · ${p.fecha || ""} ${p.hora || ""}`
-        ));
-
-    cargarPropuestos();
 
     [
         "partidoSolicitud",
         "arbitroPropuesto",
+        "fechaPropuesta",
+        "horaPropuesta",
+        "campoPropuesto",
         "motivoSolicitud",
         "btnEnviarSolicitud"
     ].forEach(id => {
@@ -379,7 +362,7 @@ function renderizar() {
 
     if (!puedeSolicitar) {
         $("estadoSolicitud").textContent =
-            "Las solicitudes se envían desde la cuenta del jefe de árbitros designado.";
+            "Las solicitudes pueden enviarlas administración, el jefe titular y su auxiliar. Los cambios requieren aprobación administrativa.";
     }
 
     $("buscarPartidos").disabled = false;
@@ -423,6 +406,7 @@ function renderizar() {
             `Propuesto: ${solicitud.arbitroPropuestoNombre || "Árbitro"}`
         );
 
+        cambiosSolicitud(solicitud).forEach(cambio => texto(tarjeta, cambio));
         texto(tarjeta, `Motivo: ${solicitud.motivo || ""}`);
 
         if (solicitud.respuestaAdministrativa) {
@@ -439,22 +423,16 @@ function renderizar() {
 }
 
 function cargarPropuestos() {
-    const partido = partidos.find(
-        p => p.id === $("partidoSolicitud").value
-    );
-
+    const partido = partidos.find(p => p.id === $("partidoSolicitud").value);
     $("arbitroPropuesto").replaceChildren();
-    opcion($("arbitroPropuesto"), "", "Selecciona un árbitro");
-
-    arbitros
-        .filter(a =>
-            a.activo !== false && a.id !== partido?.arbitroId
-        )
-        .forEach(a => opcion(
-            $("arbitroPropuesto"),
-            a.id,
-            a.nombre || "Árbitro"
-        ));
+    opcion($("arbitroPropuesto"), "", "Pendiente de asignación");
+    arbitros.filter(a => a.activo !== false).forEach(a =>
+        opcion($("arbitroPropuesto"), a.id, a.nombre || "Árbitro")
+    );
+    $("arbitroPropuesto").value = partido?.arbitroId || "";
+    $("fechaPropuesta").value = partido?.fecha || "";
+    $("horaPropuesta").value = partido?.hora || "";
+    $("campoPropuesto").value = partido?.campo || "";
 }
 
 function renderizarPartidos() {
@@ -536,11 +514,21 @@ async function iniciar() {
             throw new Error("No se pudo verificar tu cuenta.");
         }
 
+        mejoras = iniciarMejoras({
+            uid, recargar:cargarDatos,
+            revocar:mensaje => {
+                puedeSolicitar = false;
+                document.querySelectorAll("#formSolicitudCambio input, #formSolicitudCambio select, #formSolicitudCambio textarea, #formSolicitudCambio button").forEach(e => e.disabled = true);
+                mostrarError(mensaje);
+            }
+        });
         $("btnCerrarSesion").disabled = false;
         $("btnCerrarSesion").addEventListener("click", cerrarSesion);
         $("btnActualizar").addEventListener("click", cargarDatos);
         $("buscarPartidos").addEventListener("input", renderizarPartidos);
         $("partidoSolicitud").addEventListener("change", cargarPropuestos);
+        $("categoriaSolicitud").addEventListener("change", () => cargarFiltrosSolicitud(true));
+        $("jornadaSolicitud").addEventListener("change", filtrarPartidosSolicitud);
 
         $("formSolicitudCambio").addEventListener("submit", async evento => {
             evento.preventDefault();

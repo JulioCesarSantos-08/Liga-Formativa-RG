@@ -6,6 +6,7 @@
     <meta name="theme-color" content="#07574f">
     <title>Jefe de árbitros | Liga Municipal Río Grande</title>
     <link rel="icon" href="imagenes/logo.png">
+    <link rel="stylesheet" href="css/coordinacionArbitral.css">
 
     <style>
         * {
@@ -359,7 +360,7 @@
 
         <div id="contenidoJefeArbitros" class="oculto">
             <section class="bienvenida">
-                <span>JEFE DE ÁRBITROS</span>
+                <span id="tipoAccesoCoordinacion">COORDINACIÓN ARBITRAL</span>
                 <h1 id="nombreJefeArbitros">Coordinación arbitral</h1>
                 <p>
                     Consulta la actividad de los árbitros y solicita cambios
@@ -412,13 +413,24 @@
             </section>
 
             <section class="seccion">
-                <h2>Solicitar cambio de árbitro</h2>
+                <h2>Solicitar cambios del partido</h2>
                 <p class="descripcion">
                     La solicitud requiere aprobación administrativa.
-                    La designación del partido se actualizará al aprobarla.
+                    El árbitro, la fecha, la hora y la sede solo se actualizarán cuando administración apruebe la solicitud. Los campos vacíos quedarán pendientes.
                 </p>
 
                 <form id="formSolicitudCambio" class="formulario">
+                    <label class="campo">Filtrar por categoría
+                        <select id="categoriaSolicitud" disabled>
+                            <option value="">Todas las categorías</option>
+                        </select>
+                    </label>
+                    <label class="campo">Filtrar por jornada
+                        <select id="jornadaSolicitud" disabled>
+                            <option value="">Todas las jornadas</option>
+                        </select>
+                    </label>
+                    <p id="resumenFiltroSolicitud" class="estado completo" role="status" aria-live="polite"></p>
                     <label class="campo">
                         Partido
                         <select id="partidoSolicitud" required disabled>
@@ -428,17 +440,26 @@
 
                     <label class="campo">
                         Árbitro propuesto
-                        <select id="arbitroPropuesto" required disabled>
+                        <select id="arbitroPropuesto" disabled>
                             <option value="">Selecciona un árbitro</option>
                         </select>
                     </label>
 
+                    <label class="campo">Fecha propuesta
+                        <input id="fechaPropuesta" type="date" disabled>
+                    </label>
+                    <label class="campo">Hora propuesta · Oaxaca
+                        <input id="horaPropuesta" type="time" disabled>
+                    </label>
+                    <label class="campo completo">Campo o sede propuesto
+                        <input id="campoPropuesto" type="text" maxlength="180" placeholder="Pendiente si se deja vacío" disabled>
+                    </label>
                     <label class="campo completo">
                         Motivo del cambio
                         <textarea
                             id="motivoSolicitud"
                             maxlength="1000"
-                            placeholder="Explica por qué solicitas cambiar al árbitro."
+                            placeholder="Explica por qué solicitas cambiar la programación o el árbitro."
                             required
                             disabled
                         ></textarea>

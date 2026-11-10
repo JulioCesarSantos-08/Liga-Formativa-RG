@@ -1,3 +1,5 @@
+import { aplicarClasificacionEquipos, compararClasificacionEquipos } from "./estadisticasEquipos.js";
+import { getDocsFromServer } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { cargarEstadisticasJugadores, conEstadisticasJugador } from "./estadisticasJugadores.js";
 import { ladoGanadorDefault } from "../resultadosDefault.js";
 import {
@@ -280,7 +282,7 @@ async function iniciar() {
                 )
             ),
 
-            getDocs(
+            getDocsFromServer(
                 collection(
                     db,
                     "partidos"
@@ -347,6 +349,9 @@ async function iniciar() {
                 })
             );
 
+
+        equipos = aplicarClasificacionEquipos(equipos, partidos);
+        equipo = equipos.find(e => e.id === equipo.id) || equipo;
 
         renderizarEquipo();
 
@@ -566,135 +571,10 @@ function renderizarEstadisticas() {
 
 
 function obtenerPosicion() {
-
-    const categoriaId =
-        equipo.categoriaId;
-
-
-    if (!categoriaId) {
-
-        return "-";
-
-    }
-
-
-    const equiposCategoria =
-        equipos.filter(
-            item =>
-                item.categoriaId ===
-                categoriaId
-        );
-
-
-    equiposCategoria.sort(
-        (a, b) => {
-
-            const puntosA =
-                numeroSeguro(
-                    a.pts
-                );
-
-            const puntosB =
-                numeroSeguro(
-                    b.pts
-                );
-
-
-            if (
-                puntosB !==
-                puntosA
-            ) {
-
-                return (
-                    puntosB -
-                    puntosA
-                );
-
-            }
-
-
-            const dgA =
-                numeroSeguro(
-                    a.dg
-                );
-
-            const dgB =
-                numeroSeguro(
-                    b.dg
-                );
-
-
-            if (
-                dgB !==
-                dgA
-            ) {
-
-                return (
-                    dgB -
-                    dgA
-                );
-
-            }
-
-
-            const gfA =
-                numeroSeguro(
-                    a.gf
-                );
-
-            const gfB =
-                numeroSeguro(
-                    b.gf
-                );
-
-
-            if (
-                gfB !==
-                gfA
-            ) {
-
-                return (
-                    gfB -
-                    gfA
-                );
-
-            }
-
-
-            return String(
-                a.nombre ||
-                ""
-            ).localeCompare(
-                String(
-                    b.nombre ||
-                    ""
-                ),
-                "es"
-            );
-
-        }
-    );
-
-
-    const posicion =
-        equiposCategoria.findIndex(
-            item =>
-                item.id ===
-                equipo.id
-        );
-
-
-    if (
-        posicion === -1
-    ) {
-
-        return "-";
-
-    }
-
-
-    return `${posicion + 1}°`;
-
+    if (!equipo.categoriaId) return "-";
+    const tabla = equipos.filter(e => e.categoriaId === equipo.categoriaId).sort(compararClasificacionEquipos);
+    const posicion = tabla.findIndex(e => e.id === equipo.id);
+    return posicion >= 0 ? posicion + 1 : "-";
 }
 
 

@@ -1,3 +1,4 @@
+import { aplicarClasificacionEquipos, compararClasificacionEquipos, cargarPartidosClasificacion } from "./estadisticasEquipos.js";
 import {
     collection,
     getDocs
@@ -135,7 +136,8 @@ async function cargarDatos() {
 
         const [
             snapshotCategorias,
-            snapshotEquipos
+            snapshotEquipos,
+            partidosRegistrados
         ] = await Promise.all([
 
             getDocs(
@@ -150,7 +152,8 @@ async function cargarDatos() {
                     db,
                     "equipos"
                 )
-            )
+            ),
+            cargarPartidosClasificacion()
 
         ]);
 
@@ -176,6 +179,8 @@ async function cargarDatos() {
                 })
             );
 
+
+        equipos = aplicarClasificacionEquipos(equipos, partidosRegistrados);
 
         categorias.sort(
             (a, b) =>
@@ -393,132 +398,8 @@ function cargarCategoriaActual() {
 }
 
 
-function ordenarEquipos(
-    lista
-) {
-
-    return [...lista].sort(
-        (a, b) => {
-
-            const estadoA =
-                obtenerEstadoEquipo(
-                    a
-                );
-
-            const estadoB =
-                obtenerEstadoEquipo(
-                    b
-                );
-
-
-            if (
-                estadoA ===
-                    "descalificado" &&
-                estadoB !==
-                    "descalificado"
-            ) {
-
-                return 1;
-
-            }
-
-
-            if (
-                estadoB ===
-                    "descalificado" &&
-                estadoA !==
-                    "descalificado"
-            ) {
-
-                return -1;
-
-            }
-
-
-            const puntosA =
-                numeroSeguro(
-                    a.pts
-                );
-
-            const puntosB =
-                numeroSeguro(
-                    b.pts
-                );
-
-
-            if (
-                puntosB !==
-                puntosA
-            ) {
-
-                return (
-                    puntosB -
-                    puntosA
-                );
-
-            }
-
-
-            const dgA =
-                numeroSeguro(
-                    a.dg
-                );
-
-            const dgB =
-                numeroSeguro(
-                    b.dg
-                );
-
-
-            if (
-                dgB !==
-                dgA
-            ) {
-
-                return (
-                    dgB -
-                    dgA
-                );
-
-            }
-
-
-            const gfA =
-                numeroSeguro(
-                    a.gf
-                );
-
-            const gfB =
-                numeroSeguro(
-                    b.gf
-                );
-
-
-            if (
-                gfB !==
-                gfA
-            ) {
-
-                return (
-                    gfB -
-                    gfA
-                );
-
-            }
-
-
-            return String(
-                a.nombre || ""
-            ).localeCompare(
-                String(
-                    b.nombre || ""
-                ),
-                "es"
-            );
-
-        }
-    );
-
+function ordenarEquipos(lista) {
+    return [...lista].sort(compararClasificacionEquipos);
 }
 
 

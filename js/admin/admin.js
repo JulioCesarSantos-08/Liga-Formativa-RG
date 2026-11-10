@@ -526,56 +526,11 @@ function obtenerPartidosTemporadaActual() {
 
 
 function calcularCedulasPendientes() {
-
-    const partidosAplicables =
-        obtenerPartidosTemporadaActual();
-
-    return partidosAplicables.filter(
-        partido => {
-
-            const estado =
-                normalizarEstadoPartido(
-                    partido.estado
-                );
-
-            if (
-                estado !== "finalizado"
-            ) {
-
-                return false;
-
-            }
-
-            const cedula =
-                cedulas.find(
-                    item =>
-                        item.partidoId ===
-                            partido.id ||
-                        item.id ===
-                            partido.id
-                );
-
-            if (!cedula) {
-                return true;
-            }
-
-            const estadoCedula =
-                normalizarTexto(
-                    cedula.estado
-                );
-
-            return ![
-                "registrada",
-                "finalizada",
-                "final",
-                "enviada"
-            ].includes(
-                estadoCedula
-            );
-
-        }
-    ).length;
-
+    return obtenerPartidosTemporadaActual().filter(partido => {
+        if (["cancelado","cancelada","suspendido","suspendida"].includes(normalizarEstadoPartido(partido.estado))) return false;
+        const cedula = cedulas.find(c => c.partidoId === partido.id || c.id === partido.id);
+        return !["registrada","enviada"].includes(cedula?.estado);
+    }).length;
 }
 
 

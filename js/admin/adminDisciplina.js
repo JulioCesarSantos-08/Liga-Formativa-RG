@@ -1,3 +1,4 @@
+import { increment } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import {
     collection,
     doc,
@@ -635,6 +636,7 @@ function obtenerRegistrosCedulasJugador(jugador) {
     const registros = [];
 
     cedulas.forEach(cedula => {
+        if (!["registrada","enviada"].includes(cedula.estado)) return;
         const jornada =
             obtenerTexto(cedula.jornadaNombre) ||
             "Jornada";
@@ -925,6 +927,9 @@ async function guardarSancion() {
             doc(db, "jugadores", jugadorSeleccionado.id),
             {
                 suspendido,
+                suspensionRevisionManual: increment(1),
+                suspensionAutomaticaCedulas: null,
+                revisionDisciplinaPendiente: null,
                 partidosSuspensionPendientes: partidos,
                 actualizadoEn: serverTimestamp()
             }

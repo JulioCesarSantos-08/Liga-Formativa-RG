@@ -1,3 +1,4 @@
+import { iniciarIncidenciasInicio } from "./incidenciasInicio.js";
 import { textoResultadoDefault } from "../resultadosDefault.js";
 import {
   collection,
@@ -81,6 +82,7 @@ activarSistemaActualizaciones();
 const usuario = await protegerPaginaPublica();
 
 if (usuario) {
+  iniciarIncidenciasInicio();
   cargarDatosUsuario(usuario);
 
   configurarPanelUsuario(usuario);

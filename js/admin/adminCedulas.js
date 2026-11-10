@@ -498,6 +498,8 @@ function obtenerEstadoCedula(
 ) {
 
     if (
+        cedula?.devolucionCedula?.activa === true ||
+        cedula?.estado === "devuelta" ||
         cedula?.estado === "revision" ||
         cedula?.enRevision === true
     ) {
@@ -508,7 +510,7 @@ function obtenerEstadoCedula(
 
 
     if (
-        cedula ||
+        ["registrada","enviada"].includes(cedula?.estado) ||
         partido.cedulaCreada === true ||
         partido.resultadoRegistrado === true
     ) {
@@ -992,6 +994,11 @@ function renderizarRegistros(lista) {
 
 
 function abrirDetalle(partidoId) {
+    window.location.href = "adminVerCedula.html?id=" + encodeURIComponent(partidoId);
+    return;
+}
+
+function abrirDetalleAnterior(partidoId) {
 
     const registro =
         registros.find(

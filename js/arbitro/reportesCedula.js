@@ -24,7 +24,7 @@ if (usuario) {
 }
 
 async function iniciarReportesCedula() {
-    const partidoId = new URLSearchParams(window.location.search).get("id");
+    const partidoId = (new URLSearchParams(window.location.search).get("id") || new URLSearchParams(window.location.search).get("partido"));
     const plantillas = document.querySelector(".plantillas-cedula");
 
     if (!partidoId || !plantillas) {

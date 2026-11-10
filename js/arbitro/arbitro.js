@@ -1,3 +1,4 @@
+import { iniciarAvisosCedulas } from "./revisionCedulaAviso.js";
 import { exigirDocumentacionArbitro } from "./documentacionArbitro.js";
 
 import {
@@ -88,6 +89,7 @@ if (usuario) {
     await exigirDocumentacionArbitro(usuario);
 
     usuarioActual = usuario;
+    iniciarAvisosCedulas(usuario.firebaseUser?.uid || usuario.uid || usuario.id);
 
     cargarPerfil(usuario);
     activarEventos();
@@ -967,7 +969,7 @@ function tieneCedula(partido) {
         cedulas.some(
             cedula =>
                 cedula.partidoId ===
-                partido.id
+                partido.id && ["registrada","enviada"].includes(cedula.estado)
         );
 
 

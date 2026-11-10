@@ -475,7 +475,7 @@ async function cargarDatosRelacionados() {
 
     if (
         snapshotCedula &&
-        snapshotCedula.exists()
+        snapshotCedula.exists() && ["registrada","enviada"].includes(snapshotCedula.data().estado)
     ) {
 
         cedula = {

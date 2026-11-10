@@ -1,4 +1,5 @@
 import { instalarDefaultCedula, guardarCedulaProtegida } from "./defaultCedula.js";
+import { instalarAvisoRevision, prepararEdicionAdmin } from "./revisionCedulaAviso.js";
 import { crearControlCambios } from "./cambiosCedula.js";
 
 import { crearControlAlineaciones } from "./alineacionesCedula.js";
@@ -367,6 +368,12 @@ let eventosRojas = [];
 let tipoEventoActual = null;
 
 let cedulaEnviada = false;
+let versionCedula = 0;
+const modoEdicionAdmin = location.pathname.endsWith("/adminEditarCedula.html");
+function opcionesRevision() {
+    return { revisionEsperada: versionCedula, editarAdmin: modoEdicionAdmin,
+        motivo: document.getElementById("crMotivoEdicion")?.value || "" };
+}
 
 let controlAlineaciones = null;
 
@@ -663,7 +670,7 @@ async function iniciarCedula() {
 
 
     const partidoId =
-        parametros.get("id");
+        parametros.get("id") || parametros.get("partido");
 
 
     if (!partidoId) {
@@ -682,6 +689,10 @@ async function iniciarCedula() {
 
 
     try {
+        if (modoEdicionAdmin && usuarioActual.rol !== "admin") throw new Error("Esta edición requiere una cuenta administradora.");
+        if (usuarioActual.rol === "admin") btnVolverPartido.href = "adminCedulas.html";
+        instalarAvisoRevision(partidoId,document.querySelector("main.contenido"));
+        if (modoEdicionAdmin) prepararEdicionAdmin(document.querySelector("main.contenido"));
 
         const snapshotPartido =
             await getDoc(
@@ -727,7 +738,11 @@ async function iniciarCedula() {
         }
 
 
-        instalarDefaultCedula({
+        if (modoEdicionAdmin && partido.resueltoPorDefault === true) {
+            location.replace("adminVerCedula.html?id=" + encodeURIComponent(partido.id) + "&editarDefault=1");
+            return;
+        }
+        if (!modoEdicionAdmin) instalarDefaultCedula({
             partido,
             contenedor: document.querySelector("main.contenido"),
             hayIncidencias: () => eventosGoles.length > 0 || eventosAmarillas.length > 0 || eventosRojas.length > 0 ||
@@ -736,6 +751,10 @@ async function iniciarCedula() {
         });
 
         await cargarAsistencia();
+        if (!asistencia && usuarioActual.rol === "admin") {
+            const c = await getDoc(doc(db,"cedulas",partido.id));
+            if (c.exists()) asistencia = {presentesLocal:c.data().presentesLocal || [],presentesVisitante:c.data().presentesVisitante || []};
+        }
         if (!asistencia && partido.resueltoPorDefault === true) {
             asistencia = { presentesLocal: [], presentesVisitante: [] };
         }
@@ -775,6 +794,7 @@ async function iniciarCedula() {
             jugadoresVisitante,
             contenedor: contenidoCedula,
             bloqueada: cedulaEnviada,
+            edicionAdministrativa: modoEdicionAdmin,
             avisar: mensaje => mostrarToast("error", "Revisa el cambio", mensaje)
         });
 
@@ -786,6 +806,7 @@ async function iniciarCedula() {
             contenedorLocal: listaJugadoresLocal,
             contenedorVisitante: listaJugadoresVisitante,
             bloqueada: cedulaEnviada,
+            edicionAdministrativa: modoEdicionAdmin,
             avisar: mensaje => mostrarToast("error", "Revisa la alineacion", mensaje)
         });
 
@@ -1426,6 +1447,7 @@ async function cargarCedulaExistente() {
 
     const datos =
         snapshot.data();
+    versionCedula = Number(datos.revisionCedula || 0);
 
 
     golesLocal.value =
@@ -1594,9 +1616,13 @@ async function cargarCedulaExistente() {
         datos.confirmadoPorArbitro === true;
 
 
-    cedulaEnviada =
-        datos.estado === "registrada" ||
-        datos.estado === "enviada";
+    cedulaEnviada = !modoEdicionAdmin && (
+        datos.estado === "registrada" || datos.estado === "enviada"
+    );
+    if (modoEdicionAdmin) {
+        btnGuardarBorrador.hidden = true;
+        estadoCedulaTop.textContent = "Edición administrativa";
+    }
 
 
     actualizarContadoresTexto();
@@ -1621,7 +1647,7 @@ async function cargarCedulaExistente() {
     } else {
 
         estadoCedulaTop.textContent =
-            "Borrador";
+            modoEdicionAdmin ? "Edición administrativa" : "Borrador";
 
 
         estadoCedulaTop.className =
@@ -2361,10 +2387,12 @@ async function guardarBorrador() {
 
     try {
 
-        await guardarCedulaProtegida(partido.id, construirDatosCedula("borrador"));
+        const guardado = await guardarCedulaProtegida(partido.id, construirDatosCedula("borrador"), null, opcionesRevision());
+        versionCedula = guardado.revision;
+        partido.cedulaRevision = versionCedula;
 
         estadoCedulaTop.textContent =
-            "Borrador";
+            modoEdicionAdmin ? "Edición administrativa" : "Borrador";
 
 
         estadoCedulaTop.className =
@@ -2804,9 +2832,9 @@ async function enviarCedulaOficial() {
         };
 
 
-        await guardarCedulaProtegida(partido.id, construirDatosCedula("registrada"), datosPartido);
-
-        await actualizarEstadisticasJugadores();
+        const guardado = await guardarCedulaProtegida(partido.id, construirDatosCedula("registrada"), datosPartido, opcionesRevision());
+        versionCedula = guardado.revision;
+        partido.cedulaRevision = versionCedula;
 
 
         cedulaEnviada =
@@ -2870,197 +2898,6 @@ async function enviarCedulaOficial() {
             "Confirmar envío";
 
     }
-
-}
-
-
-async function actualizarEstadisticasJugadores() {
-
-    const batch =
-        writeBatch(
-            db
-        );
-
-
-    const estadisticas =
-        new Map();
-
-
-    jugadores.forEach(
-        jugador => {
-
-            estadisticas.set(
-                jugador.id,
-                {
-                    goles:
-                        0,
-
-                    amarillas:
-                        0,
-
-                    rojas:
-                        0
-                }
-            );
-
-        }
-    );
-
-
-    eventosGoles.forEach(
-        evento => {
-
-            const registro =
-                estadisticas.get(
-                    evento.jugadorId
-                );
-
-
-            if (
-                registro
-            ) {
-
-                registro.goles +=
-                    1;
-
-            }
-
-        }
-    );
-
-
-    eventosAmarillas.forEach(
-        evento => {
-
-            const registro =
-                estadisticas.get(
-                    evento.jugadorId
-                );
-
-
-            if (
-                registro
-            ) {
-
-                registro.amarillas +=
-                    1;
-
-            }
-
-        }
-    );
-
-
-    eventosRojas.forEach(
-        evento => {
-
-            const registro =
-                estadisticas.get(
-                    evento.jugadorId
-                );
-
-
-            if (
-                registro
-            ) {
-
-                registro.rojas +=
-                    1;
-
-            }
-
-        }
-    );
-
-
-    for (
-        const [
-            jugadorId,
-            registro
-        ] of estadisticas
-    ) {
-
-        const snapshot =
-            await getDoc(
-                doc(
-                    db,
-                    "jugadores",
-                    jugadorId
-                )
-            );
-
-
-        if (
-            !snapshot.exists()
-        ) {
-
-            continue;
-
-        }
-
-
-        const datosActuales =
-            snapshot.data();
-
-
-        const nuevosDatos = {
-
-            goles:
-                numeroSeguro(
-                    datosActuales.goles
-                ) +
-                registro.goles,
-
-            amarillas:
-                numeroSeguro(
-                    datosActuales.amarillas
-                ) +
-                registro.amarillas,
-
-            rojas:
-                numeroSeguro(
-                    datosActuales.rojas
-                ) +
-                registro.rojas,
-
-            actualizadoEn:
-                serverTimestamp()
-
-        };
-
-
-        if (
-            registro.rojas > 0
-        ) {
-
-            nuevosDatos.suspendido =
-                true;
-
-
-            nuevosDatos.partidosSuspensionPendientes =
-                Math.max(
-                    1,
-                    numeroSeguro(
-                        datosActuales.partidosSuspensionPendientes
-                    )
-                );
-
-        }
-
-
-        batch.update(
-            doc(
-                db,
-                "jugadores",
-                jugadorId
-            ),
-            nuevosDatos
-        );
-
-    }
-
-
-    await batch.commit();
 
 }
 

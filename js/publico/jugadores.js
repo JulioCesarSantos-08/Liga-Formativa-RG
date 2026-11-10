@@ -1,3 +1,4 @@
+import { cargarEstadisticasJugadores, conEstadisticasJugador, compararEstadisticasJugadores } from "./estadisticasJugadores.js";
 import {
     collection,
     getDocs
@@ -116,6 +117,7 @@ function cargarUsuario(
 
 
 function activarEventos() {
+    document.getElementById("ordenJugadores")?.addEventListener("change", aplicarFiltros);
 
     categoriaSelect.addEventListener(
         "change",
@@ -172,7 +174,8 @@ async function cargarDatos() {
         const [
             snapshotCategorias,
             snapshotEquipos,
-            snapshotJugadores
+            snapshotJugadores,
+            estadisticasOficiales
         ] = await Promise.all([
 
             getDocs(
@@ -194,7 +197,8 @@ async function cargarDatos() {
                     db,
                     "jugadores"
                 )
-            )
+            ),
+            cargarEstadisticasJugadores()
 
         ]);
 
@@ -231,6 +235,8 @@ async function cargarDatos() {
                 })
             );
 
+
+        jugadores = jugadores.map(j => conEstadisticasJugador(j, estadisticasOficiales));
 
         ordenarDatos();
 
@@ -618,98 +624,9 @@ function aplicarFiltros() {
 }
 
 
-function ordenarJugadores(
-    a,
-    b
-) {
-
-    const suspendidoA =
-        estaSuspendido(
-            a
-        );
-
-    const suspendidoB =
-        estaSuspendido(
-            b
-        );
-
-
-    if (
-        suspendidoA !==
-        suspendidoB
-    ) {
-
-        return suspendidoA
-            ? 1
-            : -1;
-
-    }
-
-
-    const equipoA =
-        obtenerNombreEquipoJugador(
-            a
-        );
-
-
-    const equipoB =
-        obtenerNombreEquipoJugador(
-            b
-        );
-
-
-    const comparacionEquipo =
-        equipoA.localeCompare(
-            equipoB,
-            "es"
-        );
-
-
-    if (
-        comparacionEquipo !== 0
-    ) {
-
-        return comparacionEquipo;
-
-    }
-
-
-    const numeroA =
-        obtenerNumeroOrden(
-            a
-        );
-
-
-    const numeroB =
-        obtenerNumeroOrden(
-            b
-        );
-
-
-    if (
-        numeroA !==
-        numeroB
-    ) {
-
-        return (
-            numeroA -
-            numeroB
-        );
-
-    }
-
-
-    return obtenerNombreJugador(
-        a
-    ).localeCompare(
-        obtenerNombreJugador(
-            b
-        ),
-        "es"
-    );
-
+function ordenarJugadores(a,b) {
+    return compararEstadisticasJugadores(a,b,document.getElementById("ordenJugadores")?.value || "goles");
 }
-
 
 function actualizarTitulo() {
 
@@ -968,7 +885,7 @@ function renderizarJugadores(
                     <div>
 
                         <span>
-                            🟨
+                            Amarillas
                         </span>
 
                         <strong>
@@ -983,7 +900,7 @@ function renderizarJugadores(
                     <div>
 
                         <span>
-                            🟥
+                            Rojas
                         </span>
 
                         <strong class="${

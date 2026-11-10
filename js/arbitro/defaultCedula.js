@@ -1,3 +1,4 @@
+import { guardarRevisionCedula } from "../cedulasRevisionDatos.js";
 import {
     doc,
     collection,
@@ -14,94 +15,26 @@ import {
     textoResultadoDefault
 } from "../resultadosDefault.js";
 
-async function guardarProtegido(partidoId, resolver) {
-    const uid = auth.currentUser?.uid;
-
-    if (!uid) {
-        throw new Error("Inicia sesión para resolver la cédula.");
-    }
-
-    const referencia = doc(db, "partidos", partidoId);
-    const cedulaRef = doc(db, "cedulas", partidoId);
-    const auditoriaRef = doc(collection(db, "auditoria"));
-
-    await runTransaction(db, async tx => {
-        const [usuario, snapshot, cedula] = await Promise.all([
-            tx.get(doc(db, "usuarios", uid)),
-            tx.get(referencia),
-            tx.get(cedulaRef)
-        ]);
-
-        if (!usuario.exists() || !snapshot.exists()) {
-            throw new Error(
-                "La cuenta o el partido ya no están disponibles."
-            );
-        }
-
-        const perfil = usuario.data();
-        const partido = snapshot.data();
-
-        const autorizado =
-            perfil.rol === "admin" ||
-            (
-                usuarioTieneRol(perfil, "arbitro") &&
-                partido.arbitroId === uid
-            );
-
-        if (
-            auth.currentUser?.uid !== uid ||
-            perfil.activo === false ||
-            !autorizado
-        ) {
-            throw new Error(
-                "Solo el árbitro asignado o un administrador activo pueden cerrar esta cédula."
-            );
-        }
-
-        const anterior = cedula.exists() ? cedula.data() : {};
-
-        validarCierreDisponible(partido, anterior);
-
-        const datos = resolver(
-            partido,
-            anterior,
-            uid,
-            perfil
-        );
-
-        tx.set(
-            cedulaRef,
-            datos.cedula,
-            { merge: datos.merge === true }
-        );
-
-        if (datos.partido) {
-            tx.update(referencia, datos.partido);
-        }
-
-        if (datos.auditoria) {
-            tx.set(auditoriaRef, datos.auditoria);
-        }
-    });
+async function guardarProtegido(partidoId,resolver,opciones={}) {
+    return guardarRevisionCedula(partidoId,resolver,opciones);
 }
 
 export async function guardarCedulaProtegida(
     partidoId,
     cedula,
-    partido = null
+    partido = null,
+    opciones = {}
 ) {
-    await guardarProtegido(
-        partidoId,
-        () => ({ cedula, partido, merge: true })
-    );
+    return guardarProtegido(partidoId, () => ({ cedula, partido, merge: true }), opciones);
 }
 
 export async function resolverDefault(
     partidoEsperado,
     lado,
-    motivo
+    motivo,
+    opciones = {}
 ) {
-    await guardarProtegido(
+    return guardarProtegido(
         partidoEsperado.id,
         (partido, anterior, uid, perfil) => {
             if (
@@ -124,9 +57,9 @@ export async function resolverDefault(
             );
 
             if (
-                tieneEventos ||
-                Number(anterior.golesLocal || 0) > 0 ||
-                Number(anterior.golesVisitante || 0) > 0
+                (opciones.editarAdmin !== true && tieneEventos) ||
+                (opciones.editarAdmin !== true && Number(anterior.golesLocal || 0) > 0) ||
+                (opciones.editarAdmin !== true && Number(anterior.golesVisitante || 0) > 0)
             ) {
                 throw new Error(
                     "Hay goles, tarjetas o cambios guardados. Revisa el borrador antes de cerrar como partido no disputado."
@@ -236,7 +169,8 @@ export async function resolverDefault(
                     fecha
                 }
             };
-        }
+        },
+        { revisionEsperada: Number(partidoEsperado.cedulaRevision || 0), ...opciones }
     );
 }
 

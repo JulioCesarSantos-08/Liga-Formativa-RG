@@ -1,3 +1,4 @@
+import { cargarEstadisticasJugadores, conEstadisticasJugador } from "./estadisticasJugadores.js";
 import { ladoGanadorDefault } from "../resultadosDefault.js";
 import {
     collection,
@@ -253,7 +254,8 @@ async function iniciar() {
             snapshotEquipo,
             snapshotEquipos,
             snapshotJugadores,
-            snapshotPartidos
+            snapshotPartidos,
+            estadisticasOficiales
         ] = await Promise.all([
 
             getDoc(
@@ -283,7 +285,8 @@ async function iniciar() {
                     db,
                     "partidos"
                 )
-            )
+            ),
+            cargarEstadisticasJugadores()
 
         ]);
 
@@ -331,6 +334,8 @@ async function iniciar() {
                 })
             );
 
+
+        jugadores = jugadores.map(j => conEstadisticasJugador(j, estadisticasOficiales));
 
         partidos =
             snapshotPartidos.docs.map(

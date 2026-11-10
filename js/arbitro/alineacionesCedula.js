@@ -4,7 +4,7 @@ import { evaluarJugadorCategoria, validarCupoNinasMayores, limiteNinasMayores } 
 export async function crearControlAlineaciones({
     db, partido, jugadoresLocal, jugadoresVisitante,
     contenedorLocal, contenedorVisitante, bloqueada = false,
-    avisar = () => {}
+    avisar = () => {}, edicionAdministrativa = false
 }) {
     const [categoriaSnapshot, cedulaSnapshot] = await Promise.all([
         partido.categoriaId
@@ -47,7 +47,7 @@ export async function crearControlAlineaciones({
         ? Number(guardada.jugadoresEnCancha) : base;
 
     let acuerdo = guardada.acuerdoSuperBebe === true;
-    let cerrada = bloqueada || ["registrada", "enviada"].includes(cedula.estado);
+    let cerrada = bloqueada || (!edicionAdministrativa && ["registrada", "enviada"].includes(cedula.estado));
     let historicaSinClasificar = cerrada && !Array.isArray(guardada.titularesLocal);
 
     const lados = [

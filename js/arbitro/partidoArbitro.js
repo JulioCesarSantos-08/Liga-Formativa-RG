@@ -1,3 +1,4 @@
+import { instalarAvisoRevision } from "./revisionCedulaAviso.js";
 import { instalarDefaultCedula } from "./defaultCedula.js";
 import {
     collection,
@@ -1398,6 +1399,7 @@ function mostrarAsistenciaGuardada(datos = {}) {
 
 
 function actualizarEstadoCedula() {
+    instalarAvisoRevision(partido.id,document.querySelector("main"));
 
     const cedulaRegistrada =
         partido.cedulaCreada === true ||

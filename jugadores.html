@@ -29,6 +29,7 @@
         href="css/jugadores.css"
     >
 
+    <link rel="stylesheet" href="css/estadisticasJugadores.css">
 </head>
 
 <body>
@@ -165,6 +166,15 @@
 
                 </div>
 
+                <div class="campo-filtro">
+                    <label for="ordenJugadores">Ordenar por</label>
+                    <select id="ordenJugadores">
+                        <option value="goles">Más goles</option>
+                        <option value="rojas">Más tarjetas rojas</option>
+                        <option value="amarillas">Más tarjetas amarillas</option>
+                    </select>
+                </div>
+
             </section>
 
 
@@ -173,7 +183,7 @@
                 <div>
 
                     <span class="seccion-mini">
-                        Plantillas registradas
+                        Estadísticas de cédulas oficiales
                     </span>
 
                     <h2 id="tituloListado">

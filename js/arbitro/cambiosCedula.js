@@ -30,7 +30,7 @@ function validarCambio(cambio, listas) {
 export async function crearControlCambios({
     db, partido, jugadoresLocal, jugadoresVisitante,
     contenedor, bloqueada = false, avisar = () => {},
-    obtenerAlineaciones = null
+    obtenerAlineaciones = null, edicionAdministrativa = false
 }) {
     const [snapshot, categoriaSnapshot] = await Promise.all([
         getDoc(doc(db, "cedulas", partido.id)),
@@ -54,7 +54,7 @@ export async function crearControlCambios({
         : {};
 
     let cerrada = bloqueada ||
-        ["registrada", "enviada"].includes(datos.estado);
+        (!edicionAdministrativa && ["registrada", "enviada"].includes(datos.estado));
 
     const cambios = Array.isArray(datos.cambios)
         ? datos.cambios.map(cambio => ({ ...cambio }))

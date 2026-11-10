@@ -1,3 +1,5 @@
+import { cedulasVigentes, participantesCedula, calcularEstadisticasJugadores, conEstadisticasJugador } from "./estadisticasJugadores.js";
+import { getDocsFromServer } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import {
     collection,
     doc,
@@ -370,7 +372,7 @@ async function cargarInformacionRelacionada() {
 
     const promesas = [
 
-        getDocs(
+        getDocsFromServer(
             collection(
                 db,
                 "cedulas"
@@ -428,6 +430,9 @@ async function cargarInformacionRelacionada() {
         );
 
 
+    jugador = conEstadisticasJugador(jugador, calcularEstadisticasJugadores(cedulas));
+    cedulas = cedulasVigentes(cedulas);
+
     partidos =
         snapshotPartidos.docs.map(
             documento => ({
@@ -466,8 +471,7 @@ function construirHistorial() {
         cedula => {
 
             if (
-                cedula.estado !==
-                "registrada"
+                !["registrada","enviada"].includes(cedula.estado)
             ) {
 
                 return;
@@ -500,7 +504,7 @@ function construirHistorial() {
                 );
 
 
-            if (!estuvoPresente) {
+            if (!estuvoPresente && !participantesCedula(cedula).has(jugador.id) && !["amarillas","rojas"].some(tipo => (cedula[tipo] || []).some(e => e.jugadorId === jugador.id))) {
 
                 return;
 
@@ -819,7 +823,7 @@ function renderizarEstadoJugador() {
 function renderizarEstadisticas() {
 
     const partidosJugados =
-        historial.length;
+        jugador.pj;
 
 
     const goles =

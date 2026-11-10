@@ -40,6 +40,7 @@
 
     <link rel="stylesheet" href="css/publico.css" />
       <link rel="stylesheet" href="css/mesaDirectiva.css">
+    <link rel="stylesheet" href="css/incidenciasInicio.css">
 </head>
 
   <body>
@@ -85,8 +86,6 @@
         <section class="proximo-partido">
           <div class="seccion-cabecera">
             <div>
-              <span class="seccion-mini"> Próximamente </span>
-
               <h2>Próximo partido</h2>
             </div>
 
@@ -110,6 +109,19 @@
               </div>
             </article>
           </div>
+        </section>
+
+        <section id="incidenciasInicio" class="incidencias-inicio" aria-labelledby="iiTitulo" aria-roledescription="carrusel">
+          <div class="seccion-cabecera"><div><span class="seccion-mini">Informe arbitral</span><h2 id="iiTitulo">Incidencias de los partidos</h2></div></div>
+          <p id="iiEstado" class="ii-estado" role="status">Cargando incidencias…</p>
+          <article id="iiTarjeta" class="ii-tarjeta" hidden aria-roledescription="diapositiva" aria-labelledby="iiEquipos">
+            <div class="ii-meta"><span id="iiJornada"></span><span id="iiCategoria"></span></div>
+            <h3 id="iiEquipos"></h3><p class="ii-fuente">Texto registrado por el árbitro</p>
+            <p id="iiTexto" class="ii-texto"></p><button id="iiLeer" class="ii-leer" type="button" aria-expanded="false" aria-controls="iiTexto" hidden>Leer incidencia completa</button>
+            <div class="ii-pie"><a id="iiPartido">Ver partido</a><span id="iiContador" class="ii-contador"></span></div>
+          </article>
+          <div id="iiControles" class="ii-controles" hidden><button id="iiAnterior" type="button" aria-label="Incidencia anterior">←</button><button id="iiPausa" type="button" aria-pressed="false">Pausar</button><button id="iiSiguiente" type="button" aria-label="Siguiente incidencia">→</button></div>
+          <p id="iiAnuncio" class="ii-sr" aria-live="polite" aria-atomic="true"></p>
         </section>
 
         <section class="accesos">

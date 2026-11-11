@@ -2454,3 +2454,11 @@ button{
         font-weight:900 !important;
     }
 }
+
+.credencial-femenil-secundaria .marco-interior {
+    border-color: #71354d;
+    background: linear-gradient(135deg, #fff0f5, #f7d4e1 45%, #f0b8ce);
+}
+.credencial-femenil-secundaria .marco-exterior {
+    box-shadow: inset 0 0 0 3px #a24469, inset 0 0 0 6px #d99bb3;
+}

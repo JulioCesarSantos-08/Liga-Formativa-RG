@@ -1,6 +1,8 @@
+import { maximoGeneral } from "../cuposPlantillaReglas.js";
 import {
     collection,
     getDocs,
+    getDoc,
     addDoc,
     doc,
     updateDoc,
@@ -75,6 +77,7 @@ const toastTitulo = document.getElementById("toastTitulo");
 const toastTexto = document.getElementById("toastTexto");
 
 let equipos = [];
+let configuracionCupos = {};
 let categorias = [];
 let responsables = [];
 
@@ -368,10 +371,11 @@ async function cargarEquipos() {
                 "equipos"
             );
 
-        const snapshot =
-            await getDocs(
-                referencia
-            );
+        const [snapshot, cupos] = await Promise.all([
+            getDocs(referencia),
+            getDoc(doc(db, "configuracionLiga", "general"))
+        ]);
+        configuracionCupos = cupos.exists() ? cupos.data() : {};
 
         equipos =
             snapshot.docs.map(
@@ -1755,39 +1759,8 @@ function textoEstado(estado) {
     }
 }
 
-function obtenerLimitePlantillaVisual(equipo) {
-    if (
-        equipo.plantillaCongelada ===
-        true
-    ) {
-        const limite =
-            Number(
-                equipo.cupoTemporada ??
-                equipo.limitePlantillaTemporada
-            );
-
-        if (
-            Number.isFinite(limite) &&
-            limite >= 0
-        ) {
-            return limite;
-        }
-    }
-
-    const limite =
-        Number(
-            equipo.cupoTemporada ??
-            equipo.limitePlantillaTemporada
-        );
-
-    if (
-        Number.isFinite(limite) &&
-        limite > 0
-    ) {
-        return limite;
-    }
-
-    return 26;
+function obtenerLimitePlantillaVisual() {
+    return maximoGeneral(configuracionCupos);
 }
 
 function limpiarPreviewLogo() {

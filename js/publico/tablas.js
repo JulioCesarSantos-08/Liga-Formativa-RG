@@ -1,4 +1,5 @@
 import { sumarDefaultTabla } from "../resultadosDefault.js";
+import { sumarPuntosEmpate, partidoFueraDeClasificacion } from "../puntosPartido.js";
 import {
     collection,
     getDocs
@@ -580,8 +581,7 @@ function calcularTabla(
                 local.pe += 1;
                 visitante.pe += 1;
 
-                local.pts += 1;
-                visitante.pts += 1;
+                sumarPuntosEmpate(partido, local, visitante);
 
             }
 
@@ -675,6 +675,7 @@ function calcularTabla(
 function partidoCuentaParaTabla(
     partido
 ) {
+    if (partidoFueraDeClasificacion(partido)) return false;
 
     const estado =
         normalizarTexto(

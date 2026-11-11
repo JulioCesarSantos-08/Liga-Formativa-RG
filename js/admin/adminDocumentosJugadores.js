@@ -1,3 +1,4 @@
+import { esParFemenil } from "../dobleInscripcionFemenil.js";
 import {
     collection,
     getDocs
@@ -302,7 +303,7 @@ function detectarDuplicados() {
             curp
         ) => {
             if (
-                registros.length > 1
+                registros.length > 1 && !esParFemenil(registros)
             ) {
                 curpsDuplicadas.set(
                     curp,

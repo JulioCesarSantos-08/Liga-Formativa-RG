@@ -684,6 +684,7 @@ function crearCredencial(
 
     credencial.dataset.jugadorId =
         jugador.id;
+    if (jugador.dobleInscripcionFemenil?.origenJugadorId && jugador.esRefuerzo !== true) credencial.classList.add("credencial-femenil-secundaria");
 
 
     const nombreElemento =

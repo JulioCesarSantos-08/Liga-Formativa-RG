@@ -1,3 +1,6 @@
+import { registrosPorCurp, revisarDobleFemenil, registrarDobleFemenil, validarEdicionCurp } from "../dobleInscripcionFemenil.js";
+import { limitePlantillaEquipo } from "../cuposPlantillaReglas.js";
+import { registrarJugadorCupo, completarCategoriasCupo } from "../cuposPlantillaDatos.js";
 import { validarDorsalDisponible } from "../validarDorsalDisponible.js";
 import { obtenerMensajeErrorJugador } from "./mensajesErrorJugador.js";
 import { exigirAuxiliarTecnico } from "./auxiliarTecnico.js";
@@ -166,7 +169,7 @@ let modoRegistroJornada5 = false;
 
 let configuracionLiga = {
     inscripcionesAbiertas: true,
-    maximoJugadores: 26,
+    maximoJugadores: 35,
     jornada5Activa: false,
     maximoMovimientosJ5: 5
 };
@@ -334,9 +337,10 @@ curpJugador?.addEventListener(
                     jugador.activo !== false
             );
 
-        if (!jugadorMismaCurp) {
-            return;
-        }
+        if (!jugadorMismaCurp) return;
+        if (["FEMENIL PRIMARIA", "FEMENIL SECUNDARIA"].includes(
+            String(jugadorMismaCurp.categoriaNombre || "").trim().toUpperCase()
+        )) return;
 
         mostrarJugadorYaRegistrado(
             jugadorMismaCurp
@@ -693,7 +697,7 @@ async function cargarConfiguracionLiga() {
     configuracionLiga.maximoJugadores =
         numeroSeguro(
             configuracionLiga.maximoJugadores,
-            26
+            35
         );
 
 
@@ -757,6 +761,8 @@ async function cargarEquiposAsignados() {
                         )
             );
 
+
+    await completarCategoriasCupo(todosLosEquipos);
 
     const parametros =
         new URLSearchParams(
@@ -1526,45 +1532,7 @@ async function cargarMovimientosJornada5() {
 
 
 function obtenerLimitePlantilla() {
-
-    if (!equipoActual) {
-
-        return numeroSeguro(
-            configuracionLiga.maximoJugadores,
-            26
-        );
-
-    }
-
-
-    if (
-        equipoActual.plantillaCongelada === true
-    ) {
-
-        const congelado =
-            Number(
-                equipoActual.cupoTemporada ??
-                equipoActual.limitePlantillaTemporada
-            );
-
-
-        if (
-            Number.isFinite(congelado) &&
-            congelado >= 0
-        ) {
-
-            return congelado;
-
-        }
-
-    }
-
-
-    return numeroSeguro(
-        configuracionLiga.maximoJugadores,
-        26
-    );
-
+    return limitePlantillaEquipo(equipoActual || {}, configuracionLiga);
 }
 
 
@@ -2808,65 +2776,7 @@ async function guardarJugador(
     }
 
 
-    const jugadorMismaCurp =
-        todosLosJugadores.find(
-            jugador => {
-
-                if (
-                    jugadorSeleccionado &&
-                    jugador.id ===
-                    jugadorSeleccionado.id
-                ) {
-
-                    return false;
-
-                }
-
-
-                return (
-                    String(
-                        jugador.curp || ""
-                    )
-                        .trim()
-                        .toUpperCase() ===
-                    curp &&
-                    jugador.activo !== false
-                );
-
-            }
-        );
-
-
-    if (
-        jugadorMismaCurp &&
-        !jugadorSeleccionado
-    ) {
-
-        mostrarJugadorYaRegistrado(
-            jugadorMismaCurp
-        );
-
-        return;
-
-    }
-
-
-    if (
-        jugadorMismaCurp &&
-        jugadorSeleccionado
-    ) {
-
-        mostrarToast(
-            "error",
-            "CURP registrada",
-            "Ya existe otro jugador activo registrado con esa CURP."
-        );
-
-        return;
-
-    }
-
-
+    if (btnGuardarJugador.disabled) return;
     btnGuardarJugador.disabled =
         true;
 
@@ -2876,8 +2786,30 @@ async function guardarJugador(
 
     let avisoDocumentacionRegistro = null;
     let etapaRegistroJugador = "guardado";
+    let origenDoble = null;
 
     try {
+        const candidatos = (await registrosPorCurp(curp)).filter(j => j.activo !== false);
+        if (jugadorSeleccionado) {
+            await validarEdicionCurp(jugadorSeleccionado, { curp, sexo, fechaNacimiento: nacimiento });
+        } else if (candidatos.length) {
+            if (candidatos.length !== 1) {
+                mostrarJugadorYaRegistrado(candidatos[0]);
+                return;
+            }
+            try {
+                const origen = await revisarDobleFemenil(candidatos[0], {
+                    curp, sexo, fechaNacimiento: nacimiento
+                }, equipoActual.id);
+                if (!window.confirm("La jugadora ya está inscrita en " + origen.equipo + " · " + origen.categoria +
+                    ". Puedes darla de alta en tu equipo. Debes contar con la autorización de su DT; si no la tienes, la liga podrá multarte. ¿Confirmas que tienes su autorización?")) return;
+                origenDoble = candidatos[0];
+            } catch (error) {
+                mostrarToast("error", "No se puede duplicar la CURP", error.message);
+                return;
+            }
+        }
+
         await validarDorsalDisponible({
             id: jugadorSeleccionado?.id || null,
             equipoId: equipoActual.id,
@@ -3246,27 +3178,18 @@ if (
                 modoRegistroJornada5 === true;
 
 
-            const documento =
-                await addDoc(
-                    collection(
-                        db,
-                        "jugadores"
-                    ),
-                    {
-                        ...datos,
-
-                        tipoRegistro:
-                            esJornada5
-                                ? "jornada5"
-                                : "normal",
-
-                        altaJornada5:
-                            esJornada5,
-
-                        creadoEn:
-                            serverTimestamp()
-                    }
-                );
+            const alta = {
+                ...datos,
+                tipoRegistro: esJornada5 ? "jornada5" : "normal",
+                altaJornada5: esJornada5,
+                creadoEn: serverTimestamp()
+            };
+            const documento = origenDoble
+                ? await registrarDobleFemenil(origenDoble, alta, usuarioActual?.uid)
+                : await (esJornada5 ? addDoc : registrarJugadorCupo)(collection(db, "jugadores"), alta);
+            if (documento.dobleInscripcionFemenil) {
+                datos.dobleInscripcionFemenil = documento.dobleInscripcionFemenil;
+            }
 
 
             const nuevoJugador = {

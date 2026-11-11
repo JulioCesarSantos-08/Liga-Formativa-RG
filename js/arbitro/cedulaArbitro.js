@@ -300,6 +300,10 @@ const eventoJugador =
 const eventoMinuto =
     document.getElementById("eventoMinuto");
 
+const grupoMinuto = document.getElementById("grupoMinuto");
+const grupoCantidadGoles = document.getElementById("grupoCantidadGoles");
+const eventoCantidadGoles = document.getElementById("eventoCantidadGoles");
+
 const eventoTipoRoja =
     document.getElementById("eventoTipoRoja");
 
@@ -566,6 +570,8 @@ function activarEventos() {
         "click",
         guardarEventoTemporal
     );
+
+    eventoCantidadGoles.addEventListener("input", actualizarCapturaGoles);
 
 
     btnGuardarBorrador.addEventListener(
@@ -1713,6 +1719,7 @@ function abrirModalEvento(
 
     tipoEventoActual =
         tipo;
+    eventoCantidadGoles.value = "1";
 
 
     eventoEquipo.value =
@@ -1799,6 +1806,7 @@ function abrirModalEvento(
     }
 
 
+    actualizarCapturaGoles();
     cargarJugadoresModal();
 
 
@@ -1871,7 +1879,20 @@ function cargarJugadoresModal() {
 }
 
 
+function actualizarCapturaGoles() {
+    const esGol = tipoEventoActual === "gol";
+    const cantidad = Number(eventoCantidadGoles.value);
+    const varios = esGol && Number.isInteger(cantidad) && cantidad > 1;
+    grupoCantidadGoles.classList.toggle("oculto", !esGol);
+    grupoMinuto.classList.toggle("oculto", varios);
+    eventoMinuto.disabled = varios;
+    if (esGol) {
+        btnGuardarEvento.textContent = varios ? "Agregar " + cantidad + " goles" : "Agregar gol";
+    }
+}
+
 function guardarEventoTemporal() {
+    if (cedulaEnviada) return;
 
     if (
         !tipoEventoActual
@@ -1924,14 +1945,22 @@ function guardarEventoTemporal() {
     }
 
 
-    const minuto =
-        normalizarMinuto(
-            eventoMinuto.value
-        );
+    const equipo = eventoEquipo.value;
+    const esGol = tipoEventoActual === "gol";
+    const cantidad = esGol ? Number(eventoCantidadGoles.value) : 1;
 
+    if (esGol && (!Number.isInteger(cantidad) || cantidad < 1 || cantidad > 99)) {
+        mostrarToast("error", "Cantidad inválida", "Escribe un número entero de goles entre 1 y 99.");
+        eventoCantidadGoles.focus();
+        return;
+    }
 
-    const equipo =
-        eventoEquipo.value;
+    if (esGol && eventosGoles.filter(gol => gol.equipo === equipo).length + cantidad > 99) {
+        mostrarToast("error", "Máximo del marcador", "El equipo no puede registrar más de 99 goles en el partido.");
+        return;
+    }
+
+    const minuto = cantidad > 1 ? null : normalizarMinuto(eventoMinuto.value);
 
 
     const evento = {
@@ -1981,9 +2010,10 @@ function guardarEventoTemporal() {
         tipoEventoActual === "gol"
     ) {
 
-        eventosGoles.push(
-            evento
-        );
+        eventosGoles.push(evento);
+        for (let i = 1; i < cantidad; i++) {
+            eventosGoles.push({ ...evento, id: crearIdTemporal() });
+        }
 
     }
 

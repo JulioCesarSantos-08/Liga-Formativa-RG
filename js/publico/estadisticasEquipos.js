@@ -1,6 +1,7 @@
 import {collection,getDocsFromServer} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import {db} from "../firebase.js";
 import {sumarDefaultTabla} from "../resultadosDefault.js";
+import { sumarPuntosEmpate, partidoFueraDeClasificacion } from "../puntosPartido.js";
 const texto=v=>String(v ?? "").trim();
 const normal=v=>texto(v).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
 const primero=valores=>valores.find(v=>typeof v==="string" && v.trim())?.trim() || "";
@@ -34,7 +35,7 @@ export function aplicarClasificacionEquipos(equipos,partidos) {
         if(p.id && vistos.has(p.id))continue;
         if(p.id)vistos.add(p.id);
         const estado=normal(p.estado || p.estatus || p.status);
-        if(p.devolucionCedula?.activa || ["cancelado","cancelada","suspendido","suspendida"].includes(estado))continue;
+        if(partidoFueraDeClasificacion(p))continue;
         if(p.resultadoRegistrado!==true && p.resultadoRegistrado!=="true" && !["finalizado","finalizada","terminado","terminada","jugado","jugada","registrado","registrada"].includes(estado))continue;
         const equipoLocal=equipoDelPartido(p,"local",equipos),equipoVisitante=equipoDelPartido(p,"visitante",equipos);
         if(!equipoLocal || !equipoVisitante || equipoLocal.id===equipoVisitante.id)continue;
@@ -45,12 +46,11 @@ export function aplicarClasificacionEquipos(equipos,partidos) {
             sumarDefaultTabla({...p,localId:equipoLocal.id,visitanteId:equipoVisitante.id},local,visitante);
             continue;
         }
-        if(p.partidoDisputado===false)continue;
         const gl=goles(p,"local"),gv=goles(p,"visitante");if(gl===null || gv===null)continue;
         local.pj++;visitante.pj++;local.gf+=gl;local.gc+=gv;visitante.gf+=gv;visitante.gc+=gl;
         if(gl>gv){local.pg++;local.pts+=3;visitante.pp++;}
         else if(gl<gv){visitante.pg++;visitante.pts+=3;local.pp++;}
-        else{local.pe++;visitante.pe++;local.pts++;visitante.pts++;}
+        else{local.pe++;visitante.pe++;sumarPuntosEmpate(p,local,visitante);}
     }
     return equipos.map(e=>{const datos=mapa.get(e.id);return {...datos,dg:datos.gf-datos.gc};});
 }

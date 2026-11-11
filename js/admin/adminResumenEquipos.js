@@ -1,3 +1,4 @@
+import { limitePlantillaEquipo } from "../cuposPlantillaReglas.js";
 import {
     collection,
     doc,
@@ -72,19 +73,9 @@ function numeroValido(valor) {
 }
 
 function limiteEquipo(equipo, configuracion) {
-    if (equipo.plantillaCongelada === true) {
-        const congelado = numeroValido(
-            equipo.cupoTemporada ??
-            equipo.limitePlantillaTemporada
-        );
-
-        return congelado;
-    }
-
-    return numeroValido(
-        configuracion.maximoJugadores
-    );
+    return limitePlantillaEquipo(equipo, configuracion);
 }
+
 
 function prepararEquipos(
     datosEquipos,
@@ -214,12 +205,7 @@ function filaEquipo(equipo) {
             "",
             equipo.limite === null
                 ? "Revisar configuración"
-                : "Límite: " + equipo.limite +
-                    (
-                        equipo.plantillaCongelada === true
-                            ? " · Congelado"
-                            : ""
-                    )
+                : "Límite general: " + equipo.limite
         )
     );
 
@@ -539,8 +525,10 @@ async function cargar() {
                 id: documento.id
             }));
 
+        const equiposConCategoria = leer(snapshotEquipos);
+
         equipos = prepararEquipos(
-            leer(snapshotEquipos),
+            equiposConCategoria,
             leer(snapshotJugadores),
             snapshotConfiguracion.exists()
                 ? snapshotConfiguracion.data()

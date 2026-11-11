@@ -1,4 +1,5 @@
 import { sumarDefaultTabla } from "../resultadosDefault.js";
+import { sumarPuntosEmpate, partidoFueraDeClasificacion } from "../puntosPartido.js";
 import {
     collection,
     getDocs
@@ -381,8 +382,7 @@ function construirRankingGeneral() {
                 local.pe += 1;
                 visitante.pe += 1;
 
-                local.pts += 1;
-                visitante.pts += 1;
+                sumarPuntosEmpate(partido, local, visitante);
 
             }
 
@@ -1501,6 +1501,7 @@ function limpiarBusqueda() {
 function partidoCuentaParaRanking(
     partido
 ) {
+    if (partidoFueraDeClasificacion(partido)) return false;
 
     const golesLocal =
         obtenerGoles(

@@ -1,3 +1,6 @@
+import { validarEdicionCurp } from "../dobleInscripcionFemenil.js";
+import { limitePlantillaEquipo, maximoGeneral } from "../cuposPlantillaReglas.js";
+import { cambiarRegistroOrdinario } from "../cuposPlantillaDatos.js";
 import { validarDorsalDisponible } from "../validarDorsalDisponible.js";
 import {
     collection,
@@ -637,7 +640,7 @@ async function cargarConfiguracion() {
 
     configuracion = {
         inscripcionesAbiertas: true,
-        maximoJugadores: 26,
+        maximoJugadores: 35,
         jornada5Activa: false,
         maximoMovimientosJ5: 5
     };
@@ -773,10 +776,7 @@ function renderizarConfiguracion() {
         inscripcionesAbiertas;
 
     maximoJugadores.value =
-        obtenerNumeroValido(
-            configuracion.maximoJugadores,
-            26
-        );
+        maximoGeneral(configuracion);
 
     if (inscripcionesAbiertas) {
         estadoInscripcionesTexto.textContent =
@@ -983,6 +983,7 @@ function renderizarPlantillas() {
                 </div>
             `;
 
+
             listaPlantillas.appendChild(
                 item
             );
@@ -1002,29 +1003,10 @@ function contarJugadoresEquipo(
     ).length;
 }
 
-function obtenerLimiteEquipo(
-    equipo
-) {
-    const congelado =
-        Number(
-            equipo.cupoTemporada ??
-            equipo.limitePlantillaTemporada
-        );
-
-    if (
-        Number.isFinite(
-            congelado
-        ) &&
-        congelado > 0
-    ) {
-        return congelado;
-    }
-
-    return obtenerNumeroValido(
-        configuracion.maximoJugadores,
-        26
-    );
+function obtenerLimiteEquipo(equipo) {
+    return limitePlantillaEquipo(equipo, configuracion, categorias.find(c => c.id === equipo.categoriaId) || {});
 }
+
 
 function renderizarMovimientosJ5() {
     listaMovimientosJ5.innerHTML =
@@ -1691,7 +1673,7 @@ async function resolverSolicitud(
 
             const datosPermitidos = prepararDatosEdicionJugador(datosNuevos);
 
-            if (Object.prototype.hasOwnProperty.call(datosPermitidos, "numero")) {
+            {
                 const actual = await getDoc(
                     doc(db, "jugadores", jugadorId)
                 );
@@ -1700,7 +1682,9 @@ async function resolverSolicitud(
                     throw new Error("El jugador ya no existe. Actualiza la lista.");
                 }
 
-                await validarDorsalDisponible(
+                await validarEdicionCurp({ ...actual.data(), id: jugadorId }, datosPermitidos);
+
+                if (Object.prototype.hasOwnProperty.call(datosPermitidos, "numero")) await validarDorsalDisponible(
                     { ...actual.data(), id: jugadorId },
                     datosPermitidos.numero
                 );
@@ -1919,10 +1903,10 @@ function solicitarCambioInscripciones() {
                 "Cerrar inscripciones",
 
             texto:
-                "Se bloquearán las nuevas altas ordinarias y la plantilla actual de cada equipo quedará como su límite para esta temporada.",
+                "Se bloquearán las nuevas altas ordinarias. El máximo de jugadores por equipo se conserva.",
 
             advertencia:
-                "Ejemplo: si un equipo tiene 20 jugadores al cerrar, su límite quedará en 20 aunque el máximo reglamentario sea 26.",
+                "Si el límite general es de 35, un equipo con 20 jugadores seguirá mostrando 20/35. El cupo visible no habilita nuevas altas.",
 
             requiereTexto:
                 true,
@@ -1945,39 +1929,8 @@ function solicitarCambioInscripciones() {
 async function cambiarEstadoInscripciones(
     abiertas
 ) {
-    const referencia =
-        doc(
-            db,
-            "configuracionLiga",
-            CONFIGURACION_ID
-        );
-
-    if (!abiertas) {
-        await congelarPlantillas();
-    }
-
-    await updateDoc(
-        referencia,
-        {
-            inscripcionesAbiertas:
-                abiertas,
-
-            inscripcionesActualizadasEn:
-                serverTimestamp(),
-
-            inscripcionesActualizadasPor:
-                obtenerUsuarioId(),
-
-            inscripcionesActualizadasPorNombre:
-                obtenerNombreUsuario(),
-
-            actualizadoEn:
-                serverTimestamp()
-        }
-    );
-
-    configuracion.inscripcionesAbiertas =
-        abiertas;
+    await cambiarRegistroOrdinario(abiertas);
+    configuracion.inscripcionesAbiertas = abiertas;
 
     await registrarAuditoria({
         usuarioId:
@@ -2001,7 +1954,7 @@ async function cambiarEstadoInscripciones(
         descripcion:
             abiertas
                 ? "Se habilitó el registro ordinario de jugadores."
-                : "Se cerró el registro ordinario y se congelaron los cupos de los equipos.",
+                : "Se cerró el registro ordinario sin cambiar el máximo de jugadores.",
 
         entidadTipo:
             "configuracionLiga",
@@ -2026,64 +1979,11 @@ async function cambiarEstadoInscripciones(
             : "Inscripciones cerradas",
         abiertas
             ? "Los jefes de equipo podrán registrar jugadores."
-            : "Las plantillas actuales quedaron registradas como límite."
+            : "Las altas ordinarias quedaron bloqueadas. El máximo por equipo no cambió."
     );
 }
 
-async function congelarPlantillas() {
-    const batch =
-        writeBatch(
-            db
-        );
 
-    equipos.forEach(
-        equipo => {
-            const cantidad =
-                contarJugadoresEquipo(
-                    equipo.id
-                );
-
-            const referencia =
-                doc(
-                    db,
-                    "equipos",
-                    equipo.id
-                );
-
-            batch.update(
-                referencia,
-                {
-                    cupoTemporada:
-                        cantidad,
-
-                    limitePlantillaTemporada:
-                        cantidad,
-
-                    plantillaCongelada:
-                        true,
-
-                    plantillaCongeladaEn:
-                        serverTimestamp(),
-
-                    temporadaPlantillaId:
-                        temporadaActual?.id ||
-                        ""
-                }
-            );
-
-            equipo.cupoTemporada =
-                cantidad;
-
-            equipo.limitePlantillaTemporada =
-                cantidad;
-
-            equipo.plantillaCongelada =
-                true;
-        }
-    );
-
-    await batch.commit();
-}
 
 function solicitarCambioJornada5() {
     const nuevoEstado =
@@ -2106,7 +2006,7 @@ function solicitarCambioJornada5() {
 
         advertencia:
             nuevoEstado
-                ? "Los equipos conservarán su límite de plantilla congelado y solo podrán utilizar el número máximo de movimientos establecido."
+                ? "Se mantiene el límite general por equipo y el máximo de movimientos establecido para Jornada 5."
                 : "Los movimientos realizados anteriormente permanecerán registrados.",
 
         requiereTexto:

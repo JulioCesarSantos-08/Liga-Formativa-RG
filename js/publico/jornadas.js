@@ -1,3 +1,4 @@
+import { instalarCarteles } from "./jornadaImagen.js";
 import { ladoGanadorDefault } from "../resultadosDefault.js";
 import {
     collection,
@@ -56,6 +57,25 @@ if (usuario) {
     cargarUsuario(usuario);
 
     activarEventos();
+
+    instalarCarteles(selectorJornadas, () => ({
+        categorias, jornadas,
+        categoriaId: categoriaSeleccionadaId,
+        jornadaId: jornadaSeleccionadaId,
+        numero: obtenerNumeroJornada,
+        nombreCategoria: obtenerNombreCategoria,
+        nombreJornada: obtenerNombreJornada,
+        categoriaJornada: obtenerCategoriaIdJornada,
+        partidos: obtenerPartidosJornada,
+        equipo: (partido, lado) => {
+            const nombre = obtenerNombreEquipoPartido(partido, obtenerEquipoPartido(partido, lado), lado);
+            return nombre !== "Equipo" ? nombre : (partido[lado + "Nombre"] || nombre);
+        },
+        fecha: formatearFechaPartido,
+        hora: formatearHoraPartido,
+        sede: obtenerCampoPartido,
+        estado: normalizarEstadoPartido
+    }));
 
     await cargarInformacion();
 
@@ -647,6 +667,34 @@ function cargarJornadaSeleccionada() {
             jornada
         );
 
+
+    let descansoPublicado = document.getElementById("grDescansoPublicado");
+
+    if (!descansoPublicado) {
+        descansoPublicado = document.createElement("p");
+        descansoPublicado.id = "grDescansoPublicado";
+        descansoPublicado.style.cssText = "padding:10px 14px;border-radius:10px;background:#f5e8bb;color:#174d41;font-weight:700";
+        tituloJornada.insertAdjacentElement("afterend", descansoPublicado);
+    }
+
+    let incidenciasRol = document.getElementById("grIncidenciasPublicadas");
+    if (!incidenciasRol) {
+        incidenciasRol=document.createElement("div");incidenciasRol.id="grIncidenciasPublicadas";
+        descansoPublicado.insertAdjacentElement("afterend",incidenciasRol);
+    }
+    incidenciasRol.replaceChildren();
+    for (const incidencia of jornada.incidenciasRol || []) {
+        const p=document.createElement("p");
+        p.style.cssText="padding:12px;border:1px solid #c69475;border-radius:10px;background:#fff0df;color:#743b22";
+        p.textContent="No se juega: " + (incidencia.localNombre || "Equipo") + " / " + (incidencia.visitanteNombre || "Equipo") + ". Sin resultado ni descanso asignado.";
+        incidenciasRol.append(p);
+    }
+    incidenciasRol.hidden=!incidenciasRol.childElementCount;
+    descansoPublicado.hidden = !jornada.descansaEquipoNombre;
+
+    descansoPublicado.textContent = jornada.descansaEquipoNombre
+        ? "Descansa: " + jornada.descansaEquipoNombre
+        : "";
 
     const partidosJornada =
         obtenerPartidosJornada(

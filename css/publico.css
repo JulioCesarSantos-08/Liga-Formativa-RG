@@ -4048,3 +4048,30 @@ button{
         max-height: calc(100dvh - 16px);
     }
 }
+
+#avisosLiga:not([hidden]) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem 1rem;
+    padding: 1rem;
+    border: 1px solid #b9a575;
+    border-radius: 16px;
+    background: #f8edcf;
+    color: #163d36;
+}
+#avisosLiga h2 { margin: 0 0 .3rem; font-size: 1rem; }
+#avisosLiga p { margin: 0; font-size: .85rem; }
+#avisosLigaProbar {
+    min-height: 44px;
+    padding: .55rem 1rem;
+    border: 0;
+    border-radius: 10px;
+    background: #0b655d;
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+#avisosLigaProbar:disabled { opacity: .65; cursor: default; }

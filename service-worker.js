@@ -1,4 +1,4 @@
-const CACHE_NAME = "liga-rio-grande-v3";
+const CACHE_NAME = "liga-rio-grande-avisos-1";
 
 const CACHE_PREFIX = "liga-rio-grande-";
 
@@ -366,3 +366,44 @@ async function manejarRecurso(
     }
 
 }
+
+function destinoAvisoLiga(valor) {
+    const alternativa = new URL("jornadas.html", self.registration.scope);
+    if (typeof valor !== "string") return alternativa.href;
+    try {
+        const url = new URL(valor, self.registration.scope);
+        const partido = new URL("partido.html", self.registration.scope);
+        if (url.origin === partido.origin && url.pathname === partido.pathname) {
+            const id = url.searchParams.get("id");
+            if (id && /^[a-zA-Z0-9_-]{1,120}$/.test(id)) {
+                partido.searchParams.set("id", id);
+                return partido.href;
+            }
+        }
+    } catch {}
+    return alternativa.href;
+}
+
+self.addEventListener("push", event => {
+    let datos;
+    try { datos = event.data?.json(); } catch {}
+    const texto = (valor, defecto, maximo) =>
+        typeof valor === "string" && valor.trim() ? valor.trim().slice(0, maximo) : defecto;
+    event.waitUntil(self.registration.showNotification(texto(datos?.titulo, "Liga Río Grande", 100), {
+        body: texto(datos?.mensaje, "Hay novedades en la liga.", 220),
+        icon: new URL("imagenes/icon-192.png", self.registration.scope).href,
+        tag: texto(datos?.id, "liga-rio-grande", 120),
+        data: { url: destinoAvisoLiga(datos?.url) }
+    }));
+});
+
+self.addEventListener("notificationclick", event => {
+    event.notification.close();
+    const url = destinoAvisoLiga(event.notification.data?.url);
+    event.waitUntil((async () => {
+        const ventanas = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+        const abierta = ventanas.find(ventana => ventana.url === url);
+        if (abierta) return abierta.focus();
+        return self.clients.openWindow(url);
+    })());
+});

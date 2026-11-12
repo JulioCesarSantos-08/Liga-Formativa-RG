@@ -4075,3 +4075,25 @@ button{
     cursor: pointer;
 }
 #avisosLigaProbar:disabled { opacity: .65; cursor: default; }
+
+#avisosLiga:not([hidden]) { margin-bottom: 1rem; }
+#avisosLiga .avisos-piloto { display:grid; gap:.65rem; width:100%; }
+#avisosLiga .avisos-piloto-estado {
+    width:fit-content; padding:.35rem .7rem; border-radius:999px;
+    background:#ece1c6; color:#3b382a; font-weight:700;
+}
+#avisosLiga .avisos-piloto-estado[data-activa="true"] { background:#d7ece3; color:#12564b; }
+#avisosLiga .avisos-piloto input {
+    box-sizing:border-box; width:100%; min-height:44px; padding:.55rem .7rem;
+    border:1px solid #8e8268; border-radius:10px; background:#fffaf0; color:#163d36; font:inherit;
+}
+#avisosLiga .avisos-piloto-acciones { display:flex; gap:.55rem; flex-wrap:wrap; }
+#avisosLiga .avisos-piloto-acciones button {
+    min-height:44px; padding:.55rem .8rem; border:1px solid #0b655d;
+    border-radius:10px; background:#f8edcf; color:#114f46; font:inherit; font-weight:700;
+}
+#avisosLiga .avisos-piloto-acciones .avisos-piloto-primario { background:#0b655d; color:#fff; }
+#avisosLiga .avisos-piloto-acciones button[hidden] { display:none; }
+#avisosLiga .avisos-piloto-acciones button:disabled { opacity:.65; }
+#avisosLiga .avisos-piloto-pruebas summary { cursor:pointer; font-weight:700; padding:.35rem 0; }
+#avisosLiga .avisos-piloto-pruebas .avisos-piloto-acciones { padding:.35rem 0; }

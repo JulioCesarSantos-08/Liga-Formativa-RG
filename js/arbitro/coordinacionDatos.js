@@ -106,6 +106,13 @@ export async function enviarCambio(uid,partidoId,propuesta,base,motivo) {
         return ref.id;
     });
 }
+function huellaSolicitud(datos) {
+    return JSON.stringify(datos, (_, valor) => {
+        if (valor === null || typeof valor !== "object" || Array.isArray(valor)) return valor;
+        return Object.fromEntries(Object.keys(valor).sort().map(clave => [clave, valor[clave]]));
+    });
+}
+
 export async function resolverCambio({solicitudId,adminUid,aprobar,respuesta=""}) {
     sesion(adminUid);
     const mensaje=String(respuesta).trim();
@@ -124,7 +131,7 @@ export async function resolverCambio({solicitudId,adminUid,aprobar,respuesta=""}
         if (!u.exists() || u.data().rol!=="admin" || u.data().activo===false) throw new Error("Se requiere una cuenta administradora activa.");
         if (!s.exists() || s.data().estado!=="pendiente") throw new Error("La solicitud ya fue resuelta.");
         const solicitud=s.data();
-        if (JSON.stringify(solicitud)!==JSON.stringify(inicial)) throw new Error("La solicitud cambió. Actualiza la página.");
+        if (huellaSolicitud(solicitud)!==huellaSolicitud(inicial)) throw new Error("La solicitud cambió. Actualiza la página.");
         const pRef=doc(db,"partidos",solicitud.partidoId);
         const p=await tx.get(pRef);
         if (aprobar) {

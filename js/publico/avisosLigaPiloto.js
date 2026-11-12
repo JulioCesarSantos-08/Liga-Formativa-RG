@@ -9,7 +9,7 @@ if(panel && instalada && isSecureContext && "Notification" in window &&
     zona.innerHTML='<label for="avisosCodigo">Código de prueba privada</label>'+
         '<input id="avisosCodigo" type="password" required autocomplete="off" maxlength="128">'+
         '<div><button type="submit">Activar avisos automáticos</button> '+
-        '<button type="button" id="avisosDesactivar">Desactivar</button></div>'+
+        '<button type="button" id="avisosDesactivar">Desactivar</button> <button type="button" id="avisosFondo">Probar con la app cerrada</button></div>'+
         '<p role="status"></p>';
     panel.append(zona);
     const salida=zona.querySelector("p"), entrada=zona.querySelector("input");
@@ -57,6 +57,22 @@ if(panel && instalada && isSecureContext && "Notification" in window &&
             botones.forEach(b=>b.disabled=false);
         }
     }
+    zona.querySelector("#avisosFondo").addEventListener("click",async()=>{
+        if(!zona.reportValidity()) return;
+        botones.forEach(b=>b.disabled=true);
+        try {
+            const reg=await navigator.serviceWorker.getRegistration();
+            const s=await reg?.pushManager.getSubscription();
+            if(!s) throw Error("Activa primero los avisos automáticos en este celular.");
+            await enviar("pruebaFondo",s);
+            entrada.value="";
+            salida.textContent="Prueba programada. Sal de la app con Inicio: el aviso debe llegar en unos minutos.";
+        } catch(e) {
+            salida.textContent=e.message || "No se pudo programar la prueba.";
+        } finally {
+            botones.forEach(b=>b.disabled=false);
+        }
+    });
     zona.addEventListener("submit",e=>{e.preventDefault();void operar(true);});
     zona.querySelector("#avisosDesactivar").addEventListener("click",()=>void operar(false));
 }

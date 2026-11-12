@@ -47,42 +47,57 @@ export function iniciarAvisosLiga(usuario) {
         if(dialogo?.open || document.hidden) return;
         dialogo ||= document.createElement("dialog");
         dialogo.className="avisos-permiso";
-        dialogo.innerHTML=`<h2 id="avisosPermisoTitulo">Avisos de la Liga Río Grande</h2>
-            <p data-aviso-texto></p><div><button type="button" data-aviso-omitir>Ahora no</button>
-            <button type="button" data-aviso-aceptar>Aceptar</button></div>`;
+        dialogo.innerHTML=`<div class="avisos-permiso__marca">
+            <img src="imagenes/logo.png" width="48" height="48" alt="">
+            <div><span class="avisos-permiso__etiqueta">Avisos de la liga</span>
+            <span class="avisos-permiso__liga">Liga Municipal Río Grande</span></div>
+            </div>
+            <div class="avisos-permiso__contenido">
+            <h2 id="avisosPermisoTitulo"></h2>
+            <p id="avisosPermisoTexto"></p>
+            <p class="avisos-permiso__nota" data-aviso-nota>Si eliges «Ahora no», puedes seguir usando la app.</p>
+            <div class="avisos-permiso__acciones">
+            <button type="button" data-aviso-omitir>Ahora no</button>
+            <button type="button" data-aviso-aceptar>Recibir avisos</button>
+            </div></div>`;
         dialogo.setAttribute("aria-labelledby","avisosPermisoTitulo");
+        dialogo.setAttribute("aria-describedby","avisosPermisoTexto");
         if(!dialogo.isConnected) document.body.append(dialogo);
-        const texto=dialogo.querySelector("[data-aviso-texto]");
+        const titulo=dialogo.querySelector("h2");
+        const texto=dialogo.querySelector("#avisosPermisoTexto");
         const aceptar=dialogo.querySelector("[data-aviso-aceptar]");
         const omitir=dialogo.querySelector("[data-aviso-omitir]");
         const bloqueado=Notification.permission==="denied";
         aceptar.hidden=bloqueado;
+        omitir.textContent=bloqueado ? "Entendido" : "Ahora no";
+        dialogo.querySelector("[data-aviso-nota]").hidden=bloqueado || Boolean(mensaje);
+        titulo.textContent=bloqueado ? "Los avisos están desactivados" : "No te pierdas el próximo partido";
         texto.textContent=mensaje || (bloqueado
-            ? "Las notificaciones están bloqueadas. Si cambias de opinión, actívalas en los ajustes de esta app."
-            : "¿Quieres recibir recordatorios de partidos y jornadas?");
+            ? "Puedes permitir las notificaciones desde los ajustes de la app en tu celular."
+            : "Recibe un recordatorio antes de que comiencen los partidos y las jornadas de la Liga.");
         omitir.onclick=()=>dialogo.close();
         aceptar.onclick=async()=>{
             if(ocupada) return;
             ocupada=true;
-            aceptar.disabled=true;
+            dialogo.close();
+            let pendiente;
             try {
                 const permiso=Notification.permission==="default" ? await Notification.requestPermission() : Notification.permission;
-                if(permiso!=="granted") { dialogo.close(); return; }
+                if(permiso!=="granted") return;
                 if(!suscripcion && (!reg?.active || !clave)) {
                     await preparar();
-                    texto.textContent="Permiso concedido. Toca Aceptar para terminar.";
+                    pendiente="Permiso concedido. Toca «Recibir avisos» para terminar.";
                     return;
                 }
                 await registrar();
-                dialogo.close();
             } catch(e) {
-                texto.textContent=e.name==="AbortError"
-                    ? "El celular no pudo registrarse. Prueba con datos móviles o toca Ahora no."
+                pendiente=e.name==="AbortError"
+                    ? "El celular no pudo registrarse. Prueba con datos móviles o toca «Ahora no»."
                     : e.message || "No se pudieron activar los avisos.";
             } finally {
                 oculto=0;
                 ocupada=false;
-                aceptar.disabled=false;
+                if(pendiente) mostrar(pendiente);
             }
         };
         dialogo.showModal();

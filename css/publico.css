@@ -4097,3 +4097,18 @@ button{
 #avisosLiga .avisos-piloto-acciones button:disabled { opacity:.65; }
 #avisosLiga .avisos-piloto-pruebas summary { cursor:pointer; font-weight:700; padding:.35rem 0; }
 #avisosLiga .avisos-piloto-pruebas .avisos-piloto-acciones { padding:.35rem 0; }
+
+.avisos-permiso {
+    box-sizing:border-box; width:min(420px,calc(100% - 2rem)); padding:1.15rem;
+    border:1px solid #b9a575; border-radius:16px; background:#f8edcf; color:#163d36;
+}
+.avisos-permiso::backdrop { background:#091c1ab3; }
+.avisos-permiso h2 { font-size:1.15rem; margin:0 0 .55rem; }
+.avisos-permiso p { margin:0 0 .9rem; }
+.avisos-permiso div { display:flex; justify-content:flex-end; gap:.55rem; flex-wrap:wrap; }
+.avisos-permiso button {
+    min-height:44px; padding:.45rem .8rem; border:1px solid #0b655d;
+    border-radius:10px; background:#f8edcf; color:#114f46; font:inherit; font-weight:700;
+}
+.avisos-permiso [data-aviso-aceptar] { background:#0b655d; color:white; }
+.avisos-permiso button[hidden] { display:none; }

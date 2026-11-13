@@ -1,3 +1,4 @@
+import { iniciarAvisosLiga } from "./avisosLigaPublicos.js";
 import { iniciarIncidenciasInicio } from "./incidenciasInicio.js";
 import { textoResultadoDefault } from "../resultadosDefault.js";
 import {
@@ -82,6 +83,7 @@ activarSistemaActualizaciones();
 const usuario = await protegerPaginaPublica();
 
 if (usuario) {
+  iniciarAvisosLiga(usuario.firebaseUser);
   iniciarIncidenciasInicio();
   cargarDatosUsuario(usuario);
 

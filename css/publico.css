@@ -4048,3 +4048,87 @@ button{
         max-height: calc(100dvh - 16px);
     }
 }
+
+dialog.avisos-permiso {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    box-sizing: border-box;
+    width: min(420px, calc(100% - 32px));
+    max-height: calc(100% - 32px);
+    max-height: calc(100dvh - 32px);
+    padding: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    border: 1px solid #d1bb82;
+    border-radius: 24px;
+    background: #fff8e8;
+    color: #193a34;
+    box-shadow: 0 18px 55px #071c1a66;
+    text-align: left;
+    line-height: 1.5;
+}
+.avisos-permiso::backdrop { background: #0b2422a6; }
+.avisos-permiso__marca {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    border-bottom: 3px solid #d6b66c;
+    background: linear-gradient(120deg, #10463f, #12655d);
+    color: #fff9e8;
+}
+.avisos-permiso__marca img {
+    flex: none;
+    width: 48px;
+    height: 48px;
+    border: 2px solid #e3c982;
+    border-radius: 50%;
+    background: #fff9e8;
+    object-fit: cover;
+}
+.avisos-permiso__marca span { display: block; }
+.avisos-permiso__liga { font-size: .95rem; font-weight: 800; }
+.avisos-permiso__etiqueta {
+    color: #f7dfab;
+    font-size: .69rem;
+    font-weight: 800;
+    letter-spacing: .085em;
+    text-transform: uppercase;
+}
+.avisos-permiso__contenido { padding: 20px; }
+.avisos-permiso h2 {
+    margin: 0 0 8px;
+    font-size: clamp(1.26rem, 5vw, 1.55rem);
+    line-height: 1.15;
+    font-weight: 850;
+}
+.avisos-permiso p { margin: 0; font-size: .95rem; }
+.avisos-permiso__nota { color: #475c54; }
+.avisos-permiso__contenido .avisos-permiso__nota { margin-top: 8px; font-size: .82rem; }
+.avisos-permiso__acciones {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+}
+.avisos-permiso__acciones button {
+    flex: 1 0 auto;
+    min-height: 48px;
+    padding: 8px 12px;
+    border: 1px solid #9baa9b;
+    border-radius: 12px;
+    background: transparent;
+    color: #1a5047;
+    font: inherit;
+    font-size: .9rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+.avisos-permiso [data-aviso-aceptar] {
+    border-color: #0d6056;
+    background: #0d6056;
+    color: #fff;
+}
+.avisos-permiso button:focus-visible { outline: 2px solid #146458; outline-offset: 3px; }
+.avisos-permiso [hidden] { display: none; }

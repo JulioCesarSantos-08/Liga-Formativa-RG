@@ -80,6 +80,7 @@
 </head>
 
 <body>
+    <div id="alertasRegistrosMarco" class="dt-alertas-marco" aria-hidden="true" hidden></div>
 
     <div class="jefe-page">
 
@@ -456,6 +457,13 @@
 
                 </section>
 
+                <section id="alertasRegistros" class="dt-alertas" aria-labelledby="alertasRegistrosTitulo" hidden>
+                    <span class="panel-mini">REVISIÓN DE LA LIGA</span>
+                    <h2 id="alertasRegistrosTitulo">Alertas de mis registros</h2>
+                    <p id="alertasRegistrosResumen" role="status"></p>
+                    <ul id="alertasRegistrosLista"></ul>
+                </section>
+
                 <section class="panel-jugadores">
 
                     <div class="panel-header">
@@ -637,6 +645,8 @@
                 </p>
 
             </div>
+
+            <p id="motivoAlertaRegistro" class="dt-alertas-motivo" hidden></p>
 
             <form id="formJugador">
 

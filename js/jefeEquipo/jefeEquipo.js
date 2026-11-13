@@ -1,3 +1,4 @@
+import { iniciarAlertasRegistros } from "./alertasRegistros.js";
 import { registrosPorCurp, revisarDobleFemenil, registrarDobleFemenil, validarEdicionCurp } from "../dobleInscripcionFemenil.js";
 import { limitePlantillaEquipo } from "../cuposPlantillaReglas.js";
 import { registrarJugadorCupo, completarCategoriasCupo } from "../cuposPlantillaDatos.js";
@@ -155,6 +156,7 @@ let todosLosJugadores = [];
 let movimientosJornada5 = [];
 
 let jugadorSeleccionado = null;
+let abriendoAlerta = false;
 
 let fotoSeleccionada = null;
 let archivoCurpSeleccionado = null;
@@ -190,6 +192,11 @@ if (usuario) {
     activarEventos();
 
     await iniciarPanel();
+
+    if (usuario.rol === "jefeEquipo" && equiposAsignados.length && !contenidoEquipo.classList.contains("oculto")) {
+        const detener = iniciarAlertasRegistros(equiposAsignados, abrirDesdeAlerta);
+        window.addEventListener("pagehide", event => { if (!event.persisted) detener(); });
+    }
 
 }
 
@@ -972,6 +979,37 @@ function crearSelectorEquipos() {
 
 }
 
+
+async function abrirDesdeAlerta(equipoId, jugadorId, motivo) {
+    if (abriendoAlerta || selectorEquipos?.disabled ||
+        !equiposAsignados.some(equipo => equipo.id === equipoId)) return;
+
+    abriendoAlerta = true;
+    try {
+        if (equipoActual?.id !== equipoId && selectorEquipos) {
+            selectorEquipos.value = equipoId;
+            await cambiarEquipoSeleccionado();
+        }
+        if (equipoActual?.id !== equipoId || !jugadores.some(jugador => jugador.id === jugadorId)) {
+            await cargarJugadores();
+        }
+        if (equipoActual?.id !== equipoId ||
+            !jugadores.some(jugador => jugador.id === jugadorId && jugador.equipoId === equipoId)) {
+            throw new Error("El jugador no pertenece a la plantilla seleccionada.");
+        }
+        abrirEditarJugador(jugadorId);
+        const aviso = document.getElementById("motivoAlertaRegistro");
+        aviso.textContent = "Motivo de revisión: " + motivo;
+        aviso.hidden = false;
+        modalTitulo.setAttribute("tabindex", "-1");
+        modalTitulo.focus();
+    } catch (error) {
+        console.error("No se pudo abrir el registro:", error);
+        mostrarToast("error", "No se pudo abrir el registro", "Recarga la plantilla e inténtalo otra vez.");
+    } finally {
+        abriendoAlerta = false;
+    }
+}
 
 async function cambiarEquipoSeleccionado() {
 
@@ -2355,6 +2393,7 @@ function prepararModalNuevoJugador(
 
 
     formJugador.reset();
+    document.getElementById("motivoAlertaRegistro").hidden = true;
 
     avisoSolicitudEdicion?.classList.add("oculto");
     grupoMotivoEdicion?.classList.add("oculto");
@@ -2432,6 +2471,8 @@ function abrirEditarJugador(
     modoRegistroJornada5 =
         false;
 
+
+    document.getElementById("motivoAlertaRegistro").hidden = true;
 
     jugadorSeleccionado =
         jugador;

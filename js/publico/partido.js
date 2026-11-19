@@ -1,3 +1,4 @@
+import {aplicarDorsalRefuerzo} from "../disciplinaCategoria.js";
 import { textoResultadoDefault } from "../resultadosDefault.js";
 import {
     collection,
@@ -1224,7 +1225,7 @@ function renderizarListaJugadores(
             }
 
             return {
-                ...jugador,
+                ...aplicarDorsalRefuerzo(jugador,prestamo),
                 esRefuerzo: true
             };
         })
@@ -1233,6 +1234,8 @@ function renderizarListaJugadores(
     const unicos = new Map();
 
     [...propios, ...refuerzos].forEach(jugador => {
+        const numero = cedula?.[equipoId === partido.localId ? "dorsalesLocal" : "dorsalesVisitante"]?.[jugador.id];
+        if (numero !== undefined) jugador = {...jugador,numero,dorsal:numero};
         if (!unicos.has(jugador.id)) {
             unicos.set(jugador.id, jugador);
         }

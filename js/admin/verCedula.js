@@ -57,7 +57,7 @@ function listaPlantilla(lado) {
     }));
 }
 function eventos(campo) {
-    return tabla(["Minuto","Equipo","Dorsal","Jugador","Detalle"],(cedula[campo] || []).map(e=>[e.minuto,e.equipoNombre || (e.equipo==="local"?partido.localNombre:partido.visitanteNombre),e.numero ?? jugadores.get(e.jugadorId)?.numero,nombre(e.jugadorId,e.jugadorNombre),[e.tipoRoja,e.motivo].filter(Boolean).join(" · ") || "—"]));
+    return tabla(["Minuto","Equipo","Dorsal","Jugador","Detalle"],(cedula[campo] || []).map(e=>[e.minuto,e.equipoNombre || (e.equipo==="local"?partido.localNombre:partido.visitanteNombre),e.numero ?? jugadores.get(e.jugadorId)?.numero,nombre(e.jugadorId,e.jugadorNombre),[e.tipoRoja,campo === "rojas" ? `${e.partidosSuspension ?? 1} partido(s) de suspensión` : "",e.motivo].filter(Boolean).join(" · ") || "—"]));
 }
 function renderizar() {
     const c=cedula,p=partido,oficial=esCedulaOficial(c),devuelta=c.devolucionCedula?.activa;

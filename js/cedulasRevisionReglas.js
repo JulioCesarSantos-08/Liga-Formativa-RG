@@ -1,3 +1,4 @@
+import {duracionRoja} from "./disciplinaCategoria.js";
 export const esCedulaOficial = c => ["registrada","enviada"].includes(c?.estado);
 export const revisionCedula = c => Number(c?.revisionCedula || 0);
 export const enteroCedula = n => Number.isFinite(Number(n)) ? Math.max(0,Math.trunc(Number(n))) : 0;
@@ -25,6 +26,10 @@ export function validarResultadoCedula(c,p) {
             const lado=evento.equipo;
             const presentes=c[lado==="local"?"presentesLocal":"presentesVisitante"];
             if (!["local","visitante"].includes(lado) || !evento.jugadorId || !Array.isArray(presentes) || !presentes.includes(evento.jugadorId) || evento.equipoId!==p[lado+"Id"]) throw new Error("Cada gol o tarjeta debe identificar a un jugador presente del equipo correcto.");
+            if (campo === "rojas") {
+                duracionRoja(evento);
+                if (evento.partidosSuspension !== undefined && !String(evento.motivo || "").trim()) throw new Error("Escribe el motivo de la expulsión.");
+            }
             if (campo==="rojas" && expulsados.has(evento.jugadorId)) throw new Error("Un jugador tiene dos expulsiones registradas.");
             expulsados.add(evento.jugadorId);
         }

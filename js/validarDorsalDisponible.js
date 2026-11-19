@@ -1,3 +1,4 @@
+import {dorsalRefuerzo} from "./disciplinaCategoria.js";
 import {
     collection,
     getDocsFromServer,
@@ -31,6 +32,14 @@ export async function validarDorsalDisponible(jugador, valor) {
         id: documento.id
     }));
 
+    const [prestamos, todos] = await Promise.all([getDocsFromServer(collection(db,"prestamosJugadores")),getDocsFromServer(collection(db,"jugadores"))]);
+    for (const s of prestamos.docs) {
+        const p=s.data();
+        if ((p.equipoDestinoId || p.equipoId)!==jugador.equipoId || p.activo!==true || String(p.estado || "").toLowerCase()!=="activo") continue;
+        const origen=todos.docs.find(j=>j.id===p.jugadorId);
+        if (!origen || origen.data().activo===false || origen.data().equipoId!==p.equipoOrigenId) continue;
+        jugadores.push({...origen.data(),id:origen.id,equipoId:jugador.equipoId,categoriaId:jugador.categoriaId,numero:dorsalRefuerzo(origen.data(),p)});
+    }
     const otro = buscarDorsalDuplicado(
         jugadores,
         jugador,

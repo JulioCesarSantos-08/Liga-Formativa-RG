@@ -1,3 +1,7 @@
+import {guardarDorsalRefuerzo} from "./dorsalRefuerzoDatos.js";
+import {estadoCategoria,textoDisciplina,dorsalRefuerzo,temporadaDisciplina} from "../disciplinaCategoria.js";
+import {cargarHistorialDisciplina} from "../disciplinaCategoriaDatos.js";
+let historialDisciplina = [];
 
 import {
     collection,
@@ -331,11 +335,14 @@ async function actualizarRefuerzos() {
     try {
         const [
             snapshotPrestamos,
-            snapshotJugadores
+            snapshotJugadores,
+            historial
         ] = await Promise.all([
             getDocs(collection(db, "prestamosJugadores")),
-            getDocs(collection(db, "jugadores"))
+            getDocs(collection(db, "jugadores")),
+            cargarHistorialDisciplina()
         ]);
+        historialDisciplina = historial;
 
         if (
             token !== ultimaCarga ||
@@ -357,7 +364,7 @@ async function actualizarRefuerzos() {
         const encontrados = new Map();
 
         snapshotPrestamos.docs.forEach(documento => {
-            const prestamo = documento.data();
+            const prestamo = {...documento.data(), id:documento.id};
 
             const destinoId =
                 prestamo.equipoDestinoId ||
@@ -530,6 +537,32 @@ function crearTarjetaRefuerzo(
             "Sin identificar"
         }`;
 
+    const destino = obtenerEquipoSeleccionado();
+    const estado = estadoCategoria(jugador,destino.categoriaId,historialDisciplina,temporadaDisciplina(destino));
+    const disciplina = document.createElement("span");
+    disciplina.textContent = textoDisciplina(estado);
+    disciplina.style.color = estado.suspendido ? "#a62e23" : "#075d53";
+    disciplina.style.fontWeight = "800";
+    const etiquetaNumero = document.createElement("label");
+    etiquetaNumero.textContent = "Dorsal en este equipo";
+    const numero = document.createElement("input");
+    numero.type = "text"; numero.inputMode = "numeric"; numero.maxLength = 3;
+    numero.value = String(dorsalRefuerzo(jugador,prestamo));
+    numero.setAttribute("aria-label","Dorsal del refuerzo " + nombre.textContent);
+    numero.style.cssText = "box-sizing:border-box;width:100%;min-height:44px;margin:6px 0;border:1px solid #9ab6ac;border-radius:8px;padding:8px;background:#fff8e8;color:#163d33";
+    const guardar = document.createElement("button");
+    guardar.type = "button"; guardar.textContent = "Guardar dorsal";
+    guardar.style.cssText = "min-height:44px;padding:8px 12px;background:#075d53;color:#fff;border:0;border-radius:8px";
+    const mensaje = document.createElement("span"); mensaje.setAttribute("role","status");
+    guardar.onclick = async () => {
+        guardar.disabled = true; numero.disabled = true; mensaje.textContent = "Guardando…";
+        try {
+            prestamo.dorsalRefuerzo = await guardarDorsalRefuerzo(prestamo.id,numero.value);
+            mensaje.textContent = "Dorsal actualizado. El de su categoría de origen se conserva. Vuelve a generar su credencial de refuerzo.";
+        } catch(e) { mensaje.textContent = e.message; }
+        finally { guardar.disabled = false; numero.disabled = false; }
+    };
+    etiquetaNumero.append(numero);
     const distintivo = document.createElement("span");
     distintivo.className = "refuerzo-distintivo";
     distintivo.textContent = "REFUERZO APROBADO";
@@ -538,7 +571,11 @@ function crearTarjetaRefuerzo(
         nombre,
         origen,
         categoria,
-        distintivo
+        distintivo,
+        disciplina,
+        etiquetaNumero,
+        guardar,
+        mensaje
     );
 
     tarjeta.append(

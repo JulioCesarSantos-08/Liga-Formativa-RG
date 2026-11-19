@@ -1,3 +1,5 @@
+import {aplicarDisciplina,temporadaDisciplina} from "../disciplinaCategoria.js";
+import {cargarHistorialDisciplina} from "../disciplinaCategoriaDatos.js";
 import { cargarJugadoresConRefuerzos, prepararCredencialRefuerzo, verificarRefuerzosAntesDeImprimir, marcarCredencialRefuerzo } from "./credencialesRefuerzos.js";
 import { aplicarDistintivoRefuerzo } from "./distintivoRefuerzo.js";
 
@@ -1302,6 +1304,9 @@ async function prepararCredencialesPublicas() {
 async function publicarCredencialJugador(
     jugador
 ) {
+    const reciente = await getDoc(doc(db,"jugadores",jugador.id));
+    if (!reciente.exists()) throw new Error("El jugador ya no está disponible.");
+    jugador = aplicarDisciplina({...reciente.data(),id:jugador.id},equipoActual.categoriaId,await cargarHistorialDisciplina(),temporadaDisciplina(equipoActual));
 
     const token =
         String(

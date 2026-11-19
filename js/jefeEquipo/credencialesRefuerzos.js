@@ -1,3 +1,5 @@
+import {aplicarDisciplina,aplicarDorsalRefuerzo,dorsalRefuerzo,temporadaDisciplina,estadoCategoria} from "../disciplinaCategoria.js";
+import {cargarHistorialDisciplina} from "../disciplinaCategoriaDatos.js";
 import { collection, getDocs, doc, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { db, auth } from "../firebase.js";
 import { usuarioTieneAlgunRol } from "../permisosUsuario.js";
@@ -40,6 +42,7 @@ export async function cargarJugadoresConRefuerzos(
     equipo,
     temporada
 ) {
+    const historial = await cargarHistorialDisciplina();
     const [snapshotJugadores, snapshotPrestamos] =
         await Promise.all([
             getDocs(collection(db, "jugadores")),
@@ -102,7 +105,7 @@ export async function cargarJugadoresConRefuerzos(
         vistos.add(jugador.id);
 
         refuerzos.push({
-            ...jugador,
+            ...aplicarDorsalRefuerzo(jugador,prestamo),
             esRefuerzo: true,
             prestamoId: prestamo.id,
             equipoOrigenPrestamoId: prestamo.equipoOrigenId,
@@ -116,7 +119,7 @@ export async function cargarJugadoresConRefuerzos(
         });
     }
 
-    return [...propios, ...refuerzos];
+    return [...propios, ...refuerzos].map(j => aplicarDisciplina(j,equipo.categoriaId,historial,temporadaDisciplina(equipo)));
 }
 
 async function procesar(
@@ -138,6 +141,7 @@ async function procesar(
         );
     }
 
+    const historial = await cargarHistorialDisciplina();
     const candidato = Array.from(
         crypto.getRandomValues(new Uint8Array(24)),
         numero => numero.toString(16).padStart(2, "0")
@@ -292,7 +296,7 @@ async function procesar(
             fotoActual !== fotoCargada ||
             texto(destino.nombre) !== texto(equipo.nombre) ||
             texto(destino.categoriaNombre) !== texto(equipo.categoriaNombre) ||
-            String(actual.numero ?? actual.dorsal ?? "") !==
+            String(dorsalRefuerzo(actual,prestamo)) !==
                 String(jugador.numero ?? jugador.dorsal ?? "")
         ) {
             throw new Error(
@@ -347,18 +351,14 @@ async function procesar(
                 });
             }
 
-            const suspendido =
-                actual.suspendido === true ||
-                Number(
-                    actual.partidosSuspensionPendientes || 0
-                ) > 0;
+            const suspendido = estadoCategoria({...actual,id:jugador.id},destino.categoriaId,historial,temporadaDisciplina(destino)).suspendido;
 
             tx.set(publicaRef, {
                 tipo: "refuerzo",
                 esRefuerzo: true,
                 nombre: nombreJugador(actual),
                 numero:
-                    actual.numero ?? actual.dorsal ?? "",
+                    dorsalRefuerzo(actual,prestamo),
                 equipoNombre:
                     destino.nombre || "Equipo",
                 categoriaNombre:

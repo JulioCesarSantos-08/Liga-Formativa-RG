@@ -106,14 +106,7 @@ function anioNacimiento(valor) {
 }
 
 export function limiteNinasMayores(categoria) {
-    const nombre = normalizar(
-        categoria.nombre ||
-        categoria.categoriaNombre
-    );
-
-    return nombre === "super bebe"
-        ? 2
-        : 3;
+    return 11;
 }
 
 function categoriaOrigenRefuerzo(jugador) {

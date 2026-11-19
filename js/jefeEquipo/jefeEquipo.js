@@ -1,3 +1,5 @@
+import {aplicarDisciplina,textoDisciplina,temporadaDisciplina} from "../disciplinaCategoria.js";
+import {cargarHistorialDisciplina} from "../disciplinaCategoriaDatos.js";
 import { iniciarAlertasRegistros } from "./alertasRegistros.js";
 import { registrosPorCurp, revisarDobleFemenil, registrarDobleFemenil, validarEdicionCurp } from "../dobleInscripcionFemenil.js";
 import { limitePlantillaEquipo } from "../cuposPlantillaReglas.js";
@@ -1495,6 +1497,9 @@ async function cargarJugadores() {
             );
 
 
+    const historial = await cargarHistorialDisciplina();
+    todosLosJugadores = todosLosJugadores.map(j => j.equipoId === equipoActual.id ? aplicarDisciplina(j,equipoActual.categoriaId,historial,temporadaDisciplina(equipoActual)) : j);
+
     jugadores =
         todosLosJugadores
             .filter(
@@ -2083,7 +2088,7 @@ function renderizarJugadores(
                             : ""
                     }">
 
-                        ${estadoTexto}
+                        ${escaparHTML(jugador.disciplinaActual ? textoDisciplina(jugador.disciplinaActual) : estadoTexto)}
 
                     </span>
 

@@ -1,4 +1,4 @@
-const CACHE_NAME = "liga-rio-grande-avisos-1";
+const CACHE_NAME = "liga-rio-grande-disciplina-categorias-1";
 
 const CACHE_PREFIX = "liga-rio-grande-";
 

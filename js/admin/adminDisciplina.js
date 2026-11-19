@@ -1,3 +1,4 @@
+import {aplicarDisciplina,estadoCategoria,textoDisciplina,temporadaDisciplina,baseManual} from "../disciplinaCategoria.js";
 import { increment } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import {
     collection,
@@ -202,6 +203,7 @@ async function cargarDatos() {
             ...documento.data()
         }));
 
+        jugadores = jugadores.map(j => aplicarDisciplina(j,j.categoriaId,cedulas,temporadaDisciplina(equipos.find(e=>e.id===j.equipoId))));
         jugadores.sort((a, b) => {
             return obtenerNombreJugador(a).localeCompare(
                 obtenerNombreJugador(b),
@@ -570,8 +572,22 @@ function abrirJugador(jugadorId) {
                 ? "Suspendido"
                 : "Activo";
 
-    campoSuspendido.checked = suspendido;
-    campoPartidosSuspension.value = partidos;
+    campoSuspendido.checked = jugador.disciplinaManualConservada?.suspendido === true;
+    campoPartidosSuspension.value = jugador.disciplinaManualConservada?.partidos || 0;
+    let resumen = document.getElementById("disciplinaPorCategorias");
+    if (!resumen) { resumen = document.createElement("section"); resumen.id = "disciplinaPorCategorias"; resumen.style.cssText = "padding:14px;margin:14px 0;background:#fff4d6;border:1px solid #c5a45e;border-radius:12px"; modalEquipoCategoria.after(resumen); }
+    resumen.replaceChildren();
+    const titulo = document.createElement("strong"); titulo.textContent = "Sanciones independientes por categoría"; resumen.append(titulo);
+    const cats = new Set([jugador.categoriaId,...cedulas.filter(c=>(c.rojas || []).some(r=>r.jugadorId===jugador.id)).map(c=>c.categoriaId)].filter(Boolean));
+    for (const cat of cats) {
+        const estado = estadoCategoria(jugador,cat,cedulas,temporadaDisciplina(equipo));
+        const fila = document.createElement("p"); fila.textContent = (categorias.find(c=>c.id===cat)?.nombre || cat) + ": " + textoDisciplina(estado); resumen.append(fila);
+        for (const sancion of estado.sanciones) {
+            const linea=document.createElement("p"); linea.textContent=`${sancion.fecha.slice(0,10) || "Fecha por revisar"} · ${sancion.partidos} impuesto(s), ${sancion.cumplidos.length} cumplido(s), ${sancion.pendientes} pendiente(s)`;
+            const enlace=document.createElement("a"); enlace.href="adminVerCedula.html?id="+encodeURIComponent(sancion.partidoId); enlace.textContent=" Ver cédula";linea.append(enlace);resumen.append(linea);
+        }
+    }
+    const nota=document.createElement("p"); nota.textContent="Los controles inferiores corresponden únicamente a la suspensión manual de origen. Las expulsiones se corrigen desde su cédula. Las rojas antiguas sin duración se cuentan como un partido; revisa las sanciones manuales conservadas.";resumen.append(nota);
 
     ocultarMensajeSancion();
 
@@ -928,6 +944,7 @@ async function guardarSancion() {
             {
                 suspendido,
                 suspensionRevisionManual: increment(1),
+                disciplinaManualConservada: {suspendido,partidos,revision:Number(jugadorSeleccionado.suspensionRevisionManual || 0)+1,requiereRevision:false},
                 suspensionAutomaticaCedulas: null,
                 revisionDisciplinaPendiente: null,
                 partidosSuspensionPendientes: partidos,
@@ -935,6 +952,8 @@ async function guardarSancion() {
             }
         );
 
+        jugadorSeleccionado.suspensionRevisionManual = Number(jugadorSeleccionado.suspensionRevisionManual || 0)+1;
+        jugadorSeleccionado.disciplinaManualConservada = {suspendido,partidos,revision:jugadorSeleccionado.suspensionRevisionManual,requiereRevision:false};
         jugadorSeleccionado.suspendido = suspendido;
         jugadorSeleccionado.partidosSuspensionPendientes = partidos;
 
@@ -1044,8 +1063,10 @@ async function guardarSancion() {
             false
         );
 
+        jugadores = jugadores.map(j=>aplicarDisciplina(j,j.categoriaId,cedulas,temporadaDisciplina(equipos.find(e=>e.id===j.equipoId))));
         actualizarResumen();
         aplicarFiltros();
+        mostrarMensajeSancion("Suspensión manual actualizada. Las sanciones automáticas de cédulas se conservan y se muestran en el resumen por categoría.",false);
 
         console.log(
             "Sanción guardada:",

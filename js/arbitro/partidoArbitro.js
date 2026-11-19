@@ -1,3 +1,5 @@
+import {aplicarDisciplina,aplicarDorsalRefuerzo,temporadaDisciplina} from "../disciplinaCategoria.js";
+import {cargarHistorialDisciplina} from "../disciplinaCategoriaDatos.js";
 import { instalarAvisoRevision } from "./revisionCedulaAviso.js";
 import { instalarDefaultCedula } from "./defaultCedula.js";
 import {
@@ -484,6 +486,8 @@ async function cargarEquipos() {
 
 
 async function cargarJugadores() {
+    const historialDisciplina = await cargarHistorialDisciplina();
+    const cedulaNumeros = historialDisciplina.find(c => c.id === partido.id);
 
     const [snapshotJugadores, snapshotPrestamos] =
         await Promise.all([
@@ -558,7 +562,7 @@ async function cargarJugadores() {
                 }
 
                 return {
-                    ...jugador,
+                    ...aplicarDorsalRefuerzo(jugador,prestamo),
                     esRefuerzo: true,
                     prestamoId: prestamo.id,
                     equipoOrigenPrestamoId:
@@ -577,7 +581,11 @@ async function cargarJugadores() {
             }
         });
 
-        return [...unicos.values()].sort(
+        return [...unicos.values()].map(j => {
+            const actual = aplicarDisciplina(j,partido.categoriaId,historialDisciplina,temporadaDisciplina(partido),partido);
+            const numero = cedulaNumeros?.[equipoId === partido.localId ? "dorsalesLocal" : "dorsalesVisitante"]?.[j.id];
+            return numero === undefined ? actual : {...actual,numero,dorsal:numero};
+        }).sort(
             ordenarJugadores
         );
     };
@@ -1043,6 +1051,7 @@ function puedeJugar(jugador) {
 
 
 function motivoNoDisponible(jugador) {
+    if (jugador.bajaTemporada) return "Baja por tercera sanción en esta categoría";
 
     if (
         jugador.suspendido === true ||
@@ -1051,7 +1060,7 @@ function motivoNoDisponible(jugador) {
         ) > 0
     ) {
 
-        return "Suspendido";
+        return `Suspendido en esta categoría: ${jugador.partidosSuspensionPendientes || 0} partido(s) pendientes`;
 
     }
 
@@ -1189,6 +1198,14 @@ async function guardarAsistencia() {
 
     try {
 
+        const seleccionLocal = [...presentesLocal], seleccionVisitante = [...presentesVisitante];
+        await cargarJugadores();
+        for (const [ids, lista] of [[seleccionLocal,jugadoresLocal],[seleccionVisitante,jugadoresVisitante]]) {
+            for (const id of ids) {
+                const j = lista.find(j => j.id === id);
+                if (!j || !puedeJugar(j)) throw new Error((j?.nombre || "Jugador") + ": no está habilitado en esta categoría. Actualiza el pase de lista.");
+            }
+        }
         const localIds =
             [...presentesLocal];
 

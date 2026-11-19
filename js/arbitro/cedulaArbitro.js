@@ -1,3 +1,5 @@
+import {aplicarDisciplina,aplicarDorsalRefuerzo,temporadaDisciplina} from "../disciplinaCategoria.js";
+import {cargarHistorialDisciplina} from "../disciplinaCategoriaDatos.js";
 import { instalarDefaultCedula, guardarCedulaProtegida } from "./defaultCedula.js";
 import { instalarAvisoRevision, prepararEdicionAdmin } from "./revisionCedulaAviso.js";
 import { crearControlCambios } from "./cambiosCedula.js";
@@ -960,6 +962,8 @@ async function cargarEquipos() {
 
 
 async function cargarJugadores() {
+    const historialDisciplina = await cargarHistorialDisciplina();
+    const cedulaNumeros = historialDisciplina.find(c => c.id === partido.id);
     const [
         snapshotJugadores,
         snapshotPrestamos,
@@ -1074,7 +1078,7 @@ async function cargarJugadores() {
                         : null;
 
                 return {
-                    ...jugador,
+                    ...aplicarDorsalRefuerzo(jugador,prestamo),
                     esRefuerzo: true,
                     prestamoId: prestamo.id,
                     equipoOrigenPrestamoId:
@@ -1097,7 +1101,11 @@ async function cargarJugadores() {
             }
         });
 
-        return [...unicos.values()].sort(
+        return [...unicos.values()].map(j => {
+            const actual = aplicarDisciplina(j,partido.categoriaId,historialDisciplina,temporadaDisciplina(partido),partido);
+            const numero = cedulaNumeros?.[equipoId === partido.localId ? "dorsalesLocal" : "dorsalesVisitante"]?.[j.id];
+            return numero === undefined ? actual : {...actual,numero,dorsal:numero};
+        }).sort(
             ordenarJugadores
         );
     };
@@ -1719,6 +1727,7 @@ function abrirModalEvento(
 
     tipoEventoActual =
         tipo;
+    document.getElementById("eventoPartidosSuspension").value = "1";
     eventoCantidadGoles.value = "1";
 
 
@@ -2035,6 +2044,15 @@ function guardarEventoTemporal() {
 
         evento.tipoRoja =
             eventoTipoRoja.value;
+        evento.partidosSuspension = Number(document.getElementById("eventoPartidosSuspension").value);
+        if (![1,2,3].includes(evento.partidosSuspension) || !evento.motivo) {
+            mostrarToast("error", "Revisa la expulsión", "Indica de 1 a 3 partidos de suspensión y escribe el motivo.");
+            return;
+        }
+        if (eventosRojas.some(r => r.jugadorId === evento.jugadorId)) {
+            mostrarToast("error", "Expulsión duplicada", "Este jugador ya tiene una expulsión en esta cédula.");
+            return;
+        }
 
 
         eventosRojas.push(
@@ -2151,6 +2169,7 @@ function renderizarEventos(
             let detalle =
                 evento.equipoNombre ||
                 "Equipo";
+            if (tipo === "roja") detalle += ` · ${evento.partidosSuspension ?? 1} partido(s) de suspensión`;
 
 
             if (
@@ -2954,6 +2973,8 @@ function construirDatosCedula(
 
     return {
 
+        dorsalesLocal: Object.fromEntries(jugadoresLocal.map(j => [j.id, j.numero ?? j.dorsal ?? ""])),
+        dorsalesVisitante: Object.fromEntries(jugadoresVisitante.map(j => [j.id, j.numero ?? j.dorsal ?? ""])),
         alineaciones: controlAlineaciones.obtenerDatos(),
 
         cambios: controlCambios.obtenerDatos(),
